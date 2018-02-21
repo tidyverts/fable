@@ -14,13 +14,19 @@ knitr::opts_chunk$set(
   out.width = "100%"
 )
 ```
-# tidyforecast
 
-The goal of tidyforecast is to ...
+#tidyforecast 
+======================
+
+[![Travis build status](https://travis-ci.org/tidyverts/tidyforecast.svg?branch=master)](https://travis-ci.org/tidyverts/tidyforecast)
+[![Licence](https://img.shields.io/badge/licence-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
+
+The R package *tidyforecast* provides methods and tools for displaying and analysing univariate time series forecasts including exponential smoothing via state space models and automatic ARIMA modelling. Data, model and forecast objects are all stored in a tidy format.
 
 ## Installation
 
-You can install tidyforecast from GitHub with:
+You can install the **development** version from
+[Github](https://github.com/tidyverts/tidyforecast)
 
 ```{r gh-installation, eval = FALSE}
 # install.packages("devtools")
@@ -35,18 +41,3 @@ This is a basic example which shows you how to solve a common problem:
 ## basic example code
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
-
-```{r cars}
-summary(cars)
-```
-
-You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date.
-
-You can also embed plots, for example:
-
-```{r pressure, echo = FALSE}
-plot(pressure)
-```
-
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub!
