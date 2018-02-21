@@ -1,0 +1,33 @@
+Package: tidyforecast
+Version: 0.0.0.9000
+Title: What the Package Does (One Line, Title Case)
+Description: What the package does (one paragraph).
+Authors@R: c(
+    person("Rob", "Hyndman", email="Rob.Hyndman@monash.edu", role = c("aut", "cre", "cph")),
+    person("Mitchell", "O'Hara-Wild", role = "aut"),
+    person("Earo", "Wang", role = "aut")
+    )
+Depends:
+    R (>= 3.1.3)
+Imports:
+    rlang (>= 0.2.0),
+    purrr (>= 0.2.3),
+    tibble (>= 1.4.1),
+    tsibble (>= 0.1.3),
+    pillar (>= 1.0.1),
+    dplyr (>= 0.7.3),
+    tidyselect
+Suggests:
+    knitr,
+    rmarkdown,
+    testthat,
+    covr,
+ByteCompile: true
+VignetteBuilder: knitr
+License: GPL-3
+URL: https://github.com/tidyverts/tidyforecast
+BugReports: https://github.com/tidyverts/tidyforecast/issues
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.0.1
+Roxygen: list(markdown = TRUE, roclets=c('rd', 'collate', 'namespace'))
