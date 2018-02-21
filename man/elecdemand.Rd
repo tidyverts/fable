@@ -7,8 +7,8 @@
 \format{Time series of class \code{tsibble}.}
 \source{
 Australian Energy Market Operator, and the Australian Bureau of
-Meteorology. The data set is also available as \code{\link{fpp2}{elecdemand}}
-in the \code{\link{fpp2}{fpp2}} package in a \code{msts} format.
+Meteorology. The data set is also available as \code{\link[fpp2]{elecdemand}}
+in the \code{\link[fpp2]{fpp2}} package in a \code{msts} format.
 }
 \description{
 \code{elecdemand} is a half-hourly tsibble with three values:
