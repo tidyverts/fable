@@ -1,18 +1,17 @@
-#' Forecasting time series
+#' Forecasting Functions for Tidy Time Series
+#' 
+#' Methods and tools for displaying and analysing univariate time series
+#' forecasts in a tidy format including exponential smoothing via state space models and
+#' automatic ARIMA modelling.
 #'
-#' \code{forecast} is a generic function for forecasting from time series or
-#' time series models. The function invokes particular \emph{methods} which
-#' depend on the class of the first argument.
+#' \tabular{ll}{ Package: \tab tidyforecast\cr Type: \tab Package\cr License: \tab
+#' GPL3\cr LazyLoad: \tab yes\cr }
 #'
-#' @param object a time series or time series model for which forecasts are
-#' required
-#' @param h Number of periods for forecasting
-#' @param ... Additional arguments affecting the forecasts produced. 
-#' @return An object of class "\code{forecast}".
-#'
+#' @docType package
+#' @name tidyforecast-package
 #' @author Rob J Hyndman
-#' @keywords ts
 #'
-#' @export
-forecast <- function(object, h, ...) UseMethod("forecast")
+#' Maintainer: Rob.Hyndman@monash.edu
+#' @keywords package
+"_PACKAGE"
 
