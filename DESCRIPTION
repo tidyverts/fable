@@ -1,7 +1,7 @@
 Package: tidyforecast
 Version: 0.0.0.9000
-Title: What the Package Does (One Line, Title Case)
-Description: What the package does (one paragraph).
+Title: Forecasting tidy time series
+Description: The R package *tidyforecast* provides methods and tools for displaying and analysing univariate time series forecasts including exponential smoothing via state space models and automatic ARIMA modelling. Data, model and forecast objects are all stored in a tidy format.
 Authors@R: c(
     person("Rob", "Hyndman", email="Rob.Hyndman@monash.edu", role = c("aut", "cre", "cph")),
     person("Mitchell", "O'Hara-Wild", role = "aut"),
