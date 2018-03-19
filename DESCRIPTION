@@ -9,14 +9,15 @@ Authors@R: c(
     )
 Depends:
     R (>= 3.1.3)
-Imports:
+Imports: 
     rlang (>= 0.2.0),
     purrr (>= 0.2.3),
     tibble (>= 1.4.1),
     tsibble (>= 0.1.3),
     pillar (>= 1.0.1),
     dplyr (>= 0.7.3),
-    tidyselect
+    tidyselect,
+    magrittr
 Suggests:
     knitr,
     rmarkdown,
