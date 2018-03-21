@@ -17,7 +17,6 @@ NULL
 #'
 #' @param x,y If `x` is NULL, will return `y`; otherwise returns
 #'   `x`.
-#' @export
 #' @name null-default
 #' @examples
 #' 1 %||% 2
@@ -34,7 +33,6 @@ NULL
 #'
 #' @param x Object
 #' @param name Attribute name
-#' @export
 #' @name get-attr
 #' @examples
 #' factor(1:3) %@% "levels"
