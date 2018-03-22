@@ -37,16 +37,14 @@ traverse_call <- function(x,
 # traverse_call(a+b)
 # 
 # # Max length object finding
+# quos_extract_longest <- as_mapper( ~ .x %>% rlang::get_expr(.) %>%
+#                                      as.list %>% map(new_quosure, env = get_env(.x)) %>%
+#                                      .[which.max(map(., ~ length(eval_tidy(.x))))])
 # traverse_call(log(USAccDeaths + 1),
 #               f = ~ .x[[1]],
-#               g = ~ .x %>% rlang::get_expr(.) %>%
-#                 as.list %>% map(new_quosure, env = get_env(.x)) %>%
-#                 .[which.max(map(., ~ length(eval_tidy(.x))))])
+#               g = quos_extract_longest)
 # 
-# # Basic operation ordering
+# # Basic back-transformation operation ordering
 # traverse_call(log(USAccDeaths + 1),
-#               f = ~ .x[[1]],
-#               g = ~ .x %>% rlang::get_expr(.) %>%
-#                 as.list %>% map(new_quosure, env = get_env(.x)) %>%
-#                 .[which.max(map(., ~ length(eval_tidy(.x))))],
-#               base = )
+#               f = ~ append(.y, .x[[1]]),
+#               g = quos_extract_longest)
