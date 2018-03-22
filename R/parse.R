@@ -1,4 +1,4 @@
-traverse <-  function(x, f = ~ as.list(.x), g = ~.x, h = ~.x, base = ~ !is.list(.x)){
+traverse <-  function(x, f = ~ .x, g = ~.x, h = ~.x, base = ~ is_syntactic_literal(.x) || is_symbol(.x)){
   .f <- as_mapper(f)
   .g <- as_mapper(g)
   .h <- as_mapper(h)
