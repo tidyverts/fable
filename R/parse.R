@@ -30,12 +30,20 @@ traverse_call <- function(x,
   .f(map(.g(x), traverse_call, f=f, g=g, base=base))
 }
 
-# Basic call traversal
-traverse_call(a+b)
-
-# Basic max length object finding
-traverse_call(log(USAccDeaths + 1),
-              f = ~ .x[[1]],
-              g = ~ .x %>% rlang::get_expr(.) %>%
-                as.list %>% map(new_quosure, env = get_env(.x)) %>%
-                .[which.max(map(., ~ length(eval_tidy(.x))))])
+# # Default call traversal
+# traverse_call(a+b)
+# 
+# # Max length object finding
+# traverse_call(log(USAccDeaths + 1),
+#               f = ~ .x[[1]],
+#               g = ~ .x %>% rlang::get_expr(.) %>%
+#                 as.list %>% map(new_quosure, env = get_env(.x)) %>%
+#                 .[which.max(map(., ~ length(eval_tidy(.x))))])
+# 
+# # Basic operation ordering
+# traverse_call(log(USAccDeaths + 1),
+#               f = ~ .x[[1]],
+#               g = ~ .x %>% rlang::get_expr(.) %>%
+#                 as.list %>% map(new_quosure, env = get_env(.x)) %>%
+#                 .[which.max(map(., ~ length(eval_tidy(.x))))],
+#               base = )
