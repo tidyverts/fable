@@ -18,19 +18,19 @@ quo_call_to_listcall <- as_mapper(~ .x %>% rlang::get_expr(.) %>% as.list %>% ma
 traverse_call <- function(x,
                           f = quo_listcall_to_call,
                           g = quo_call_to_listcall,
+                          h = enquo,
                           base = ~ !quo_is_call(.x)){
-  x <- enquo(x)
-  
   .f <- as_mapper(f)
   .g <- as_mapper(g)
+  .h <- as_mapper(h)
   .base <- as_mapper(base)
   
   # base cases
-  if (.base(x))
-    return(x)
+  if (.base(.h(x)))
+    return(.h(x))
   
   # recursive case
-  .f(map(.g(x), traverse_call, f=f, g=g, base=base))
+  .f(map(.g(.h(x)), traverse_call, f=f, g=g, base=base), .h(x))
 }
 
 # # Default call traversal
