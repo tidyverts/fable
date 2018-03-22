@@ -11,11 +11,14 @@ traverse_list <-  function(x, f = ~ .x, base = ~ !is.list(.x)){
   f(lapply(x, traverse_list))
 }
 
+quo_listcall_to_call <- as_mapper(~ map(.x, quo_get_expr) %>% as.call %>% new_quosure(env = get_env(.x[[1]])))
+quo_call_to_listcall <- as_mapper(~ .x %>% rlang::get_expr(.) %>% as.list %>% map(new_quosure, env = get_env(.x)))
+# quo_is_known <- as_mapper(.x %>% rlang::get_expr(.) %>% {rlang::is_syntactic_literal(.) || is_symbol(.) || (!is.pairlist(.) && !is.call(.))})
+
 traverse_call <- function(x,
-                          f = ~ map(.x, quo_get_expr) %>% as.call %>% new_quosure(env = get_env(x)),
-                          g = ~ .x %>% rlang::get_expr(.) %>% as.list %>% map(new_quosure, env = get_env(x)),
-                          base = ~ .x %>% rlang::get_expr(.) %>%
-                            {rlang::is_syntactic_literal(.) || is_symbol(.) || (!is.pairlist(.) && !is.call(.))}){
+                          f = quo_listcall_to_call,
+                          g = quo_call_to_listcall,
+                          base = ~ !quo_is_call(.x)){
   x <- enquo(x)
   
   .f <- as_mapper(f)
