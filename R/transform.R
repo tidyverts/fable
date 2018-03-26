@@ -9,27 +9,24 @@ inverse_table <- function() {
       table[[ns]][[fn]] <- inv
     },
     
-    get = function(fn, default_env = caller_env()) {
-      if(is_character(fn)){
-        fn <- sym(fn)
-      }
-      expr <- get_expr(fn)
-      env <- get_env(fn, default_env)
-      namespace <- eval_tidy(expr(findFunction(!!expr_text(expr))), env = env) %>%
-        map(possibly(environmentName, otherwise = NULL)) %>% 
-        compact %>%
-        first
-      ret <- table[[namespace]][[quo_text(fn)]]
+    get = function(ns, fn) {
+      ret <- table[[ns]][[fn]]
       if (is.null(ret)) {
         stop("No supported inverse for this function")
       }
       ret
     })
 }
-inverse_table <- inverse_table()
 
 undo_transformation <- function(operation, target, result){
-  inverse_table$get(call_name(operation), default_env = get_env(operation))(operation, get_expr(target), result)
+  fn <- call_name(operation)
+  env <- get_env(operation, caller_env())
+  ns <- eval_tidy(expr(findFunction(!!fn)), env = env) %>%
+    map(possibly(environmentName, otherwise = NULL)) %>% 
+    compact %>%
+    first
+  
+  inverse_table$get(ns, fn)(operation, get_expr(target), result)
 }
 
 #' @importFrom dplyr last
@@ -52,6 +49,8 @@ invert_transformation <- function(transformation){
   }
   new_function(eval_tidy(expr(alist(x = !!get_expr(last(transformation_stack))))), result)
 }
+
+inverse_table <- inverse_table()
 
 inverse_table$add("base", "log", 
                   function(operation, target, result){
