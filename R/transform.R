@@ -91,6 +91,14 @@ inverse_table$add("base", "sqrt",
                   }
 )
 
+inverse_table$add("base", "^", 
+                  function(operation, target, result){
+                    args <- call_args(operation)
+                    target_pos <- match(list(target), args)
+                    call2("^", !!!exprs(!!result, !!call2("/", !!!exprs(1, !!args[[2]]))))
+                  }
+)
+
 inverse_table$add("base", "+", 
                   function(operation, target, result){
                     args <- call_args(operation)
