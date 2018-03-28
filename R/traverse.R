@@ -13,8 +13,7 @@ traverse <-  function(x, f = ~ .x, g = ~.x, h = ~.x, base = ~ is_syntactic_liter
 }
 
 traverse_list <- function(x, f = ~ as.list(.x), g = ~.x, h = ~.x, base = ~ !is.list(.x)){
-  x <- enquo(x)
-  traverse(!!x, f=f, g=g, h=h, base=base)
+  traverse(x, f=f, g=g, h=h, base=base)
 }
 
 traverse_call <- function(x,
