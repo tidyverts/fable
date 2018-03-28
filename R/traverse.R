@@ -9,7 +9,7 @@ traverse <-  function(x, f = ~ .x, g = ~.x, h = ~.x, base = ~ is_syntactic_liter
     return(.h(x))
   
   # recursive case
-  .f(map(.g(x), traverse, f=f, g=g, base=base), .h(x))
+  .f(map(.g(x), traverse, f=f, g=g, h=h, base=base), .h(x))
 }
 
 traverse_list <- function(x, f = ~ as.list(.x), g = ~.x, h = ~.x, base = ~ !is.list(.x)){
