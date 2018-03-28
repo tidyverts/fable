@@ -38,7 +38,7 @@ invert_transformation <- function(transformation){
   transformation_stack <- traverse_call(!!transformation,
                                         f = ~ append(.y, .x[[1]]),
                                         g = ~ .x %>%
-                                          rlang::get_expr(.) %>%
+                                          get_expr %>%
                                           as.list %>% 
                                           map(new_quosure, env = get_env(.x)) %>%
                                           .[which.max(map(., ~ length(eval_tidy(.x))))])
