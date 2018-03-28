@@ -1,3 +1,4 @@
+# Small function to combine two named lists
 merge_named_list <- function(x,y){
   all_names <- union(names(x), names(y))
   all_names %>%
@@ -7,7 +8,6 @@ merge_named_list <- function(x,y){
 
 parse_specials <- function(call, specials = NULL, xreg = TRUE){
   call <- enexpr(call)
-  #specials <- enexpr(specials)
   parsed <- traverse_call(!!call,
                 g = ~ .x %>%
                       get_expr %>% # Extract call
@@ -19,7 +19,7 @@ parse_specials <- function(call, specials = NULL, xreg = TRUE){
                     if(!xreg) stop("Exogenous regressors are not supported for this model type")
                     list(xreg = x)
                   }
-                  else{# If current call is a special
+                  else{# Current call is a special function
                     list(x) %>% set_names(call_name(x))
                   }
                 },
@@ -27,9 +27,9 @@ parse_specials <- function(call, specials = NULL, xreg = TRUE){
                   merge_named_list(.x[[1]], .x[[2]])},
                 base = ~ !is_call(.x) || call_name(.x) != "+"
   )
+  # Recursively combine list using "+" in-order
   parsed$xreg <- traverse_list(parsed$xreg, 
-                f = function(.x,.y){
-                  call2("+", .x[[1]], .y)},
+                f = ~ call2("+", .x[[1]], .y),
                 g = ~ list(.x[-length(.x)]),
                 h = ~ .x[[length(.x)]],
                 base = ~ length(.x) <= 1)
