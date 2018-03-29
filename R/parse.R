@@ -17,10 +17,10 @@ parse_specials <- function(call, specials = NULL, xreg = TRUE){
                 h = function(x){ # Base types
                   if(!is_call(x) || !(call_name(x) %in% specials)){
                     if(!xreg) stop("Exogenous regressors are not supported for this model type")
-                    list(xreg = x)
+                    list(xreg = get_expr(x))
                   }
                   else{# Current call is a special function
-                    list(x) %>% set_names(call_name(x))
+                    list(get_expr(x)) %>% set_names(call_name(x))
                   }
                 },
                 f = function(.x, ...) {
