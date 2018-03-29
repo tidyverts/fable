@@ -28,10 +28,10 @@ parse_specials <- function(call, specials = NULL, xreg = TRUE){
                 base = ~ !is_call(.x) || call_name(.x) != "+"
   )
   # Recursively combine list using "+" in-order
-  parsed$xreg <- traverse_list(parsed$xreg, 
+  parsed$xreg <- list(traverse_list(parsed$xreg, 
                 f = ~ call2("+", .x[[1]], .y),
                 g = ~ list(.x[-length(.x)]),
                 h = ~ .x[[length(.x)]],
-                base = ~ length(.x) <= 1)
+                base = ~ length(.x) <= 1))
   parsed
 }
