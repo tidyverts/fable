@@ -1,10 +1,14 @@
 #' @import rlang
 #' @importFrom purrr map
-#' @importFrom magrittr %>%
 NULL
 
+#' @importFrom magrittr %>%
 #' @export
 magrittr::`%>%`
+
+#' @importFrom tsibble as_tsibble
+#' @export
+tsibble::as_tsibble
 
 #' Retry with backup function
 #' 

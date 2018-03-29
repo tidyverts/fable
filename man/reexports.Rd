@@ -4,6 +4,7 @@
 \name{reexports}
 \alias{reexports}
 \alias{\%>\%}
+\alias{as_tsibble}
 \title{Objects exported from other packages}
 \keyword{internal}
 \description{
@@ -12,5 +13,7 @@ below to see their documentation.
 
 \describe{
   \item{magrittr}{\code{\link[magrittr]{\%>\%}}}
+
+  \item{tsibble}{\code{\link[tsibble]{as_tsibble}}}
 }}
 
