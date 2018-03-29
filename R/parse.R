@@ -18,10 +18,10 @@ parse_specials <- function(call, specials = NULL, xreg = TRUE){
                   x <- get_expr(x)
                   if(!is_call(x) || !(call_name(x) %in% specials)){
                     if(!xreg) stop("Exogenous regressors are not supported for this model type")
-                    list(xreg = x)
+                    list(xreg = list(x))
                   }
                   else{# Current call is a special function
-                    list(x) %>% set_names(call_name(x))
+                    list(list(x)) %>% set_names(call_name(x))
                   }
                 },
                 f = function(.x, ...) {
@@ -29,11 +29,13 @@ parse_specials <- function(call, specials = NULL, xreg = TRUE){
                 base = ~ .x %>% get_expr %>% {!is_call(.) || call_name(.) != "+"}
   )
   
-  # Recursively combine list using "+" in-order
-  parsed$xreg <- list(traverse_list(as.list(parsed$xreg), 
-                f = ~ call2("+", .x[[1]], .y),
-                g = ~ list(.x[-length(.x)]),
-                h = ~ .x[[length(.x)]],
-                base = ~ length(.x) <= 1))
+  # Recursively combine list of exogenous regressors using "+" in-order
+  if(!is.null(parsed$xreg)){
+    parsed$xreg <- list(traverse_list(parsed$xreg, 
+                                      f = ~ call2("+", .x[[1]], .y),
+                                      g = ~ list(.x[-length(.x)]),
+                                      h = ~ .x[[length(.x)]],
+                                      base = ~ length(.x) <= 1))
+  }
   parsed
 }
