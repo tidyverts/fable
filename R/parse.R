@@ -2,7 +2,7 @@
 merge_named_list <- function(x,y){
   all_names <- union(names(x), names(y))
   all_names %>%
-    imap(~ c(x[[.x]], y[[.x]])) %>%
+    map(~ c(x[[.x]], y[[.x]])) %>%
     set_names(all_names)
 }
 
