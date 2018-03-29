@@ -18,7 +18,8 @@ Imports:
     dplyr (>= 0.7.3),
     tidyselect,
     magrittr,
-    stats
+    stats,
+    methods
 Suggests:
     knitr,
     rmarkdown,
