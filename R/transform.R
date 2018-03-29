@@ -18,6 +18,7 @@ inverse_table <- function() {
     })
 }
 
+#' @importFrom methods findFunction
 undo_transformation <- function(operation, target, result){
   fn <- call_name(operation)
   env <- get_env(operation, caller_env())

@@ -17,7 +17,8 @@ Imports:
     pillar (>= 1.0.1),
     dplyr (>= 0.7.3),
     tidyselect,
-    magrittr
+    magrittr,
+    stats
 Suggests:
     knitr,
     rmarkdown,
