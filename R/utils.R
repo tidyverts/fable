@@ -67,3 +67,10 @@ retry <- function(..., otherwise, quiet = TRUE) {
   fn
 }
 
+expr_sym <- function(expr){
+  sym(expr_name(expr))
+}
+
+quo_sym <- function(quo){
+  sym(quo_name(quo))
+}
