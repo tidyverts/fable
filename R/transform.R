@@ -42,7 +42,8 @@ invert_transformation <- function(transformation){
                                           get_expr %>%
                                           as.list %>% 
                                           map(new_quosure, env = get_env(.x)) %>%
-                                          .[which.max(map(., ~ length(eval_tidy(.x))))])
+                                          .[which.max(map(., ~ length(eval_tidy(.x))))],
+                                        h = ~ list(.x))
   
   # Iteratively undo transformation stack
   result <- expr(!!sym("x")) #last(transformation_stack)
