@@ -15,3 +15,5 @@
 #' @keywords package
 "_PACKAGE"
 
+globalVariables(".")
+
