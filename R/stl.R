@@ -33,7 +33,6 @@ STL <- function(data, x = NULL, seasonal.periods = NULL, iterate = 2, s.window =
   # Transform
   out <- data %>%
     transmute(
-      !!expr_deparse(get_expr(index(data))) := !!index(data),
       !!expr_deparse(get_expr(x)) := !!x
     )
   
