@@ -17,3 +17,6 @@
 
 globalVariables(".")
 
+#' @import rlang
+#' @importFrom purrr map
+NULL

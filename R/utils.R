@@ -1,7 +1,3 @@
-#' @import rlang
-#' @importFrom purrr map
-NULL
-
 #' @importFrom magrittr %>%
 #' @export
 magrittr::`%>%`
