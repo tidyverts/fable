@@ -32,9 +32,7 @@ Optionally, the time series may be Box-Cox transformed before decomposition.
 Unlike \code{\link[stats]{stl}}, \code{mstl} is completely automated.
 }
 \examples{
-\dontrun{
 USAccDeaths \%>\% as_tsibble \%>\% STL
-}
 }
 \seealso{
 \code{\link[stats]{stl}}, \code{link[stats]{supsmu}}

@@ -9,9 +9,7 @@
 #' @param seasonal.periods A vector of seasonal frequencies used for the seasonal decomposition.
 #' 
 #' @examples 
-#' \dontrun{
 #' USAccDeaths %>% as_tsibble %>% STL
-#' }
 #' @export
 STL <- function(data, x = NULL, seasonal.periods = NULL, iterate = 2, s.window = 13, ...){
   x <- enquo(x)
