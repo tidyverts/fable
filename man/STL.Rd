@@ -4,8 +4,7 @@
 \alias{STL}
 \title{Multiple seasonal  decomposition}
 \usage{
-STL(data, x = NULL, seasonal.periods = NULL, iterate = 2, s.window = 13,
-  ...)
+STL(data, x, seasonal.periods = NULL, iterate = 2, s.window = 13, ...)
 }
 \arguments{
 \item{data}{A tsibble.}
