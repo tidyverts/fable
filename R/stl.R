@@ -1,7 +1,7 @@
 #' @inherit forecast::mstl
 #' @importFrom forecast seasonal trendcycle
 #' @importFrom stats ts stl
-#' @importFrom tsibble guess_frequency index
+#' @importFrom tsibble guess_frequency measured_vars index
 #' @importFrom dplyr pull select mutate transmute
 #' 
 #' @param data A tsibble.
@@ -11,12 +11,11 @@
 #' @examples 
 #' USAccDeaths %>% as_tsibble %>% STL
 #' @export
-STL <- function(data, x = NULL, seasonal.periods = NULL, iterate = 2, s.window = 13, ...){
+STL <- function(data, x, seasonal.periods = NULL, iterate = 2, s.window = 13, ...){
   x <- enquo(x)
-  if(is.null(eval_tidy(x, data=data))){
-    potential_x <- colnames(data %>% select(-!!index(.), drop=TRUE))
-    message("Decomposing data from column `x = ", potential_x[1], "`. Override this using `x`.")
-    x <- set_expr(x, sym(potential_x[1]))
+  if(quo_is_missing(x)){
+    x <- set_expr(x, sym(tsibble::measured_vars(data)[1]))
+    message("Decomposing data from column `x = ", quo_text(x), "`. Override this using `x`.")
   }
   if(is.null(seasonal.periods)){
     seasonal.periods <- data %>% pull(!!index(.)) %>% guess_frequency
