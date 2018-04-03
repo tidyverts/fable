@@ -14,7 +14,7 @@
 STL <- function(data, x, seasonal.periods = NULL, iterate = 2, s.window = 13, ...){
   x <- enquo(x)
   if(quo_is_missing(x)){
-    x <- set_expr(x, sym(tsibble::measured_vars(data)[1]))
+    x <- set_expr(x, sym(measured_vars(data)[1]))
     message("Decomposing data from column `x = ", quo_text(x), "`. Override this using `x`.")
   }
   if(is.null(seasonal.periods)){
