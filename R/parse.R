@@ -31,11 +31,15 @@ parse_specials <- function(call, specials = NULL, xreg = TRUE){
   
   # Recursively combine list of exogenous regressors using "+" in-order
   if(!is.null(parsed$xreg)){
-    parsed$xreg <- list(traverse_list(parsed$xreg, 
-                                      f = ~ call2("+", .x[[1]], .y),
-                                      g = ~ list(.x[-length(.x)]),
-                                      h = ~ .x[[length(.x)]],
-                                      base = ~ length(.x) <= 1))
+    parsed$xreg <- list(
+      call2("xreg",
+            traverse_list(parsed$xreg, 
+                          f = ~ call2("+", .x[[1]], .y),
+                          g = ~ list(.x[-length(.x)]),
+                          h = ~ .x[[length(.x)]],
+                          base = ~ length(.x) <= 1)
+            )
+      )
   }
   parsed
 }

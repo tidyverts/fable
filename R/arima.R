@@ -31,10 +31,6 @@ ARIMA <- function(data, formula, ...){
     list(xreg = model.frame(new_formula(lhs = NULL, rhs = enexpr(formula)), data = data))
   }
   
-  if(!is.null(model_spec$xreg)){
-    model_spec$xreg[[1]] <- call2("xreg", !!!model_spec$xreg)
-  }
-  
   # Evaluate specials
   args <- model_spec %>%
     set_names(NULL) %>%
