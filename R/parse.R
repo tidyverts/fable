@@ -28,18 +28,49 @@ parse_specials <- function(call, specials = NULL, xreg = TRUE){
                   merge_named_list(.x[[1]], .x[[2]])},
                 base = ~ .x %>% get_expr %>% {!is_call(.) || call_name(.) != "+"}
   )
-  
+
   # Recursively combine list of exogenous regressors using "+" in-order
+  # if(!is.null(parsed$xreg)){
+  #   parsed$xreg <- list(
+  #     call2("xreg",
+  #           traverse_list(parsed$xreg, 
+  #                         f = ~ call2("+", .x[[1]], .y),
+  #                         g = ~ list(.x[-length(.x)]),
+  #                         h = ~ .x[[length(.x)]],
+  #                         base = ~ length(.x) <= 1)
+  #           )
+  #     )
+  # }
   if(!is.null(parsed$xreg)){
-    parsed$xreg <- list(
-      call2("xreg",
-            traverse_list(parsed$xreg, 
-                          f = ~ call2("+", .x[[1]], .y),
-                          g = ~ list(.x[-length(.x)]),
-                          h = ~ .x[[length(.x)]],
-                          base = ~ length(.x) <= 1)
-            )
-      )
+    parsed$xreg <- list(call2("xreg", parsed$xreg))
   }
   parsed
+}
+
+#' @importFrom tibble tibble
+parse_model <- function(data, model, specials = list(), xreg = TRUE){
+  # Create evaluation environment for specials
+  if(xreg){
+    specials$xreg <- function(x){
+      list(xreg = tibble(!!!x))
+      # list(xreg = model.frame(new_formula(lhs = NULL, rhs = enexpr(formula)), data = data))
+    }
+  }
+  env <- child_env(get_env(model), !!!specials)
+
+  # Parse Model
+  if(is_formula(model)){
+    model_spec <- f_rhs(model)
+    transform_spec <- f_lhs(model)
+  }
+  else{
+    model_spec <- expr()
+    transform_spec <- model
+  }
+  
+  list(
+    model = parse_specials(!!model_spec, specials = names(specials)),
+    specials_env = env,
+    backtransform = eval_tidy(expr(invert_transformation(!!transform_spec)), data = data)
+  )
 }
