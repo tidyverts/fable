@@ -38,7 +38,7 @@ ARIMA <- function(data, formula, ...){
   
   # Format args for call
   args <- model$args %>% 
-    map(~ if(length(.x) > 1) stop("Only one special of each type is allowed in ARIMA")) %>%
+    map(~ if(length(.x) > 1){stop("Only one special of each type is allowed in ARIMA")} else {.x[[1]]}) %>%
     set_names(NULL) %>%
     unlist(recursive = FALSE)
   
