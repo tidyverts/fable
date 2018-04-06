@@ -12,9 +12,15 @@
 #' 
 #' @importFrom forecast Arima
 #' @importFrom stats model.frame
+#' @importFrom tsibble n_keys
 ARIMA <- function(data, formula, ...){
   # Capture call
   cl <- new_quosure(match.call())
+  
+  # Handle multivariate inputs
+  if(n_keys(data) > 1){
+    return(multi_univariate(data, cl))
+  }
   
   # Define specials
   specials <- new_specials_env(
