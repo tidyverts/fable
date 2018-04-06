@@ -48,16 +48,7 @@ parse_specials <- function(call, specials = NULL, xreg = TRUE){
 }
 
 #' @importFrom tibble tibble
-parse_model <- function(data, model, specials = list(), xreg = TRUE){
-  # Create evaluation environment for specials
-  if(xreg){
-    specials$xreg <- function(x){
-      list(xreg = tibble(!!!x))
-      # list(xreg = model.frame(new_formula(lhs = NULL, rhs = enexpr(formula)), data = data))
-    }
-  }
-  env <- child_env(get_env(model), !!!specials)
-
+parse_model <- function(data, model, specials){
   # Parse Model
   if(is_formula(model)){
     model_spec <- f_rhs(model)
@@ -67,10 +58,21 @@ parse_model <- function(data, model, specials = list(), xreg = TRUE){
     model_spec <- expr()
     transform_spec <- model
   }
+  model_spec <- parse_specials(!!model_spec, specials = names(specials))
+  
+  # Evaluate specials
+  args <- model_spec %>%
+    map(~ .x %>%
+      map(
+        function(special){
+          #if(length(special) > 1) stop("Only one of each type of special is allowed for ARIMA models.")
+          eval_tidy(special, env = specials)
+        }
+      )
+    )
   
   list(
-    model = parse_specials(!!model_spec, specials = names(specials)),
-    specials_env = env,
+    args = args,
     backtransform = eval_tidy(expr(invert_transformation(!!transform_spec)), data = data)
   )
 }
