@@ -46,12 +46,7 @@ ARIMA <- function(data, formula, ...){
   model <- data %>% 
     parse_model(formula, specials = specials)
 
-  # Fit model
-  fit <- eval_tidy(call2("Arima", expr(!!model_lhs(model$model)), !!!flatten_first_args(model$args)), data = data)
-  
-  # Backtransform
-  fit$fitted <- model$backtransform(fit$fitted)
-  
   # Output model
-  wrap_fc_model(data, fit)
+  data %>% 
+    wrap_fc_model(., "Arima", model)
 }
