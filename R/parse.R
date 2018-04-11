@@ -50,24 +50,30 @@ parse_model <- function(data, model, specials){
     message("Model not specified, using defaults set by `formula =  ", quo_text(model), "`. Override this using `formula`.")
   }
   
-  # Extract model specification
-  args <- model_rhs(model) %>%
+  list(model = model) %>%
+    append(parse_model_lhs(model_lhs(model), data)) %>%
+    append(parse_model_rhs(model_rhs(model), specials))
+}
+
+parse_model_rhs <- function(model_rhs, specials){
+  model_rhs %>%
     parse_specials(specials = names(specials)) %>%
     map(~ .x %>%
-      map(
-        function(special){
-          #if(length(special) > 1) stop("Only one of each type of special is allowed for ARIMA models.")
-          eval_tidy(special, env = specials)
-        }
-      )
-    )
-  
-  # Extract transformations
-  trans <- eval_tidy(expr(invert_transformation(!!model_lhs(model))), data = data)
-  
+          map(
+            function(special){
+              #if(length(special) > 1) stop("Only one of each type of special is allowed for ARIMA models.")
+              eval_tidy(special, env = specials)
+            }
+          )
+    ) %>%
+    list(args = .)
+}
+
+parse_model_lhs <- function(expr, data){
+  transformation_stack <- eval_tidy(expr(traverse_transformation(!!expr)), data = data)
   list(
-    model = model,
-    args = args,
-    backtransform = trans
+    response = get_expr(last(transformation_stack)),
+    transform = new_function(eval_tidy(expr(alist(x = !!get_expr(last(transformation_stack))))), eval_tidy(expr(substitute(!!expr, set_names(list(sym("x")), expr_text(expr)))))),
+    backtransform = new_function(eval_tidy(expr(alist(x = !!get_expr(last(transformation_stack))))), invert_transformation(transformation_stack))
   )
 }

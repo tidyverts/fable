@@ -30,27 +30,28 @@ undo_transformation <- function(operation, target, result){
   inverse_table$get(ns, fn)(operation, get_expr(target), result)
 }
 
-#' @importFrom dplyr last
-invert_transformation <- function(transformation){
+traverse_transformation <- function(transformation){
   transformation <- enquo(transformation)
   
   # Evaluate transformation stack via call traversal along longest argument (hopefully, the data)
-  
-  transformation_stack <- traverse_call(!!transformation,
-                                        f = ~ append(.y, .x[[1]]),
-                                        g = ~ .x %>%
-                                          get_expr %>%
-                                          as.list %>% 
-                                          map(new_quosure, env = get_env(.x)) %>%
-                                          .[which.max(map(., ~ length(eval_tidy(.x))))],
-                                        h = ~ list(.x))
-  
+  traverse_call(!!transformation,
+                f = ~ append(.y, .x[[1]]),
+                g = ~ .x %>%
+                  get_expr %>%
+                  as.list %>% 
+                  map(new_quosure, env = get_env(.x)) %>%
+                  .[which.max(map(., ~ length(eval_tidy(.x))))],
+                h = ~ list(.x))
+}
+
+#' @importFrom dplyr last
+invert_transformation <- function(transformation_stack){
   # Iteratively undo transformation stack
   result <- expr(!!sym("x")) #last(transformation_stack)
   for (i in seq_len(length(transformation_stack) - 1)){
     result <- undo_transformation(transformation_stack[[i]], transformation_stack[[i+1]], result)
   }
-  new_function(eval_tidy(expr(alist(x = !!get_expr(last(transformation_stack))))), result)
+  result
 }
 
 inverse_table <- inverse_table()
