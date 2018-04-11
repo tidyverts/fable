@@ -44,11 +44,15 @@ parse_specials <- function(call = NULL, specials = NULL, xreg = TRUE){
 
 #' @importFrom tibble tibble
 parse_model <- function(data, model, specials){
-  # Parse Model
-  model_spec <- parse_specials(model_rhs(model), specials = names(specials))
+  # Clean inputs
+  if(quo_is_missing(model)){
+    model <- set_expr(model, sym(measured_vars(data)[1]))
+    message("Model not specified, using defaults set by `formula =  ", quo_text(model), "`. Override this using `formula`.")
+  }
   
-  # Evaluate specials
-  args <- model_spec %>%
+  # Extract model specification
+  args <- model_rhs(model) %>%
+    parse_specials(specials = names(specials)) %>%
     map(~ .x %>%
       map(
         function(special){
@@ -58,8 +62,12 @@ parse_model <- function(data, model, specials){
       )
     )
   
+  # Extract transformations
+  trans <- eval_tidy(expr(invert_transformation(!!model_lhs(model))), data = data)
+  
   list(
+    model = model,
     args = args,
-    backtransform = eval_tidy(expr(invert_transformation(!!model_lhs(model))), data = data)
+    backtransform = trans
   )
 }

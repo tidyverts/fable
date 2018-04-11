@@ -18,12 +18,6 @@ ARIMA <- function(data, formula, ...){
   cl <- new_quosure(match.call())
   formula <- enquo(formula)
   
-  # Clean inputs
-  if(quo_is_missing(formula)){
-    formula <- set_expr(formula, sym(measured_vars(data)[1]))
-    message("Model not specified, using defaults set by `formula =  ", quo_text(formula), "`. Override this using `formula`.")
-  }
-  
   # Coerce data
   data <- as_tsibble(data)
   
@@ -59,7 +53,7 @@ ARIMA <- function(data, formula, ...){
     unlist(recursive = FALSE) %>%
     as.list # If no args are provided, unlist removes list structure
 
-  fit <- eval_tidy(call2("Arima", expr(!!model_lhs(formula)), !!!args), data = data)
+  fit <- eval_tidy(call2("Arima", expr(!!model_lhs(model$model)), !!!args), data = data)
   fit$fitted <- model$backtransform(fit$fitted)
-  fit
+  tibble(x = list(data), .model = structure(list(fit), class = "model"))
 }

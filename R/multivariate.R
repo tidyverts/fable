@@ -1,8 +1,9 @@
 #' @importFrom tsibble split_by key unkey
+#' @importFrom purrr map_dfr
 multi_univariate <- function(data, cl){
   data %>%
     split_by(!!!key(.)) %>%
-    map(function(x){
+    map_dfr(function(x){
       # Re-evaluate cl in environment with split data
       eval_tidy(
         get_expr(cl), 
