@@ -12,7 +12,7 @@
 #'
 #' @author Rob J Hyndman
 #' @keywords ts
-#'
+#' @importFrom forecast forecast
 #' @export
-forecast <- function(object, h, ...) UseMethod("forecast")
+# forecast <- function(object, h, ...) UseMethod("forecast")
 
