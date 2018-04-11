@@ -16,7 +16,7 @@ wrap_fc_model <- function(data, fn, model){
 forecast.mable <- function(object, ...){
   object %>%
     mutate(!!sym("forecast") := map(model, forecast, ...)) %>%
-    new_tibble(subclass = "tidyforecast")
+    new_tibble(subclass = "fable")
 }
 
 #' @importFrom forecast forecast
