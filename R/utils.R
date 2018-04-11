@@ -78,3 +78,11 @@ merge_named_list <- function(x,y){
     map(~ c(x[[.x]], y[[.x]])) %>%
     set_names(all_names)
 }
+
+flatten_first_args <- function(args){
+  args %>% 
+    map(~ if(length(.x) > 1){stop("Only one special of each type is allowed for this model")} else {.x[[1]]}) %>%
+    set_names(NULL) %>%
+    unlist(recursive = FALSE) %>%
+    as.list # If no args are provided, unlist removes list structure
+}

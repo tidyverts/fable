@@ -46,14 +46,7 @@ ARIMA <- function(data, formula, ...){
   model <- data %>% 
     parse_model(formula, specials = specials)
 
-  # Format args for call
-  args <- model$args %>% 
-    map(~ if(length(.x) > 1){stop("Only one special of each type is allowed in ARIMA")} else {.x[[1]]}) %>%
-    set_names(NULL) %>%
-    unlist(recursive = FALSE) %>%
-    as.list # If no args are provided, unlist removes list structure
-
-  fit <- eval_tidy(call2("Arima", expr(!!model_lhs(model$model)), !!!args), data = data)
+  fit <- eval_tidy(call2("Arima", expr(!!model_lhs(model$model)), !!!flatten_first_args(model$args)), data = data)
   fit$fitted <- model$backtransform(fit$fitted)
   wrap_fc_model(data, fit)
 }
