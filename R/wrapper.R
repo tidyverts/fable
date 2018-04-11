@@ -22,7 +22,7 @@ forecast.mable <- function(object, ...){
 #' @importFrom forecast forecast
 #' @export
 forecast.forecast_model <- function(object, ...){
-  fc <- forecast(object$model[[1]], ...)
+  fc <- forecast(object$model, ...)
   fc$fitted <- object$spec$backtransform(fc$fitted)
   fc$upper <- object$spec$backtransform(fc$upper)
   fc$lower <- object$spec$backtransform(fc$lower)
