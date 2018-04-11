@@ -6,7 +6,10 @@ merge_named_list <- function(x,y){
     set_names(all_names)
 }
 
-parse_specials <- function(call, specials = NULL, xreg = TRUE){
+parse_specials <- function(call = NULL, specials = NULL, xreg = TRUE){
+  if(is.null(call)){ # No model specified
+    return(list())
+  }
   call <- enexpr(call)
   parsed <- traverse_call(!!call,
                 g = ~ .x %>%
@@ -50,15 +53,7 @@ parse_specials <- function(call, specials = NULL, xreg = TRUE){
 #' @importFrom tibble tibble
 parse_model <- function(data, model, specials){
   # Parse Model
-  if(is_formula(model)){
-    model_spec <- f_rhs(model)
-    transform_spec <- f_lhs(model)
-  }
-  else{
-    model_spec <- expr()
-    transform_spec <- model
-  }
-  model_spec <- parse_specials(!!model_spec, specials = names(specials))
+  model_spec <- parse_specials(model_rhs(model), specials = names(specials))
   
   # Evaluate specials
   args <- model_spec %>%
@@ -73,6 +68,6 @@ parse_model <- function(data, model, specials){
   
   list(
     args = args,
-    backtransform = eval_tidy(expr(invert_transformation(!!transform_spec)), data = data)
+    backtransform = eval_tidy(expr(invert_transformation(!!model_lhs(model))), data = data)
   )
 }

@@ -16,6 +16,16 @@
 ARIMA <- function(data, formula, ...){
   # Capture call
   cl <- new_quosure(match.call())
+  formula <- enquo(formula)
+  
+  # Clean inputs
+  if(quo_is_missing(formula)){
+    formula <- set_expr(formula, sym(measured_vars(data)[1]))
+    message("Model not specified, using defaults set by `formula =  ", quo_text(formula), "`. Override this using `formula`.")
+  }
+  
+  # Coerce data
+  data <- as_tsibble(data)
   
   # Handle multivariate inputs
   if(n_keys(data) > 1){
@@ -41,14 +51,15 @@ ARIMA <- function(data, formula, ...){
   # Parse model
   model <- data %>% 
     parse_model(formula, specials = specials)
-  
+
   # Format args for call
   args <- model$args %>% 
     map(~ if(length(.x) > 1){stop("Only one special of each type is allowed in ARIMA")} else {.x[[1]]}) %>%
     set_names(NULL) %>%
-    unlist(recursive = FALSE)
-  
-  fit <- eval_tidy(call2("Arima", expr(!!f_lhs(formula)), !!!args), data = data)
+    unlist(recursive = FALSE) %>%
+    as.list # If no args are provided, unlist removes list structure
+
+  fit <- eval_tidy(call2("Arima", expr(!!model_lhs(formula)), !!!args), data = data)
   fit$fitted <- model$backtransform(fit$fitted)
   fit
 }
