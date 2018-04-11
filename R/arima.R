@@ -55,5 +55,5 @@ ARIMA <- function(data, formula, ...){
 
   fit <- eval_tidy(call2("Arima", expr(!!model_lhs(model$model)), !!!args), data = data)
   fit$fitted <- model$backtransform(fit$fitted)
-  tibble(x = list(data), .model = structure(list(fit), class = "model"))
+  wrap_fc_model(data, fit)
 }
