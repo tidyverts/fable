@@ -1,11 +1,3 @@
-# Small function to combine two named lists
-merge_named_list <- function(x,y){
-  all_names <- union(names(x), names(y))
-  all_names %>%
-    map(~ c(x[[.x]], y[[.x]])) %>%
-    set_names(all_names)
-}
-
 parse_specials <- function(call = NULL, specials = NULL, xreg = TRUE){
   if(is.null(call)){ # No model specified
     return(list())

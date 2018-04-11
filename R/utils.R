@@ -70,3 +70,11 @@ expr_sym <- function(expr){
 quo_sym <- function(quo){
   sym(quo_name(quo))
 }
+
+# Small function to combine two named lists
+merge_named_list <- function(x,y){
+  all_names <- union(names(x), names(y))
+  all_names %>%
+    map(~ c(x[[.x]], y[[.x]])) %>%
+    set_names(all_names)
+}
