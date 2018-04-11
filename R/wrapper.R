@@ -13,8 +13,18 @@ wrap_fc_model <- function(data, fn, model){
 
 #' @export
 #' @importFrom forecast forecast
-forecast.forecast_model <- function(model, ...){
-  model %>%
+forecast.mable <- function(object, ...){
+  object %>%
     mutate(!!sym("forecast") := map(model, forecast, ...)) %>%
     new_tibble(subclass = "tidyforecast")
+}
+
+#' @importFrom forecast forecast
+#' @export
+forecast.forecast_model <- function(object, ...){
+  fc <- forecast(object$model[[1]], ...)
+  fc$fitted <- object$spec$backtransform(fc$fitted)
+  fc$upper <- object$spec$backtransform(fc$upper)
+  fc$lower <- object$spec$backtransform(fc$lower)
+  fc
 }
