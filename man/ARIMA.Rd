@@ -32,7 +32,6 @@ See the \code{\link[stats]{arima}} function in the stats package.
 \examples{
 
 USAccDeaths \%>\%
-  as_tsibble \%>\%
   ARIMA(log(value) ~ pdq(0,1,1) + PDQ(0,1,1))
 
 }
