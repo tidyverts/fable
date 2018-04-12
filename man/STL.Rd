@@ -2,37 +2,29 @@
 % Please edit documentation in R/stl.R
 \name{STL}
 \alias{STL}
-\title{Multiple seasonal  decomposition}
+\title{Multiple seasonal decomposition}
 \usage{
-STL(data, x, seasonal.periods = NULL, iterate = 2, s.window = 13, ...)
+STL(data, formula, ...)
 }
 \arguments{
 \item{data}{A tsibble.}
 
-\item{x}{The column from \code{data} to decompose.}
+\item{formula}{Decomposition specification.}
 
-\item{seasonal.periods}{A vector of seasonal frequencies used for the seasonal decomposition.}
-
-\item{iterate}{Number of iterations to use to refine the seasonal component.}
-
-\item{s.window}{Seasonal windows to be used in the  decompositions. If scalar,
-the same value is used for all seasonal components. Otherwise, it should be a vector
-of the same length as the number of seasonal components.}
-
-\item{...}{Other arguments are passed to \code{\link[stats]{stl}}.}
+\item{...}{Other arguments passed to \code{\link[forecast]{mstl}}.}
 }
 \description{
-Decompose a time series into seasonal, trend and remainder components. 
+Decompose a time series into seasonal, trend and remainder components.
 Seasonal components are estimated iteratively using STL. Multiple seasonal periods are
-allowed. The trend component is computed for the last iteration of STL. 
-Non-seasonal time series are decomposed into trend and remainder only. 
+allowed. The trend component is computed for the last iteration of STL.
+Non-seasonal time series are decomposed into trend and remainder only.
 In this case, \code{\link[stats]{supsmu}} is used to estimate the trend.
 Optionally, the time series may be Box-Cox transformed before decomposition.
 Unlike \code{\link[stats]{stl}}, \code{mstl} is completely automated.
 }
 \examples{
-USAccDeaths \%>\% as_tsibble \%>\% STL
+USAccDeaths \%>\% as_tsibble \%>\% STL(value ~ season(window = 10))
 }
 \seealso{
-\code{\link[stats]{stl}}, \code{link[stats]{supsmu}}
+\code{\link[stats]{stl}}, \code{\link[stats]{supsmu}}
 }
