@@ -71,6 +71,12 @@ get_frequencies.character <- function(period, data, ...){
   if(period == "all"){
     return(frequencies)
   }
+  else if(period == "smallest"){
+    return(frequencies[which.min(frequencies)])
+  }
+  else if(period == "largest"){
+    return(frequencies[which.max(frequencies)])
+  }
   else{
     out <- frequencies[period]
     if(any(is.na(out))){
