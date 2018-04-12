@@ -12,7 +12,7 @@ inverse_table <- function() {
     get = function(ns, fn) {
       ret <- table[[ns]][[fn]]
       if (is.null(ret)) {
-        stop("No supported inverse for this function")
+        abort("No supported inverse for this function")
       }
       ret
     })

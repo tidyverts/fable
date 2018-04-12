@@ -48,7 +48,10 @@ parse_model <- function(data, model, specials){
   # Clean inputs
   if(quo_is_missing(model)){
     model <- set_expr(model, sym(measured_vars(data)[1]))
-    message("Model not specified, using defaults set by `formula =  ", quo_text(model), "`. Override this using `formula`.")
+    inform(sprintf(
+      "Model not specified, using defaults set by `formula = %s`. Override this using `formula`.",
+      quo_text(model)
+      ))
   }
   
   list(model = model) %>%
@@ -62,7 +65,6 @@ parse_model_rhs <- function(model_rhs, specials){
     map(~ .x %>%
           map(
             function(special){
-              #if(length(special) > 1) stop("Only one of each type of special is allowed for ARIMA models.")
               eval_tidy(special, env = specials)
             }
           )
