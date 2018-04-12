@@ -12,48 +12,48 @@ guess_frequency.tbl_ts <- function(x){
     guess_frequency
 }
 
-#' Extract potential time-series frequencies
+#' Extract frequencies for common seasonal periods
 #' 
 #' @param x An object containing temporal data (such as a tsibble, interval, datetime and others.)
 #' 
-#' @return A vector of possible frequencies appropriate for the time intervals provided.
+#' @return A named vector of frequencies appropriate for the provided data.
 #' 
 #' @references <https://robjhyndman.com/hyndsight/seasonal-periods/>
 #' 
 #' @examples 
-#' possible_frequencies(tsibble::pedestrian)
+#' common_periods(tsibble::pedestrian)
 #' 
 #' @export
-possible_frequencies <- function(x){
-  UseMethod("possible_frequencies")
+common_periods <- function(x){
+  UseMethod("common_periods")
+}
+
+#' @importFrom tsibble pull_interval
+#' @export
+common_periods.default <- function(x){
+  common_periods(pull_interval(x))
 }
 
 #' @export
-possible_frequencies.default <- function(x){
-  guess_frequency(x)
+common_periods.tbl_ts <- function(x){
+  common_periods(tsibble::interval(x))
 }
 
 #' @export
-possible_frequencies.tbl_ts <- function(x){
-  x <- tsibble::interval(x)
-  possible_frequencies(x)
-}
-
-#' @export
-possible_frequencies.interval <- function(x){
+common_periods.interval <- function(x){
   freq_sec <- c(year = 31557600, week = 604800, day = 86400, hour = 3600, minute = 60, second = 1)
   switch(paste(names(x), collapse = ""),
-         "unit" = 1,
-         "year" = 1,
-         "quarter" = 4/x[["quarter"]],
-         "month" = 12/x[["month"]],
-         "week" = 52/x[["week"]],
-         "day" = c(365.25,7)/x[["day"]],
+         "unit" = c("none" = 1),
+         "year" = c("year" = 1),
+         "quarter" = c("year" = 4/x[["quarter"]]),
+         "month" = c("year" = 12/x[["month"]]),
+         "week" = c("year" = 52/x[["week"]]),
+         "day" = c("year" = 365.25, "week" = 7)/x[["day"]],
          with(list(secs = freq_sec/sum(as.numeric(x)*freq_sec[names(x)])), {
            if(any(is.na(secs))){
              abort("Irregular time series provided")
            }
-           as.numeric(secs)[secs>1]
+           secs[secs>1]
          })
   )
 }

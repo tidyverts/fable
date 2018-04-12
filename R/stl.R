@@ -43,8 +43,8 @@ STL <- function(data, formula, ...){
 #' @importFrom tibble as_tibble
 #' @importFrom forecast msts mstl
 model_STL <- function(data, model, period = "all", ...){
-  if(any(period == "all")){
-    period <- possible_frequencies(data)
+  if(is.character(period)){
+    period <- common_periods(data)
   }
   
   # Drop unnecessary data
