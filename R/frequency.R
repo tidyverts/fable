@@ -57,3 +57,32 @@ common_periods.interval <- function(x){
          })
   )
 }
+
+get_frequencies <- function(period, data, ...){
+  UseMethod("get_frequencies")
+}
+
+get_frequencies.numeric <- function(period, data, ...){
+  period
+}
+
+get_frequencies.character <- function(period, data, ...){
+  frequencies <- common_periods(data)
+  if(period == "all"){
+    return(frequencies)
+  }
+  else{
+    out <- frequencies[period]
+    if(any(is.na(out))){
+      bad_freq <- period[which(is.na(out))]
+      warn(sprintf(
+        "Could not find %s for `c(%s)`, possible frequencies for this data are: `c(%s)`.\nUnknown frequencies have been ignored.",
+        ifelse(length(bad_freq)==1, "an appropriate frequency", "appropriate frequencies"),
+        paste0(paste0(paste0('"', bad_freq, '"'), collapse = ", ")),
+        paste0(paste0(paste0('"', names(frequencies), '"'), collapse = ", "))
+        )
+      )
+    }
+    return(out[!is.na(out)])
+  }
+}

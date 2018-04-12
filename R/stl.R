@@ -6,6 +6,7 @@
 #' 
 #' @examples 
 #' USAccDeaths %>% as_tsibble %>% STL(value ~ season(window = 10))
+#' elecdemand %>% STL(Demand ~ season(period = "day"))
 #' @export
 STL <- function(data, formula, ...){
   # Capture call
@@ -22,10 +23,10 @@ STL <- function(data, formula, ...){
 
   # Define specials
   specials <- new_specials_env(
-    trend = function(window, degree = 1, jump = ceiling(window/10)){
+    trend = function(window = NULL, degree = 1, jump = ceiling(window/10)){
       list(t.window=window, t.degree=degree, t.jump=jump)
     },
-    season = function(window, degree = 0, jump = ceiling(window/10), period = "all"){
+    season = function(window = 13, degree = 0, jump = ceiling(window/10), period = "all"){
       list(s.window=window, s.degree=degree, s.jump=jump, period = period)
     },
     
@@ -43,9 +44,7 @@ STL <- function(data, formula, ...){
 #' @importFrom tibble as_tibble
 #' @importFrom forecast msts mstl
 model_STL <- function(data, model, period = "all", ...){
-  if(is.character(period)){
-    period <- common_periods(data)
-  }
+  period <- get_frequencies(period, data)
   
   # Drop unnecessary data
   data <- data %>%
