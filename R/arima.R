@@ -48,5 +48,5 @@ ARIMA <- function(data, formula, ...){
 
   # Output model
   data %>% 
-    wrap_fc_model(., "Arima", model)
+    wrap_fc_model("Arima", model)
 }
