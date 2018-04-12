@@ -4,12 +4,14 @@
 \alias{ARIMA}
 \title{Fit ARIMA model to univariate time series}
 \usage{
-ARIMA(data, formula, ...)
+ARIMA(data, formula, period = "smallest", ...)
 }
 \arguments{
 \item{data}{A data frame}
 
 \item{formula}{Model specification.}
+
+\item{period}{Time series frequency for seasonal component.}
 
 \item{...}{Additional arguments to be passed to \code{\link[stats]{arima}}.}
 }

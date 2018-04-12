@@ -1,6 +1,7 @@
 #' @inherit forecast::Arima
 #' @param data A data frame
 #' @param formula Model specification.
+#' @param period Time series frequency for seasonal component.
 #' 
 #' @export
 #' 
@@ -13,7 +14,7 @@
 #' @importFrom forecast Arima
 #' @importFrom stats model.frame
 #' @importFrom tsibble n_keys
-ARIMA <- function(data, formula, ...){
+ARIMA <- function(data, formula, period = "smallest", ...){
   # Capture call
   cl <- new_quosure(match.call())
   formula <- enquo(formula)
@@ -47,6 +48,5 @@ ARIMA <- function(data, formula, ...){
     parse_model(formula, specials = specials)
 
   # Output model
-  data %>% 
-    wrap_fc_model("Arima", model)
+  eval_tidy(expr(wrap_ts_model(data, "Arima", model, !!!flatten_first_args(model$args), period = period, ...)))
 }
