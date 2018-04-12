@@ -58,11 +58,11 @@ common_periods.interval <- function(x){
   )
 }
 
-get_frequencies <- function(period, data, ...){
+get_frequencies <- function(period, ...){
   UseMethod("get_frequencies")
 }
 
-get_frequencies.numeric <- function(period, data, ...){
+get_frequencies.numeric <- function(period, ...){
   period
 }
 
