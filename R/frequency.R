@@ -2,6 +2,9 @@
 #' @param x A tsibble
 #' @importFrom tsibble guess_frequency index
 #' @importFrom dplyr pull
+#' @examples
+#' library(tsibble)
+#' guess_frequency(pedestrian) 
 #' @export
 guess_frequency.tbl_ts <- function(x){
   x %>%
