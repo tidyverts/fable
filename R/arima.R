@@ -8,7 +8,6 @@
 #' @examples 
 #' 
 #' USAccDeaths %>%
-#'   as_tsibble %>%
 #'   ARIMA(log(value) ~ pdq(0,1,1) + PDQ(0,1,1))
 #' 
 #' @importFrom forecast Arima
