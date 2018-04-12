@@ -1,5 +1,7 @@
 #' @importFrom tibble new_tibble
 wrap_ts_model <- function(data, fn, model, period = "all", ...){
+  period <- get_frequencies(period, data)
+  
   # Fit model
   fit <- eval_tidy(call2(fn, expr(msts(!!model_lhs(model$model), !!period)), !!!dots_list(...)), data = data)
   
