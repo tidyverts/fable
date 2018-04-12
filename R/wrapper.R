@@ -13,6 +13,7 @@ wrap_fc_model <- function(data, fn, model){
 
 #' @export
 #' @importFrom forecast forecast
+#' @importFrom dplyr mutate
 forecast.mable <- function(object, ...){
   object %>%
     mutate(!!sym("forecast") := map(!!sym("model"), forecast, ...)) %>%

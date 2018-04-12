@@ -43,6 +43,7 @@ parse_specials <- function(call = NULL, specials = NULL, xreg = TRUE){
 }
 
 #' @importFrom tibble tibble
+#' @importFrom tsibble measured_vars
 parse_model <- function(data, model, specials){
   # Clean inputs
   if(quo_is_missing(model)){

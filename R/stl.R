@@ -40,6 +40,7 @@ STL <- function(data, formula, ...){
 }
 
 #' @importFrom dplyr select bind_cols
+#' @importFrom tibble as_tibble
 #' @importFrom forecast msts mstl
 model_STL <- function(data, model, period = "all", ...){
   if(any(period == "all")){
