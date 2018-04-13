@@ -47,5 +47,5 @@ ARIMA <- function(data, formula, period = "smallest", ...){
     parse_model(formula, specials = specials)
 
   # Output model
-  eval_tidy(expr(wrap_ts_model(data, "Arima", model, !!!flatten_first_args(model$args), period = period, ...)))
+  wrap_ts_model(data, "Arima", model, !!!flatten_first_args(model$args), period = period, ...)
 }
