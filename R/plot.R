@@ -20,3 +20,11 @@ autoplot.tbl_ts <- function(object, var = sym(measured_vars(object)[1]), ...){
     geom_line() + 
     guides(colour = guide_legend(paste0(map(key(object), expr_text), collapse = "/")))
 }
+
+#' @export
+autoplot.mable <- function(object, ...){
+  if(length(object$model) > 1){
+    inform("Only univariate models are supported at the moment, plotting the first model.")
+  }
+  autoplot(object$model[[1]])
+}
