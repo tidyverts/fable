@@ -10,7 +10,7 @@ wrap_ts_model <- function(data, fn, model, period = "all", ...){
   fit$x <- model$backtransform(fit$x)
   
   # Output model
-  new_tibble(list(x = list(data), model = list(structure(list(spec = model, model = fit), class = "ts_model"))), subclass = "mable")
+  new_tibble(list(x = list(data), model = list(enclass(fit, !!!model, subclass = "ts_model"))), subclass = "mable")
 }
 
 #' @export
@@ -25,9 +25,10 @@ forecast.mable <- function(object, ...){
 #' @importFrom forecast forecast
 #' @export
 forecast.ts_model <- function(object, ...){
-  fc <- forecast(object$model, ...)
-  fc$fitted <- object$spec$backtransform(fc$fitted)
-  fc$upper <- object$spec$backtransform(fc$upper)
-  fc$lower <- object$spec$backtransform(fc$lower)
+  class(object) <- class(object)[-match("ts_model", class(object))]
+  fc <- forecast(object, ...)
+  fc$fitted <- (object%@%"backtransform")(fc$fitted)
+  fc$upper <- (object%@%"backtransform")(fc$upper)
+  fc$lower <- (object%@%"backtransform")(fc$lower)
   fc
 }
