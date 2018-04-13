@@ -53,6 +53,13 @@ parse_model <- function(data, model, specials){
       quo_text(model)
       ))
   }
+  if(is.null(model_lhs(model))){
+    model <- set_expr(model, new_formula(lhs = sym(measured_vars(data)[1]), rhs = model_rhs(model)))
+    inform(sprintf(
+      "Response not specified, automatically selected `%s`. Override this in the `formula`.",
+      expr_text(measured_vars(data)[1])
+    ))
+  }
   
   list(model = model) %>%
     append(parse_model_lhs(model_lhs(model), data)) %>%
@@ -73,13 +80,6 @@ parse_model_rhs <- function(model_rhs, specials){
 }
 
 parse_model_lhs <- function(expr, data){
-  if(is.null(expr)){
-    expr <- sym(measured_vars(data)[1])
-    inform(sprintf(
-      "Response not specified, automatically selected `%s`. Override this in the `formula`.",
-      expr_text(expr)
-    ))
-  }
   transformation_stack <- eval_tidy(expr(traverse_transformation(!!expr)), data = data)
   list(
     response = get_expr(last(transformation_stack)),
