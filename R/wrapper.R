@@ -9,6 +9,9 @@ wrap_ts_model <- function(data, fn, model, period = "all", ...){
   fit$fitted <- model$backtransform(fit$fitted)
   fit$x <- model$backtransform(fit$x)
   
+  # Fix components
+  fit$series <- expr_text(model_lhs(model$model))
+  
   # Output model
   new_tibble(list(x = list(data), model = list(enclass(fit, !!!model, subclass = "ts_model"))), subclass = "mable")
 }
