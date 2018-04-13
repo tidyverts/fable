@@ -60,8 +60,9 @@ model_STL <- function(data, model, period = "all", ...){
                       !!!model,
                       subclass = "STL"
                     )
-                  ),
-             subclass = "dable"))
+                  )
+  ), subclass = "dable")
+}
 }
 
 # model_STL <- function(data, model){
