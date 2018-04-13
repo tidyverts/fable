@@ -4,5 +4,5 @@ new_specials_env <- function(..., parent_env = caller_env()){
 }
 
 specials_xreg <- function(x){
-  list(xreg = tibble(!!!x))
+  list(xreg = expr(tibble(!!!x)))
 }
