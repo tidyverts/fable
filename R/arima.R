@@ -49,3 +49,13 @@ ARIMA <- function(data, formula, period = "smallest", ...){
   # Output model
   wrap_ts_model(data, "Arima", model, !!!flatten_first_args(model$args), period = period, ...)
 }
+
+model_sum.ARIMA <- function(x){
+  order <- x$arma[c(1, 6, 2, 3, 7, 4, 5)]
+  m <- order[7]
+  result <- paste("ARIMA(", order[1], ",", order[2], ",", order[3], ")", sep = "")
+  if (m > 1 && sum(order[4:6]) > 0) {
+    result <- paste(result, "(", order[4], ",", order[5], ",", order[6], ")[", m, "]", sep = "")
+  }
+  result
+}
