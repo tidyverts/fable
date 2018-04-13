@@ -35,3 +35,18 @@ forecast.ts_model <- function(object, ...){
   fc$lower <- (object%@%"backtransform")(fc$lower)
   fc
 }
+
+#' @export
+type_sum.ts_model <- function(x){
+  model_sum(x)
+}
+
+model_sum <- function(x){
+  UseMethod("model_sum")
+}
+
+model_sum.ts_model <- function(x){
+  x %>%
+    rm_class("ts_model") %>%
+    model_sum
+}
