@@ -92,3 +92,7 @@ enclass <- function(x, subclass, ...){
            }) %>%
     `class<-`(c(subclass, class(.))) # Add classes
 }
+
+rm_class <- function(x, class){
+  `class<-`(x, class(x)[!(class(x) %in% class)])
+}
