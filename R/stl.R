@@ -54,7 +54,7 @@ model_STL <- function(data, model, period = "all", ...){
   decomp <- eval_tidy(call2("mstl", expr(msts(!!model_lhs(model$model), !!period)), !!!dots_list(...)), data = data)
   # Output tsibble decomposition
   new_tibble(list(x = list(data),
-                  decomposition = list(
+                  decomp = list(
                     enclass(
                       data %>% select(!!index(.)) %>% bind_cols(as_tibble(decomp[,-1])),
                       !!!model,
