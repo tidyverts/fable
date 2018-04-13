@@ -73,6 +73,13 @@ parse_model_rhs <- function(model_rhs, specials){
 }
 
 parse_model_lhs <- function(expr, data){
+  if(is.null(expr)){
+    expr <- sym(measured_vars(data)[1])
+    inform(sprintf(
+      "Response not specified, automatically selected `%s`. Override this in the `formula`.",
+      expr_text(expr)
+    ))
+  }
   transformation_stack <- eval_tidy(expr(traverse_transformation(!!expr)), data = data)
   list(
     response = get_expr(last(transformation_stack)),
