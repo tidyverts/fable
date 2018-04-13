@@ -17,3 +17,7 @@ pillar::obj_sum
 #' @importFrom forecast forecast
 #' @export
 forecast::forecast
+
+#' @importFrom ggplot2 autoplot
+#' @export
+ggplot2::autoplot
