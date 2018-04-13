@@ -63,7 +63,6 @@ model_STL <- function(data, model, period = "all", ...){
                   )
   ), subclass = "dable")
 }
-}
 
 # model_STL <- function(data, model){
 #   # Format args for call
