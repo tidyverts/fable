@@ -44,14 +44,57 @@ traverse_transformation <- function(transformation){
                 h = ~ list(.x))
 }
 
+new_transformation <- function(transformation, inverse){
+  transformation %>% 
+    enclass("transformation", 
+            inverse = inverse)
+}
+
+as_transformation <- function(x, ...){
+  UseMethod("as_transformation")
+}
+
+as_transformation.default <- function(x, ...){
+  x <- call_args(match.call())$x
+  as_transformation(x, ...)
+}
+
+as_transformation.name <- function(x){
+  new_transformation(
+    new_function(alist(x = ), expr(x)),
+    new_function(alist(x = ), expr(x))
+  )
+}
+
 #' @importFrom dplyr last
-invert_transformation <- function(transformation_stack){
+as_transformation.call <- function(x, data = NULL){
+  transformation_stack <- eval_tidy(expr(traverse_transformation(!!x)), data = data)
   # Iteratively undo transformation stack
   result <- expr(!!sym("x")) #last(transformation_stack)
   for (i in seq_len(length(transformation_stack) - 1)){
     result <- undo_transformation(transformation_stack[[i]], transformation_stack[[i+1]], result)
   }
-  result
+  new_transformation(
+    new_function(alist(x = ), eval_tidy(expr(substitute(!!x, set_names(list(sym("x")), quo_text(last(transformation_stack))))))),
+    inverse = new_function(alist(x = ), result)
+  )
+}
+
+print.transformation <- function(x){
+  cat("Transformation: ", expr_text(body(x)), "\n",
+      "Backtransformation: ", expr_text(body(x%@%"inverse")), sep="")
+}
+
+invert_transformation <- function(x, ...){
+  UseMethod("invert_transformation")
+}
+
+invert_transformation.transformation <- function(x){
+  new_transformation(x%@%"inverse", `attributes<-`(x, NULL))
+}
+
+invert_transformation.call <- function(x, data){
+  x %>% as_transformation %>% invert_transformation
 }
 
 inverse_table <- inverse_table()

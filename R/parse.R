@@ -42,6 +42,21 @@ parse_specials <- function(call = NULL, specials = NULL, xreg = TRUE){
   parsed
 }
 
+parse_response <- function(model_lhs){
+  model_lhs <- enquo(model_lhs)
+  
+  # Traverse call along longest argument (hopefully, the response)
+  traverse_call(!!model_lhs,
+                f = ~ .x[[1]],
+                g = ~ .x %>%
+                  get_expr %>%
+                  as.list %>% 
+                  map(new_quosure, env = get_env(.x)) %>%
+                  .[which.max(map(., ~ length(eval_tidy(.x))))],
+                h = ~ .x) %>%
+    get_expr
+}
+
 #' @importFrom tibble tibble
 #' @importFrom tsibble measured_vars
 parse_model <- function(data, model, specials){
@@ -80,10 +95,8 @@ parse_model_rhs <- function(model_rhs, specials){
 }
 
 parse_model_lhs <- function(expr, data){
-  transformation_stack <- eval_tidy(expr(traverse_transformation(!!expr)), data = data)
   list(
-    response = get_expr(last(transformation_stack)),
-    transform = new_function(eval_tidy(expr(alist(x = !!get_expr(last(transformation_stack))))), eval_tidy(expr(substitute(!!expr, set_names(list(sym("x")), expr_text(expr)))))),
-    backtransform = new_function(eval_tidy(expr(alist(x = !!get_expr(last(transformation_stack))))), invert_transformation(transformation_stack))
+    response = eval_tidy(expr(parse_response(!!expr)), data = data),
+    transformation = as_transformation(expr, data=data)
   )
 }

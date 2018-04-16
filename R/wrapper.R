@@ -6,8 +6,8 @@ wrap_ts_model <- function(data, fn, model, period = "all", ...){
   fit <- eval_tidy(call2(fn, expr(msts(!!model_lhs(model$model), !!period)), !!!dots_list(...)), data = data)
   
   # Backtransform
-  fit$fitted <- model$backtransform(fit$fitted)
-  fit$x <- model$backtransform(fit$x)
+  fit$fitted <- (model$transformation%@%"inverse")(fit$fitted)
+  fit$x <- (model$transformation%@%"inverse")(fit$x)
   
   # Fix components
   fit$series <- expr_text(model_lhs(model$model))
