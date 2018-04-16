@@ -59,7 +59,7 @@ as_transformation.default <- function(x, ...){
   as_transformation(x, ...)
 }
 
-as_transformation.name <- function(x){
+as_transformation.name <- function(x, ...){
   new_transformation(
     new_function(alist(x = ), expr(x)),
     new_function(alist(x = ), expr(x))
