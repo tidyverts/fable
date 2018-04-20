@@ -22,7 +22,6 @@
 #' @examples 
 #' elecdemand %>% RW(Demand ~ drift())
 #' 
-#' @importFrom tsibble n_keys
 #' @export
 RW <- function(data, formula = ~ lag(1)){
   # Capture call

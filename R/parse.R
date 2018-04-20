@@ -58,7 +58,6 @@ parse_response <- function(model_lhs){
 }
 
 #' @importFrom tibble tibble
-#' @importFrom tsibble measured_vars
 parse_model <- function(data, model, specials){
   # Clean inputs
   if(quo_is_missing(model)){

@@ -1,6 +1,5 @@
 #' @inherit tsibble::guess_frequency
 #' @param x A tsibble
-#' @importFrom tsibble guess_frequency index
 #' @importFrom dplyr pull
 #' @examples
 #' library(tsibble)
@@ -28,7 +27,6 @@ common_periods <- function(x){
   UseMethod("common_periods")
 }
 
-#' @importFrom tsibble pull_interval
 #' @export
 common_periods.default <- function(x){
   common_periods(pull_interval(x))

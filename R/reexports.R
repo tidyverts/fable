@@ -2,7 +2,6 @@
 #' @export
 magrittr::`%>%`
 
-#' @importFrom tsibble as_tsibble
 #' @export
 tsibble::as_tsibble
 

@@ -11,7 +11,6 @@
 #'   ARIMA(log(value) ~ pdq(0,1,1) + PDQ(0,1,1))
 #' 
 #' @importFrom forecast Arima
-#' @importFrom tsibble n_keys
 ARIMA <- function(data, formula, period = "smallest", ...){
   # Capture call
   cl <- new_quosure(match.call())
