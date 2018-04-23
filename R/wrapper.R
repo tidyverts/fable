@@ -21,19 +21,25 @@ wrap_ts_model <- function(data, fn, model, period = "all", ...){
 #' @importFrom dplyr mutate
 forecast.mable <- function(object, ...){
   object %>%
-    mutate(!!sym("forecast") := map(!!sym("model"), forecast, ...)) %>%
+    mutate(!!sym("forecast") := map2(!!sym("model"), !!sym("x"), forecast, ...)) %>%
     new_tibble(subclass = "fable")
 }
 
 #' @importFrom forecast forecast
+#' @importFrom purrr map2
 #' @export
-forecast.ts_model <- function(object, ...){
+forecast.ts_model <- function(object, x, bootstrap = FALSE, ...){
+  if(bootstrap){
+    abort("Bootstrap forecast intervals not yet supported for this model")
+  }
   class(object) <- class(object)[-match("ts_model", class(object))]
   fc <- forecast(object, ...)
-  fc$fitted <- (object%@%"backtransform")(fc$fitted)
-  fc$upper <- (object%@%"backtransform")(fc$upper)
-  fc$lower <- (object%@%"backtransform")(fc$lower)
-  fc
+  # Assume normality
+  se <- (fc$mean - fc$lower[,1])/qnorm(0.5 * (1 + fc$level[1] / 100))
+  tsibble(!!index(x) := as.numeric(time(fc$mean)),
+          mean = fc$mean, 
+          quantile = map2(fc$mean, se, ~ new_quantile(qnorm, invert_transformation(object%@%"transformation"), mean = .x, sd = .y)),
+          index = !!index(x))
 }
 
 #' @export
