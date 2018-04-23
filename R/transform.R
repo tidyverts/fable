@@ -45,9 +45,9 @@ traverse_transformation <- function(transformation){
 }
 
 new_transformation <- function(transformation, inverse){
-  transformation %>% 
+  as_mapper(transformation) %>% 
     enclass("transformation", 
-            inverse = inverse)
+            inverse = as_mapper(inverse))
 }
 
 as_transformation <- function(x, ...){
