@@ -13,7 +13,7 @@ wrap_ts_model <- function(data, fn, model, period = "all", ...){
   fit$series <- expr_text(model_lhs(model$model))
   
   # Output model
-  new_tibble(list(x = list(data), model = list(enclass(fit, !!!model, subclass = "ts_model"))), subclass = "mable")
+  new_tibble(list(data = list(data), model = list(enclass(fit, !!!model, subclass = "ts_model"))), subclass = "mable")
 }
 
 #' @export
@@ -21,14 +21,14 @@ wrap_ts_model <- function(data, fn, model, period = "all", ...){
 #' @importFrom dplyr mutate
 forecast.mable <- function(object, ...){
   object %>%
-    mutate(!!sym("forecast") := map2(!!sym("model"), !!sym("x"), forecast, ...)) %>%
+    mutate(!!sym("forecast") := map2(!!sym("model"), !!sym("data"), forecast, ...)) %>%
     new_tibble(subclass = "fable")
 }
 
 #' @importFrom forecast forecast
 #' @importFrom purrr map2
 #' @export
-forecast.ts_model <- function(object, x, bootstrap = FALSE, ...){
+forecast.ts_model <- function(object, data, bootstrap = FALSE, ...){
   if(bootstrap){
     abort("Bootstrap forecast intervals not yet supported for this model")
   }
@@ -36,10 +36,10 @@ forecast.ts_model <- function(object, x, bootstrap = FALSE, ...){
   fc <- forecast(object, ...)
   # Assume normality
   se <- (fc$mean - fc$lower[,1])/qnorm(0.5 * (1 + fc$level[1] / 100))
-  tsibble(!!index(x) := as.numeric(time(fc$mean)),
+  tsibble(!!index(data) := as.numeric(time(fc$mean)),
           mean = fc$mean, 
           quantile = map2(fc$mean, se, ~ new_quantile(qnorm, invert_transformation(object%@%"transformation"), mean = .x, sd = .y)),
-          index = !!index(x))
+          index = !!index(data))
 }
 
 #' @export
