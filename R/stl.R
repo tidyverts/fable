@@ -53,7 +53,7 @@ model_STL <- function(data, model, period = "all", ...){
   # Decompose data
   decomp <- eval_tidy(call2("mstl", expr(msts(!!model_lhs(model$model), !!period)), !!!dots_list(...)), data = data)
   # Output tsibble decomposition
-  new_tibble(list(x = list(data),
+  new_tibble(list(data = list(data),
                   decomp = list(
                     enclass(
                       data %>% select(!!index(.)) %>% bind_cols(as_tibble(decomp[,-1])),
@@ -62,6 +62,11 @@ model_STL <- function(data, model, period = "all", ...){
                     )
                   )
   ), subclass = "dable")
+}
+
+modelsplit.STL <- function(object, formula, ...){
+  # y = seasadj + seas
+  # y = trend + seas + rem
 }
 
 # model_STL <- function(data, model){
