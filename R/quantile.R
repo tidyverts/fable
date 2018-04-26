@@ -1,26 +1,55 @@
-new_quantile <- function(f, transformation = ~ .x, ...){
-  q_expr <- enexpr(f)
+#' @export
+new_quantile <- function(f, ..., transformation = ~ .x, abbr = NULL){
+  f_quo <- enquo(f)
   t_fn <- as_mapper(transformation)
   new_function(alist(level = c(80, 95)), expr({
     if(any(level > 1)){
       level <- level/100
     }
-    (!!t_fn)((!!q_expr)(level, !!!dots_list(...)))
-  })
-  ) %>% enclass("quantile",
-                qname = expr_text(q_expr),
-                trans = is.name(body(t_fn)))
+    eval_quantile(f, t, level, args)
+  })) %>% 
+    set_env(., child_env(environment(.),
+                         f = f,
+                         t = t_fn,
+                         args = dots_list(...))) %>%
+    enclass("quantile",
+            qname = abbr%||%quo_text(f_quo),
+            trans = !is.name(body(t_fn)))
+}
+
+eval_quantile <- function(f, t, level, args){
+  eval_tidy(quo(t(f(level, !!!args))))
 }
 
 #' @export
 type_sum.quantile <- function(x){
   paste0(
     ifelse(x%@%"trans", "", "Transformed "),
-    switch(x%@%"qname",
-      qnorm = "Normal",
-      x%@%"qname"
-    )
+    x%@%"qname"
   )
+}
+
+#' @export
+print.quantile <- function(x, ...) {
+  print(format(x, ...), quote = FALSE)
+  invisible(x)
+}
+
+#' @export
+format.quantile <- function(x, ...){
+  args <- environment(x)$args %>%
+    imap(~ paste0(ifelse(nchar(.y)>0, paste0(.y, " = "), ""), format(.x, trim = TRUE, digits = 2))) %>%
+    invoke(paste, ., sep = ", ")
+  out <- paste0(
+    x%@%"qname",
+    "(", args, ")"
+  )
+  if(x%@%"trans"){
+    paste0("t(", out, ")")
+  }
+  else{
+    out
+  }
 }
 
 #' @importFrom ggplot2 aes_
