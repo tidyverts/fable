@@ -52,6 +52,12 @@ format.quantile <- function(x, ...){
   }
 }
 
+length.quantile <- function(x){
+  environment(x)$args %>%
+    map(length) %>%
+    invoke(max, .)
+}
+
 #' @importFrom ggplot2 aes_
 autoplot.quantile <- function(q_fn, q_range = c(0.0001, 0.9999), precision = 0.01){
   tibble(x = seq(q_range[1], q_range[2], by = precision)) %>%
