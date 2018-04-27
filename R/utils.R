@@ -63,11 +63,13 @@ quo_sym <- function(quo){
   sym(quo_name(quo))
 }
 
-# Small function to combine two named lists
-merge_named_list <- function(x,y){
-  all_names <- union(names(x), names(y))
+# Small function to combine named lists
+merge_named_list <- function(...){
+  all_names <- dots_list(...) %>% map(names) %>% invoke(c, .) %>% unique
   all_names %>%
-    map(~ c(x[[.x]], y[[.x]])) %>%
+    map(function(name){
+      dots_list(...) %>% map(function(vals) vals[[name]]) %>% invoke(c, .)
+    }) %>%
     set_names(all_names)
 }
 
