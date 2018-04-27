@@ -84,7 +84,7 @@ length.quantile <- function(x){
 #' @importFrom ggplot2 aes_
 autoplot.quantile <- function(q_fn, q_range = c(0.0001, 0.9999), precision = 0.01){
   tibble(x = seq(q_range[1], q_range[2], by = precision)) %>%
-    mutate(!!"density":=q_fn(x)) %>%
+    mutate(!!"density":=q_fn(!!sym("x"))) %>%
     ggplot(aes_(x=~x, y=~density)) + 
     geom_line()
 }
