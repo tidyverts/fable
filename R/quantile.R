@@ -52,6 +52,18 @@ format.quantile <- function(x, ...){
   }
 }
 
+`[.quantile` <- function(x, ...){
+  environment(x)$args <- environment(x)$args %>%
+    map(function(x) x[...])
+  x
+}
+
+c.quantile <- function(...){
+  x <- dots_list(...)[[1]]
+  environment(x)$args <- dots_list(...) %>% map(~ environment(.x)$args) %>% invoke(merge_named_list, .)
+  x
+}
+
 length.quantile <- function(x){
   environment(x)$args %>%
     map(length) %>%
