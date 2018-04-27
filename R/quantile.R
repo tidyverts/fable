@@ -1,3 +1,14 @@
+#' Create a quantile object
+#'  
+#' @param f A quantile function
+#' @param ... Arguments for the quantile function
+#' @param transformation Transformation to be applied to quantiles
+#' @param abbr Abbreviation for display purposes, defaults to the name of the quantile function
+#' 
+#' @examples 
+#' qt <- new_quantile(qnorm, mean = rep(100, 100), sd = 1:100, transformation = log, abbr = "N")
+#' qt
+#' qt(0.5)
 #' @export
 new_quantile <- function(f, ..., transformation = ~ .x, abbr = NULL){
   f_quo <- enquo(f)
