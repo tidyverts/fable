@@ -17,27 +17,29 @@ new_quantile <- function(f, ..., transformation = ~ .x, abbr = NULL){
     if(any(level > 1)){
       level <- level/100
     }
-    eval_quantile(f, t, level, args)
+    eval_quantile(params, level)
   })) %>% 
     set_env(., child_env(environment(.),
-                         f = f,
-                         t = t_fn,
-                         args = dots_list(...))) %>%
-    enclass("quantile",
-            qname = abbr%||%quo_text(f_quo),
-            trans = !is.name(body(t_fn)))
+                         params = list(list(
+                           f = f,
+                           t = t_fn,
+                           args = dots_list(...),
+                           qname = abbr%||%quo_text(f_quo),
+                           trans = !is.name(body(t_fn))
+                         )))) %>%
+    enclass("quantile")
 }
 
-eval_quantile <- function(f, t, level, args){
-  eval_tidy(quo(t(f(level, !!!args))))
+eval_quantile <- function(params, level){
+  params %>% map(function(param){
+    eval_tidy(quo(param$t(param$f(level, !!!param$args))))
+  }) %>% 
+    unlist
 }
 
 #' @export
 type_sum.quantile <- function(x){
-  paste0(
-    ifelse(x%@%"trans", "", "Transformed "),
-    x%@%"qname"
-  )
+  format(x)
 }
 
 #' @export
@@ -48,19 +50,23 @@ print.quantile <- function(x, ...) {
 
 #' @export
 format.quantile <- function(x, ...){
-  args <- environment(x)$args %>%
-    imap(~ paste0(ifelse(nchar(.y)>0, paste0(.y, " = "), ""), format(.x, trim = TRUE, digits = 2))) %>%
-    invoke(paste, ., sep = ", ")
-  out <- paste0(
-    x%@%"qname",
-    "(", args, ")"
-  )
-  if(x%@%"trans"){
-    paste0("t(", out, ")")
-  }
-  else{
-    out
-  }
+  environment(x)$params %>%
+    map(function(param){
+      args <- param$args %>%
+        imap(~ paste0(ifelse(nchar(.y)>0, paste0(.y, " = "), ""), format(.x, trim = TRUE, digits = 2))) %>%
+        invoke("paste", ., sep = ", ")
+      out <- paste0(
+        param$qname,
+        "(", args, ")"
+      )
+      if(param$trans){
+        paste0("t(", out, ")")
+      }
+      else{
+        out
+      }
+    }) %>%
+    invoke("c", .)
 }
 
 #' @export
@@ -73,15 +79,19 @@ format.quantile <- function(x, ...){
 #' @export
 c.quantile <- function(...){
   x <- dots_list(...)[[1]]
-  environment(x)$args <- dots_list(...) %>% map(~ environment(.x)$args) %>% invoke(merge_named_list, .)
+  environment(x)$params <- dots_list(...) %>% map(~ environment(.x)$params) %>% invoke("c", .)
   x
 }
 
 #' @export
 length.quantile <- function(x){
-  environment(x)$args %>%
-    map(length) %>%
-    invoke(max, .)
+  environment(x)$params %>%
+    map(function(param){
+      param %>%
+        map(length) %>%
+        invoke("max", .)
+    }) %>%
+    invoke("sum", .)
 }
 
 #' @importFrom ggplot2 aes_
