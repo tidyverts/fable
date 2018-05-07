@@ -18,7 +18,8 @@ STL <- function(data, formula, ...){
       list(s.window=window, s.degree=degree, s.jump=jump, period = period)
     },
     
-    parent_env = caller_env()
+    parent_env = caller_env(),
+    required_specials = c("trend", "season")
   )
   
   # Parse model

@@ -41,7 +41,8 @@ RW <- function(data, formula = ~ lag(1)){
       list(include.constant = drift)
     },
     xreg = specials_xreg,
-    parent_env = caller_env()
+    parent_env = caller_env(),
+    required_specials = c("lag")
   )
   
   # Parse model
@@ -90,7 +91,8 @@ SNAIVE <- function(data, formula = ~ lag("smallest")){
     },
     xreg = specials_xreg,
     
-    parent_env = caller_env()
+    parent_env = caller_env(),
+    required_specials = c("lag")
   )
   
   # Parse model
