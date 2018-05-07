@@ -5,22 +5,10 @@
 #' @param ... Other arguments passed to \code{\link[forecast]{mstl}}. 
 #' 
 #' @examples 
-#' USAccDeaths %>% as_tsibble %>% STL(value ~ season(window = 10))
+#' USAccDeaths %>% STL(value ~ season(window = 10))
 #' elecdemand %>% STL(Demand ~ season(period = "day"))
 #' @export
 STL <- function(data, formula, ...){
-  # Capture call
-  cl <- new_quosure(match.call())
-  formula <- enquo(formula)
-  
-  # Coerce data
-  data <- as_tsibble(data)
-  
-  # Handle multivariate inputs
-  if(n_keys(data) > 1){
-    return(multi_univariate(data, cl))
-  }
-
   # Define specials
   specials <- new_specials_env(
     trend = function(window = NULL, degree = 1, jump = ceiling(window/10)){
@@ -30,34 +18,37 @@ STL <- function(data, formula, ...){
       list(s.window=window, s.degree=degree, s.jump=jump, period = period)
     },
     
-    parent_env = get_env(cl)
+    parent_env = caller_env()
   )
   
-  # Parse Model
-  model <- data %>% 
-    parse_model(formula, specials = specials)
+  # Parse model
+  model_inputs <- parse_model(data, formula, specials = specials, univariate = TRUE) %>% 
+    flatten_first_args
   
-  eval_tidy(expr(model_STL(data, model, !!!flatten_first_args(model$args), ...)))
+  eval_tidy(quo(model_STL(!!!model_inputs, ...)))
 }
 
 #' @importFrom dplyr select bind_cols
 #' @importFrom tibble as_tibble
 #' @importFrom forecast msts mstl
-model_STL <- function(data, model, period = "all", ...){
-  period <- get_frequencies(period, data)
+model_STL <- function(data, model, response, transformation, args, period = "all", ...){
+  period <- get_frequencies(args$period, data)
+  args$period <- NULL
   
   # Drop unnecessary data
   data <- data %>%
-    select(!!index(.), !!model$response)
+    select(!!index(.), !!response)
   
   # Decompose data
-  decomp <- eval_tidy(call2("mstl", expr(msts(!!model_lhs(model$model), !!period)), !!!dots_list(...)), data = data)
+  decomp <- eval_tidy(quo(mstl(msts(!!model_lhs(model), !!period), !!!args)), data = data)
   # Output tsibble decomposition
   new_tibble(list(data = list(data),
                   decomp = list(
                     enclass(
                       data %>% select(!!index(.)) %>% bind_cols(as_tibble(decomp[,-1])),
-                      !!!model,
+                      model = model,
+                      response = response,
+                      transformation = transformation,
                       subclass = "STL"
                     )
                   )
