@@ -1,19 +1,20 @@
 #' @importFrom tibble new_tibble
-wrap_ts_model <- function(data, fn, model, period = "all", ...){
+wrap_ts_model <- function(modelfn, data, model, response, transformation, args, period = "all", cl = "Call information lost", ...){
   period <- get_frequencies(period, data)
-  
+
   # Fit model
-  fit <- eval_tidy(call2(fn, expr(msts(!!model_lhs(model$model), !!period)), !!!dots_list(...)), data = data)
+  fit <- eval_tidy(call2(modelfn, expr(msts(!!model_lhs(model), !!period)), !!!args, !!!dots_list(...)), data = data)
   
   # Backtransform
-  fit$fitted <- (model$transformation%@%"inverse")(fit$fitted)
-  fit$x <- (model$transformation%@%"inverse")(fit$x)
+  fit$fitted <- invert_transformation(transformation)(fit$fitted)
+  fit$x <- invert_transformation(transformation)(fit$x)
   
   # Fix components
-  fit$series <- expr_text(model_lhs(model$model))
+  fit$call <- cl
+  fit$series <- expr_text(response)
   
   # Output model
-  new_tibble(list(data = list(data), model = list(enclass(fit, !!!model, subclass = "ts_model"))), subclass = "mable")
+  new_tibble(list(data = list(data), model = list(enclass(fit, model = model, response = response, transformation = transformation, subclass = "ts_model"))), subclass = "mable")
 }
 
 #' @export

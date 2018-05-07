@@ -73,12 +73,14 @@ merge_named_list <- function(...){
     set_names(all_names)
 }
 
-flatten_first_args <- function(args){
-  args %>% 
+flatten_first_args <- function(parsed_model){
+  parsed_model$args <- eval_tidy(parsed_model$args) %>%
     map(~ if(length(.x) > 1){stop("Only one special of each type is allowed for this model")} else {.x[[1]]}) %>%
     set_names(NULL) %>%
     unlist(recursive = FALSE) %>%
-    as.list # If no args are provided, unlist removes list structure
+    as.list %>% # If no args are provided, unlist removes list structure
+    as_quosure()
+  parsed_model
 }
 
 #' @importFrom purrr imap reduce

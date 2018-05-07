@@ -58,26 +58,41 @@ parse_response <- function(model_lhs){
 }
 
 #' @importFrom tibble tibble
-parse_model <- function(data, model, specials){
+parse_model <- function(data, model, specials, univariate = TRUE){
+  # Capture parent call
+  cl <- call_standardise(sys.call(-1))
+  
+  # Coerce data
+  data <- as_tsibble(data)
+
+  # Handle multivariate inputs
+  if(univariate){
+    if(n_keys(data) > 1){
+      return(multi_univariate(data, cl))
+    }
+  }
+
   # Clean inputs
-  if(quo_is_missing(model)){
-    model <- set_expr(model, sym(measured_vars(data)[1]))
+  if(missing(model)){
+    model <- sym(measured_vars(data)[1])
     inform(sprintf(
       "Model not specified, using defaults set by `formula = %s`. Override this using `formula`.",
-      quo_text(model)
+      expr_text(model)
       ))
   }
   if(is.null(model_lhs(model))){
-    model <- set_expr(model, new_formula(lhs = sym(measured_vars(data)[1]), rhs = model_rhs(model)))
+    model <- new_formula(lhs = sym(measured_vars(data)[1]), rhs = model_rhs(model))
     inform(sprintf(
       "Response not specified, automatically selected `%s`. Override this in the `formula`.",
       expr_text(measured_vars(data)[1])
     ))
   }
   
-  list(model = model) %>%
-    append(parse_model_lhs(model_lhs(model), data)) %>%
-    append(parse_model_rhs(model_rhs(model), specials))
+  quos(data = data,
+       model = model,
+       !!!parse_model_lhs(model_lhs(model), data),
+       !!!parse_model_rhs(model_rhs(model), specials),
+       cl = cl)
 }
 
 parse_model_rhs <- function(model_rhs, specials){
@@ -94,7 +109,7 @@ parse_model_rhs <- function(model_rhs, specials){
 }
 
 parse_model_lhs <- function(expr, data){
-  list(
+  quos(
     response = eval_tidy(expr(parse_response(!!expr)), data = data),
     transformation = as_transformation(expr, data=data)
   )

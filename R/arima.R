@@ -12,18 +12,6 @@
 #' 
 #' @importFrom forecast Arima
 ARIMA <- function(data, formula, period = "smallest", ...){
-  # Capture call
-  cl <- new_quosure(match.call())
-  formula <- enquo(formula)
-  
-  # Coerce data
-  data <- as_tsibble(data)
-  
-  # Handle multivariate inputs
-  if(n_keys(data) > 1){
-    return(multi_univariate(data, cl))
-  }
-  
   # Define specials
   specials <- new_specials_env(
     pdq = function(p = 0, d = 0, q = 0){
@@ -37,15 +25,15 @@ ARIMA <- function(data, formula, period = "smallest", ...){
     },
     xreg = specials_xreg,
     
-    parent_env = get_env(cl)
+    parent_env = caller_env()
   )
   
   # Parse model
-  model <- data %>% 
-    parse_model(formula, specials = specials)
-
+  model_inputs <- parse_model(data, formula, specials = specials, univariate = TRUE) %>% 
+    flatten_first_args
+  
   # Output model
-  wrap_ts_model(data, "Arima", model, !!!flatten_first_args(model$args), period = period, ...)
+  eval_tidy(quo(wrap_ts_model("Arima", !!!model_inputs, period = period, ...)))
 }
 
 model_sum.ARIMA <- function(x){
