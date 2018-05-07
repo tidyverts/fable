@@ -24,44 +24,32 @@
 #' 
 #' @export
 RW <- function(data, formula = ~ lag(1)){
-  # Capture call
-  cl <- new_quosure(match.call())
-  formula <- enquo(formula)
-  
   # Coerce data
   data <- as_tsibble(data)
-  
-  # Handle multivariate inputs
-  if(n_keys(data) > 1){
-    return(multi_univariate(data, cl))
-  }
   
   # Define specials
   specials <- new_specials_env(
     lag = function(lag = 1){
-      list(lag = lag)
+      lag <- get_frequencies(lag, data)
+      if(lag == 1){
+        list(order = c(0, 1, 0))
+      } else {
+        list(seasonal = list(order = c(0, 1, 0), period = lag))
+      }
     },
     drift = function(drift = TRUE){
       list(include.constant = drift)
     },
     xreg = specials_xreg,
-    
-    parent_env = get_env(cl)
+    parent_env = caller_env()
   )
   
   # Parse model
-  model <- data %>% 
-    parse_model(formula, specials = specials)
+  model_inputs <- parse_model(data, formula, specials = specials, univariate = TRUE) %>% 
+    flatten_first_args
   
   # Output model
-  eval_tidy(expr(model_RW(data, model, !!!flatten_first_args(model$args))))
-}
-
-model_RW <- function(data, model, lag = 1, ...){
-  lag <- get_frequencies(lag, data)
-  
-  lag_arg <- if(lag == 1){list(order = c(0, 1, 0))} else {list(seasonal = list(order = c(0, 1, 0), period = lag))}
-  out <- wrap_ts_model(data, "Arima", model, !!!lag_arg, period = lag, ...)
+  out <- eval_tidy(quo(wrap_ts_model("Arima", !!!model_inputs, period = 1)))
   out[["model"]][[1]] <- enclass(out[["model"]][[1]], "RW")
   out
   # TODO: Adjust prediction intervals to allow for drift coefficient standard error
@@ -84,46 +72,35 @@ NAIVE <- RW
 #'
 #' @export
 SNAIVE <- function(data, formula = ~ lag("smallest")){
-  # Capture call
-  cl <- new_quosure(match.call())
-  formula <- enquo(formula)
-  
   # Coerce data
   data <- as_tsibble(data)
-  
-  # Handle multivariate inputs
-  if(n_keys(data) > 1){
-    return(multi_univariate(data, cl))
-  }
   
   # Define specials
   specials <- new_specials_env(
     lag = function(lag = 1){
-      list(lag = lag)
+      lag <- get_frequencies(lag, data)
+      if(lag == 1){
+        abort("Non-seasonal model specification provided, use RW() or provide a different lag specification.")
+      } else {
+        list(seasonal = list(order = c(0, 1, 0), period = lag))
+      }
     },
     drift = function(drift = TRUE){
       list(include.constant = drift)
     },
     xreg = specials_xreg,
     
-    parent_env = get_env(cl)
+    parent_env = caller_env()
   )
   
   # Parse model
-  model <- data %>% 
-    parse_model(formula, specials = specials)
+  model_inputs <- parse_model(data, formula, specials = specials, univariate = TRUE) %>% 
+    flatten_first_args
   
   # Output model
-  eval_tidy(expr(model_SNAIVE(data, model, !!!flatten_first_args(model$args))))
-}
-
-model_SNAIVE <- function(data, model, lag = "smallest", ...){
-  lag <- get_frequencies(lag, data)
-  if(lag == 1){
-    abort("Non-seasonal model specification provided, use RW() or provide a different lag specification.")
-  }
-  
-  model_RW(data, model, lag, ...)
+  out <- eval_tidy(quo(wrap_ts_model("Arima", !!!model_inputs, period = 1)))
+  out[["model"]][[1]] <- enclass(out[["model"]][[1]], "RW")
+  out
 }
 
 #' @importFrom dplyr case_when

@@ -59,7 +59,7 @@ parse_response <- function(model_lhs){
 
 #' @importFrom tibble tibble
 parse_model <- function(data, model, specials, univariate = TRUE){
-  # Capture parent call
+  # Capture user call
   cl <- call_standardise(sys.call(-1))
   
   # Coerce data
@@ -88,6 +88,7 @@ parse_model <- function(data, model, specials, univariate = TRUE){
     ))
   }
   
+  # Parse model
   quos(data = data,
        model = model,
        !!!parse_model_lhs(model_lhs(model), data),
