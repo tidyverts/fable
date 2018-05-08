@@ -1,0 +1,62 @@
+#' @inherit forecast::ets
+#' @param data A data frame
+#' @param formula Model specification.
+#' @param period Time series frequency for seasonal component.
+#' 
+#' @export
+#' 
+#' @examples 
+#' 
+#' USAccDeaths %>% ETS(log(value) ~ season("A"))
+#' 
+#' @importFrom forecast ets
+ETS <- function(data, formula, period = "smallest", ...){
+  # Define specials
+  specials <- new_specials_env(
+    error = function(method = "Z", alpha = NULL, range = c(1e-04, 0.9999)){
+      list(method = method, alpha = alpha, range = range)
+    },
+    trend = function(method = "Z", beta = NULL, range = c(1e-04, 0.9999),
+                     damped = NULL, phi = NULL, phirange = c(0.8, 0.98)){
+      list(method = method, beta = beta, range = range,
+           damped = damped, phi = phi, phirange = phirange)
+    },
+    season = function(method = "Z", gamma = NULL, range = c(1e-04, 0.9999)){
+      list(method = method, gamma = gamma, range = range)
+    },
+    xreg = no_xreg,
+    
+    parent_env = caller_env(),
+    required_specials = c("error", "trend", "season")
+  )
+  
+  # Parse model
+  model_inputs <- parse_model(data, formula, specials = specials, univariate = TRUE)
+  
+  # Rebuild `ets` arguments
+  parsed_args <- eval_tidy(model_inputs$args)
+  required_args <- parsed_args[c("error", "trend", "season")]
+  required_args %>% imap(~ if(length(.x) > 1) {abort("Only one special of each type is allowed for ETS.")})
+  
+  args <- list(model = required_args %>% map(1) %>% map("method") %>% invoke("paste0", .),
+               damped = required_args$trend[[1]]$damped,
+               alpha = required_args$error[[1]]$alpha,
+               beta = required_args$trend[[1]]$beta,
+               gamma = required_args$season[[1]]$gamma,
+               phi = required_args$trend[[1]]$phi,
+               lower = required_args %>% map(1) %>% map(~ .x[["range"]][1]) %>% invoke("c", .) %>%
+                 append(required_args$trend[[1]]$phirange[1]) %>%
+                 as.numeric,
+               upper = required_args %>% map(1) %>% map(~ .x[["range"]][2]) %>% invoke("c", .) %>%
+                 append(required_args$trend[[1]]$phirange[2]) %>%
+                 as.numeric
+  )
+  model_inputs$args <- quo(args)
+  
+  # Output model
+  eval_tidy(quo(wrap_ts_model("ets", !!!model_inputs, period = period, ...)))
+}
+
+model_sum.ets <- function(x){
+  x$method
+}
