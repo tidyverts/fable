@@ -40,7 +40,7 @@ forecast.ts_model <- function(object, data, bootstrap = FALSE, ...){
   se <- (fc$mean - fc$lower[,1])/qnorm(0.5 * (1 + fc$level[1] / 100))
   tsibble(!!index(data) := as.numeric(time(fc$mean)),
           mean = fc$mean, 
-          quantile = map2(fc$mean, se, ~ new_quantile(qnorm, .x, .y, transformation = invert_transformation(object%@%"transformation"), abbr = "N")),
+          quantile = map2(fc$mean, se, ~ new_quantile(qnorm, .x, sd = .y, transformation = invert_transformation(object%@%"transformation"), abbr = "N")),
           index = !!index(data))
 }
 
