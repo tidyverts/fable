@@ -7,3 +7,7 @@ new_specials_env <- function(..., parent_env = caller_env(), required_specials =
 specials_xreg <- function(x){
   list(xreg = expr(tibble(!!!x)))
 }
+
+no_xreg <- function(...){
+  abort("Exogenous regressors are not supported for this model type.")
+}
