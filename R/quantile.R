@@ -17,7 +17,7 @@ new_quantile <- function(f, ..., transformation = ~ .x, abbr = NULL){
     if(any(level > 1)){
       level <- level/100
     }
-    eval_quantile(params, level)
+    eval_quantile(!!sym("params"), level)
   })) %>% 
     set_env(., child_env(environment(.),
                          params = list(list(
