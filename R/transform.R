@@ -18,14 +18,14 @@ inverse_table <- function() {
     })
 }
 
-#' @importFrom methods findFunction
 undo_transformation <- function(operation, target, result){
   fn <- call_name(operation)
   env <- get_env(operation, caller_env())
-  ns <- eval_tidy(expr(findFunction(!!fn)), env = env) %>%
-    map(possibly(environmentName, otherwise = NULL)) %>% 
-    compact %>%
-    first
+  # Replace with mget?
+  ns <- eval_tidy(expr(environmentName(environment(get(!!fn)))), env = env)
+  if(nchar(ns) == 0){
+    ns <- "base"
+  }
   
   inverse_table$get(ns, fn)(operation, get_expr(target), result)
 }
