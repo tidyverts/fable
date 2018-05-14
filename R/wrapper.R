@@ -38,7 +38,11 @@ forecast.ts_model <- function(object, data, bootstrap = FALSE, ...){
   fc <- forecast(object, ...)
   # Assume normality
   se <- (fc$mean - fc$lower[,1])/qnorm(0.5 * (1 + fc$level[1] / 100))
-  tsibble(!!index(data) := as.numeric(time(fc$mean)),
+  
+  idx <- data %>% pull(!!index(.))
+  future_idx <- seq(tail(idx, 1), length.out = length(fc$mean) + 1, by = time_unit(idx)) %>% tail(-1)
+  
+  tsibble(!!index(data) := future_idx,
           mean = fc$mean, 
           quantile = map2(fc$mean, se, ~ new_quantile(qnorm, .x, sd = .y, transformation = invert_transformation(object%@%"transformation"), abbr = "N")),
           index = !!index(data))
