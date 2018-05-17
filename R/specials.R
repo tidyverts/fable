@@ -8,6 +8,10 @@ specials_xreg <- function(x){
   list(xreg = expr(tibble(!!!x)))
 }
 
+exprs_xreg <- function(x){
+  x
+}
+
 no_xreg <- function(...){
   abort("Exogenous regressors are not supported for this model type.")
 }
