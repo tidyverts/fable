@@ -74,9 +74,10 @@ as_transformation.call <- function(x, data = NULL){
   for (i in seq_len(length(transformation_stack) - 1)){
     result <- undo_transformation(transformation_stack[[i]], transformation_stack[[i+1]], result)
   }
+  fmls <- eval_tidy(quo(alist(x = !!get_expr(last(transformation_stack)))))
   new_transformation(
-    new_function(alist(x = ), eval_tidy(expr(substitute(!!x, set_names(list(sym("x")), quo_text(last(transformation_stack))))))),
-    inverse = new_function(alist(x = ), result)
+    new_function(fmls, eval_tidy(expr(substitute(!!x, set_names(list(sym("x")), quo_text(last(transformation_stack))))))),
+    inverse = new_function(fmls, result)
   )
 }
 
