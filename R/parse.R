@@ -95,19 +95,11 @@ parse_model <- function(data, model, specials, univariate = TRUE){
   }
   
   # Parse model
-  out <- quos(data = data,
+  quos(data = data,
        model = model,
        !!!parse_model_lhs(model_lhs(model), data),
        !!!parse_model_rhs(model_rhs(model), specials),
        cl = cl)
-
-  # Construct minimal model dataset
-  data <- eval_tidy(quo(tsibble(!!index(data), # index
-                                !!eval_tidy(out$response),
-                                !!!(eval_tidy(out$args)$xreg[[1]]),
-                                index = !!index(data))), data = data)
-  
-  out
 }
 
 parse_model_rhs <- function(model_rhs, specials){
