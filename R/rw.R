@@ -26,7 +26,6 @@
 RW <- function(data, formula = ~ lag(1)){
   # Coerce data
   data <- as_tsibble(data)
-  
   # Define specials
   specials <- new_specials_env(
     lag = function(lag = 1){
@@ -40,7 +39,7 @@ RW <- function(data, formula = ~ lag(1)){
     drift = function(drift = TRUE){
       list(include.constant = drift)
     },
-    xreg = specials_xreg,
+    xreg = tbl_xreg,
     parent_env = caller_env(),
     required_specials = c("lag")
   )
@@ -89,7 +88,7 @@ SNAIVE <- function(data, formula = ~ lag("smallest")){
     drift = function(drift = TRUE){
       list(include.constant = drift)
     },
-    xreg = specials_xreg,
+    xreg = tbl_xreg,
     
     parent_env = caller_env(),
     required_specials = c("lag")

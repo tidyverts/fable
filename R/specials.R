@@ -4,7 +4,7 @@ new_specials_env <- function(..., parent_env = caller_env(), required_specials =
     enclass(NULL, required_specials = required_specials)
 }
 
-specials_xreg <- function(x){
+tbl_xreg <- function(x){
   list(xreg = expr(tibble(!!!x)))
 }
 
