@@ -29,3 +29,15 @@
 #' elecdemand
 #'
 NULL
+
+
+#' @inherit datasets::UKLungDeaths
+#' @name UKLungDeaths
+#' @docType data
+#' @format Time series of class \code{tsibble}.
+#' @keywords datasets
+#' @examples
+#' 
+#' UKLungDeaths
+#' 
+NULL
