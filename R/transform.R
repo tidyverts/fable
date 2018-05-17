@@ -60,9 +60,10 @@ as_transformation.default <- function(x, ...){
 }
 
 as_transformation.name <- function(x, ...){
+  fmls <- eval_tidy(quo(alist(x = !!enexpr(x))))
   new_transformation(
-    new_function(alist(x = ), expr(x)),
-    new_function(alist(x = ), expr(x))
+    new_function(fmls, expr(x)),
+    new_function(fmls, expr(x))
   )
 }
 
