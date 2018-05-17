@@ -8,6 +8,8 @@ components(object, ...)
 }
 \arguments{
 \item{object}{A model or decomposition}
+
+\item{...}{Additional arguments passed to methods}
 }
 \description{
 Extracts the decomposed components from an object, or the states from a state space model.
