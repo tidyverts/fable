@@ -116,8 +116,10 @@ parse_model_rhs <- function(model_rhs, specials){
 }
 
 parse_model_lhs <- function(expr, data){
+  transformation <- as_transformation(expr, data=data)
+  response <- fn_fmls(transformation)$x
   quos(
-    response = eval_tidy(expr(parse_response(!!expr)), data = data),
-    transformation = as_transformation(expr, data=data)
+    response = response,
+    transformation = transformation
   )
 }
