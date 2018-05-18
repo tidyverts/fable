@@ -3,7 +3,6 @@
 S3method("$",hilo)
 S3method("[",hilo)
 S3method("[",quantile)
-S3method(as.data.frame,hilo)
 S3method(autoplot,mable)
 S3method(autoplot,tbl_ts)
 S3method(c,hilo)

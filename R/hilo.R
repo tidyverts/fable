@@ -132,17 +132,6 @@ rep.hilo <- function(x, ...) {
 }
 
 #' @export
-as.data.frame.hilo <- function(
-  x, row.names = NULL, optional = FALSE, ...,
-  nm = paste(deparse(substitute(x), width.cutoff = 500L), collapse = " ")
-) {
-  as.data.frame.vector(
-    x, row.names = row.names, optional = optional, ...,
-    nm = nm
-  )
-}
-
-#' @export
 type_sum.hilo <- function(x) {
   "hilo"
 }
