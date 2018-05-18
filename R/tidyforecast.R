@@ -19,5 +19,5 @@ globalVariables(".")
 
 #' @import rlang
 #' @import tsibble
-#' @importFrom purrr map
+#' @import purrr
 NULL
