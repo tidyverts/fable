@@ -6,7 +6,7 @@
 #' @param abbr Abbreviation for display purposes, defaults to the name of the quantile function
 #' 
 #' @examples 
-#' qt <- new_quantile(qnorm, mean = rep(100, 100), sd = 1:100, transformation = log, abbr = "N")
+#' qt <- new_quantile(qnorm, mean = rep(3, 100), sd = seq(0, 1, length.out=100), transformation = exp, abbr = "N")
 #' qt
 #' qt(0.5)
 #' @export
