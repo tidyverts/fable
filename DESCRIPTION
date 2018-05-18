@@ -20,7 +20,8 @@ Imports:
     tidyselect,
     magrittr,
     forecast,
-    stats
+    stats,
+    crayon
 Suggests:
     knitr,
     rmarkdown,

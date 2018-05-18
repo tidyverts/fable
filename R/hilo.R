@@ -36,6 +36,10 @@ new_hilo <- function(lower, upper, level = NULL) {
 }
 
 #' @rdname hilo
+#' 
+#' @param x Object to create hilo from
+#' @param ... Additional parameters passed on to other methods
+#' 
 #' @export
 hilo <- function(x, ...){
   UseMethod("hilo")

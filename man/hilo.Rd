@@ -14,6 +14,10 @@ hilo(x, ...)
 
 \item{level}{Default \code{NULL} does not include 'level'. Otherwise values of
 length 1 or as length of \code{lower}, expected between 0 and 100.}
+
+\item{x}{Object to create hilo from}
+
+\item{...}{Additional parameters passed on to other methods}
 }
 \value{
 A "hilo" object

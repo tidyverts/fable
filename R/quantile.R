@@ -6,7 +6,8 @@
 #' @param abbr Abbreviation for display purposes, defaults to the name of the quantile function
 #' 
 #' @examples 
-#' qt <- new_quantile(qnorm, mean = rep(3, 10), sd = seq(0, 1, length.out=10), transformation = exp, abbr = "N")
+#' qt <- new_quantile(qnorm, mean = rep(3, 10), sd = seq(0, 1, length.out=10),
+#'  transformation = exp, abbr = "N")
 #' qt
 #' hilo(qt, 95)
 #' @export
@@ -124,7 +125,7 @@ qt_lengths <- function(x){
 #     geom_line()
 # }
 #' @export
-hilo.quantile <- function(qt, level = 95){
+hilo.quantile <- function(x, level = 95, ...){
   if(length(level)!=1){
     abort("Only one value of 'level' is supported.")
   }
@@ -133,7 +134,7 @@ hilo.quantile <- function(qt, level = 95){
   }
   list(lower = 50-level/2, upper = 50+level/2) %>%
     map(function(level){
-      qt %>%
+      x %>%
         map(~ eval_tidy(quo(.x$t(.x$f(level/100, !!!(.x$args)))))) %>%
         unlist(recursive = FALSE, use.names = FALSE)
     }) %>%
