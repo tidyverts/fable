@@ -8,6 +8,8 @@
 #' 
 #' @author Earo Wang & Mitchell O'Hara-Wild
 #' 
+#' @rdname hilo
+#' 
 #' @examples
 #' new_hilo(lower = rnorm(10), upper = rnorm(10) + 5, level = 95L)
 #'
@@ -31,6 +33,12 @@ new_hilo <- function(lower, upper, level = NULL) {
   
   list(lower = lower, upper = upper, level = level) %>%
     enclass("hilo")
+}
+
+#' @rdname hilo
+#' @export
+hilo <- function(x, ...){
+  UseMethod("hilo")
 }
 
 #' Helpers for "hilo"

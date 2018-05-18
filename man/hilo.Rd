@@ -2,9 +2,12 @@
 % Please edit documentation in R/hilo.R
 \name{new_hilo}
 \alias{new_hilo}
+\alias{hilo}
 \title{Construct hilo intervals}
 \usage{
 new_hilo(lower, upper, level = NULL)
+
+hilo(x, ...)
 }
 \arguments{
 \item{lower, upper}{A numeric vector of values for lower and upper limits.}

@@ -123,3 +123,20 @@ qt_lengths <- function(x){
 #     ggplot(aes_(x=~x, y=~density)) + 
 #     geom_line()
 # }
+#' @export
+hilo.quantile <- function(qt, level = 95){
+  if(length(level)!=1){
+    abort("Only one value of 'level' is supported.")
+  }
+  if (level < 0 || level > 100) {
+    abort("'level' can't be negative or greater than 100.")
+  }
+  list(lower = 50-level/2, upper = 50+level/2) %>%
+    map(function(level){
+      qt %>%
+        map(~ eval_tidy(quo(.x$t(.x$f(level/100, !!!(.x$args)))))) %>%
+        unlist(recursive = FALSE, use.names = FALSE)
+    }) %>%
+    append(list(level = level)) %>%
+    invoke("new_hilo", .)
+}
