@@ -41,6 +41,14 @@ hilo <- function(x, ...){
   UseMethod("hilo")
 }
 
+#' @export
+hilo.default <- function(x, ...){
+  abort(sprintf(
+    "Objects of type `%s` are not supported by `hilo()`, you can create a custom `hilo` with `new_hilo()`",
+    class(x)
+  ))
+}
+
 #' Helpers for "hilo"
 #'
 #' @param x A "hilo" object.
