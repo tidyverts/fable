@@ -19,7 +19,7 @@ new_quantile(f, ..., transformation = ~.x, abbr = NULL)
 Create a quantile object
 }
 \examples{
-qt <- new_quantile(qnorm, mean = rep(3, 100), sd = seq(0, 1, length.out=100), transformation = exp, abbr = "N")
+qt <- new_quantile(qnorm, mean = rep(3, 10), sd = seq(0, 1, length.out=10), transformation = exp, abbr = "N")
 qt
-qt(0.5)
+hilo(qt, 95)
 }
