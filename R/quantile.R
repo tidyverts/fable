@@ -13,28 +13,15 @@
 new_quantile <- function(f, ..., transformation = ~ .x, abbr = NULL){
   f_quo <- enquo(f)
   t_fn <- as_mapper(transformation)
-  new_function(alist(level = c(80, 95)), expr({
-    if(any(level > 1)){
-      level <- level/100
-    }
-    eval_quantile(!!sym("params"), level)
-  })) %>% 
-    set_env(., child_env(environment(.),
-                         params = list(list(
-                           f = f,
-                           t = t_fn,
-                           args = dots_list(...),
-                           qname = abbr%||%quo_text(f_quo),
-                           trans = !is.name(body(t_fn))
-                         )))) %>%
+  
+  list(list(
+    f = f,
+    t = t_fn,
+    args = dots_list(...),
+    qname = abbr%||%quo_text(f_quo),
+    trans = !is.name(body(t_fn))
+  )) %>%
     enclass("quantile")
-}
-
-eval_quantile <- function(params, level){
-  params %>% map(function(param){
-    eval_tidy(quo(param$t(param$f(level, !!!param$args))))
-  }) %>% 
-    unlist
 }
 
 #' @export
@@ -50,16 +37,16 @@ print.quantile <- function(x, ...) {
 
 #' @export
 format.quantile <- function(x, ...){
-  environment(x)$params %>%
-    map(function(param){
-      args <- param$args %>%
+  x %>%
+    map(function(qt){
+      args <- qt$args %>%
         imap(~ paste0(ifelse(nchar(.y)>0, paste0(.y, " = "), ""), format(.x, trim = TRUE, digits = 2))) %>%
         invoke("paste", ., sep = ", ")
       out <- paste0(
-        param$qname,
+        qt$qname,
         "(", args, ")"
       )
-      if(param$trans){
+      if(qt$trans){
         paste0("t(", out, ")")
       }
       else{
@@ -70,34 +57,69 @@ format.quantile <- function(x, ...){
 }
 
 #' @export
-`[.quantile` <- function(x, ...){
-  environment(x)$args <- environment(x)$args %>%
-    map(function(x) x[...])
-  x
+`[.quantile` <- function(x, i, ...){
+  if(is_logical(i)){
+    i <- which(i)
+  }
+  abs_i <- abs(i)
+  sign_i <- sign(i)
+  
+  is_neg <- any(sign_i<=0)
+  if(is_neg && any(sign_i>0)){
+    abort("only 0's may be mixed with negative subscripts")
+  }
+  if(is_neg){
+    sign_i <- -1
+  }
+  else{
+    sign_i <- 1
+  }
+  
+  qt_lens <- qt_lengths(x)
+  offset <- cumsum(qt_lens)-qt_lens[1]
+  x <- map2(qt_lens, offset,
+       ~ sign_i*(intersect(abs_i,seq_len(.x) + .y) - .y)) %>%
+    map2(x, function(i, qt){
+      if(!is_neg || length(i)>0){
+        qt$args <- qt$args %>%
+          map(function(arg){arg[i, ...]})
+      }
+      qt
+    })
+  x[qt_lengths(x)>0] %>%
+    enclass("quantile")
 }
 
 #' @export
 c.quantile <- function(...){
-  x <- dots_list(...)[[1]]
-  environment(x)$params <- dots_list(...) %>% map(~ environment(.x)$params) %>% invoke("c", .)
-  x
+  dots_list(...) %>%
+    map(~ .x[[1]]) %>%
+    enclass("quantile")
 }
 
 #' @export
 length.quantile <- function(x){
-  environment(x)$params %>%
-    map(function(param){
-      param %>%
-        map(length) %>%
-        invoke("max", .)
-    }) %>%
-    invoke("sum", .)
+  sum(qt_lengths(x))
 }
 
-#' @importFrom ggplot2 aes_
-autoplot.quantile <- function(q_fn, q_range = c(0.0001, 0.9999), precision = 0.01){
-  tibble(x = seq(q_range[1], q_range[2], by = precision)) %>%
-    mutate(!!"density":=q_fn(!!sym("x"))) %>%
-    ggplot(aes_(x=~x, y=~density)) + 
-    geom_line()
+qt_lengths <- function(x){
+  x %>%
+    map_dbl(function(qt){
+      len <- qt$args %>% 
+        map(length)
+      if(any(len %>% map_lgl(~length(.x)>0))){
+        len %>% invoke("max", .)
+      }
+      else{
+        0
+      }
+    })
 }
+
+# #' @importFrom ggplot2 aes_
+# autoplot.quantile <- function(q_fn, q_range = c(0.0001, 0.9999), precision = 0.01){
+#   tibble(x = seq(q_range[1], q_range[2], by = precision)) %>%
+#     mutate(!!"density":=q_fn(!!sym("x"))) %>%
+#     ggplot(aes_(x=~x, y=~density)) + 
+#     geom_line()
+# }
