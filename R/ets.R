@@ -11,6 +11,17 @@
 #' 
 #' @importFrom forecast ets
 ETS <- function(data, formula, period = "smallest", ...){
+  # Capture user call
+  cl <- call_standardise(match.call())
+  
+  # Coerce data
+  data <- as_tsibble(data)
+  
+  # Handle multivariate inputs
+  if(n_keys(data) > 1){
+    return(multi_univariate(data, cl))
+  }
+  
   # Define specials
   specials <- new_specials_env(
     error = function(method = "Z", alpha = NULL, range = c(1e-04, 0.9999)){
@@ -31,7 +42,7 @@ ETS <- function(data, formula, period = "smallest", ...){
   )
   
   # Parse model
-  model_inputs <- parse_model(data, formula, specials = specials, univariate = TRUE)
+  model_inputs <- parse_model(data, formula, specials = specials)
   
   # Rebuild `ets` arguments
   parsed_args <- eval_tidy(model_inputs$args)
@@ -54,7 +65,7 @@ ETS <- function(data, formula, period = "smallest", ...){
   model_inputs$args <- quo(args)
   
   # Output model
-  eval_tidy(quo(wrap_ts_model("ets", !!!model_inputs, period = period, ...)))
+  eval_tidy(quo(wrap_ts_model("ets", !!!model_inputs, period = period, cl = cl, ...)))
 }
 
 model_sum.ets <- function(x){
