@@ -15,5 +15,6 @@ multi_univariate <- function(data, cl){
                        })
            ) %>%
     mutate(data = map(model, ~.x$data[[1]]),
-           model = map(model, ~.x$model[[1]]))
+           model = map(model, ~.x$model[[1]])) %>%
+    enclass("mable")
 }
