@@ -60,7 +60,7 @@ parse_response <- function(model_lhs){
 #' @importFrom tibble tibble
 parse_model <- function(data, model, specials, univariate = TRUE){
   # Capture user call
-  cl <- call_standardise(sys.call(-1))
+  cl <- call_standardise(sys.call(sys.parent()))
   
   # Coerce data
   data <- as_tsibble(data)
