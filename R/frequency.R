@@ -1,10 +1,4 @@
-#' @inherit tsibble::guess_frequency
-#' @param x A tsibble
 #' @importFrom dplyr pull
-#' @examples
-#' library(tsibble)
-#' guess_frequency(pedestrian) 
-#' @export
 guess_frequency.tbl_ts <- function(x){
   x %>%
     pull(!!index(.)) %>%
