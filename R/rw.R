@@ -24,8 +24,17 @@
 #' 
 #' @export
 RW <- function(data, formula = ~ lag(1)){
+  # Capture user call
+  cl <- call_standardise(match.call())
+  
   # Coerce data
   data <- as_tsibble(data)
+  
+  # Handle multivariate inputs
+  if(n_keys(data) > 1){
+    return(multi_univariate(data, cl))
+  }
+  
   # Define specials
   specials <- new_specials_env(
     lag = function(lag = 1){
@@ -45,11 +54,11 @@ RW <- function(data, formula = ~ lag(1)){
   )
   
   # Parse model
-  model_inputs <- parse_model(data, formula, specials = specials, univariate = TRUE) %>% 
+  model_inputs <- parse_model(data, formula, specials = specials) %>% 
     flatten_first_args
   
   # Output model
-  out <- eval_tidy(quo(wrap_ts_model("Arima", !!!model_inputs, period = 1)))
+  out <- eval_tidy(quo(wrap_ts_model("Arima", !!!model_inputs, period = 1, cl=cl)))
   out[["model"]][[1]] <- enclass(out[["model"]][[1]], "RW")
   out
   # TODO: Adjust prediction intervals to allow for drift coefficient standard error
@@ -72,8 +81,16 @@ NAIVE <- RW
 #'
 #' @export
 SNAIVE <- function(data, formula = ~ lag("smallest")){
+  # Capture user call
+  cl <- call_standardise(match.call())
+  
   # Coerce data
   data <- as_tsibble(data)
+  
+  # Handle multivariate inputs
+  if(n_keys(data) > 1){
+    return(multi_univariate(data, cl))
+  }
   
   # Define specials
   specials <- new_specials_env(
@@ -95,11 +112,11 @@ SNAIVE <- function(data, formula = ~ lag("smallest")){
   )
   
   # Parse model
-  model_inputs <- parse_model(data, formula, specials = specials, univariate = TRUE) %>% 
+  model_inputs <- parse_model(data, formula, specials = specials) %>% 
     flatten_first_args
   
   # Output model
-  out <- eval_tidy(quo(wrap_ts_model("Arima", !!!model_inputs, period = 1)))
+  out <- eval_tidy(quo(wrap_ts_model("Arima", !!!model_inputs, period = 1, cl=cl)))
   out[["model"]][[1]] <- enclass(out[["model"]][[1]], "RW")
   out
 }

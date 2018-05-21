@@ -58,20 +58,7 @@ parse_response <- function(model_lhs){
 }
 
 #' @importFrom tibble tibble
-parse_model <- function(data, model, specials, univariate = TRUE){
-  # Capture user call
-  cl <- call_standardise(sys.call(sys.parent()))
-  
-  # Coerce data
-  data <- as_tsibble(data)
-
-  # Handle multivariate inputs
-  if(univariate){
-    if(n_keys(data) > 1){
-      return(multi_univariate(data, cl))
-    }
-  }
-
+parse_model <- function(data, model, specials){
   # Clean inputs
   if(missing(model)){
     model <- sym(measured_vars(data)[1])
@@ -95,11 +82,12 @@ parse_model <- function(data, model, specials, univariate = TRUE){
   }
   
   # Parse model
-  quos(data = data,
-       model = model,
-       !!!parse_model_lhs(model_lhs(model), data),
-       !!!parse_model_rhs(model_rhs(model), specials),
-       cl = cl)
+  quos(
+    data = data,
+    model = model,
+    !!!parse_model_lhs(model_lhs(model), data),
+    !!!parse_model_rhs(model_rhs(model), specials)
+  )
 }
 
 parse_model_rhs <- function(model_rhs, specials){

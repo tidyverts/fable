@@ -9,6 +9,17 @@
 #' elecdemand %>% STL(Demand ~ season(period = "day"))
 #' @export
 STL <- function(data, formula, ...){
+  # Capture user call
+  cl <- call_standardise(match.call())
+  
+  # Coerce data
+  data <- as_tsibble(data)
+  
+  # Handle multivariate inputs
+  if(n_keys(data) > 1){
+    return(multi_univariate(data, cl))
+  }
+  
   # Define specials
   specials <- new_specials_env(
     trend = function(window = NULL, degree = 1, jump = ceiling(window/10)){
@@ -23,7 +34,7 @@ STL <- function(data, formula, ...){
   )
   
   # Parse model
-  model_inputs <- parse_model(data, formula, specials = specials, univariate = TRUE) %>% 
+  model_inputs <- parse_model(data, formula, specials = specials) %>% 
     flatten_first_args
   
   eval_tidy(quo(model_STL(!!!model_inputs, ...)))
