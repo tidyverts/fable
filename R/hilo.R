@@ -62,7 +62,6 @@ hilo.default <- function(x, ...){
 lower <- function(x) {
   stopifnot(is_hilo(x))
   x$lower
-  browser()
 }
 
 #' @rdname helper
