@@ -45,7 +45,7 @@ forecast.ts_model <- function(object, data, bootstrap = FALSE, ...){
   
   tsibble(!!index(data) := future_idx,
           mean = fc$mean, 
-          quantile = map2(fc$mean, se, ~ new_quantile(qnorm, .x, sd = .y, transformation = invert_transformation(object%@%"transformation"), abbr = "N")),
+          quantile = new_quantile(qnorm, fc$mean, sd = se, transformation = invert_transformation(object%@%"transformation"), abbr = "N"),
           index = !!index(data))
 }
 
