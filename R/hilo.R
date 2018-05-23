@@ -13,6 +13,7 @@
 #' @examples
 #' new_hilo(lower = rnorm(10), upper = rnorm(10) + 5, level = 95L)
 #'
+#' @importFrom purrr pmap
 #' @export
 new_hilo <- function(lower, upper, level = NULL) {
   if (missing(lower) || missing(upper)) {
@@ -31,7 +32,7 @@ new_hilo <- function(lower, upper, level = NULL) {
     }
   }
   
-  list(lower = lower, upper = upper, level = level) %>%
+  pmap(list(lower = lower, upper = upper, level = level), list) %>%
     enclass("hilo")
 }
 
@@ -99,9 +100,10 @@ bt <- function(x, hilo) {
   x >= hilo$lower & x <= hilo$upper
 }
 
+#' @importFrom purr map_dbl
 #' @export
 `$.hilo` <- function(x, name) {
-  x[[name]]
+  map_dbl(x, name)
 }
 
 #' @export
@@ -184,4 +186,15 @@ compact_hilo <- function(x, digits = NULL) {
   } else {
     paste0(rng, crayon::underline(lvl))
   }
+}
+
+#' @export
+as.data.frame.hilo <- function(
+  x, row.names = NULL, optional = FALSE, ...,
+  nm = paste(deparse(substitute(x), width.cutoff = 500L), collapse = " ")
+) {
+  as.data.frame.vector(
+    x, row.names = row.names, optional = optional, ...,
+    nm = nm
+  )
 }
