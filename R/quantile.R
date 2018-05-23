@@ -24,6 +24,11 @@ new_quantile <- function(f, ..., transformation = ~ .x, abbr = NULL){
 
 #' @export
 type_sum.quantile <- function(x){
+  "qt"
+}
+
+#' @export
+obj_sum.quantile <- function(x) {
   format(x)
 }
 
