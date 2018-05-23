@@ -14,15 +14,12 @@
 new_quantile <- function(f, ..., transformation = ~ .x, abbr = NULL){
   f_quo <- enquo(f)
   t_fn <- as_mapper(transformation)
-  
-  list(list(
-    f = f,
-    t = t_fn,
-    args = dots_list(...),
-    qname = abbr%||%quo_text(f_quo),
-    trans = !is.name(body(t_fn))
-  )) %>%
-    enclass("quantile")
+  pmap(dots_list(...), list) %>%
+    enclass("quantile",
+            f = f,
+            t = t_fn,
+            qname = abbr%||%quo_text(f_quo),
+            trans = !is.name(body(t_fn)))
 }
 
 #' @export
@@ -39,82 +36,46 @@ print.quantile <- function(x, ...) {
 #' @export
 format.quantile <- function(x, ...){
   x %>%
-    map(function(qt){
-      args <- qt$args %>%
+    map_chr(function(qt){
+      args <- qt %>%
         imap(~ paste0(ifelse(nchar(.y)>0, paste0(.y, " = "), ""), format(.x, trim = TRUE, digits = 2))) %>%
         invoke("paste", ., sep = ", ")
       out <- paste0(
-        qt$qname,
+        attr(x, "qname"),
         "(", args, ")"
       )
-      if(qt$trans){
+      if(attr(x, "trans")){
         paste0("t(", out, ")")
       }
       else{
         out
       }
-    }) %>%
-    invoke("c", .)
+    })
 }
 
 #' @export
-`[.quantile` <- function(x, i, ...){
-  if(is_logical(i)){
-    i <- which(i)
-  }
-  abs_i <- abs(i)
-  sign_i <- sign(i)
-  
-  is_neg <- any(sign_i<=0)
-  if(is_neg && any(sign_i>0)){
-    abort("only 0's may be mixed with negative subscripts")
-  }
-  if(is_neg){
-    sign_i <- -1
-  }
-  else{
-    sign_i <- 1
-  }
-  
-  qt_lens <- qt_lengths(x)
-  offset <- cumsum(qt_lens)-qt_lens[1]
-  x <- map2(qt_lens, offset,
-       ~ sign_i*(intersect(abs_i,seq_len(.x) + .y) - .y)) %>%
-    map2(x, function(i, qt){
-      if(!is_neg || length(i)>0){
-        qt$args <- qt$args %>%
-          map(function(arg){arg[i, ...]})
-      }
-      qt
-    })
-  x[qt_lengths(x)>0] %>%
-    enclass("quantile")
+`[.quantile` <- function(x, ...){
+  enclass(NextMethod(), "quantile", 
+          !!!attributes(x))
 }
 
 #' @export
 c.quantile <- function(...){
-  dots_list(...) %>%
-    map(~ .x[[1]]) %>%
-    enclass("quantile")
+  sameAttr <- dots_list(...) %>%
+    map(~ if(!inherits(.x, "quantile")) {abort("Only combining quantiles is supported")} else {attributes(.x)}) %>%
+    duplicated %>%
+    .[-1]
+  if(any(!sameAttr)){
+    abort("Cannot combine quantiles of different types.")
+  }
+    
+  enclass(NextMethod(), "quantile", 
+          !!!attributes(..1))
 }
 
 #' @export
 length.quantile <- function(x){
-  sum(qt_lengths(x))
-}
-
-qt_lengths <- function(x){
-  x %>%
-    map_dbl(function(qt){
-      len <- qt$args %>% 
-        map(length)
-      if(any(len %>% map_lgl(~length(.x)>0))){
-        len %>% invoke("max", .)
-      }
-      else{
-        0
-      }
-    })
+  NextMethod()
 }
 
 # #' @importFrom ggplot2 aes_
@@ -134,8 +95,7 @@ hilo.quantile <- function(x, level = 95, ...){
   }
   list(lower = 50-level/2, upper = 50+level/2) %>%
     map(function(level){
-      x %>%
-        map(~ eval_tidy(quo(.x$t(.x$f(level/100, !!!(.x$args)))))) %>%
+      eval_tidy(quo(attr(x, "t")(attr(x, "f")(level/100, !!!merge_named_list(!!!x))))) %>%
         unlist(recursive = FALSE, use.names = FALSE)
     }) %>%
     append(list(level = level)) %>%
