@@ -100,7 +100,7 @@ bt <- function(x, hilo) {
   x >= hilo$lower & x <= hilo$upper
 }
 
-#' @importFrom purr map_dbl
+#' @importFrom purrr map_dbl
 #' @export
 `$.hilo` <- function(x, name) {
   map_dbl(x, name)
