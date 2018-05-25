@@ -14,7 +14,12 @@ wrap_ts_model <- function(modelfn, data, model, response, transformation, args, 
   fit$series <- expr_text(response)
   
   # Output model
-  new_tibble(list(data = list(data), model = list(enclass(fit, model = model, response = response, transformation = transformation, subclass = "ts_model"))), subclass = "mable")
+  data %>%
+    group_by(!!!key(.)) %>%
+    nest %>%
+    mutate(model = list(enclass(fit, model = model, response = response, transformation = transformation,
+                                subclass = "ts_model"))) %>%
+    enclass("mable")
 }
 
 #' @export
