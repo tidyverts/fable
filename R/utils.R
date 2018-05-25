@@ -73,6 +73,15 @@ merge_named_list <- function(...){
     set_names(all_names)
 }
 
+merge_pos_list <- function(...){
+  all_pos <- dots_list(...) %>% map(seq_along) %>% invoke(c, .) %>% unique
+  all_pos %>%
+    map(function(pos){
+      dots_list(...) %>% map(function(vals) vals[[pos]]) %>% invoke(c, .)
+    }) %>%
+    set_names(names(dots_list(...)[[1]]))
+}
+
 flatten_first_args <- function(parsed_model){
   parsed_model$args <- eval_tidy(parsed_model$args) %>%
     map(~ if(length(.x) > 1){stop("Only one special of each type is allowed for this model")} else {.x[[1]]}) %>%
