@@ -28,3 +28,28 @@ autoplot.mable <- function(object, ...){
   }
   autoplot(object$model[[1]])
 }
+#' @importFrom ggplot2 fortify
+#' @export
+fortify.fable <- function(object, level = c(80, 95)){
+  # Tidy format with repeated predicted values
+  suppressWarnings(
+    object %>% 
+      select(!!!key(object), forecast) %>%
+      mutate(
+        forecast = map(forecast, 
+                       function(fc){
+                         fc %>%
+                           mutate(!!!set_names(map(level, ~ expr(hilo(!!sym("quantile"), !!.x))), level)) %>%
+                           select(exclude("quantile"))
+                       })
+      ) %>%
+      enclass("lst_ts") %>%
+      unnest(forecast) %>% #, .with = id(!!!key(object))) %>%
+      gather(level, hilo, -(!!index(.)), -mean) %>%
+      mutate(hilo = enclass(hilo, "hilo"),
+             lower = lower(hilo),
+             upper = upper(hilo)) %>%
+      select(exclude("hilo"))
+  )
+}
+
