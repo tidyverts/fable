@@ -100,7 +100,7 @@ hilo.quantile <- function(x, level = 95, ...){
   }
   list(lower = 50-level/2, upper = 50+level/2) %>%
     map(function(level){
-      eval_tidy(quo(attr(x, "t")(attr(x, "f")(level/100, !!!merge_named_list(!!!x))))) %>%
+      eval_tidy(quo(attr(x, "t")(attr(x, "f")(level/100, !!!merge_pos_list(!!!x))))) %>%
         unlist(recursive = FALSE, use.names = FALSE)
     }) %>%
     append(list(level = level)) %>%
