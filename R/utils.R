@@ -109,3 +109,7 @@ enclass <- function(x, subclass, ...){
 rm_class <- function(x, class){
   `class<-`(x, class(x)[!(class(x) %in% class)])
 }
+
+exclude <- function(match, vars = tidyselect::peek_vars()){
+  vars[-match(match, vars)]
+}
