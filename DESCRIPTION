@@ -21,7 +21,8 @@ Imports:
     magrittr,
     forecast,
     stats,
-    crayon
+    crayon,
+    colorspace
 Suggests:
     knitr,
     rmarkdown,

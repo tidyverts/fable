@@ -28,6 +28,24 @@ autoplot.mable <- function(object, ...){
   }
   autoplot(object$model[[1]])
 }
+
+# Add multiple via facets by rows
+autoplot.fable <- function(object, level = c(80, 95), ...){
+  autoplot(suppressMessages(as_tsibble(unnest(object, !!sym("data"))))) +
+    autolayer(object)
+}
+
+autolayer.fable <- function(object, level = c(80, 95), ...){
+  data <- fortify(object, level = level, ...)
+  mapping <- eval_tidy(quo(aes(x = !!index(data), y = !!sym("mean"))))
+  if(!is.null(level)){
+    mapping$level <- sym("level")
+    mapping$ymin <- sym("lower")
+    mapping$ymax <- sym("upper")
+  }
+  geom_forecast(mapping = mapping, stat = "identity", data = data)
+}
+
 #' @importFrom ggplot2 fortify
 #' @export
 fortify.fable <- function(object, level = c(80, 95)){
