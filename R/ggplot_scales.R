@@ -106,6 +106,7 @@ guide_level <- function(title = waiver(), max_discrete = 5, ...) {
 #'
 #' @export
 #' @rdname guide-helpers
+#' @importFrom ggplot2 guide_colourbar
 #' @keywords internal
 guide_train.level_guide <- function(guide, scale, aesthetic) {
   args <- append(guide[!(names(guide)%in%c("max_discrete", "args"))], guide$args)
