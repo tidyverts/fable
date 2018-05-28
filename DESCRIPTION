@@ -22,7 +22,9 @@ Imports:
     forecast,
     stats,
     crayon,
-    colorspace
+    colorspace,
+    digest,
+    scales
 Suggests:
     knitr,
     rmarkdown,
