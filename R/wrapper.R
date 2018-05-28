@@ -49,7 +49,7 @@ forecast.ts_model <- function(object, data, bootstrap = FALSE, ...){
   future_idx <- seq(tail(idx, 1), length.out = length(fc$mean) + 1, by = time_unit(idx)) %>% tail(-1)
   
   tsibble(!!index(data) := future_idx,
-          mean = fc$mean, 
+          mean = invert_transformation(object%@%"transformation")(fc$mean), 
           quantile = new_quantile(qnorm, fc$mean, sd = se, transformation = invert_transformation(object%@%"transformation"), abbr = "N"),
           index = !!index(data))
 }
