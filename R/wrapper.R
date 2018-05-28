@@ -1,10 +1,11 @@
 #' @importFrom tibble new_tibble
+#' @importFrom dplyr grouped_df
 wrap_ts_model <- function(modelfn, data, model, response, transformation, args, period = "all", cl = "Call information lost", ...){
   period <- get_frequencies(period, data)
 
   # Fit model
   fit <- eval_tidy(call2(modelfn, expr(msts(!!model_lhs(model), !!period)), !!!args, !!!dots_list(...)), data = data)
-  
+
   # Backtransform
   fit$fitted <- invert_transformation(transformation)(fit$fitted)
   fit$x <- invert_transformation(transformation)(fit$x)
@@ -15,8 +16,8 @@ wrap_ts_model <- function(modelfn, data, model, response, transformation, args, 
   
   # Output model
   data %>%
-    group_by(!!!key(.)) %>%
-    nest %>%
+    grouped_df(key_vars(.)) %>%
+    nest %>% 
     mutate(model = list(enclass(fit, model = model, response = response, transformation = transformation,
                                 subclass = "ts_model"))) %>%
     enclass("mable")
@@ -44,7 +45,6 @@ forecast.ts_model <- function(object, data, bootstrap = FALSE, ...){
   fc <- forecast(object, ...)
   # Assume normality
   se <- (fc$mean - fc$lower[,1])/qnorm(0.5 * (1 + fc$level[1] / 100))
-  
   idx <- data %>% pull(!!index(.))
   future_idx <- seq(tail(idx, 1), length.out = length(fc$mean) + 1, by = time_unit(idx)) %>% tail(-1)
   
