@@ -90,12 +90,12 @@ GeomForecast <- ggplot2::ggproto("GeomForecast", ggplot2::Geom,
                                          }
                                          return(list(
                                            grob = GeomForecastIntervalGeom(x, panel_scales, coord),
-                                           range1 = mean(x[,"ymax"] - x[,"ymin"], na.rm=TRUE)
+                                           range = mean(x[,"ymax"] - x[,"ymin"], na.rm=TRUE)
                                          )) ## Create list pair with average ymin/ymax to order layers
                                        }
                                      )
                                      # Sort GrobList
-                                     GrobList <- lapply(GrobList, function(x) x[["grob"]])[order(vapply(GrobList, FUN=function(x) x[["range1"]], FUN.VALUE=numeric(1)), decreasing = TRUE)]
+                                     GrobList <- lapply(GrobList, function(x) x[["grob"]])[order(vapply(GrobList, FUN=function(x) x[["range"]], FUN.VALUE=numeric(1)), decreasing = TRUE)]
                                    }
                                    else{
                                      GrobList <- list()
