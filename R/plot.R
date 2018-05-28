@@ -61,7 +61,7 @@ fortify.fable <- function(object, level = c(80, 95)){
                            select(exclude("quantile"))
                        })
       ) %>%
-      unnest(forecast, key = id(!!!key(object))) %>%
+      unnest(forecast, key = id(!!!key_vars(object))) %>%
       gather(level, hilo, -(!!index(.)), -mean) %>%
       mutate(hilo = enclass(hilo, "hilo"),
              level = level(hilo),
