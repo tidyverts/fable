@@ -30,11 +30,13 @@ autoplot.mable <- function(object, ...){
 }
 
 # Add multiple via facets by rows
+#' @export
 autoplot.fable <- function(object, level = c(80, 95), ...){
   autoplot(suppressMessages(as_tsibble(unnest(object, !!sym("data"))))) +
     autolayer(object)
 }
 
+#' @export
 autolayer.fable <- function(object, level = c(80, 95), ...){
   data <- fortify(object, level = level, ...)
   mapping <- eval_tidy(quo(aes(x = !!index(data), y = !!sym("mean"))))
