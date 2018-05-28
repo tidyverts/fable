@@ -3,7 +3,7 @@
 residuals.mable <- function(object, ...){
   object %>%
     transmute(!!!key(.),
-              residuals = map2(data, model,
+              residuals = map2(!!sym("data"), !!sym("model"),
                                function(data, model) {
                                  data %>% transmute(residuals = data[[expr_text(attr(model, "response"))]] - as.numeric(fitted(model)))
                                }
@@ -17,7 +17,7 @@ residuals.mable <- function(object, ...){
 fitted.mable <- function(object, ...){
   object %>%
     transmute(!!!key(.),
-              fitted = map2(data, model,
+              fitted = map2(!!sym("data"), !!sym("model"),
                              function(data, model) {
                                data %>% transmute(fitted = as.numeric(fitted(model)))
                              }
