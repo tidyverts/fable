@@ -12,7 +12,7 @@ GeomForecast
 
 geom_forecast(mapping = NULL, data = NULL, stat = "forecast",
   position = "identity", na.rm = FALSE, show.legend = NA,
-  inherit.aes = TRUE, PI = TRUE, showgap = TRUE, series = NULL,
+  inherit.aes = TRUE, level = c(80, 95), showgap = TRUE, series = NULL,
   model = ETS(y), fc.args = list(), ...)
 
 StatForecast
@@ -53,8 +53,9 @@ than combining with them. This is most useful for helper functions that
 define both data and aesthetics and shouldn't inherit behaviour from the
 default plot specification, e.g. \code{\link{borders}}.}
 
-\item{PI}{If \code{FALSE}, confidence intervals will not be plotted, giving
-only the forecast line.}
+\item{level}{A vector of numbers between 0 and 100 which define the confidence
+range to be plotted. If \code{NULL}, confidence intervals will not be plotted,
+giving only the forecast line.}
 
 \item{showgap}{If \code{showgap=FALSE}, the gap between the historical
 observations and the forecasts is removed.}

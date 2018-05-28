@@ -4,7 +4,7 @@ StatForecast <- ggplot2::ggproto(
   "StatForecast", ggplot2::Stat,
   required_aes = c("x", "y"),
   
-  compute_group = function(data, scales, params, PI=TRUE, showgap=TRUE, series=NULL,
+  compute_group = function(data, scales, params, showgap=TRUE, series=NULL,
                            model=ETS(y), fc.args = list(), level = c(80, 95), ...) {
     model <- enexpr(model)
     if(inherits(scales$x, "ScaleContinuousDatetime")){

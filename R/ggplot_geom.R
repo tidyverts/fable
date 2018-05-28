@@ -162,8 +162,9 @@ globalVariables("y")
 #' than combining with them. This is most useful for helper functions that
 #' define both data and aesthetics and shouldn't inherit behaviour from the
 #' default plot specification, e.g. \code{\link{borders}}.
-#' @param PI If \code{FALSE}, confidence intervals will not be plotted, giving
-#' only the forecast line.
+#' @param level A vector of numbers between 0 and 100 which define the confidence 
+#' range to be plotted. If \code{NULL}, confidence intervals will not be plotted, 
+#' giving only the forecast line.
 #' @param showgap If \code{showgap=FALSE}, the gap between the historical
 #' observations and the forecasts is removed.
 #' @param series Matches an unidentified forecast layer with a coloured object
@@ -192,14 +193,14 @@ globalVariables("y")
 #' @export
 geom_forecast <- function(mapping = NULL, data = NULL, stat = "forecast",
                           position = "identity", na.rm = FALSE, show.legend = NA,
-                          inherit.aes = TRUE, PI=TRUE, showgap=TRUE, series=NULL, 
+                          inherit.aes = TRUE, level = c(80, 95), showgap=TRUE, series=NULL, 
                           model = ETS(y), fc.args = list(), ...) {
   # if (is_tsibble(mapping)) {
   #   data <- data.frame(y = as.numeric(mapping), x = as.numeric(time(mapping)))
   #   mapping <- ggplot2::aes_(y = ~y, x = ~x)
   # }
   if (stat == "forecast") {
-    paramlist <- list(na.rm = na.rm, PI = PI, showgap = showgap,
+    paramlist <- list(na.rm = na.rm, showgap = showgap, level = level,
                       series = series, model = substitute(model), fc.args = fc.args, ...)
     if (!inherits(mapping, "uneval")) {
       mapping <- ggplot2::aes_()
@@ -207,7 +208,7 @@ geom_forecast <- function(mapping = NULL, data = NULL, stat = "forecast",
     if (!is.null(series)) {
       mapping$colour <- quote(..series..)
     }
-    if (PI) {
+    if (!is.null(level)) {
       mapping$level <- quote(..level..)
     }
   }
