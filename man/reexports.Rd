@@ -14,6 +14,8 @@
 \alias{forecast}
 \alias{reexports}
 \alias{autoplot}
+\alias{reexports}
+\alias{autolayer}
 \title{Objects exported from other packages}
 \keyword{internal}
 \description{
@@ -23,7 +25,7 @@ below to see their documentation.
 \describe{
   \item{forecast}{\code{\link[forecast]{forecast}}}
 
-  \item{ggplot2}{\code{\link[ggplot2]{autoplot}}}
+  \item{ggplot2}{\code{\link[ggplot2]{autoplot}}, \code{\link[ggplot2]{autolayer}}}
 
   \item{magrittr}{\code{\link[magrittr]{\%>\%}}}
 
