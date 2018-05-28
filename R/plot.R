@@ -34,7 +34,7 @@ fortify.fable <- function(object, level = c(80, 95)){
   # Tidy format with repeated predicted values
   suppressWarnings(
     object %>% 
-      select(!!!key(object), forecast) %>%
+      select(!!!key_vars(object), forecast) %>%
       mutate(
         forecast = map(forecast, 
                        function(fc){
