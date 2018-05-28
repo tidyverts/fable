@@ -13,6 +13,21 @@ StatForecast <- ggplot2::ggproto(
     else if(inherits(scales$x, "ScaleContinuousDate")){
       index <- as.Date(data$x, origin = "1970-01-01")
     }
+    else if(inherits(scales$x, "ScaleContinuous")){
+      index <- data$x
+    }
+    else{
+      abort("Cannot determine time scale on x-axis. Perhaps produce your forecasts separately, then use `autolayer()`")
+    }
+    if(inherits(scales$x, "ScaleContinuousYearmonth")){
+      index <- tsibble::yearmonth(index)
+    }
+    else if(inherits(scales$x, "ScaleContinuousYearquarter")){
+      index <- tsibble::yearquarter(index)
+    }
+    else if(inherits(scales$x, "ScaleContinuousYearweek")){
+      index <- tsibble::yearweek(index)
+    }
 
     plot_data <- tsibble(x = index, y = data$y, index=x)
 

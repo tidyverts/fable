@@ -1,3 +1,49 @@
+#' tsibble datetime scales
+#' This set of scales defines new scales for aggregate time structures defined in tsibble.
+#' 
+#' @param ... Further arguments to be passed on to scale_x_date()
+#' 
+#' @return A ggproto object inheriting from `Scale`
+#' 
+#' @name scale_tsibble
+#' @rdname scale_tsibble
+NULL
+
+#' @importFrom ggplot2 scale_type
+#' @export
+scale_type.yearquarter <- function(x) c("yearquarter", "date", "continuous")
+
+#' @rdname scale_tsibble
+#' @inheritParams ggplot2::scale_x_datetime
+#' @export
+scale_x_yearquarter <- function(...) {
+  ggplot2::ggproto("ScaleContinuousYearquarter", ggplot2::scale_x_date(...))
+}
+
+#' @importFrom ggplot2 scale_type
+#' @export
+scale_type.yearmonth <- function(x) c("yearmonth", "date", "continuous")
+
+#' @rdname scale_tsibble
+#' @inheritParams ggplot2::scale_x_datetime
+#' @export
+scale_x_yearmonth <- function(...) {
+  ggplot2::ggproto("ScaleContinuousYearmonth", ggplot2::scale_x_date(...))
+}
+
+#' @importFrom ggplot2 scale_type
+#' @export
+scale_type.yearweek <- function(x) c("yearweek", "date", "continuous")
+
+#' @rdname scale_tsibble
+#' @inheritParams ggplot2::scale_x_datetime
+#' @export
+scale_x_yearweek <- function(...) {
+  ggplot2::ggproto("ScaleContinuousYearweek", ggplot2::scale_x_date(...))
+}
+
+ScaleContinuousYearmonth <- ggplot2::ggproto("ScaleContinuousYearmonth", ggplot2::ScaleContinuousDate)
+
 #' Level colour scales
 #'
 #' This set of scales defines new scales for level geoms equivalent to the
