@@ -33,7 +33,7 @@ autoplot.mable <- function(object, ...){
 #' @export
 autoplot.fable <- function(object, level = c(80, 95), ...){
   autoplot(suppressMessages(as_tsibble(unnest(object, !!sym("data"))))) +
-    autolayer(object)
+    autolayer(object, level = level, ...)
 }
 
 #' @export
