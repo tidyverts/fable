@@ -1,4 +1,4 @@
-#' @importFrom ggplot2 ggplot aes geom_line guides guide_legend
+#' @importFrom ggplot2 ggplot aes geom_line guides guide_legend xlab
 #' @export
 autoplot.tbl_ts <- function(object, var = sym(measured_vars(object)[1]), ...){
   if(!missing(var)){
