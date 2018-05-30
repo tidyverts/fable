@@ -12,8 +12,8 @@ GeomForecast
 
 geom_forecast(mapping = NULL, data = NULL, stat = "forecast",
   position = "identity", na.rm = FALSE, show.legend = NA,
-  inherit.aes = TRUE, level = c(80, 95), showgap = TRUE, series = NULL,
-  model = ETS(y), fc.args = list(), ...)
+  inherit.aes = TRUE, level = c(80, 95), showgap = TRUE, model = ETS(y),
+  fc.args = list(), ...)
 
 StatForecast
 }
@@ -59,9 +59,6 @@ giving only the forecast line.}
 
 \item{showgap}{If \code{showgap=FALSE}, the gap between the historical
 observations and the forecasts is removed.}
-
-\item{series}{Matches an unidentified forecast layer with a coloured object
-on the plot.}
 
 \item{model}{The time-series model used to produce the forecast. The data
 must be \code{y} (indicating aesthetic \code{y}), and the time index for \code{y} is determined from the
