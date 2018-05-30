@@ -18,7 +18,8 @@ autoplot.tbl_ts <- function(object, var = sym(measured_vars(object)[1]), ...){
   
   ggplot(object, eval_tidy(expr(aes(!!!aes_spec)))) + 
     geom_line() + 
-    guides(colour = guide_legend(paste0(map(key(object), expr_text), collapse = "/")))
+    guides(colour = guide_legend(paste0(map(key(object), expr_text), collapse = "/"))) + 
+    xlab(paste0(expr_text(index(object)), " [", format(interval(object)), "]"))
 }
 
 #' @export
