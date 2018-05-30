@@ -5,7 +5,7 @@ StatForecast <- ggplot2::ggproto(
   required_aes = c("x", "y"),
   
   compute_group = function(data, scales, params, showgap=TRUE, series=NULL,
-                           model=ETS(y), fc.args = list(), level = c(80, 95), ...) {
+                           model=ETS(y), fc.args = list(), levels = c(80, 95), ...) {
     model <- enexpr(model)
     if(inherits(scales$x, "ScaleContinuousDatetime")){
       index <- as.POSIXct(data$x, origin = "1970-01-01")
@@ -33,15 +33,20 @@ StatForecast <- ggplot2::ggproto(
 
     fit <- eval_tidy(quo(plot_data %>% !!model))
     fcast <- do.call("forecast", append(list(fit), fc.args))
-    fcast <- fortify(fcast, level = level, showgap = showgap) %>%
+    fcast <- fortify(fcast, level = levels, showgap = showgap) %>%
       rename(!!!exprs(y = !!sym("mean"), ymin = !!sym("lower"), ymax = !!sym("upper"))) %>%
       mutate(x := as.numeric(!!sym("x")))
-    if (!is.null(series)) {
-      if (data$group[1] > length(series)) {
-        message("Recycling series argument, please provide a series name for each time series")
-      }
-      fcast <- transform(fcast, series = series[(abs(data$group[1]) - 1) %% length(series) + 1])
-    }
-    fcast
+    
+    extra_vars <- data[-na.omit(match(c("x", "y", "level", "ymin", "ymax"), colnames(data)))] %>%
+      as.list %>%
+      map(unique) %>%
+      map(~if(length(.x)>1){
+          warning("Plot parameters unable to be set by `stat_forecast`, defaulting to first available values")
+          .x[1]
+        } else {
+          .x
+        })
+    fcast %>%
+      mutate(!!!extra_vars)
   }
 )

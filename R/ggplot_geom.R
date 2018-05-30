@@ -193,14 +193,14 @@ globalVariables("y")
 #' @export
 geom_forecast <- function(mapping = NULL, data = NULL, stat = "forecast",
                           position = "identity", na.rm = FALSE, show.legend = NA,
-                          inherit.aes = TRUE, level = c(80, 95), showgap=TRUE, series=NULL, 
+                          inherit.aes = TRUE, showgap=TRUE, series=NULL, level=c(88, 95),
                           model = ETS(y), fc.args = list(), ...) {
   # if (is_tsibble(mapping)) {
   #   data <- data.frame(y = as.numeric(mapping), x = as.numeric(time(mapping)))
   #   mapping <- ggplot2::aes_(y = ~y, x = ~x)
   # }
   if (stat == "forecast") {
-    paramlist <- list(na.rm = na.rm, showgap = showgap, level = level,
+    paramlist <- list(na.rm = na.rm, showgap = showgap, levels = level,
                       series = series, model = substitute(model), fc.args = fc.args, ...)
     if (!inherits(mapping, "uneval")) {
       mapping <- ggplot2::aes_()
