@@ -50,9 +50,30 @@ autolayer.fable <- function(object, level = c(80, 95), ...){
 
 #' @importFrom ggplot2 fortify
 #' @export
-fortify.fable <- function(object, level = c(80, 95)){
+fortify.fable <- function(object, level = c(80, 95), showgap = TRUE){
   # Tidy format with repeated predicted values
-  suppressWarnings(
+  if(!showgap){
+    extract_last_obs <- function(data, model) {
+      data %>%
+        filter(!!index(.) == last(!!index(.))) %>%
+        transmute(!!!syms(key_vars(.)),
+                  !!index(.),
+                  mean = !!attr(model, "response"),
+                  !!!set_names(map(level, ~ expr(new_hilo(mean, mean, !!.x))), level)
+        )
+    }
+    gap <- suppressWarnings(object %>% 
+      transmute(
+        !!!syms(key_vars(.)),
+        gap = map2(data,model, extract_last_obs)
+      ) %>%
+      unnest(gap, key = id(!!!key_vars(object)))
+    )
+  }
+  else{
+    gap <- NULL
+  }
+  tsbl <- suppressWarnings(
     object %>% 
       select(!!!key_vars(object), forecast) %>%
       mutate(
@@ -60,7 +81,9 @@ fortify.fable <- function(object, level = c(80, 95)){
                        function(fc){
                          fc %>%
                            mutate(!!!set_names(map(level, ~ expr(hilo(!!sym("quantile"), !!.x))), level)) %>%
-                           select(exclude("quantile"))
+                           select(exclude("quantile")) %>%
+                           mutate(mean = as.numeric(mean)) %>%
+                           rbind(gap)
                        })
       ) %>%
       unnest(forecast, key = id(!!!key_vars(object))) %>%
