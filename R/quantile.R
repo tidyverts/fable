@@ -1,21 +1,23 @@
-#' Create a quantile object
+# TODO: Write quantile.fcdist
+
+#' Create a forecast distribution object
 #'  
-#' @param f A quantile function
-#' @param ... Arguments for the quantile function
-#' @param transformation Transformation to be applied to quantiles
-#' @param abbr Abbreviation for display purposes, defaults to the name of the quantile function
+#' @param f A distribution function producing quantiles (such as qnorm)
+#' @param ... Arguments for `f` function
+#' @param transformation Transformation to be applied to resulting quantiles from `f`
+#' @param abbr Abbreviation for display purposes, defaults to the object name of `f`
 #' 
 #' @examples 
-#' qt <- new_quantile(qnorm, mean = rep(3, 10), sd = seq(0, 1, length.out=10),
+#' mydist <- new_fcdist(qnorm, mean = rep(3, 10), sd = seq(0, 1, length.out=10),
 #'  transformation = exp, abbr = "N")
-#' qt
-#' hilo(qt, 95)
+#' mydist
+#' hilo(mydist, 95)
 #' @export
-new_quantile <- function(f, ..., transformation = ~ .x, abbr = NULL){
+new_fcdist <- function(f, ..., transformation = ~ .x, abbr = NULL){
   f_quo <- enquo(f)
   t_fn <- as_mapper(transformation)
   pmap(dots_list(...), list) %>%
-    enclass("quantile",
+    enclass("fcdist",
             f = f,
             t = t_fn,
             qname = abbr%||%quo_text(f_quo),
@@ -23,23 +25,23 @@ new_quantile <- function(f, ..., transformation = ~ .x, abbr = NULL){
 }
 
 #' @export
-type_sum.quantile <- function(x){
-  "qt"
+type_sum.fcdist <- function(x){
+  "dist"
 }
 
 #' @export
-obj_sum.quantile <- function(x) {
+obj_sum.fcdist <- function(x) {
   format(x)
 }
 
 #' @export
-print.quantile <- function(x, ...) {
+print.fcdist <- function(x, ...) {
   print(format(x, ...), quote = FALSE)
   invisible(x)
 }
 
 #' @export
-format.quantile <- function(x, ...){
+format.fcdist <- function(x, ...){
   x %>%
     map_chr(function(qt){
       args <- qt %>%
@@ -59,39 +61,39 @@ format.quantile <- function(x, ...){
 }
 
 #' @export
-`[.quantile` <- function(x, ...){
-  enclass(NextMethod(), "quantile", 
+`[.fcdist` <- function(x, ...){
+  enclass(NextMethod(), "fcdist", 
           !!!attributes(x))
 }
 
 #' @export
-c.quantile <- function(...){
+c.fcdist <- function(...){
   sameAttr <- dots_list(...) %>%
-    map(~ if(!inherits(.x, "quantile")) {abort("Only combining quantiles is supported")} else {attributes(.x)}) %>%
+    map(~ if(!inherits(.x, "fcdist")) {abort("Only combining fcdist objects is supported")} else {attributes(.x)}) %>%
     duplicated %>%
     .[-1]
   if(any(!sameAttr)){
-    abort("Cannot combine quantiles of different types.")
+    abort("Cannot combine fcdist objects of different types.")
   }
     
-  enclass(NextMethod(), "quantile", 
+  enclass(NextMethod(), "fcdist", 
           !!!attributes(..1))
 }
 
 #' @export
-length.quantile <- function(x){
+length.fcdist <- function(x){
   NextMethod()
 }
 
 # #' @importFrom ggplot2 aes_
-# autoplot.quantile <- function(q_fn, q_range = c(0.0001, 0.9999), precision = 0.01){
+# autoplot.fcdist <- function(q_fn, q_range = c(0.0001, 0.9999), precision = 0.01){
 #   tibble(x = seq(q_range[1], q_range[2], by = precision)) %>%
 #     mutate(!!"density":=q_fn(!!sym("x"))) %>%
 #     ggplot(aes_(x=~x, y=~density)) + 
 #     geom_line()
 # }
 #' @export
-hilo.quantile <- function(x, level = 95, ...){
+hilo.fcdist <- function(x, level = 95, ...){
   if(length(level)!=1){
     abort("Only one value of 'level' is supported.")
   }

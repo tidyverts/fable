@@ -81,8 +81,8 @@ fortify.fable <- function(object, level = c(80, 95), showgap = TRUE){
         forecast = map(forecast, 
                        function(fc){
                          fc %>%
-                           mutate(!!!set_names(map(level, ~ expr(hilo(!!sym("quantile"), !!.x))), level)) %>%
-                           select(exclude("quantile")) %>%
+                           mutate(!!!set_names(map(level, ~ expr(hilo(!!sym("distribution"), !!.x))), level)) %>%
+                           select(exclude("distribution")) %>%
                            mutate(mean = as.numeric(mean)) %>%
                            rbind(gap)
                        })
