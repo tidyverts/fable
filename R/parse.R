@@ -61,7 +61,7 @@ parse_response <- function(model_lhs){
 parse_model <- function(data, model, specials){
   # Clean inputs
   if(missing(model)){
-    model <- sym(measured_vars(data)[1])
+    model <- guess_response(data)
     inform(sprintf(
       "Model not specified, using defaults set by `formula = %s`. Override this using `formula`.",
       expr_text(model)
@@ -74,7 +74,7 @@ parse_model <- function(data, model, specials){
   }
   
   if(is.null(model_lhs(model))){
-    model <- new_formula(lhs = sym(measured_vars(data)[1]), rhs = model_rhs(model))
+    model <- new_formula(lhs = guess_response(data), rhs = model_rhs(model))
     inform(sprintf(
       "Response not specified, automatically selected `%s`. Override this in the `formula`.",
       expr_text(measured_vars(data)[1])
