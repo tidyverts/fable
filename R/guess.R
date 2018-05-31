@@ -1,5 +1,5 @@
 guess_response <- function(.data, ...){
-  useMethod("guess_response")
+  UseMethod("guess_response")
 }
 
 guess_response.tbl_ts <- function(.data, ...){
