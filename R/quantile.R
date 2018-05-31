@@ -31,7 +31,12 @@ type_sum.fcdist <- function(x){
 
 #' @export
 obj_sum.fcdist <- function(x) {
-  format(x)
+  rep("dist", length(x))
+}
+
+#' @export
+pillar_shaft.fcdist <- function(x, ...){
+  pillar::new_pillar_shaft_simple(format(x), align = "left", min_width = 10)
 }
 
 #' @export
@@ -45,7 +50,8 @@ format.fcdist <- function(x, ...){
   x %>%
     map_chr(function(qt){
       args <- qt %>%
-        imap(~ paste0(ifelse(nchar(.y)>0, paste0(.y, " = "), ""), format(.x, trim = TRUE, digits = 2))) %>%
+        imap(~ paste0(ifelse(nchar(.y)>0, paste0(.y, " = "), ""),
+                      format(.x, trim = TRUE, digits = 2))) %>%
         invoke("paste", ., sep = ", ")
       out <- paste0(
         attr(x, "qname"),
@@ -107,4 +113,12 @@ hilo.fcdist <- function(x, level = 95, ...){
     }) %>%
     append(list(level = level)) %>%
     invoke("new_hilo", .)
+}
+
+#' @export
+quantile.fcdist <- function(x, probs = seq(0, 1, 0.25), ...){
+  map(probs, function(prob){
+    eval_tidy(quo(attr(x, "t")(attr(x, "f")(prob, !!!merge_pos_list(!!!x))))) %>%
+      unlist(recursive = FALSE, use.names = FALSE)
+  })
 }
