@@ -3,7 +3,7 @@
 #' @importFrom tsibble nest
 multi_univariate <- function(data, cl){
   data %>% 
-    group_by(!!!key_vars(data)) %>%
+    group_by(!!!syms(key_vars(data))) %>%
     nest %>%
     mutate(model = map(data,
                        function(x){
