@@ -115,6 +115,7 @@ hilo.fcdist <- function(x, level = 95, ...){
     invoke("new_hilo", .)
 }
 
+#' @importFrom stats quantile
 #' @export
 quantile.fcdist <- function(x, probs = seq(0, 1, 0.25), ...){
   map(probs, function(prob){
