@@ -1,47 +1,30 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+\#tidyforecast
+==============
 
-# tidyforecast
+[![Travis build status](https://travis-ci.org/tidyverts/tidyforecast.svg?branch=master)](https://travis-ci.org/tidyverts/tidyforecast) [![Licence](https://img.shields.io/badge/licence-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 
-The goal of tidyforecast is to …
+The R package *tidyforecast* provides methods and tools for displaying and analysing univariate time series forecasts including exponential smoothing via state space models and automatic ARIMA modelling. Data, model and forecast objects are all stored in a tidy format.
 
-## Installation
+Installation
+------------
 
-You can install tidyforecast from GitHub with:
+You can install the **development** version from [Github](https://github.com/tidyverts/tidyforecast)
 
 ``` r
 # install.packages("devtools")
 devtools::install_github("tidyverts/tidyforecast")
 ```
 
-## Example
-
-This is a basic example which shows you how to solve a common problem:
-
-``` r
-## basic example code
-```
-
-What is special about using `README.Rmd` instead of just `README.md`?
-You can include R chunks like so:
+Example
+-------
 
 ``` r
-summary(cars)
-#>      speed           dist       
-#>  Min.   : 4.0   Min.   :  2.00  
-#>  1st Qu.:12.0   1st Qu.: 26.00  
-#>  Median :15.0   Median : 36.00  
-#>  Mean   :15.4   Mean   : 42.98  
-#>  3rd Qu.:19.0   3rd Qu.: 56.00  
-#>  Max.   :25.0   Max.   :120.00
+library(fable)
+library(tsibbledata)
+UKLungDeaths %>%
+  ETS(log(mdeaths)) %>%
+  forecast %>%
+  autoplot
 ```
-
-You’ll still need to render `README.Rmd` regularly, to keep `README.md`
-up-to-date.
-
-You can also embed plots, for example:
-
-<img src="man/figures/README-pressure-1.png" width="100%" />
-
-In that case, don’t forget to commit and push the resulting figure
-files, so they display on GitHub\!

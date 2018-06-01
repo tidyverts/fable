@@ -35,9 +35,12 @@ devtools::install_github("tidyverts/tidyforecast")
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
-
-```{r example}
-## basic example code
+```{r example, eval = FALSE}
+library(fable)
+library(tsibbledata)
+UKLungDeaths %>%
+  ETS(log(mdeaths)) %>%
+  forecast %>%
+  autoplot
 ```
 
