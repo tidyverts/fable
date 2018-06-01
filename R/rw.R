@@ -20,6 +20,7 @@
 #' @param formula Model specification.
 #' 
 #' @examples 
+#' library(tsibbledata)
 #' elecdemand %>% RW(Demand ~ drift())
 #' 
 #' @export
@@ -76,7 +77,7 @@ NAIVE <- RW
 #' @rdname RW
 #'
 #' @examples
-#' 
+#' library(tsibbledata)
 #' elecdemand %>% SNAIVE(Temperature ~ lag("day"))
 #'
 #' @export

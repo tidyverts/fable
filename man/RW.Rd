@@ -36,12 +36,13 @@ The seasonal naive model is \deqn{Y_t= Y_{t-m} + Z_t}{Y[t]=Y[t-m] + Z[t]}
 where \eqn{Z_t}{Z[t]} is a normal iid error.
 }
 \examples{
+library(tsibbledata)
 elecdemand \%>\% RW(Demand ~ drift())
 
 
 forecast::gold \%>\% NAIVE
 
-
+library(tsibbledata)
 elecdemand \%>\% SNAIVE(Temperature ~ lag("day"))
 
 }

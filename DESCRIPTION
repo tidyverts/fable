@@ -26,6 +26,7 @@ Imports:
     digest,
     scales
 Suggests:
+    tsibbledata,
     knitr,
     rmarkdown,
     testthat,
