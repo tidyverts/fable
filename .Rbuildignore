@@ -1,6 +1,6 @@
 ^README\.Rmd$
 Makefile
-^tidyforecast\.Rproj$
+^fable\.Rproj$
 ^\.Rproj\.user$
 ^\.travis\.yml$
 ^data-raw$
