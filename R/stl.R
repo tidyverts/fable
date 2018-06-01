@@ -6,7 +6,6 @@
 #' 
 #' @examples 
 #' USAccDeaths %>% STL(value ~ season(window = 10))
-#' elecdemand %>% STL(Demand ~ season(period = "day"))
 #' @export
 STL <- function(data, formula, ...){
   # Capture user call

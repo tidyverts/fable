@@ -24,7 +24,6 @@ Unlike \code{\link[stats]{stl}}, \code{mstl} is completely automated.
 }
 \examples{
 USAccDeaths \%>\% STL(value ~ season(window = 10))
-elecdemand \%>\% STL(Demand ~ season(period = "day"))
 }
 \seealso{
 \code{\link[stats]{stl}}, \code{\link[stats]{supsmu}}
