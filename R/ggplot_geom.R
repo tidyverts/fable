@@ -182,6 +182,8 @@ globalVariables("y")
 #'
 #' \dontrun{
 #' library(ggplot2)
+#' library(tidyr)
+#' library(tsibbledata)
 #' UKLungDeaths %>%
 #'  gather(Gender, Deaths, -index) %>%
 #'  autoplot() + 
@@ -199,7 +201,7 @@ geom_forecast <- function(mapping = NULL, data = NULL, stat = "forecast",
   # }
   if (stat == "forecast") {
     paramlist <- list(na.rm = na.rm, showgap = showgap, levels = level,
-                      series = series, model = substitute(model), fc.args = fc.args, ...)
+                      model = enexpr(model), fc.args = fc.args, ...)
     if (!inherits(mapping, "uneval")) {
       mapping <- ggplot2::aes_()
     }
