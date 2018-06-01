@@ -59,14 +59,14 @@ fortify.fable <- function(object, level = c(80, 95), showgap = TRUE){
         filter(!!index(.) == last(!!index(.))) %>%
         transmute(!!!syms(key_vars(.)),
                   !!index(.),
-                  mean = !!attr(model, "response"),
+                  mean = !!attr(!!sym("model"), "response"),
                   !!!set_names(map(level, ~ expr(new_hilo(mean, mean, !!.x))), level)
         )
     }
     gap <- suppressWarnings(object %>% 
       transmute(
         !!!syms(key_vars(.)),
-        gap = map2(data,model, extract_last_obs)
+        gap = map2(!!sym("data"), !!sym("model"), extract_last_obs)
       ) %>%
       unnest(gap, key = id(!!!key_vars(object)))
     )
