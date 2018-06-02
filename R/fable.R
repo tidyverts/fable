@@ -23,6 +23,26 @@ globalVariables(".")
 #' @importFrom purrr map map2 map_lgl map_chr map_dbl
 NULL
 
+#' @importFrom dplyr mutate_if
+#' @export
+summary.fable <- function(object, level=c(80,95)){
+  suppressWarnings(
+    object %>% 
+      select(!!!key_vars(object), forecast) %>%
+      mutate(
+        forecast = map(forecast, 
+                       function(fc){
+                         fc %>%
+                           mutate(!!!set_names(map(level, ~ expr(hilo(!!sym("distribution"), !!.x))), paste0(level, "%"))) %>%
+                           select(exclude("distribution"))
+                       }
+        )
+      ) %>%
+      enclass("lst_ts", lst_col = "forecast") %>%
+      unnest(forecast) %>%
+      mutate_if(is.list, enclass, "hilo")
+    )
+}
 
 key_vars.fable <- function(x){
   syms(setdiff(colnames(x), c("data", "model", "forecast")))

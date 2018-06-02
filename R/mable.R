@@ -26,6 +26,13 @@ fitted.mable <- function(object, ...){
     unnest(key = id(!!!key(object)))
 }
 
+#' @export
+summary.mable <- function(object, ...){
+  map(object$model, ~capture.output(summary(.x))) %>%
+    invoke(cat, ., sep="\n")
+  invisible()
+}
+
 key_vars.mable <- function(x){
   syms(setdiff(colnames(x), c("data", "model")))
 }
