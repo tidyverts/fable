@@ -31,7 +31,9 @@ Suggests:
     rmarkdown,
     testthat,
     covr
-Remotes: tidyverts/tsibble
+Remotes:
+    tidyverts/tsibble,
+    tidyverts/tsibbledata
 ByteCompile: true
 VignetteBuilder: knitr
 License: GPL-3
