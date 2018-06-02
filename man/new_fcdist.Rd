@@ -7,7 +7,7 @@
 new_fcdist(f, ..., transformation = ~.x, abbr = NULL)
 }
 \arguments{
-\item{f}{A distribution function producing quantiles (such as qnorm)}
+\item{f}{A distribution function producing quantiles (such as \code{qnorm})}
 
 \item{...}{Arguments for \code{f} function}
 

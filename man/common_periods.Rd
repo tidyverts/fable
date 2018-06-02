@@ -7,7 +7,7 @@
 common_periods(x)
 }
 \arguments{
-\item{x}{An object containing temporal data (such as a tsibble, interval, datetime and others.)}
+\item{x}{An object containing temporal data (such as a \code{tsibble}, \code{interval}, \code{datetime} and others.)}
 }
 \value{
 A named vector of frequencies appropriate for the provided data.

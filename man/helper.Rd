@@ -5,7 +5,7 @@
 \alias{upper}
 \alias{level}
 \alias{is_hilo}
-\title{Helpers for "hilo"}
+\title{Helpers for \code{hilo}}
 \usage{
 lower(x)
 
@@ -16,8 +16,8 @@ level(x)
 is_hilo(x)
 }
 \arguments{
-\item{x}{A "hilo" object.}
+\item{x}{A \code{hilo} object.}
 }
 \description{
-Helpers for "hilo"
+Helpers for \code{hilo}
 }

@@ -7,7 +7,7 @@ guess_frequency.tbl_ts <- function(x){
 
 #' Extract frequencies for common seasonal periods
 #' 
-#' @param x An object containing temporal data (such as a tsibble, interval, datetime and others.)
+#' @param x An object containing temporal data (such as a `tsibble`, `interval`, `datetime` and others.)
 #' 
 #' @return A named vector of frequencies appropriate for the provided data.
 #' 

@@ -11,7 +11,7 @@
 #'
 #'   * For a single argument function, use `.`
 #'   * For a two argument function, use `.x` and `.y`
-#'   * For more arguments, use `..1`, `..2`, `..3` etc
+#'   * For more arguments, use `..1`, `..2`, `..3` and so on
 #'
 #'   This syntax allows you to create very compact anonymous functions.
 #'

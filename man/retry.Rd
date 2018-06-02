@@ -16,7 +16,7 @@ are three ways to refer to the arguments:
 \itemize{
 \item For a single argument function, use \code{.}
 \item For a two argument function, use \code{.x} and \code{.y}
-\item For more arguments, use \code{..1}, \code{..2}, \code{..3} etc
+\item For more arguments, use \code{..1}, \code{..2}, \code{..3} and so on
 }
 
 This syntax allows you to create very compact anonymous functions.

@@ -54,9 +54,9 @@ hilo.default <- function(x, ...){
   ))
 }
 
-#' Helpers for "hilo"
+#' Helpers for `hilo`
 #'
-#' @param x A "hilo" object.
+#' @param x A `hilo` object.
 #' @rdname helper
 #'
 #' @export
@@ -88,11 +88,11 @@ is_hilo <- function(x) {
 #' Validate whether values fall in the hilo
 #'
 #' @param x A numeric vector of values.
-#' @param hilo A vector of hilo objects.
+#' @param hilo A vector of `hilo` objects.
 #'
 #' @examples
-#' rng <- new_hilo(lower = rnorm(10), upper = rnorm(10) + 5)
-#' bt(0.2017, rng)
+#' myhilo <- new_hilo(lower = rnorm(10), upper = rnorm(10) + 5)
+#' bt(0.2017, myhilo)
 #'
 #' @export
 bt <- function(x, hilo) {
