@@ -86,6 +86,7 @@ fortify.fable <- function(object, level = c(80, 95), showgap = TRUE){
                            rbind(gap)
                        })
       ) %>%
+      enclass("lst_ts", lst_col = "forecast") %>%
       unnest(forecast, key = id(!!!key_vars(object))) %>%
       gather(level, hilo, -(!!index(.)), -mean) %>%
       mutate(hilo = enclass(hilo, "hilo"),
