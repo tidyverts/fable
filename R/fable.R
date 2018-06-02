@@ -25,7 +25,7 @@ NULL
 
 #' @importFrom dplyr mutate_if
 #' @export
-summary.fable <- function(object, level=c(80,95)){
+summary.fable <- function(object, level=c(80,95), ...){
   suppressWarnings(
     object %>% 
       select(!!!key_vars(object), forecast) %>%
