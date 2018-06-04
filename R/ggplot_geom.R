@@ -69,9 +69,9 @@ GeomForecast <- ggplot2::ggproto("GeomForecast", ggplot2::Geom,
                                  }, 
                                  
                                  draw_panel = function(data, panel_scales, coord) {
-                                   line_data <- data %>% filter(level == first(level))
+                                   line_data <- data %>% filter(data$level %in% first(data$level))
                                    # Intervals have been provided
-                                   if("level" %in% colnames(data)){
+                                   if(any(!is.na(data[["level"]]))){
                                      # Calculate colour
                                      data$fillcol <- blendHex(data$colour, data$level, 0.7)
                                      # Compute alpha transparency

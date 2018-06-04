@@ -87,13 +87,17 @@ fortify.fable <- function(object, level = c(80, 95), showgap = TRUE){
                        })
       ) %>%
       enclass("lst_ts", lst_col = "forecast") %>%
-      unnest(forecast, key = id(!!!key_vars(object))) %>%
+      unnest(forecast, key = id(!!!key_vars(object)))
+  )
+  if(!is.null(level)){
+    tsbl <- tsbl %>%
       gather(level, hilo, -(!!index(.)), -mean) %>%
       mutate(hilo = enclass(hilo, "hilo"),
              level = level(hilo),
              lower = lower(hilo),
              upper = upper(hilo)) %>%
       select(exclude("hilo"))
-  )
+  }
+  tsbl
 }
 
