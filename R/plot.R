@@ -1,24 +1,24 @@
 #' @importFrom ggplot2 ggplot aes geom_line guides guide_legend xlab
 #' @export
-autoplot.tbl_ts <- function(object, var = sym(measured_vars(object)[1]), ...){
-  if(!missing(var)){
-    var <- enexpr(var)
-  }
-  else if(length(measured_vars(object)) > 1){
+autoplot.tbl_ts <- function(object, var = NULL, ...){
+  if(quo_is_null(enquo(var))){
     inform(sprintf(
       "Plot variable not specified, automatically selected `var = %s`",
       measured_vars(object)[1]
     ))
+    var <- sym(measured_vars(object)[1])
+  }
+  else{
+    var <- ensym(var)
   }
   
   aes_spec <- list(x = index(object), y = var)
   if(n_keys(object) > 1){
-    aes_spec["colour"] <- list(expr(interaction(!!!key(object), sep = "/")))
+    aes_spec["colour"] <- list(expr(interaction(!!!syms(key_vars(object)), sep = "/")))
   }
-  
   ggplot(object, eval_tidy(expr(aes(!!!aes_spec)))) + 
-    geom_line() + 
-    guides(colour = guide_legend(paste0(map(key(object), expr_text), collapse = "/"))) + 
+    geom_line() +
+    guides(colour = guide_legend(paste0(map(syms(key_vars(object)), expr_text), collapse = "/"))) + 
     xlab(paste0(expr_text(index(object)), " [", format(interval(object)), "]"))
 }
 
