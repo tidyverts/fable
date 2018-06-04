@@ -86,7 +86,6 @@ fortify.fable <- function(object, level = c(80, 95), showgap = TRUE){
                            rbind(gap)
                        })
       ) %>%
-      enclass("lst_ts", lst_col = "forecast") %>%
       unnest(forecast, key = id(!!!key_vars(object)))
   )
   if(!is.null(level)){

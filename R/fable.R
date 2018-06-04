@@ -38,7 +38,6 @@ summary.fable <- function(object, level=c(80,95), ...){
                        }
         )
       ) %>%
-      enclass("lst_ts", lst_col = "forecast") %>%
       unnest(forecast) %>%
       mutate_if(is.list, enclass, "hilo")
     )
