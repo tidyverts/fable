@@ -2,7 +2,7 @@
 % Please edit documentation in R/hilo.R
 \name{bt}
 \alias{bt}
-\title{Validate whether values fall in the \code{hilo}}
+\title{Validate whether values fall in the hilo}
 \usage{
 bt(x, hilo)
 }
@@ -12,7 +12,7 @@ bt(x, hilo)
 \item{hilo}{A vector of \code{hilo} objects.}
 }
 \description{
-Validate whether values fall in the \code{hilo}
+Validate whether values fall in the hilo
 }
 \examples{
 myhilo <- new_hilo(lower = rnorm(10), upper = rnorm(10) + 5)
