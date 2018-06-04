@@ -9,7 +9,7 @@ residuals.mable <- function(object, ...){
                                }
               )
     )%>%
-    unnest(key = id(!!!key(object)))
+    unnest(key = !!!key(object))
 }
 
 #' @importFrom stats fitted
@@ -23,7 +23,7 @@ fitted.mable <- function(object, ...){
                              }
               )
     ) %>%
-    unnest(key = id(!!!key(object)))
+    unnest(key = !!!key(object))
 }
 
 #' @export
