@@ -84,9 +84,3 @@ get_frequencies.character <- function(period, data, ...){
     return(out[!is.na(out)])
   }
 }
-
-#' @importFrom stats frequency
-#' @export
-frequency.tbl_ts <- function(x, ...){
-  guess_frequency(x)
-}
