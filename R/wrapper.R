@@ -36,6 +36,7 @@ forecast.mable <- function(object, ...){
 #' @importFrom purrr map2
 #' @importFrom stats qnorm time 
 #' @importFrom utils tail
+#' @importFrom dplyr pull
 #' @export
 forecast.ts_model <- function(object, data, bootstrap = FALSE, ...){
   if(bootstrap){
