@@ -58,7 +58,7 @@ traverse_transformation <- function(transformation){
 #' Produces a new transformation for fable modelling functions which will be used to transform, back-transform, and adjust forecasts.
 #' 
 #' For more details about transformations, read the vignette:
-#' `vignette("help", package = "mypkg")`
+#' `vignette("transformations", package = "fable")`
 #' 
 #' @param transformation A function which transforms the data
 #' @param inverse A function which is the inverse of a transformation

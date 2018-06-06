@@ -16,7 +16,7 @@ Produces a new transformation for fable modelling functions which will be used t
 }
 \details{
 For more details about transformations, read the vignette:
-\code{vignette("help", package = "mypkg")}
+\code{vignette("transformations", package = "fable")}
 }
 \examples{
 
