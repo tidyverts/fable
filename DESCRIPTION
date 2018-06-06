@@ -25,7 +25,8 @@ Imports:
     crayon,
     colorspace,
     digest,
-    scales
+    scales,
+    numDeriv
 Suggests:
     tsibbledata,
     knitr,

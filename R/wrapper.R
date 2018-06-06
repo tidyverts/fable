@@ -45,12 +45,11 @@ forecast.ts_model <- function(object, data, bootstrap = FALSE, ...){
   class(object) <- class(object)[-match("ts_model", class(object))]
   fc <- forecast(object, ...)
   # Assume normality
-  se <- (fc$mean - fc$lower[,1])/qnorm(0.5 * (1 + fc$level[1] / 100))
+  se <- (fc$upper[,1] - fc$lower[,1])/qnorm(0.5 * (1 + fc$level[1] / 100))/2
   idx <- data %>% pull(!!index(.))
   future_idx <- seq(tail(idx, 1), length.out = length(fc$mean) + 1, by = time_unit(idx)) %>% tail(-1)
-  
   tsibble(!!index(data) := future_idx,
-          mean = invert_transformation(object%@%"transformation")(fc$mean), 
+          mean = biasadj(invert_transformation(object%@%"transformation"), se^2)(fc$mean), 
           distribution = new_fcdist(qnorm, fc$mean, sd = se, transformation = invert_transformation(object%@%"transformation"), abbr = "N"),
           index = !!index(data))
 }

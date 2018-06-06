@@ -82,6 +82,12 @@ as_transformation.call <- function(x, data = NULL){
   )
 }
 
+#' @importFrom numDeriv hessian
+#' @export
+biasadj <- function(bt_fn, fvar){
+  new_function(alist(x=), expr((!!bt_fn)(x) + !!fvar/2*purrr::map_dbl(x, hessian, func = !!bt_fn)))
+}
+
 print.transformation <- function(x){
   cat("Transformation: ", expr_text(body(x)), "\n",
       "Backtransformation: ", expr_text(body(x%@%"inverse")), sep="")
