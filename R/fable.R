@@ -38,7 +38,7 @@ summary.fable <- function(object, level=c(80,95), ...){
                        }
         )
       ) %>%
-      unnest(forecast) %>%
+      unnest(forecast, key = syms(key_vars(object))) %>%
       mutate_if(is.list, enclass, "hilo")
     )
 }
