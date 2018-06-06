@@ -23,14 +23,13 @@ fitted.mable <- function(object, ...){
                              }
               )
     ) %>%
-    unnest(key =  syms(key_vars(object)))
+    unnest(key = syms(key_vars(object)))
 }
 
 #' @export
 summary.mable <- function(object, ...){
   map(object$model, ~capture.output(summary(.x))) %>%
     invoke(cat, ., sep="\n")
-  invisible()
   invisible(object)
 }
 
