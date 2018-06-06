@@ -116,10 +116,27 @@ as_transformation.call <- function(x, data = NULL){
   )
 }
 
+#' Bias adjust back-transformation functions
+#' 
+#' To produce forecast means (instead of forecast medians) it is necessary to adjust the back-transformation function relative to the forecast variance.
+#' 
+#' More details about bias adjustment can be found in the transformations vignette: read the vignette:
+#' `vignette("transformations", package = "fable")`
+#' 
+#' @param bt_fn The back-transformation function
+#' @param fvar The forecast variance
+#' 
+#' @examples 
+#' 
+#' adj_fn <- biasadj(exp, 1:10)
+#' y <- rnorm(10)
+#' exp(y)
+#' adj_fn(y)
+#' 
 #' @importFrom numDeriv hessian
 #' @export
 biasadj <- function(bt_fn, fvar){
-  new_function(alist(x=), expr((!!bt_fn)(x) + !!fvar/2*purrr::map_dbl(x, hessian, func = !!bt_fn)))
+  new_function(alist(x=), expr((!!bt_fn)(!!sym("x")) + !!fvar/2*purrr::map_dbl(!!sym("x"), hessian, func = !!bt_fn)))
 }
 
 print.transformation <- function(x){
