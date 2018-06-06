@@ -144,6 +144,26 @@ print.transformation <- function(x){
       "Backtransformation: ", expr_text(body(x%@%"inverse")), sep="")
 }
 
+#' Invert a transformation
+#' 
+#' Can be used to invert a supported expression or transformation object for back-transforming.
+#' 
+#' @param x An expression/function which can be inverted
+#' @param ... Further arguments passed on to methods
+#' 
+#' @return A object of class transformation
+#' 
+#' @examples 
+#' y <- rnorm(10)
+#' 
+#' # Works with expressions
+#' my_trans <- invert_transformation(quote(log(y+1)))
+#' my_trans
+#' 
+#' # Works with transformations
+#' invert_transformation(my_trans)
+#' 
+#' @export
 invert_transformation <- function(x, ...){
   UseMethod("invert_transformation")
 }
