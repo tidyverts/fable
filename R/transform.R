@@ -168,10 +168,12 @@ invert_transformation <- function(x, ...){
   UseMethod("invert_transformation")
 }
 
+#' @export
 invert_transformation.transformation <- function(x){
   new_transformation(x%@%"inverse", `attributes<-`(x, NULL))
 }
 
+#' @export
 invert_transformation.call <- function(x, data){
   x %>% as_transformation %>% invert_transformation
 }
