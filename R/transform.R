@@ -10,9 +10,21 @@ inverse_table <- function() {
     },
     
     get = function(ns, fn) {
-      ret <- table[[ns]][[fn]]
+      ns_name <- environmentName(ns)
+      if(nchar(ns_name) == 0){
+        ns_name <- "base"
+      }
+      ret <- table[[ns_name]][[fn]]
       if (is.null(ret)) {
-        abort("No supported inverse for this function")
+        t_fn <- get(fn, envir = ns)
+        if(inherits(t_fn, "transformation")){
+          ret <- function(operation, target, result){
+            call2(expr(invert_transformation(!!t_fn)), result)
+          }
+        }
+        else{
+          abort("No supported inverse for this function")
+        }
       }
       ret
     })
@@ -21,12 +33,7 @@ inverse_table <- function() {
 undo_transformation <- function(operation, target, result){
   fn <- call_name(operation)
   env <- get_env(operation, caller_env())
-  # Replace with mget?
-  ns <- eval_tidy(expr(environmentName(environment(get(!!fn)))), env = env)
-  if(nchar(ns) == 0){
-    ns <- "base"
-  }
-  
+  ns <- eval_tidy(expr(environment(get(!!fn))), env = env)
   inverse_table$get(ns, fn)(operation, get_expr(target), result)
 }
 
