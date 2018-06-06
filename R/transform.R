@@ -161,7 +161,7 @@ inverse_table$add("base", "exp",
                   }
 )
 
-inverse_table$add("package:forecast", "BoxCox", 
+inverse_table$add("forecast", "BoxCox", 
                   function(operation, target, result){
                     args <- call_args(operation)
                     target_pos <- match(list(target), args)
@@ -169,7 +169,7 @@ inverse_table$add("package:forecast", "BoxCox",
                   }
 )
 
-inverse_table$add("package:forecast", "InvBoxCox", 
+inverse_table$add("forecast", "InvBoxCox", 
                   function(operation, target, result){
                     args <- call_args(operation)
                     target_pos <- match(list(target), args)
