@@ -1,0 +1,77 @@
+---
+title: "Forecasting with transformations"
+author: "Mitchell O'Hara-Wild"
+date: "June 6 2018"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{transformations}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+library(fable)
+```
+
+All fable models with formula-based model specification support a highly flexible specification of transformations. Specified transformations are automatically back-transformed and bias adjusted to produce forecast means and fitted values on the original scale of the data.
+
+The transformation used for the model is defined on the left of the tilde (`~`) in the formula. For example, when forecasting `Demand` from the `tsibbledata::elecdemand` dataset, a log transformation can applied using `log(Demand)`.
+
+```{r}
+tsibbledata::elecdemand %>%
+  ARIMA(log(Demand) ~ Temperature) %>%
+  summary
+```
+
+## Combining transformations
+Multiple transformations can be combined using this interface, allowing more complicated transformations to be used. A simple example of a combined transformation is $f(x) = log(x+1)$, as it involves both a `log` transformation, and a `+1` transformation. This transformation is commonly used to overcome a limitation of using log transformations to preserve non-negativity, on data which contains zeroes.
+
+Simple combined transformations and backtransformations can be constructed automatically.
+```{r}
+tsibbledata::elecdemand %>%
+  ARIMA(log(Demand+1) ~ Temperature) %>%
+  summary
+```
+
+
+## Custom transformations
+It is possible to extend the supported transformations by defining your own transformation with an appropriate back-transformation function. It is assumed that the first argument of your function is your data which is being transformed.
+
+A useful transformation which is not readily supported by fable is the scaled logit, which allows the forecasts to be bounded by a given interval ([*forecasting within limits*](https://robjhyndman.com/hyndsight/forecasting-within-limits/)). The appropriate transformation to ensure the forecasted values are between $a$ and $b$ (where $a<b$) is given by:
+
+$$f(x) = \log\left(\dfrac{x-a}{b-x}\right)$$
+
+Inverting this transformation gives the appropriate back-transformation of:
+
+$$f^{-1}(x) = \dfrac{a + be^x}{1 + e^x} = \dfrac{(b-a)e^x}{1 + e^x} + a$$ 
+To use this transformation for modelling, we can pair the transformation with its back transformation using the `new_transformation` function, which accepts two functions: first the transformation, and second the back-transformation.
+```{r}
+scaled_logit <- function(x, lower=0, upper=1){
+  log((x-lower)/(upper-x))
+}
+inv_scaled_logit <- function(x, lower=0, upper=1){
+  (upper-lower)*exp(x)/(1+exp(x)) + lower
+}
+my_scaled_logit <- new_transformation(scaled_logit, inv_scaled_logit)
+```
+
+Once you define your transformation as above, it is ready to use anywhere you would normally use a transformation.
+```{r}
+tsibbledata::UKLungDeaths %>%
+  ETS(my_scaled_logit(mdeaths, 750, 3000) ~ error("A") + trend("N") + season("A")) %>%
+  summary
+```
+
+## Forecast means and medians
+When forecasting with transformations, the model is fitted and forecasted using the transformed data. To produce forecasts of the original data, the predicted values must be back-transformed. However this process of predicting transformed data and backtransforming predictions usually results in producing forecast medians. To convert the forecast medians into forecast means, a transformation bias  adjustment is required:
+
+$$\hat{y} = f^{-1}(\tilde{y}) + \dfrac{1}{2}\sigma^2\dfrac{\partial^2}{\partial \tilde{y}^2}f^{-1}(\tilde{y})$$
+Note that the forecast medians are given by $f^{-1}(\tilde{y})$, and the adjustment needed to produce forecast means ($\hat{y}$) is $\dfrac{1}{2}\sigma^2\dfrac{\partial^2}{\partial \tilde{y}^2}f^{-1}(\tilde{y})$.
+
+The fable package automatically produces forecast means (by back-transforming and adjusting the transformed forecasts). The forecast medians can be obtained via the forecast intervals when `level=0`.
+
+More information about adjusting forecasts to compute forecast means can be found at [*the forecast mean after back-transformation*](https://robjhyndman.com/hyndsight/backtransforming/).

@@ -3,3 +3,4 @@
 .RData
 .Ruserdata
 Makefile
+inst/doc
