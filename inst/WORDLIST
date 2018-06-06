@@ -3,6 +3,7 @@ asn
 atanh
 boxcox
 datetime
+dfrac
 Earo
 edu
 ets
@@ -12,12 +13,17 @@ ggproto
 Grose
 hilo
 Hyndman
+knitr
 Koehler
 LazyLoad
 Md
 monash
 Ord
+rmarkdown
 stat
 STL
 tsibble
 Verlag
+VignetteEncoding
+VignetteEngine
+VignetteIndexEntry
