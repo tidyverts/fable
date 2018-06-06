@@ -9,7 +9,7 @@ residuals.mable <- function(object, ...){
                                }
               )
     )%>%
-    unnest(key = !!!key(object))
+    unnest(key = syms(key_vars(object)))
 }
 
 #' @importFrom stats fitted
@@ -23,7 +23,7 @@ fitted.mable <- function(object, ...){
                              }
               )
     ) %>%
-    unnest(key = !!!key(object))
+    unnest(key =  syms(key_vars(object)))
 }
 
 #' @export
@@ -31,6 +31,7 @@ summary.mable <- function(object, ...){
   map(object$model, ~capture.output(summary(.x))) %>%
     invoke(cat, ., sep="\n")
   invisible()
+  invisible(object)
 }
 
 key_vars.mable <- function(x){
