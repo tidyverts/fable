@@ -12,7 +12,7 @@ wrap_ts_model <- function(modelfn, data, model, response, transformation, args, 
   
   # Fix components
   fit$call <- cl
-  fit$series <- expr_text(response)
+  fit$series <- expr_text(model_lhs(model))
   
   # Output model
   data %>%
