@@ -19,7 +19,9 @@ inverse_table <- function() {
         t_fn <- get(fn, envir = ns)
         if(inherits(t_fn, "transformation")){
           ret <- function(operation, target, result){
-            call2(expr(invert_transformation(!!t_fn)), result)
+            args <- call_args(operation)
+            target_pos <- match(list(target), args)
+            call2(expr(invert_transformation(!!t_fn)), !!!replace(args, target_pos, list(result)))
           }
         }
         else{
