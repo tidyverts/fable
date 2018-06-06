@@ -29,7 +29,7 @@ NULL
 summary.fable <- function(object, level=c(80,95), ...){
   suppressWarnings(
     object %>% 
-      select(!!!key_vars(object), forecast) %>%
+      select(!!!syms(key_vars(object)), forecast) %>%
       mutate(
         forecast = map(forecast, 
                        function(fc){
@@ -45,5 +45,5 @@ summary.fable <- function(object, level=c(80,95), ...){
 }
 
 key_vars.fable <- function(x){
-  syms(setdiff(colnames(x), c("data", "model", "forecast")))
+  setdiff(colnames(x), c("data", "model", "forecast"))
 }

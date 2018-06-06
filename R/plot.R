@@ -68,7 +68,7 @@ fortify.fable <- function(object, level = c(80, 95), showgap = TRUE){
         !!!syms(key_vars(.)),
         gap = map2(!!sym("data"), !!sym("model"), extract_last_obs)
       ) %>%
-      unnest(gap, key = id(!!!key_vars(object)))
+      unnest(gap, key = id(!!!syms(key_vars(object))))
     )
   }
   else{
@@ -76,7 +76,7 @@ fortify.fable <- function(object, level = c(80, 95), showgap = TRUE){
   }
   tsbl <- suppressWarnings(
     object %>% 
-      select(!!!key_vars(object), forecast) %>%
+      select(!!!syms(key_vars(object)), forecast) %>%
       mutate(
         forecast = map(forecast, 
                        function(fc){
@@ -86,7 +86,7 @@ fortify.fable <- function(object, level = c(80, 95), showgap = TRUE){
                            rbind(gap)
                        })
       ) %>%
-      unnest(forecast, key = id(!!!key_vars(object)))
+      unnest(forecast, key = syms(key_vars(object)))
   )
   if(!is.null(level)){
     tsbl <- tsbl %>%

@@ -2,7 +2,7 @@
 #' @export
 residuals.mable <- function(object, ...){
   object %>%
-    transmute(!!!key_vars(.),
+    transmute(!!!syms(key_vars(.)),
               residuals = map2(!!sym("data"), !!sym("model"),
                                function(data, model) {
                                  data %>% transmute(residuals = data[[expr_text(attr(model, "response"))]] - as.numeric(fitted(model)))
@@ -16,7 +16,7 @@ residuals.mable <- function(object, ...){
 #' @export
 fitted.mable <- function(object, ...){
   object %>%
-    transmute(!!!key_vars(.),
+    transmute(!!!syms(key_vars(.)),
               fitted = map2(!!sym("data"), !!sym("model"),
                              function(data, model) {
                                data %>% transmute(fitted = as.numeric(fitted(model)))
@@ -34,5 +34,5 @@ summary.mable <- function(object, ...){
 }
 
 key_vars.mable <- function(x){
-  syms(setdiff(colnames(x), c("data", "model")))
+  setdiff(colnames(x), c("data", "model"))
 }
