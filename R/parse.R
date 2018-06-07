@@ -57,7 +57,17 @@ parse_response <- function(model_lhs){
     get_expr
 }
 
+#' Parse the model specification for specials
+#' 
+#' Using a list of defined special functions, the user's formula specification and data
+#' is parsed to extract important modelling components.
+#' 
+#' @param data A dataset
+#' @param model A formula
+#' @param specials A list of functions used to be evaluated from the formula.
+#' 
 #' @importFrom tibble tibble
+#' @export
 parse_model <- function(data, model, specials){
   # Clean inputs
   if(missing(model)){
@@ -90,6 +100,12 @@ parse_model <- function(data, model, specials){
   )
 }
 
+#' Parse the RHS of the model formula for specials
+#' 
+#' @param model_rhs The expression for the rhs of the model (from `model_rhs()`)
+#' @param specials The environment containing specials (from `new_specials_env()`)
+#' 
+#' @export
 parse_model_rhs <- function(model_rhs, specials){
   model_rhs %>%
     parse_specials(specials = specials) %>%
@@ -103,8 +119,14 @@ parse_model_rhs <- function(model_rhs, specials){
     list(args = .)
 }
 
-parse_model_lhs <- function(expr, data){
-  transformation <- as_transformation(expr, data=data)
+#' Parse the RHS of the model formula for transformations
+#' 
+#' @param model_lhs The expression for the lhs of the model (from `model_lhs()`)
+#' @param data Data to be used to find the response
+#' 
+#' @export
+parse_model_lhs <- function(model_lhs, data){
+  transformation <- as_transformation(model_lhs, data=data)
   response <- fn_fmls(transformation)$x
   quos(
     response = response,
