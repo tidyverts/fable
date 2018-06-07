@@ -1,6 +1,12 @@
+#' Multiple calls to a univariate model for each tsibble key
+#' 
+#' @param data A tsibble
+#' @param cl A modelling call
+#' 
 #' @importFrom purrr map_dfr
 #' @importFrom dplyr mutate
 #' @importFrom tsibble nest
+#' @export
 multi_univariate <- function(data, cl){
   data %>% 
     group_by(!!!syms(key_vars(data))) %>%
