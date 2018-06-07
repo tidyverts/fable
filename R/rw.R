@@ -49,7 +49,9 @@ RW <- function(data, formula = ~ lag(1)){
     drift = function(drift = TRUE){
       list(include.constant = drift)
     },
-    xreg = tbl_xreg,
+    xreg = function(...){
+      list(xreg = tibble(...))
+    },
     parent_env = caller_env(),
     required_specials = c("lag")
   )
@@ -106,7 +108,9 @@ SNAIVE <- function(data, formula = ~ lag("smallest")){
     drift = function(drift = TRUE){
       list(include.constant = drift)
     },
-    xreg = tbl_xreg,
+    xreg = function(...){
+      list(xreg = tibble(...))
+    },
     
     parent_env = caller_env(),
     required_specials = c("lag")

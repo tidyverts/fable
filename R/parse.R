@@ -37,7 +37,7 @@ parse_specials <- function(call = NULL, specials = NULL, xreg = TRUE){
     )
   
   if(!is.null(parsed$xreg)){
-    parsed$xreg <- list(call2("xreg", parsed$xreg))
+    parsed$xreg <- list(call2("xreg", !!!parsed$xreg))
   }
   parsed
 }

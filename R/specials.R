@@ -12,12 +12,12 @@ new_specials_env <- function(..., parent_env = caller_env(), required_specials =
     enclass(NULL, required_specials = required_specials)
 }
 
-tbl_xreg <- function(x){
-  list(xreg = expr(tibble(!!!x)))
+tbl_xreg <- function(...){
+  tibble(...)
 }
 
-exprs_xreg <- function(x){
-  x
+exprs_xreg <- function(...){
+  exprs(...)
 }
 
 no_xreg <- function(...){

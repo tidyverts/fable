@@ -34,7 +34,9 @@ ARIMA <- function(data, formula, period = "smallest", ...){
     trend = function(trend = TRUE){
       list(include.drift = trend)
     },
-    xreg = tbl_xreg,
+    xreg = function(...){
+      list(xreg = tibble(...))
+    },
     
     parent_env = caller_env(),
     required_specials = c("pdq", "PDQ")
