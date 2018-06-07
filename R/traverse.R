@@ -1,3 +1,12 @@
+#' Recursively traverse an object
+#' 
+#' @param x The object to traverse
+#' @param f A function (mapper) for combining the recursed components
+#' @param g A function (mapper) applied to the object before recursion
+#' @param h A function (mapper) applied to the base case
+#' @param base The base case for the recursion
+#' 
+#' @export
 traverse <-  function(x, f = ~ .x, g = ~.x, h = ~.x, base = ~ is_syntactic_literal(.x) || is_symbol(.x)){
   .f <- as_mapper(f)
   .g <- as_mapper(g)
