@@ -139,6 +139,7 @@ biasadj <- function(bt_fn, fvar){
   new_function(alist(x=), expr((!!bt_fn)(!!sym("x")) + !!fvar/2*purrr::map_dbl(!!sym("x"), hessian, func = !!bt_fn)))
 }
 
+#' @export
 print.transformation <- function(x){
   cat("Transformation: ", expr_text(body(x)), "\n",
       "Backtransformation: ", expr_text(body(x%@%"inverse")), sep="")
