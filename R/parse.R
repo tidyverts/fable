@@ -96,23 +96,24 @@ parse_model <- function(data, model, specials){
     data = data,
     model = model,
     !!!parse_model_lhs(model_lhs(model), data),
-    !!!parse_model_rhs(model_rhs(model), specials)
+    !!!parse_model_rhs(model_rhs(model), data, specials)
   )
 }
 
 #' Parse the RHS of the model formula for specials
 #' 
 #' @param model_rhs The expression for the rhs of the model (from `model_rhs()`)
+#' @param data Data provided by the user to evaluate the special functions within
 #' @param specials The environment containing specials (from `new_specials_env()`)
 #' 
 #' @export
-parse_model_rhs <- function(model_rhs, specials){
+parse_model_rhs <- function(model_rhs, data, specials){
   model_rhs %>%
     parse_specials(specials = specials) %>%
     map(~ .x %>%
           map(
             function(special){
-              eval_tidy(special, env = specials)
+              eval_tidy(special, data = data, env = specials)
             }
           )
     ) %>%

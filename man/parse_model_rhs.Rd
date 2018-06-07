@@ -4,10 +4,12 @@
 \alias{parse_model_rhs}
 \title{Parse the RHS of the model formula for specials}
 \usage{
-parse_model_rhs(model_rhs, specials)
+parse_model_rhs(model_rhs, data, specials)
 }
 \arguments{
 \item{model_rhs}{The expression for the rhs of the model (from \code{model_rhs()})}
+
+\item{data}{Data provided by the user to evaluate the special functions within}
 
 \item{specials}{The environment containing specials (from \code{new_specials_env()})}
 }
