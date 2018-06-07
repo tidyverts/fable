@@ -140,7 +140,7 @@ biasadj <- function(bt_fn, fvar){
 }
 
 #' @export
-print.transformation <- function(x){
+print.transformation <- function(x, ...){
   cat("Transformation: ", expr_text(body(x)), "\n",
       "Backtransformation: ", expr_text(body(x%@%"inverse")), sep="")
 }
