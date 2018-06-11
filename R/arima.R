@@ -7,11 +7,14 @@
 #' 
 #' @examples 
 #' 
-#' USAccDeaths %>%
-#'   ARIMA(log(value) ~ pdq(0,1,1) + PDQ(0,1,1))
+#' USAccDeaths %>% ARIMA(log(value) ~ pdq(0,1,1) + PDQ(0,1,1))
 #' 
-#' @importFrom forecast Arima
-ARIMA <- function(data, formula, period = "smallest", ...){
+#' UKLungDeaths %>% ARIMA(mdeaths ~ fdeaths)
+#' 
+#' @importFrom forecast Arima auto.arima
+ARIMA <- function(data, formula, period = "smallest", 
+                  ic=c("aicc", "aic", "bic"),
+                  test=c("kpss", "adf", "pp"), seasonal.test=c("seas", "ocsb", "hegy", "ch"), ...){
   # Capture user call
   cl <- call_standardise(match.call())
   
@@ -25,11 +28,21 @@ ARIMA <- function(data, formula, period = "smallest", ...){
   
   # Define specials
   specials <- new_specials_env(
-    pdq = function(p = 0, d = 0, q = 0){
-      list(order = c(p=p, d=d, q=q))
+    pdq = function(p = "auto", d = "auto", q = "auto",
+                   max.p = 5, max.d = 2, max.q = 5,
+                   start.p = 2, start.q = 2){
+      list(
+        auto = list(d = d, max.p = max.p, max.q = max.q, start.p = start.p, start.q = start.q),
+        manual = list(order = c(p, d, q))
+      )
     },
-    PDQ = function(P = 0, D = 0, Q = 0){
-      list(seasonal = c(P=P, D=D, Q=Q))
+    PDQ = function(P = "auto", D = "auto", Q = "auto",
+                   max.P = 2, max.D = 1, max.Q = 2,
+                   start.P = 1, start.Q = 1){
+      list(
+        auto = list(D = D, max.P = max.P, max.Q = max.Q, start.P = start.P, start.Q = start.Q),
+        manual = list(seasonal = c(P, D, Q))
+      )
     },
     trend = function(trend = TRUE){
       list(include.drift = trend)
@@ -43,11 +56,34 @@ ARIMA <- function(data, formula, period = "smallest", ...){
   )
   
   # Parse model
-  model_inputs <- parse_model(data, formula, specials = specials) %>% 
-    flatten_first_args
+  model_inputs <- parse_model(data, formula, specials = specials)
+  
+  args <- model_inputs$args %>%
+    eval_tidy
+  
+  if(any(c(args$pdq[[1]]$manual$order, args$PDQ[[1]]$manual$seasonal) == "auto")){
+    if(any(c(args$pdq[[1]]$manual$order, args$PDQ[[1]]$manual$seasonal) != "auto")){
+      inform("Partial automation of parameters is not yet supported, defaulting to complete auto.arima")
+    }
+    args$pdq[[1]]$auto$d <- ifelse(args$pdq[[1]]$manual$order[2] == "auto", NA, args$pdq[[1]]$manual$order[2])
+    args$PDQ[[1]]$auto$D <- ifelse(args$PDQ[[1]]$manual$seasonal[2] == "auto", NA, args$PDQ[[1]]$manual$seasonal[2])
+    args$pdq[[1]] <- args$pdq[[1]]$auto
+    args$PDQ[[1]] <- args$PDQ[[1]]$auto
+    ts_model_fn <- "auto.arima"
+  }
+  else{
+    args$pdq[[1]] <- args$pdq[[1]]$manual
+    args$PDQ[[1]] <- args$PDQ[[1]]$manual
+    ts_model_fn <- "Arima"
+  }
+  
+  model_inputs$args <- as_quosure(args)
+  
+  model_inputs <- flatten_first_args(model_inputs)
+  
   
   # Output model
-  eval_tidy(quo(wrap_ts_model("Arima", !!!model_inputs, period = period, cl=cl, ...)))
+  eval_tidy(quo(wrap_ts_model(ts_model_fn, !!!model_inputs, period = period, cl=cl, ...)))
 }
 
 model_sum.ARIMA <- function(x){

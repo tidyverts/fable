@@ -4,7 +4,9 @@
 \alias{ARIMA}
 \title{Fit ARIMA model to univariate time series}
 \usage{
-ARIMA(data, formula, period = "smallest", ...)
+ARIMA(data, formula, period = "smallest", ic = c("aicc", "aic", "bic"),
+  test = c("kpss", "adf", "pp"), seasonal.test = c("seas", "ocsb", "hegy",
+  "ch"), ...)
 }
 \arguments{
 \item{data}{A data frame}
@@ -31,8 +33,9 @@ See the \code{\link[stats]{arima}} function in the stats package.
 }
 \examples{
 
-USAccDeaths \%>\%
-  ARIMA(log(value) ~ pdq(0,1,1) + PDQ(0,1,1))
+USAccDeaths \%>\% ARIMA(log(value) ~ pdq(0,1,1) + PDQ(0,1,1))
+
+UKLungDeaths \%>\% ARIMA(mdeaths ~ fdeaths)
 
 }
 \seealso{
