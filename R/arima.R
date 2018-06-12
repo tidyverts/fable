@@ -93,6 +93,7 @@ ARIMA <- function(data, formula, period = "smallest",
   eval_tidy(quo(wrap_ts_model(ts_model_fn, !!!model_inputs, period = period, cl=cl, ...)))
 }
 
+#' @export
 model_sum.ARIMA <- function(x){
   order <- x$arma[c(1, 6, 2, 3, 7, 4, 5)]
   m <- order[7]

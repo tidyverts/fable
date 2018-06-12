@@ -68,6 +68,7 @@ ETS <- function(data, formula, period = "smallest", ...){
   eval_tidy(quo(wrap_ts_model("ets", !!!model_inputs, period = period, cl = cl, ...)))
 }
 
+#' @export
 model_sum.ets <- function(x){
   x$method
 }

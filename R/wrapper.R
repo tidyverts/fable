@@ -59,8 +59,7 @@ forecast.ts_model <- function(object, data, bootstrap = FALSE, ...){
           index = !!index(data))
 }
 
+#' @export
 model_sum.ts_model <- function(x){
-  x %>%
-    rm_class("ts_model") %>%
-    model_sum
+  NextMethod()
 }

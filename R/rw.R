@@ -127,6 +127,7 @@ SNAIVE <- function(data, formula = ~ lag("smallest")){
 }
 
 #' @importFrom dplyr case_when
+#' @export
 model_sum.RW <- function(x){
   order <- x$arma[c(1, 6, 2, 3, 7, 4, 5)]
   drift <- NCOL(x$xreg) == 1 && is.element("drift", names(x$coef))
