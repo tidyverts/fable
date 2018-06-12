@@ -1,5 +1,6 @@
 #' Create a new mable
 #' 
+#' @param key_vals A list of values for keys
 #' @param data The nested data (one row per model)
 #' @param model A list of models
 #'

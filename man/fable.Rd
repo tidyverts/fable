@@ -7,6 +7,8 @@
 fable(key_vals, data, model, forecast)
 }
 \arguments{
+\item{key_vals}{A list of values for keys}
+
 \item{data}{The nested data (one row per model)}
 
 \item{model}{A list of models}
