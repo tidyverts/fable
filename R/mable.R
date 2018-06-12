@@ -15,7 +15,7 @@ mable <- function(key_vals, data, model){
 #' @param model A bare input containing the model column's name
 #' 
 #' @export
-as_mable <- function(data, model, ...){
+as_mable <- function(data, model){
   model <- enexpr(model)
   data %>%
     mutate(!!!list(model = expr(enclass(!!model, "lst_mdl")))) %>%

@@ -4,7 +4,7 @@
 \alias{as_mable}
 \title{Coerce a dataset to a mable}
 \usage{
-as_mable(data, model, ...)
+as_mable(data, model)
 }
 \arguments{
 \item{data}{A dataset containing a list model column}

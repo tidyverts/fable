@@ -43,7 +43,7 @@ fable <- function(key_vals, data, model, forecast){
 #' @param forecast A bare input containing the forecast column's name
 #' 
 #' @export
-as_fable <- function(data, model, forecast, ...){
+as_fable <- function(data, model, forecast){
   model <- enexpr(model)
   forecast <- enexpr(model)
   data %>%
