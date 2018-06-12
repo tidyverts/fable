@@ -46,9 +46,10 @@ fable <- function(key_vals, data, model, forecast){
 as_fable <- function(data, model, forecast, ...){
   model <- enexpr(model)
   forecast <- enexpr(model)
-  enclass(data, "fable") %>%
+  data %>%
     mutate(!!!list(model = expr(enclass(!!model, "lst_mdl")),
-                   forecast = expr(enclass(!!forecast, "lst_mdl"))))
+                   forecast = expr(enclass(!!forecast, "lst_mdl")))) %>%
+    enclass("fable")
 }
 
 #' @importFrom tibble tbl_sum
