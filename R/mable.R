@@ -56,6 +56,18 @@ model_sum <- function(x){
   UseMethod("model_sum")
 }
 
+#' @export
+#' @importFrom forecast forecast
+#' @importFrom dplyr mutate
+forecast.mable <- function(object, ...){
+  fable(
+    key_vals=as.list(object)[key_vars(object)],
+    data=object$data, 
+    model=object$model, 
+    forecast=map2(object$model, object$data, forecast, ...)
+  )
+}
+
 #' @importFrom stats residuals
 #' @export
 residuals.mable <- function(object, ...){

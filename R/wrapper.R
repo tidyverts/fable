@@ -25,18 +25,6 @@ wrap_ts_model <- function(modelfn, data, model, response, transformation, args, 
   )
 }
 
-#' @export
-#' @importFrom forecast forecast
-#' @importFrom dplyr mutate
-forecast.mable <- function(object, ...){
-  fable(
-    key_vals=as.list(object)[key_vars(object)],
-    data=object$data, 
-    model=object$model, 
-    forecast=map2(object$model, object$data, forecast, ...)
-  )
-}
-
 #' @importFrom forecast forecast
 #' @importFrom purrr map2
 #' @importFrom stats qnorm time 
