@@ -24,12 +24,48 @@ globalVariables(".")
 #' @importFrom purrr map map2 map_lgl map_chr map_dbl
 NULL
 
+#' Create a new fable
+#' 
+#' @inheritParams mable
+#' @param forecast A list of tsibble forecasts
+#' @export
+fable <- function(data, model, forecast){
+  new_tibble(list(data=data,
+                  model=enclass(model, "lst_mdl"),
+                  forecast=enclass(forecast, "lst_fc")),
+             subclass = c("fable", "lst_ts"))
+}
+
+#' @importFrom tibble tbl_sum
+#' @export
+tbl_sum.fable <- function(x){
+  intervals <- x %>%
+    pull(!!sym("data")) %>%
+    map(interval) %>%
+    unique
+  if(length(intervals)==1){
+    int_disp <- format(intervals[[1]])
+  }
+  else{
+    int_disp <- "MIXED"
+  }
+  
+  out <- c(`A fable` = sprintf("%s forecasts [%s]", big_mark(NROW(x)), int_disp))
+  
+  if(!is_empty(key_vars(x))){
+    nk <- big_mark(n_keys(x))
+    out <- c(out, Keys = sprintf("%s [%s]", paste0(key_vars(x), collapse = ", "), nk))
+  }
+  
+  out
+}
+
 #' @importFrom dplyr mutate_if
 #' @export
 summary.fable <- function(object, level=c(80,95), ...){
   suppressWarnings(
     object %>% 
-      select(!!!syms(key_vars(object)), forecast) %>%
+      select(!!!syms(key_vars(object)), "forecast") %>%
       mutate(
         forecast = map(forecast, 
                        function(fc){
