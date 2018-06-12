@@ -17,8 +17,9 @@ mable <- function(key_vals, data, model){
 #' @export
 as_mable <- function(data, model, ...){
   model <- enexpr(model)
-  enclass(data, "mable") %>%
-    mutate(!!!list(model = expr(enclass(!!model, "lst_mdl"))))
+  data %>%
+    mutate(!!!list(model = expr(enclass(!!model, "lst_mdl")))) %>%
+    enclass("mable")
 }
 
 #' @importFrom tibble tbl_sum
