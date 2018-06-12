@@ -29,9 +29,7 @@ wrap_ts_model <- function(modelfn, data, model, response, transformation, args, 
 #' @importFrom forecast forecast
 #' @importFrom dplyr mutate
 forecast.mable <- function(object, ...){
-  object %>%
-    mutate(!!sym("forecast") := map2(!!sym("model"), !!sym("data"), forecast, ...)) %>%
-    enclass(subclass = "fable")
+  fable(object$data, object$model, map2(object$model, object$data, forecast, ...))
 }
 
 #' @importFrom forecast forecast
