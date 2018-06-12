@@ -76,6 +76,7 @@ ARIMA <- function(data, formula, period = "smallest",
     args$PDQ[[1]]$auto$D <- ifelse(args$PDQ[[1]]$manual$seasonal[2] == "auto", NA, args$PDQ[[1]]$manual$seasonal[2])
     args$pdq[[1]] <- args$pdq[[1]]$auto
     args$PDQ[[1]] <- args$PDQ[[1]]$auto
+    args$optim[[1]] <- list(ic=ic, test=test, seasonal.test=seasonal.test)
     ts_model_fn <- "auto.arima"
   }
   else{
