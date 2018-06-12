@@ -36,7 +36,7 @@ tbl_sum.mable <- function(x){
     int_disp <- "MIXED"
   }
   
-  out <- c(`A mable` = sprintf("%s models [%s]", big_mark(NROW(x)), int_disp))
+  out <- c(`A mable` = sprintf("%s model%s [%s]", big_mark(NROW(x)), ifelse(NROW(x)==1, "", "s"), int_disp))
   
   if(!is_empty(key_vars(x))){
     nk <- big_mark(n_keys(x))

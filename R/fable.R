@@ -66,7 +66,7 @@ tbl_sum.fable <- function(x){
     int_disp <- "MIXED"
   }
   
-  out <- c(`A fable` = sprintf("%s forecasts [%s]", big_mark(NROW(x)), int_disp))
+  out <- c(`A fable` = sprintf("%s forecast%s [%s]", big_mark(NROW(x)), ifelse(NROW(x)==1, "", "s"), int_disp))
   
   if(!is_empty(key_vars(x))){
     nk <- big_mark(n_keys(x))
