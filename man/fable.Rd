@@ -4,7 +4,7 @@
 \alias{fable}
 \title{Create a new fable}
 \usage{
-fable(data, model, forecast)
+fable(key_vals, data, model, forecast)
 }
 \arguments{
 \item{data}{The nested data (one row per model)}

@@ -13,9 +13,9 @@ wrap_ts_model <- function(modelfn, data, model, response, transformation, args, 
   # Fix components
   fit$call <- cl
   fit$series <- expr_text(model_lhs(model))
-  
   # Output model
   mable(
+    key_vals = as.list(data)[key_vars(data)],
     data = (data %>%
       grouped_df(key_vars(.)) %>%
       nest)$data,
@@ -29,7 +29,12 @@ wrap_ts_model <- function(modelfn, data, model, response, transformation, args, 
 #' @importFrom forecast forecast
 #' @importFrom dplyr mutate
 forecast.mable <- function(object, ...){
-  fable(object$data, object$model, map2(object$model, object$data, forecast, ...))
+  fable(
+    key_vals=as.list(object)[key_vars(object)],
+    data=object$data, 
+    model=object$model, 
+    forecast=map2(object$model, object$data, forecast, ...)
+  )
 }
 
 #' @importFrom forecast forecast

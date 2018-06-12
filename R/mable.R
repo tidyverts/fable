@@ -4,8 +4,8 @@
 #' @param model A list of models
 #'
 #' @export
-mable <- function(data, model){
-  new_tibble(list(data=data, model=enclass(model, "lst_mdl")), subclass = c("mable", "lst_ts"))
+mable <- function(key_vals, data, model){
+  new_tibble(tibble(!!!key_vals, data=data, model=enclass(model, "lst_mdl")), subclass = c("mable", "lst_ts"))
 }
 
 #' @importFrom tibble tbl_sum

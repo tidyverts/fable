@@ -29,10 +29,11 @@ NULL
 #' @inheritParams mable
 #' @param forecast A list of tsibble forecasts
 #' @export
-fable <- function(data, model, forecast){
-  new_tibble(list(data=data,
-                  model=enclass(model, "lst_mdl"),
-                  forecast=enclass(forecast, "lst_fc")),
+fable <- function(key_vals, data, model, forecast){
+  new_tibble(tibble(!!!key_vals,
+                    data=data,
+                    model=enclass(model, "lst_mdl"),
+                    forecast=enclass(forecast, "lst_fc")),
              subclass = c("fable", "lst_ts"))
 }
 

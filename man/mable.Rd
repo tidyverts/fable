@@ -4,7 +4,7 @@
 \alias{mable}
 \title{Create a new mable}
 \usage{
-mable(data, model)
+mable(key_vals, data, model)
 }
 \arguments{
 \item{data}{The nested data (one row per model)}
