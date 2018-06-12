@@ -103,7 +103,7 @@ enclass <- function(x, subclass, ...){
              }
              x
            }) %>%
-    `class<-`(c(subclass, class(.))) # Add classes
+    `class<-`(c(subclass, setdiff(class(.), subclass))) # Add classes
 }
 
 rm_class <- function(x, class){
