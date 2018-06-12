@@ -5,7 +5,7 @@
 #'
 #' @export
 mable <- function(data, model){
-  new_tibble(list(data=data, model=enclass(model, "lst_mdl")), subclass = "mable")
+  new_tibble(list(data=data, model=enclass(model, "lst_mdl")), subclass = c("mable", "lst_ts"))
 }
 
 #' @importFrom tibble tbl_sum
