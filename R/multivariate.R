@@ -22,5 +22,5 @@ multi_univariate <- function(data, cl){
            ) %>%
     mutate(data = map(!!sym("model"), ~.x$data[[1]]),
            model = map(!!sym("model"), ~.x$model[[1]])) %>%
-    enclass("mable")
+    as_mable(!!sym("model"))
 }

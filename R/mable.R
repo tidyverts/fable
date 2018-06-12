@@ -9,6 +9,18 @@ mable <- function(key_vals, data, model){
   new_tibble(tibble(!!!key_vals, data=data, model=enclass(model, "lst_mdl")), subclass = c("mable", "lst_ts"))
 }
 
+#' Coerce a dataset to a mable
+#' 
+#' @param data A dataset containing a list model column
+#' @param model A bare input containing the model column's name
+#' 
+#' @export
+as_mable <- function(data, model, ...){
+  model <- enexpr(model)
+  enclass(data, "mable") %>%
+    mutate(!!!list(model = expr(enclass(!!model, "lst_mdl"))))
+}
+
 #' @importFrom tibble tbl_sum
 #' @export
 tbl_sum.mable <- function(x){
