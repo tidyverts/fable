@@ -37,6 +37,20 @@ fable <- function(key_vals, data, model, forecast){
              subclass = c("fable", "lst_ts"))
 }
 
+#' Coerce a dataset to a fable
+#' 
+#' @inheritParams as_mable
+#' @param forecast A bare input containing the forecast column's name
+#' 
+#' @export
+as_fable <- function(data, model, forecast, ...){
+  model <- enexpr(model)
+  forecast <- enexpr(model)
+  enclass(data, "fable") %>%
+    mutate(!!!list(model = expr(enclass(!!model, "lst_mdl")),
+                   forecast = expr(enclass(!!forecast, "lst_mdl"))))
+}
+
 #' @importFrom tibble tbl_sum
 #' @export
 tbl_sum.fable <- function(x){
