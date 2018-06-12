@@ -32,6 +32,17 @@ tbl_sum.mable <- function(x){
   out
 }
 
+#' Provide a succinct summary of a model
+#' 
+#' Similarly to pillar's type_sum and obj_sum, model_sum is used to provide brief model summaries.
+#' 
+#' @param x The model to summarise
+#' 
+#' @export
+model_sum <- function(x){
+  UseMethod("model_sum")
+}
+
 #' @importFrom stats residuals
 #' @export
 residuals.mable <- function(object, ...){
