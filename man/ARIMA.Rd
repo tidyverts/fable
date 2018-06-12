@@ -15,7 +15,14 @@ ARIMA(data, formula, period = "smallest", ic = c("aicc", "aic", "bic"),
 
 \item{period}{Time series frequency for seasonal component.}
 
-\item{...}{Additional arguments to be passed to \code{\link[stats]{arima}}.}
+\item{ic}{The information criterion used to choose the best model
+for auto.arima}
+
+\item{test}{The unit root test used for selecting non-seasonal differences}
+
+\item{seasonal.test}{The seasonal unit root test for selecting seasonal differences}
+
+\item{...}{Further arguments for Arima or auto.arima}
 }
 \value{
 See the \code{\link[stats]{arima}} function in the stats package.
@@ -33,8 +40,10 @@ See the \code{\link[stats]{arima}} function in the stats package.
 }
 \examples{
 
+# Manual ARIMA specification
 USAccDeaths \%>\% ARIMA(log(value) ~ pdq(0,1,1) + PDQ(0,1,1))
 
+# Automatic ARIMA specification
 UKLungDeaths \%>\% ARIMA(mdeaths ~ fdeaths)
 
 }

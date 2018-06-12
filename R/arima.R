@@ -2,13 +2,20 @@
 #' @param data A data frame
 #' @param formula Model specification.
 #' @param period Time series frequency for seasonal component.
+#' @param ic The information criterion used to choose the best model
+#' for auto.arima
+#' @param test The unit root test used for selecting non-seasonal differences
+#' @param seasonal.test The seasonal unit root test for selecting seasonal differences
+#' @param ... Further arguments for Arima or auto.arima
 #' 
 #' @export
 #' 
 #' @examples 
 #' 
+#' # Manual ARIMA specification
 #' USAccDeaths %>% ARIMA(log(value) ~ pdq(0,1,1) + PDQ(0,1,1))
 #' 
+#' # Automatic ARIMA specification
 #' UKLungDeaths %>% ARIMA(mdeaths ~ fdeaths)
 #' 
 #' @importFrom forecast Arima auto.arima
