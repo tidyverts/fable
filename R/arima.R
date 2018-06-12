@@ -11,12 +11,11 @@
 #' @export
 #' 
 #' @examples 
-#' 
 #' # Manual ARIMA specification
 #' USAccDeaths %>% ARIMA(log(value) ~ pdq(0,1,1) + PDQ(0,1,1))
 #' 
 #' # Automatic ARIMA specification
-#' UKLungDeaths %>% ARIMA(mdeaths ~ fdeaths)
+#' tsibbledata::UKLungDeaths %>% ARIMA(mdeaths ~ fdeaths)
 #' 
 #' @importFrom forecast Arima auto.arima
 ARIMA <- function(data, formula, period = "smallest", 

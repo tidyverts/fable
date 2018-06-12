@@ -39,12 +39,11 @@ and re-apply it to the data \code{y}.
 See the \code{\link[stats]{arima}} function in the stats package.
 }
 \examples{
-
 # Manual ARIMA specification
 USAccDeaths \%>\% ARIMA(log(value) ~ pdq(0,1,1) + PDQ(0,1,1))
 
 # Automatic ARIMA specification
-UKLungDeaths \%>\% ARIMA(mdeaths ~ fdeaths)
+tsibbledata::UKLungDeaths \%>\% ARIMA(mdeaths ~ fdeaths)
 
 }
 \seealso{
