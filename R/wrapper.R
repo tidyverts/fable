@@ -15,12 +15,14 @@ wrap_ts_model <- function(modelfn, data, model, response, transformation, args, 
   fit$series <- expr_text(model_lhs(model))
   
   # Output model
-  data %>%
-    grouped_df(key_vars(.)) %>%
-    nest %>% 
-    mutate(model = list(enclass(fit, model = model, response = response, transformation = transformation,
-                                subclass = "ts_model"))) %>%
-    enclass("mable")
+  mable(
+    data = (data %>%
+      grouped_df(key_vars(.)) %>%
+      nest)$data,
+    model = list(enclass(fit, "ts_model",
+                         model = model, response = response,
+                         transformation = transformation))
+  )
 }
 
 #' @export
