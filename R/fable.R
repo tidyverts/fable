@@ -83,3 +83,12 @@ summary.fable <- function(object, level=c(80,95), ...){
 key_vars.fable <- function(x){
   setdiff(colnames(x), c("data", "model", "forecast"))
 }
+
+#' @export
+n_keys.fable <- function (x){
+  key <- key_vars(x)
+  if (is_empty(key)) {
+    return(1L)
+  }
+  NROW(distinct(ungroup(as_tibble(x)), !!!syms(key)))
+}
