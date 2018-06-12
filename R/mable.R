@@ -2,6 +2,8 @@
 #' 
 #' @param data The nested data (one row per model)
 #' @param model A list of models
+#'
+#' @export
 mable <- function(data, model){
   new_tibble(list(data=data, model=enclass(model, "lst_mdl")), subclass = "mable")
 }
