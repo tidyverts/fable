@@ -53,17 +53,21 @@ model_STL <- function(data, model, response, transformation, args, period = "all
   # Decompose data
   decomp <- eval_tidy(quo(mstl(msts(!!model_lhs(model), !!period), !!!args)), data = data)
   # Output tsibble decomposition
-  new_tibble(list(data = list(data),
-                  decomp = list(
-                    enclass(
-                      data %>% select(!!index(.)) %>% bind_cols(as_tibble(decomp[,-1])),
-                      model = model,
-                      response = response,
-                      transformation = transformation,
-                      subclass = "STL"
-                    )
-                  )
-  ), subclass = "dable")
+  dable(
+    key_vals = as.list(data)[key_vars(data)],
+    data = (data %>%
+              grouped_df(key_vars(.)) %>%
+              nest)$data,
+    decomposition = list(
+      enclass(
+        data %>% select(!!index(.)) %>% bind_cols(as_tibble(decomp[,-1])),
+        model = model,
+        response = response,
+        transformation = transformation,
+        subclass = "STL"
+      )
+    )
+  )
 }
 
 modelsplit.STL <- function(object, formula, ...){
@@ -148,3 +152,8 @@ modelsplit.STL <- function(object, formula, ...){
 #   
 #   return(out)
 # }
+
+#' @export
+components.STL <- function(object, ...){
+  object
+}
