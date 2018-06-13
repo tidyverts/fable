@@ -17,7 +17,3 @@ modelsplit.dable <- function(object, ...){
 components <- function(object, ...){
   UseMethod("components")
 }
-
-components.dable <- function(object, ...){
-  object[["decomp"]]
-}
