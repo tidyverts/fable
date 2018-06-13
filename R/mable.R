@@ -105,6 +105,16 @@ summary.mable <- function(object, ...){
 }
 
 #' @export
+components.mable <- function(object, ...){
+  object %>%
+    transmute(
+      !!!syms(key_vars(.)),
+      components = map(object$model, components)
+    ) %>%
+    unnest(key = syms(key_vars(object)))
+}
+
+#' @export
 key_vars.mable <- function(x){
   setdiff(colnames(x), c("data", "model"))
 }

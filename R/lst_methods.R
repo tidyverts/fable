@@ -1,3 +1,5 @@
+### lst_mdl ###
+
 #' @export
 type_sum.lst_mdl <- function(x){
   "model"
@@ -26,6 +28,8 @@ print.lst_mdl <- function(x, ...){
   class(x) <- "list"
   print(x)
 }
+
+### lst_fc ###
 
 #' @export
 type_sum.lst_fc <- function(x){
@@ -59,6 +63,32 @@ c.lst_fc <- function(x, ...){
 
 #' @export
 print.lst_fc <- function(x, ...){
+  class(x) <- "list"
+  print(x)
+}
+
+### lst_dcmp ###
+
+#' @export
+type_sum.lst_dcmp <- function(x){
+  "dcmp"
+}
+
+#' @export
+pillar_shaft.lst_dcmp <- function(x, ...){
+  NextMethod()
+}
+
+#' @export
+c.lst_dcmp <- function(x, ...){
+  enclass(NextMethod(), "lst_dcmp")
+}
+
+#' @export
+`[.lst_dcmp` <- c.lst_dcmp
+
+#' @export
+print.lst_dcmp <- function(x, ...){
   class(x) <- "list"
   print(x)
 }
