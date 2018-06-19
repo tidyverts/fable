@@ -44,7 +44,21 @@ LM <- function(data, formula, ...){
                                 xreg = function(...){NULL})
   )
   
-  lm(as.formula(eval_tidy(model_inputs$model), specials), data, ...)
+  fit <- lm(as.formula(eval_tidy(model_inputs$model), specials), data, ...)
+  fit$call <- cl
+  
+  mable(
+    key_vals = as.list(data)[key_vars(data)],
+    data = (data %>%
+              grouped_df(key_vars(.)) %>%
+              nest)$data,
+    model = list(enclass(fit, "LM",
+                         !!!model_inputs[c("model", "response", "transformation")]))
+  )
+}
+
+model_sum.LM <- function(x){
+  "LM"
 }
 
 as_model_matrix <- function(tbl){
