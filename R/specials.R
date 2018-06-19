@@ -26,7 +26,7 @@ no_xreg <- function(...){
 
 trend <- function(data, knots = NULL, origin = NULL){
   idx_num <- data %>% pull(!!index(data)) %>% units_since
-  knots_num <- knots %>% units_since
+  knots_num <- if(is.null(knots)){NULL} else {knots %>% units_since}
   if(!is.null(origin)){
     origin_num <- units_since(origin)
     idx_num <- idx_num - origin_num
