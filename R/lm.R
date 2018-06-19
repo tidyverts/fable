@@ -4,6 +4,8 @@
 #' @param formula Model specification.
 #' @param ... Additional arguments passed to lm
 #' 
+#' @export
+#' 
 #' @examples 
 #' 
 #' USAccDeaths %>% LM(log(value) ~ trend() + season())
