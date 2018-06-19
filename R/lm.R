@@ -46,7 +46,7 @@ LM <- function(data, formula, ...){
                                 xreg = function(...){NULL})
   )
   
-  fit <- lm(as.formula(eval_tidy(model_inputs$model), specials), data, ...)
+  fit <- stats::lm(stats::as.formula(eval_tidy(model_inputs$model), specials), data, ...)
   fit$call <- cl
   
   mable(
