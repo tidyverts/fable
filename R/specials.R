@@ -24,20 +24,42 @@ no_xreg <- function(...){
   abort("Exogenous regressors are not supported for this model type.")
 }
 
-trend <- function(data, knots = NULL){
-  idx <- data %>% pull(!!index(data)) %>% as.numeric
-  tibble(trend = idx,
-         !!!set_names(as.numeric(knots) %>% map(~ pmax(0, idx-.x)), map_chr(knots, ~ paste0("trend_",format(.x)))))
+trend <- function(data, knots = NULL, origin = NULL){
+  idx_num <- data %>% pull(!!index(data)) %>% units_since
+  knots_num <- knots %>% units_since
+  if(!is.null(origin)){
+    origin_num <- units_since(origin)
+    idx_num <- idx_num - origin_num
+    knots_num <- knots_num - origin_num
+  }
+  index_interval <- idx_num %>% pull_interval() %>% as.numeric
+  idx_num <- idx_num/index_interval
+  knots_num <- knots_num/index_interval
+  knots_exprs <- knots_num %>%
+    map(~ pmax(0, idx_num-.x)) %>%
+    set_names(map_chr(knots, ~ paste0("trend_",format(.x))))
+  tibble(trend = idx_num,
+         !!!knots_exprs)
 }
 
 season <- function(data, period){
+  idx_num <- data %>% pull(!!index(data)) %>% units_since
+  index_interval <- idx_num %>% pull_interval() %>% as.numeric
+  idx_num <- idx_num/index_interval
   period <- get_frequencies(period, data)
-  idx <- seq_len(NROW(data))
-  tibble(!!!set_names(seq_len(period-1) %>% map(~ (idx - .x)%%period == 0), paste0("season_",seq_len(period-1))))
+  season_exprs <- period %>% 
+    map(~ expr(as.factor((idx_num%%(!!period))+1))) %>%
+    set_names(names(period))
+  tibble(!!!season_exprs)
 }
 
-fourier <- function(data, period, K){
-  idx_num <- data %>% pull(!!index(data)) %>% as.numeric
+fourier <- function(data, period, K, origin = NULL){ 
+  idx_num <- data %>% pull(!!index(data)) %>% units_since
+  if(!is.null(origin)){
+    idx_num <- idx_num - units_since(origin)
+  }
+  index_interval <- idx_num %>% pull_interval() %>% as.numeric
+  idx_num <- idx_num/index_interval
   period <- get_frequencies(period, data)
   if (length(period) != length(K)) {
     abort("Number of periods does not match number of orders")
@@ -54,7 +76,6 @@ fourier <- function(data, period, K){
     .[!duplicated(.)] %>%
     imap(function(p, name){
       out <- exprs(C = cospi(2 * !!p * idx_num))
-      browser()
       if(abs(2 * p - round(2 * p)) > .Machine$double.eps){
         out <- c(out, exprs(S = sinpi(2 * !!p * idx_num)))
       }
