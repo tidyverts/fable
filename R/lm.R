@@ -59,6 +59,7 @@ LM <- function(data, formula, ...){
   )
 }
 
+#' @export
 model_sum.LM <- function(x){
   "LM"
 }
