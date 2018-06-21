@@ -17,6 +17,10 @@ pillar::obj_sum
 #' @export
 forecast::forecast
 
+#' @importFrom forecast getResponse
+#' @export
+forecast::getResponse
+
 #' @importFrom ggplot2 autoplot
 #' @export
 ggplot2::autoplot
