@@ -46,7 +46,15 @@ LM <- function(data, formula, ...){
                                 xreg = function(...){NULL})
   )
   
-  fit <- stats::lm(stats::as.formula(eval_tidy(model_inputs$model), specials), data, ...)
+  model_formula <- eval_tidy(model_inputs$model)
+  if(is_formula(model_formula)){
+    model_formula <- stats::as.formula(model_formula, specials)
+  }
+  else{
+    model_formula <- new_formula(model_formula, 1, specials)
+  }
+  
+  fit <- stats::lm(model_formula, data, ...)
   fit$call <- cl
   
   mable(
