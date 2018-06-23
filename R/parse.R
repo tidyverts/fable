@@ -85,10 +85,10 @@ parse_model <- function(data, model, specials){
   
   if(is.null(model_lhs(model))){
     model <- new_formula(lhs = guess_response(data), rhs = model_rhs(model))
-    inform(sprintf(
-      "Response not specified, automatically selected `%s`. Override this in the `formula`.",
-      expr_text(measured_vars(data)[1])
-    ))
+    # inform(sprintf(
+    #   "Response not specified, automatically selected `%s`. Override this in the `formula`.",
+    #   expr_text(measured_vars(data)[1])
+    # ))
   }
   
   # Parse model
