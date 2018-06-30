@@ -8,7 +8,13 @@
 #' 
 #' @export
 new_specials_env <- function(..., parent_env = caller_env(), required_specials = NULL){
-  child_env(parent_env, !!!dots_list(...)) %>%
+  child_env(parent_env,
+    !!!map(dots_list(...),
+      function(fn){
+        set_env(fn, env_clone(parent_env, get_env(fn)))
+      }
+    )
+  ) %>%
     enclass(NULL, required_specials = required_specials)
 }
 
