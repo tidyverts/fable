@@ -65,10 +65,11 @@ parse_response <- function(model_lhs){
 #' @param data A dataset
 #' @param model A formula
 #' @param specials A list of functions used to be evaluated from the formula.
+#' If specials is NULL, no specials are computed
 #' 
 #' @importFrom tibble tibble
 #' @export
-parse_model <- function(data, model, specials){
+parse_model <- function(data, model, specials = NULL){
   # Clean inputs
   if(missing(model)){
     model <- guess_response(data)
@@ -104,10 +105,14 @@ parse_model <- function(data, model, specials){
 #' 
 #' @param model_rhs The expression for the rhs of the model (from `model_rhs()`)
 #' @param data Data provided by the user to evaluate the special functions within
-#' @param specials The environment containing specials (from `new_specials_env()`)
+#' @param specials The environment containing specials (from `new_specials_env()`). 
+#' If specials is NULL, no specials are computed
 #' 
 #' @export
-parse_model_rhs <- function(model_rhs, data, specials){
+parse_model_rhs <- function(model_rhs, data, specials = NULL){
+  if(is.null(specials)){
+    return(list())
+  }
   model_rhs %>%
     parse_specials(specials = specials) %>%
     map(~ .x %>%

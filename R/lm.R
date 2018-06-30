@@ -39,12 +39,7 @@ LM <- function(data, formula, ...){
   )
   
   # Parse model
-  model_inputs <- parse_model(data, formula,
-    specials = new_specials_env(trend = function(...){NULL},
-                                season = function(...){NULL},
-                                fourier = function(...){NULL},
-                                xreg = function(...){NULL})
-  )
+  model_inputs <- parse_model(data, formula)
   
   model_formula <- eval_tidy(model_inputs$model)
   if(is_formula(model_formula)){
