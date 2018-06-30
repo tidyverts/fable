@@ -51,6 +51,8 @@ LM <- function(data, formula, ...){
   )
 }
 
+#' @importFrom stats predict
+#' @export
 forecast.LM <- function(object, data, newdata = NULL, h=NULL, ...){
   if(is.null(newdata)){
     if(is.null(h)){
