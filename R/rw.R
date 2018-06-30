@@ -39,7 +39,7 @@ RW <- function(data, formula = ~ lag(1)){
   # Define specials
   specials <- new_specials_env(
     lag = function(lag = 1){
-      lag <- get_frequencies(lag, data)
+      lag <- get_frequencies(lag, .data)
       if(lag == 1){
         list(order = c(0, 1, 0))
       } else {
@@ -52,7 +52,7 @@ RW <- function(data, formula = ~ lag(1)){
     xreg = function(...){
       list(xreg = tibble(...))
     },
-    parent_env = caller_env(),
+    parent_env = child_env(caller_env(), .data = data),
     required_specials = c("lag")
   )
   
@@ -98,7 +98,7 @@ SNAIVE <- function(data, formula = ~ lag("smallest")){
   # Define specials
   specials <- new_specials_env(
     lag = function(lag = 1){
-      lag <- get_frequencies(lag, data)
+      lag <- get_frequencies(lag, .data)
       if(lag == 1){
         abort("Non-seasonal model specification provided, use RW() or provide a different lag specification.")
       } else {
@@ -112,7 +112,7 @@ SNAIVE <- function(data, formula = ~ lag("smallest")){
       list(xreg = tibble(...))
     },
     
-    parent_env = caller_env(),
+    parent_env = child_env(caller_env(), .data = data),
     required_specials = c("lag")
   )
   

@@ -57,7 +57,7 @@ ARIMA <- function(data, formula, period = "smallest",
       list(xreg = tibble(...))
     },
     
-    parent_env = caller_env(),
+    parent_env = child_env(caller_env(), .data = data),
     required_specials = c("pdq", "PDQ")
   )
   

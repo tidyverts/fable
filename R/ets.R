@@ -37,7 +37,7 @@ ETS <- function(data, formula, period = "smallest", ...){
     },
     xreg = no_xreg,
     
-    parent_env = caller_env(),
+    parent_env = child_env(caller_env(), .data = data),
     required_specials = c("error", "trend", "season")
   )
   
