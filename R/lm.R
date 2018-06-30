@@ -23,19 +23,8 @@ LM <- function(data, formula, ...){
   
   # Define specials
   specials <- new_specials_env(
-    trend = function(knots = NULL){
-      origin <- min(data[[expr_text(index(data))]])
-      trend(data, knots, origin) %>% as.matrix
-    },
-    season = function(period = "smallest"){
-      season(data, period) %>% as_model_matrix
-    },
-    fourier = function(period = "smallest", K){
-      origin <- min(data[[expr_text(index(data))]])
-      fourier(data, period, K, origin) %>% as.matrix
-    },
-    #xreg is handled by lm
-    parent_env = caller_env()
+    !!!lm_specials,
+    parent_env = child_env(caller_env(), .data = data)
   )
   
   # Parse model
@@ -58,9 +47,51 @@ LM <- function(data, formula, ...){
               grouped_df(key_vars(.)) %>%
               nest)$data,
     model = list(enclass(fit, "LM",
-                         !!!model_inputs[c("model", "response", "transformation")]))
+                         !!!map(model_inputs[c("model", "response", "transformation")], eval_tidy)))
   )
 }
+
+forecast.LM <- function(object, data, newdata = NULL, h=NULL, ...){
+  if(is.null(newdata)){
+    if(is.null(h)){
+      h <- get_frequencies("all", data) %>%
+        .[.>2] %>%
+        min
+    }
+    future_idx <- data %>% pull(!!index(.)) %>% fc_idx(h)
+    newdata <- tsibble(!!!set_names(list(future_idx), expr_text(index(data))), index = !!index(data))
+  }
+
+  # TODO: instead of replacing environment, just replace the data with newdata
+  attr(object$terms, ".Environment") <- new_specials_env(
+    !!!lm_specials,
+    parent_env = child_env(caller_env(), .data = newdata)
+  )
+  
+  fc <- predict(object, newdata, se.fit = TRUE)
+  
+  newdata %>%
+    mutate(mean = biasadj(invert_transformation(object%@%"transformation"), fc$se.fit^2)(fc$fit),
+           distribution = new_fcdist(qnorm, fc$fit, sd = fc$se.fit,
+                                     transformation = invert_transformation(object%@%"transformation"),
+                                     abbr = "N")
+           )
+}
+
+#xreg is handled by lm
+lm_specials <- list(
+  trend = function(knots = NULL){
+    origin <- min(.data[[expr_text(index(.data))]])
+    trend(.data, knots, origin) %>% as.matrix
+  },
+  season = function(period = "smallest"){
+    season(.data, period) %>% as_model_matrix
+  },
+  fourier = function(period = "smallest", K){
+    origin <- min(.data[[expr_text(index(.data))]])
+    fourier(.data, period, K, origin) %>% as.matrix
+  }
+)
 
 #' @export
 model_sum.LM <- function(x){
