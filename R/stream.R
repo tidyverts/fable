@@ -29,5 +29,6 @@ stream.mable <- function(object, data, ...){
       data = map2(data, .newdata, dplyr::bind_rows),
       model = map2(model, .newdata, stream, ...) %>% enclass("lst_mdl")
     ) %>%
-    select(exclude(".newdata"))
+    select(exclude(".newdata")) %>%
+    enclass("mable")
 }
