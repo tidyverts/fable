@@ -26,7 +26,7 @@ stream.mable <- function(object, data, ...){
   }
   object %>%
     mutate(
-      data = map2(data, .newdata, dplyr::bind_rows),
+      data = map2(data, .newdata, rbind),
       model = map2(model, .newdata, stream, ...) %>% enclass("lst_mdl")
     ) %>%
     select(exclude(".newdata")) %>%
