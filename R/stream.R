@@ -10,15 +10,23 @@ stream <- function(object, ...){
 
 #' @export
 stream.mable <- function(object, data, ...){
+  obj_vars <- key_vars(object)
   newdata <- data %>% 
-    group_by(!!!syms(key_vars(object))) %>%
+    group_by(!!!syms(obj_vars)) %>%
     nest %>%
     rename(.newdata = !!sym("data"))
   
+  if(length(key_vars(object)) == 0){
+    object <- object %>%
+      mutate(.newdata = newdata$.newdata)
+  }
+  else{
+    object <- object %>%
+      left_join(newdata, by = obj_vars)
+  }
   object %>%
-    left_join(newdata) %>%
     mutate(
-      data = map2(data, .newdata, bind_rows),
+      data = map2(data, .newdata, dplyr::bind_rows),
       model = map2(model, .newdata, stream, ...) %>% enclass("lst_mdl")
     ) %>%
     select(exclude(".newdata"))
