@@ -52,8 +52,9 @@ RW <- function(data, formula = ~ lag(1)){
     xreg = function(...){
       list(xreg = tibble(...))
     },
-    parent_env = child_env(caller_env(), .data = data),
-    required_specials = c("lag")
+    .env = caller_env(),
+    .required_specials = c("lag"),
+    .vals = list(.data = data)
   )
   
   # Parse model
@@ -112,8 +113,9 @@ SNAIVE <- function(data, formula = ~ lag("smallest")){
       list(xreg = tibble(...))
     },
     
-    parent_env = child_env(caller_env(), .data = data),
-    required_specials = c("lag")
+    .env = caller_env(),
+    .required_specials = c("lag"),
+    .vals = list(.data = data)
   )
   
   # Parse model

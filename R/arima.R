@@ -57,8 +57,9 @@ ARIMA <- function(data, formula, period = "smallest",
       list(xreg = tibble(...))
     },
     
-    parent_env = child_env(caller_env(), .data = data),
-    required_specials = c("pdq", "PDQ")
+    .env = caller_env(),
+    .required_specials = c("pdq", "PDQ"),
+    .vals = list(.data = data)
   )
   
   # Parse model

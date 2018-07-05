@@ -24,7 +24,8 @@ LM <- function(data, formula, ...){
   # Define specials
   specials <- new_specials_env(
     !!!lm_specials,
-    parent_env = child_env(caller_env(), .data = data)
+    .env = caller_env(),
+    .vals = list(.data = data)
   )
   
   # Parse model

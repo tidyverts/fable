@@ -4,14 +4,19 @@
 \alias{new_specials_env}
 \title{Create evaluation environment for specials}
 \usage{
-new_specials_env(..., parent_env = caller_env(), required_specials = NULL)
+new_specials_env(..., .env = caller_env(), .required_specials = NULL,
+  .bury = TRUE, .vals = NULL)
 }
 \arguments{
 \item{...}{A named set of functions which used to parse formula inputs}
 
-\item{parent_env}{The parent environment of the specials (to find other user objects)}
+\item{.env}{The evaluation environment of the specials (to find other user objects)}
 
-\item{required_specials}{The names of specials which must be provided (and if not, are included used with no inputs).}
+\item{.required_specials}{The names of specials which must be provided (and if not, are included used with no inputs).}
+
+\item{.bury}{If TRUE, the specials are bound to a child environment of env.}
+
+\item{.vals}{A list of named values to be bound to the special functions}
 }
 \description{
 Allows extension packages to make use of the formula parsing of specials.

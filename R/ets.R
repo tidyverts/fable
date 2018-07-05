@@ -37,8 +37,9 @@ ETS <- function(data, formula, period = "smallest", ...){
     },
     xreg = no_xreg,
     
-    parent_env = child_env(caller_env(), .data = data),
-    required_specials = c("error", "trend", "season")
+    .env = caller_env(),
+    .required_specials = c("error", "trend", "season"),
+    .vals = list(.data = data)
   )
   
   # Parse model
