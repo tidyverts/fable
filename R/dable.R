@@ -39,8 +39,7 @@ tbl_sum.dable <- function(x){
   out <- c(`A dable` = sprintf("[%s]", int_disp))
   
   if(!is_empty(key_vars(x))){
-    nk <- big_mark(n_keys(x))
-    out <- c(out, Keys = sprintf("%s [%s]", paste0(key_vars(x), collapse = ", "), nk))
+    out <- c(out, key_sum(x))
   }
   
   out
@@ -54,6 +53,12 @@ components.dable <- function(object, ...){
       components = map(object$decomposition, components)
     ) %>%
     unnest(key = syms(key_vars(object)))
+}
+
+#' @importFrom tsibble key
+#' @export
+key.dable <- function(x){
+  enclass(syms(key_vars(x)), "key")
 }
 
 #' @export

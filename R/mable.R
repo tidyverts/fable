@@ -23,6 +23,7 @@ as_mable <- function(data, model){
 }
 
 #' @importFrom tibble tbl_sum
+#' @importFrom tsibble key_sum
 #' @export
 tbl_sum.mable <- function(x){
   intervals <- x %>%
@@ -39,8 +40,7 @@ tbl_sum.mable <- function(x){
   out <- c(`A mable` = sprintf("%s model%s [%s]", big_mark(NROW(x)), ifelse(NROW(x)==1, "", "s"), int_disp))
   
   if(!is_empty(key_vars(x))){
-    nk <- big_mark(n_keys(x))
-    out <- c(out, Keys = sprintf("%s [%s]", paste0(key_vars(x), collapse = ", "), nk))
+    out <- c(out, key_sum(x))
   }
   
   out
@@ -128,6 +128,9 @@ components.mable <- function(object, ...){
     ) %>%
     unnest(key = syms(key_vars(object)))
 }
+
+#' @export
+key.mable <- key.dable
 
 #' @export
 key_vars.mable <- function(x){

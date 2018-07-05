@@ -69,8 +69,7 @@ tbl_sum.fable <- function(x){
   out <- c(`A fable` = sprintf("%s forecast%s [%s]", big_mark(NROW(x)), ifelse(NROW(x)==1, "", "s"), int_disp))
   
   if(!is_empty(key_vars(x))){
-    nk <- big_mark(n_keys(x))
-    out <- c(out, Keys = sprintf("%s [%s]", paste0(key_vars(x), collapse = ", "), nk))
+    out <- c(out, key_sum(x))
   }
   
   out
@@ -96,6 +95,10 @@ summary.fable <- function(object, level=c(80,95), ...){
     )
 }
 
+#' @export
+key.fable <- key.dable
+
+#' @export
 key_vars.fable <- function(x){
   setdiff(colnames(x), c("data", "model", "forecast"))
 }
