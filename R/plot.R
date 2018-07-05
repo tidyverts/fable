@@ -33,7 +33,10 @@ autoplot.mable <- function(object, ...){
 # Add multiple via facets by rows
 #' @export
 autoplot.fable <- function(object, level = c(80, 95), ...){
-  suppressMessages(autoplot(as_tsibble(unnest(object, !!sym("data"))))) +
+  if(NROW(object)>1){
+    warn("Only univariate forecast plots are currently supported. Plotting the first forecast.")
+  }
+  suppressMessages(autoplot(object$data[[1]], !!(object$model[[1]]%@%"response"))) +
     autolayer(object, level = level, ...)
 }
 
