@@ -35,6 +35,14 @@ exprs_xreg <- function(...){
   exprs(...)
 }
 
+model_xreg <- function(...){
+  model_formula <- new_formula(
+    lhs = NULL,
+    rhs = reduce(enexprs(...), ~ call2("+", .x, .y))
+  )
+  model.frame(model_formula, data = .data)
+}
+
 no_xreg <- function(...){
   abort("Exogenous regressors are not supported for this model type.")
 }

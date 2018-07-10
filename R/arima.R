@@ -54,7 +54,12 @@ ARIMA <- function(data, formula, period = "smallest",
       list(include.drift = trend)
     },
     xreg = function(...){
-      list(xreg = tibble(...))
+      model_formula <- new_formula(
+        lhs = NULL,
+        rhs = reduce(c(0, enexprs(...)), ~ call2("+", .x, .y))
+      )
+      
+      list(xreg = model.matrix(model_formula, data = .data))
     },
     
     .env = caller_env(),
