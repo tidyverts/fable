@@ -1,5 +1,5 @@
 #' Forecasting Functions for Tidy Time Series
-#' 
+#'
 #' Methods and tools for displaying and analysing univariate time series
 #' forecasts in a tidy format including exponential smoothing via state space models and
 #' automatic ARIMA modelling.
@@ -9,7 +9,7 @@
 #'
 #' @docType package
 #' @name fable-package
-#' @author Rob J Hyndman
+#' @author Rob J Hyndman, Mitchell O'Hara-Wild, Earo Wang
 #'
 #' Maintainer: Rob.Hyndman@monash.edu
 #' @keywords package
@@ -25,7 +25,7 @@ globalVariables(".")
 NULL
 
 #' Create a new fable
-#' 
+#'
 #' @inheritParams mable
 #' @param forecast A list of tsibble forecasts
 #' @export
@@ -38,10 +38,10 @@ fable <- function(key_vals, data, model, forecast){
 }
 
 #' Coerce a dataset to a fable
-#' 
+#'
 #' @inheritParams as_mable
 #' @param forecast A bare input containing the forecast column's name
-#' 
+#'
 #' @export
 as_fable <- function(data, model, forecast){
   model <- enexpr(model)
@@ -65,13 +65,13 @@ tbl_sum.fable <- function(x){
   else{
     int_disp <- "MIXED"
   }
-  
+
   out <- c(`A fable` = sprintf("%s forecast%s [%s]", big_mark(NROW(x)), ifelse(NROW(x)==1, "", "s"), int_disp))
-  
+
   if(!is_empty(key_vars(x))){
     out <- c(out, key_sum(x))
   }
-  
+
   out
 }
 
@@ -79,10 +79,10 @@ tbl_sum.fable <- function(x){
 #' @export
 summary.fable <- function(object, level=c(80,95), ...){
   suppressWarnings(
-    object %>% 
+    object %>%
       select(!!!syms(key_vars(object)), "forecast") %>%
       mutate(
-        forecast = map(forecast, 
+        forecast = map(forecast,
                        function(fc){
                          fc %>%
                            mutate(!!!set_names(map(level, ~ expr(hilo(!!sym("distribution"), !!.x))), paste0(level, "%"))) %>%

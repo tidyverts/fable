@@ -14,7 +14,7 @@ automatic ARIMA modelling.
 GPL3\cr LazyLoad: \tab yes\cr }
 }
 \author{
-Rob J Hyndman
+Rob J Hyndman, Mitchell O'Hara-Wild, Earo Wang
 
 Maintainer: Rob.Hyndman@monash.edu
 }
