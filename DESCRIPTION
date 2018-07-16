@@ -17,7 +17,7 @@ Imports:
     tsibble (>= 0.1.5.9000),
     pillar (>= 1.0.1),
     dplyr (>= 0.7.3),
-    ggplot2 (>= 2.0.0),
+    ggplot2 (>= 3.0.0),
     tidyselect,
     magrittr,
     forecast,
