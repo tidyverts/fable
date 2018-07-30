@@ -56,7 +56,7 @@ trend <- function(data, knots = NULL, origin = NULL){
     idx_num <- idx_num - origin_num
     knots_num <- knots_num - origin_num
   }
-  index_interval <- idx_num %>% pull_interval() %>% as.numeric
+  index_interval <- idx_num %>% time_unit()
   idx_num <- idx_num/index_interval
   knots_num <- knots_num/index_interval
   knots_exprs <- knots_num %>%
