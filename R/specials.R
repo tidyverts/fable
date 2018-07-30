@@ -68,7 +68,7 @@ trend <- function(data, knots = NULL, origin = NULL){
 
 season <- function(data, period){
   idx_num <- data %>% pull(!!index(data)) %>% units_since
-  index_interval <- idx_num %>% pull_interval() %>% as.numeric
+  index_interval <- idx_num %>% time_unit()
   idx_num <- idx_num/index_interval
   period <- get_frequencies(period, data)
   season_exprs <- period %>% 
@@ -82,7 +82,7 @@ fourier <- function(data, period, K, origin = NULL){
   if(!is.null(origin)){
     idx_num <- idx_num - units_since(origin)
   }
-  index_interval <- idx_num %>% pull_interval() %>% as.numeric
+  index_interval <- idx_num %>% time_unit()
   idx_num <- idx_num/index_interval
   period <- get_frequencies(period, data)
   if (length(period) != length(K)) {
