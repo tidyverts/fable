@@ -35,6 +35,7 @@ exprs_xreg <- function(...){
   exprs(...)
 }
 
+#' @importFrom stats model.frame
 model_xreg <- function(...){
   model_formula <- new_formula(
     lhs = NULL,
