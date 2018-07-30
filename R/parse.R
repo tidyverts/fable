@@ -80,8 +80,10 @@ parse_model <- function(data, model, specials = NULL){
   }
   else{
     # Capture model expression
-    model <- enquo(model)
-    model <- eval_tidy(expr(enexpr(!!quo_squash(model))), env = get_env(model))
+    if(!possibly(is_formula, FALSE)(model)){
+      model <- enquo(model)
+      model <- eval_tidy(expr(enexpr(!!quo_squash(model))), env = get_env(model))
+    }
   }
   
   if(is.null(model_lhs(model))){
