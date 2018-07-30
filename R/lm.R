@@ -32,8 +32,9 @@ LM <- function(data, formula, ...){
   model_inputs <- parse_model(data, formula)
   
   model_formula <- eval_tidy(model_inputs$model)
+  
   if(is_formula(model_formula)){
-    model_formula <- stats::as.formula(model_formula, specials)
+    model_formula <- set_env(model_formula, new_env = specials)
   }
   else{
     model_formula <- new_formula(model_formula, 1, specials)
