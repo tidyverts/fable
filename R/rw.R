@@ -87,7 +87,6 @@ NAIVE <- RW
 SNAIVE <- function(data, formula = ~ lag("smallest")){
   # Capture user call
   cl <- call_standardise(match.call())
-  
   # Coerce data
   data <- as_tsibble(data)
   
@@ -98,7 +97,7 @@ SNAIVE <- function(data, formula = ~ lag("smallest")){
   
   # Define specials
   specials <- new_specials_env(
-    lag = function(lag = 1){
+    lag = function(lag = "smallest"){
       lag <- get_frequencies(lag, .data)
       if(lag == 1){
         abort("Non-seasonal model specification provided, use RW() or provide a different lag specification.")
