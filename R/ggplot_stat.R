@@ -33,9 +33,12 @@ StatForecast <- ggplot2::ggproto(
 
     fit <- eval_tidy(quo(plot_data %>% !!model))
     fcast <- do.call("forecast", append(list(fit), fc.args))
-    fcast <- fortify(fcast, level = levels, showgap = showgap) %>%
-      rename(!!!exprs(y = !!sym("mean"), ymin = !!sym("lower"), ymax = !!sym("upper"))) %>%
+    fcast <- fortify(fcast, level = levels, showgap = showgap) %>% 
       mutate(x := as.numeric(!!sym("x")))
+    
+    aes_cn <- match(c("mean", "lower", "upper"), colnames(fcast))
+    
+    colnames(fcast)[aes_cn[!is.na(aes_cn)]] <- c("y", "ymin", "ymax")[!is.na(aes_cn)]
     
     extra_vars <- data[-na.omit(match(c("x", "y", "level", "ymin", "ymax"), colnames(data)))] %>%
       as.list %>%
