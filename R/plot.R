@@ -41,13 +41,16 @@ autoplot.fable <- function(object, level = c(80, 95), ...){
 }
 
 #' @export
-autolayer.fable <- function(object, level = c(80, 95), ...){
+autolayer.fable <- function(object, level = c(80, 95), series = NULL, ...){
   data <- fortify(object, level = level, ...)
   mapping <- eval_tidy(quo(aes(x = !!index(data), y = !!sym("mean"))))
   if(!is.null(level)){
     mapping$level <- sym("level")
     mapping$ymin <- sym("lower")
     mapping$ymax <- sym("upper")
+  }
+  if(!is.null(series)){
+    mapping$colour <- series
   }
   geom_forecast(mapping = mapping, stat = "identity", data = data)
 }
