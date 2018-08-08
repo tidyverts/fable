@@ -69,7 +69,8 @@ forecast.LM <- function(object, data, newdata = NULL, h=NULL, ...){
   # TODO: instead of replacing environment, just replace the data with newdata
   attr(object$terms, ".Environment") <- new_specials_env(
     !!!lm_specials,
-    parent_env = child_env(caller_env(), .data = newdata)
+    .env = caller_env(),
+    .vals = list(.data = newdata)
   )
   
   fc <- predict(object, newdata, se.fit = TRUE)
