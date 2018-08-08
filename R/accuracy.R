@@ -22,9 +22,9 @@ MAPE <- function(res, y, na.rm = TRUE, ...){
   mean(abs(res / y * 100), na.rm = TRUE, ...)
 }
 
-MASE <- function(res, x, demean = FALSE, na.rm = TRUE, period = "smallest", d = 0, D = 0, ...){
+MASE <- function(res, x, demean = FALSE, na.rm = TRUE, period, d = 0, D = 0, ...){
   if (D > 0) { # seasonal differencing
-    x <- diff(x, lag = get_frequencies(period, res), differences = D)
+    x <- diff(x, lag = period, differences = D)
   }
   if (d > 0) {
     x <- diff(x, differences = d)
