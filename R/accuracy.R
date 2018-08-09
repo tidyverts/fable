@@ -41,3 +41,21 @@ MASE <- function(res, y, demean = FALSE, na.rm = TRUE, period, d = period > 1, D
 ACF1 <- function(res, na.action = stats::na.pass, ...){
   stats::acf(res, plot = FALSE, lag.max = 2, na.action = na.action, ...)$acf[2, 1, 1]
 }
+
+accuracy.mable <- function(f, period = "smallest"){
+  accuracy_data <- residuals(f) %>% left_join(getResponse(f), by = expr_text(index(.)))
+  period <- get_frequencies(period, accuracy_data)
+  accuracy_data %>% 
+    group_by(!!!syms(key_vars(.))) %>% 
+    as_tibble() %>% 
+    summarise(
+      Type = "Training set",
+      ME = ME(residuals),
+      RMSE = RMSE(residuals),
+      MAE = MAE(residuals),
+      MPE = MPE(residuals, response),
+      MAPE = MAPE(residuals, response),
+      MASE = MASE(residuals, response, period = period),
+      ACF1 = ACF1(residuals)
+    )
+}
