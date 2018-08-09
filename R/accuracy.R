@@ -22,7 +22,7 @@ MAPE <- function(res, y, na.rm = TRUE, ...){
   mean(abs(res / y * 100), na.rm = TRUE, ...)
 }
 
-MASE <- function(res, y, demean = FALSE, na.rm = TRUE, period, d = 0, D = 0, ...){
+MASE <- function(res, y, demean = FALSE, na.rm = TRUE, period, d = period > 1, D = period == 1, ...){
   if (D > 0) { # seasonal differencing
     y <- diff(y, lag = period, differences = D)
   }
