@@ -167,6 +167,7 @@ is_vector_s3.hilo <- function(x) {
   TRUE
 }
 
+#' @importFrom pillar pillar_shaft
 #' @export
 pillar_shaft.hilo <- function(x, ...) {
   out <- compact_hilo(x)
