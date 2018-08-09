@@ -83,6 +83,11 @@ residuals.mable <- function(object, ...){
     unnest(key = syms(key_vars(object)))
 }
 
+
+#' @importFrom stats residuals
+#' @export
+residuals.fable <- residuals.mable
+
 #' @importFrom stats fitted
 #' @export
 fitted.mable <- function(object, ...){
@@ -96,6 +101,10 @@ fitted.mable <- function(object, ...){
     ) %>%
     unnest(key = syms(key_vars(object)))
 }
+
+#' @importFrom stats fitted
+#' @export
+fitted.fable <- fitted.mable
 
 #' @importFrom forecast getResponse
 #' @export
@@ -111,6 +120,10 @@ getResponse.mable <- function(object, ...){
     ) %>%
     unnest(key = syms(key_vars(object)))
 }
+
+#' @importFrom forecast getResponse
+#' @export
+getResponse.fable <- getResponse.mable
 
 #' @export
 summary.mable <- function(object, ...){
