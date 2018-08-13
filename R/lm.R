@@ -25,7 +25,7 @@ LM <- function(data, formula, ...){
   specials <- new_specials_env(
     !!!lm_specials,
     .env = caller_env(),
-    .vals = list(.data = data)
+    .vals = list(.data = data, origin = min(data[[expr_text(index(data))]]))
   )
   
   # Parse model
@@ -42,7 +42,6 @@ LM <- function(data, formula, ...){
   
   fit <- stats::lm(model_formula, data, ...)
   fit$call <- cl
-  
   mable(
     key_vals = as.list(data)[key_vars(data)],
     data = (data %>%
@@ -66,11 +65,11 @@ forecast.LM <- function(object, data, newdata = NULL, h=NULL, ...){
     newdata <- tsibble(!!!set_names(list(future_idx), expr_text(index(data))), index = !!index(data))
   }
 
-  # TODO: instead of replacing environment, just replace the data with newdata
+  # Update bound values to special environment for re-evaluation
   attr(object$terms, ".Environment") <- new_specials_env(
     !!!lm_specials,
     .env = caller_env(),
-    .vals = list(.data = newdata)
+    .vals = list(.data = newdata, origin = min(data[[expr_text(index(data))]]))
   )
   
   fc <- predict(object, newdata, se.fit = TRUE)
@@ -86,14 +85,12 @@ forecast.LM <- function(object, data, newdata = NULL, h=NULL, ...){
 #xreg is handled by lm
 lm_specials <- list(
   trend = function(knots = NULL){
-    origin <- min(.data[[expr_text(index(.data))]])
     trend(.data, knots, origin) %>% as.matrix
   },
   season = function(period = "smallest"){
     season(.data, period) %>% as_model_matrix
   },
   fourier = function(period = "smallest", K){
-    origin <- min(.data[[expr_text(index(.data))]])
     fourier(.data, period, K, origin) %>% as.matrix
   }
 )
