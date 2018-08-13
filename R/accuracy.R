@@ -62,7 +62,6 @@ accuracy.mable <- function(f, period = "smallest"){
 
 accuracy.fable <- function(f, x, period = "smallest"){
   response <- getResponse(f)$response
-  browser()
   accuracy_data <- residuals(f) %>% mutate(Type = "Training set")
   if(!missing(x)){
     keys <- key_vars(f)
