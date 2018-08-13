@@ -59,3 +59,49 @@ accuracy.mable <- function(f, period = "smallest"){
       ACF1 = ACF1(residuals)
     )
 }
+
+accuracy.fable <- function(f, x, period = "smallest"){
+  response <- getResponse(f)$response
+  browser()
+  accuracy_data <- residuals(f) %>% mutate(Type = "Training set")
+  if(!missing(x)){
+    keys <- key_vars(f)
+    
+    test_data <- x %>% 
+      group_by(!!!syms(keys)) %>% 
+      nest(.key = "newdata")
+    
+    if(NROW(f) > 1){
+      left_join(f, test_data, by = keys)
+    }
+    else{
+      f$newdata <- test_data$newdata
+    }
+    
+    resid_test <- f %>% 
+      transmute(!!!syms(keys),
+                residuals = pmap(list(model, forecast, newdata),
+                                 function(model, forecast, newdata){
+                                   forecast %>% 
+                                     transmute(residuals = newdata[[model%@%"response"]] - mean)
+                                 })
+      ) %>% 
+      unnest %>% 
+      mutate(Type = "Test set")
+    
+    accuracy_data <- rbind(accuracy_data, resid_test)
+  }
+  period <- get_frequencies(period, accuracy_data)
+  accuracy_data %>% 
+    group_by(!!!syms(c(key_vars(.), "Type"))) %>% 
+    as_tibble() %>% 
+    summarise(
+      ME = ME(residuals),
+      RMSE = RMSE(residuals),
+      MAE = MAE(residuals),
+      MPE = MPE(residuals, response),
+      MAPE = MAPE(residuals, response),
+      MASE = MASE(residuals, response, period = period),
+      ACF1 = ACF1(residuals)
+    )
+}
