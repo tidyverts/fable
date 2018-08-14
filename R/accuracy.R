@@ -79,7 +79,7 @@ accuracy.fable <- function(f, x, period = "smallest"){
     
     resid_test <- f %>% 
       transmute(!!!syms(keys),
-                residuals = pmap(list(model, forecast, newdata),
+                residuals = pmap(list(!!sym("model"), !!sym("forecast"), !!sym("newdata")),
                                  function(model, forecast, newdata){
                                    forecast %>% 
                                      transmute(residuals = newdata[[model%@%"response"]] - mean)
