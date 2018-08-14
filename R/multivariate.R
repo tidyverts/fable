@@ -29,5 +29,5 @@ multi_model <- function(data, cl, keys){
   }) %>% 
     invoke("rbind", .)
   
-  cbind(nested_data[map_chr(keys, expr_text)], out)
+  bind_cols(nested_data[map_chr(keys, expr_text)], out)
 }
