@@ -3,24 +3,31 @@
 #' @param data A tsibble
 #' @param cl A modelling call
 #' 
-#' @importFrom purrr map_dfr
-#' @importFrom dplyr mutate
-#' @importFrom tsibble nest
 #' @export
 multi_univariate <- function(data, cl){
-  data %>% 
-    group_by(!!!syms(key_vars(data))) %>%
-    nest %>%
-    mutate(model = map(data,
-                       function(x){
-                         # Re-evaluate cl in environment with split data
-                         eval_tidy(
-                           get_expr(cl), 
-                           env = child_env(caller_env(), !!expr_text(get_expr(cl)$data) := x)
-                         )
-                       })
-           ) %>%
-    mutate(data = map(!!sym("model"), ~.x$data[[1]]),
-           model = map(!!sym("model"), ~.x$model[[1]])) %>%
-    as_mable(!!sym("model"))
+  multi_model(data, cl, syms(key_vars(data)))
+}
+
+#' Multiple calls to a model for mass modelling
+#' 
+#' @param data A tsibble
+#' @param cl A modelling call
+#' @param keys A set of keys to nest over
+#' 
+#' @export
+multi_model <- function(data, cl, keys){
+  nested_data <- data %>% 
+    group_by(!!!keys) %>%
+    nest(.key = ".data")
+  
+  # Re-evaluate cl in environment with split data
+  out <- map(nested_data[[".data"]], function(x){
+    eval_tidy(
+      get_expr(cl),
+      env = child_env(caller_env(), !!expr_text(get_expr(cl)$data) := x)
+    )
+  }) %>% 
+    invoke("rbind", .)
+  
+  cbind(nested_data[map_chr(keys, expr_text)], out)
 }
