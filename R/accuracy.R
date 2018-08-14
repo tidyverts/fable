@@ -43,9 +43,9 @@ ACF1 <- function(res, na.action = stats::na.pass, ...){
 }
 
 accuracy.mable <- function(f, period = "smallest"){
-  accuracy_data <- residuals(f) %>% left_join(getResponse(f), by = expr_text(index(.)))
-  period <- get_frequencies(period, accuracy_data)
-  accuracy_data %>% 
+  response <- getResponse(f)$response
+  period <- get_frequencies(period, response)
+  residuals(f) %>% 
     group_by(!!!syms(key_vars(.))) %>% 
     as_tibble() %>% 
     summarise(
@@ -61,7 +61,6 @@ accuracy.mable <- function(f, period = "smallest"){
 }
 
 accuracy.fable <- function(f, x, period = "smallest"){
-  response <- getResponse(f)$response
   accuracy_data <- residuals(f) %>% mutate(Type = "Training set")
   if(!missing(x)){
     keys <- key_vars(f)
