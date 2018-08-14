@@ -6,8 +6,23 @@
 #'
 #' @export
 mable <- function(key_vals, data, model){
-  new_tibble(tibble(!!!key_vals, data=data, model=enclass(model, "lst_mdl")), subclass = c("mable", "lst_ts"))
+  new_mable(tibble(!!!key_vals, data=data, model=model))
 }
+
+#' Constructor
+#' 
+#' A constructor function for producing a mable (most useful for extension package authors)
+#' 
+#' @param x A mable-like object
+#' 
+#' @export
+new_mable <- function(x){
+  if(!inherits(x[["model"]], "lst_mdl")){
+    x[["model"]] <- add_class(x[["model"]], "lst_mdl")
+  }
+  new_tibble(x, subclass = c("mable", "lst_ts"))
+}
+
 
 #' Coerce a dataset to a mable
 #' 
