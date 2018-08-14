@@ -142,7 +142,7 @@ getResponse.fable <- getResponse.mable
 
 #' @export
 summary.mable <- function(object, ...){
-  map(object$model, ~capture.output(summary(.x))) %>%
+  map(head(object$model), ~capture.output(summary(.x))) %>%
     invoke(cat, ., sep="\n")
   invisible(object)
 }
