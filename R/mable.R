@@ -140,6 +140,7 @@ getResponse.mable <- function(object, ...){
 #' @export
 getResponse.fable <- getResponse.mable
 
+#' @importFrom utils head
 #' @export
 summary.mable <- function(object, ...){
   map(head(object$model), ~capture.output(summary(.x))) %>%
