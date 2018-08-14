@@ -29,5 +29,5 @@ multi_model <- function(data, cl, keys){
   }) %>% 
     invoke("rbind", .)
   
-  bind_cols(nested_data[map_chr(keys, expr_text)], out)
+  new_mable(bind_cols(nested_data[map_chr(keys, expr_text)], out))
 }
