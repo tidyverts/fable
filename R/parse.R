@@ -57,6 +57,41 @@ parse_response <- function(model_lhs){
     get_expr
 }
 
+#' Validate the user provided model
+#' 
+#' Appropriately format the user's model for evaluation. Typically ran as one of the first steps
+#' in a model function.
+#' @param model The user's model specification (unevaluated)
+#' @param data A dataset used for automatic response selection
+#' 
+#' @importFrom purrr compose
+#' 
+#' @export
+validate_model <- function(model, data = NULL){
+  # Capture parent expression
+  model <- enquo(model)
+  model_expr <- eval_tidy(set_expr(model, expr(rlang::enexpr(!!get_expr(model)))))
+  # Clean inputs
+  if(is_missing(model_expr)){
+    model <- guess_response(data)
+  }
+  else{
+    if(possibly(compose(is_formula, eval_tidy), FALSE)(model)){
+      model <- eval_tidy(model)
+      
+      # Add response if missing
+      if(is.null(model_lhs(model))){
+        model <- new_formula(lhs = guess_response(data), rhs = model_rhs(model), env = get_env(model))
+      }
+    }
+    else{
+      model <- model_expr
+    }
+  }
+  
+  model
+}
+
 #' Parse the model specification for specials
 #' 
 #' Using a list of defined special functions, the user's formula specification and data
