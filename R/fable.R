@@ -30,12 +30,26 @@ NULL
 #' @param forecast A list of tsibble forecasts
 #' @export
 fable <- function(key_vals, data, model, forecast){
-  new_tibble(tibble(!!!key_vals,
-                    data=data,
-                    model=enclass(model, "lst_mdl"),
-                    forecast=enclass(forecast, "lst_fc")),
-             subclass = c("fable", "lst_ts"))
+  new_fable(tibble(!!!key_vals, data=data, model=model, forecast=forecast))
 }
+
+#' Constructor
+#' 
+#' A constructor function for producing a fable (most useful for extension package authors)
+#' 
+#' @param x A fable-like object
+#' 
+#' @export
+new_fable <- function(x){
+  if(!inherits(x[["model"]], "lst_mdl")){
+    x[["model"]] <- add_class(x[["model"]], "lst_mdl")
+  }
+  if(!inherits(x[["forecast"]], "lst_fc")){
+    x[["forecast"]] <- add_class(x[["forecast"]], "lst_fc")
+  }
+  new_tibble(x, subclass = c("fable", "lst_ts"))
+}
+
 
 #' Coerce a dataset to a fable
 #'
