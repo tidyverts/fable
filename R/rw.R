@@ -31,6 +31,8 @@ RW <- function(data, formula = ~ lag(1)){
   # Coerce data
   data <- as_tsibble(data)
   
+  formula <- validate_model(formula, data)
+  
   # Handle multivariate inputs
   if(n_keys(data) > 1){
     return(multi_univariate(data, cl))
@@ -89,6 +91,8 @@ SNAIVE <- function(data, formula = ~ lag("smallest")){
   cl <- call_standardise(match.call())
   # Coerce data
   data <- as_tsibble(data)
+  
+  formula <- validate_model(formula, data)
   
   # Handle multivariate inputs
   if(n_keys(data) > 1){

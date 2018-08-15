@@ -17,6 +17,8 @@ ETS <- function(data, formula, period = "smallest", ...){
   # Coerce data
   data <- as_tsibble(data)
   
+  formula <- validate_model(formula, data)
+  
   # Handle multivariate inputs
   if(n_keys(data) > 1){
     return(multi_univariate(data, cl))

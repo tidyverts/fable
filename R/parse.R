@@ -98,37 +98,13 @@ validate_model <- function(model, data = NULL){
 #' is parsed to extract important modelling components.
 #' 
 #' @param data A dataset
-#' @param model A formula
+#' @param model A validated model (from `validate_model`)
 #' @param specials A list of functions used to be evaluated from the formula.
 #' If specials is NULL, no specials are computed
 #' 
 #' @importFrom tibble tibble
 #' @export
 parse_model <- function(data, model, specials = NULL){
-  # Clean inputs
-  if(missing(model)){
-    model <- guess_response(data)
-    inform(sprintf(
-      "Model not specified, using defaults set by `formula = %s`. Override this using `formula`.",
-      expr_text(model)
-      ))
-  }
-  else{
-    # Capture model expression
-    if(!possibly(is_formula, FALSE)(model)){
-      model <- enquo(model)
-      model <- eval_tidy(expr(enexpr(!!quo_squash(model))), env = get_env(model))
-    }
-  }
-  
-  if(is.null(model_lhs(model))){
-    model <- new_formula(lhs = guess_response(data), rhs = model_rhs(model))
-    # inform(sprintf(
-    #   "Response not specified, automatically selected `%s`. Override this in the `formula`.",
-    #   expr_text(measured_vars(data)[1])
-    # ))
-  }
-  
   # Parse model
   quos(
     data = data,
