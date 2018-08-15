@@ -93,7 +93,7 @@ flatten_first_args <- function(parsed_model){
 }
 
 #' @importFrom purrr imap reduce
-enclass <- function(x, subclass, ...){
+enclass <- function(x, subclass = NULL, ...){
   dots_list(...) %>%
     imap(function(value, name) set_names(list(value), name)) %>%
     reduce(.init = x, # Add attributes (from ...)
