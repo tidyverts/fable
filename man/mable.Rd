@@ -4,14 +4,14 @@
 \alias{mable}
 \title{Create a new mable}
 \usage{
-mable(key_vals, data, model)
+mable(data, model, parsed_model)
 }
 \arguments{
-\item{key_vals}{A list of values for keys}
+\item{data}{A tsibble used for modelling}
 
-\item{data}{The nested data (one row per model)}
+\item{model}{The fitted model}
 
-\item{model}{A list of models}
+\item{parsed_model}{The parsed model from \code{parse_model}}
 }
 \description{
 Create a new mable

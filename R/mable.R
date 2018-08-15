@@ -1,12 +1,23 @@
 #' Create a new mable
 #' 
-#' @param key_vals A list of values for keys
-#' @param data The nested data (one row per model)
-#' @param model A list of models
+#' @param data A tsibble used for modelling
+#' @param model The fitted model
+#' @param parsed_model The parsed model from `parse_model`
 #'
 #' @export
-mable <- function(key_vals, data, model){
-  new_mable(tibble(!!!key_vals, data=data, model=model))
+mable <- function(data, model, parsed_model){
+  key_vals <- as.list(data)[key_vars(data)]
+  data <- (data %>%
+     grouped_df(key_vars(.)) %>%
+     nest)$data
+  new_mable(tibble(!!!key_vals, data=data,
+                   model=list(enclass(model,
+                                      model = parsed_model$model, 
+                                      response = parsed_model$response,
+                                      transformation = parsed_model$transformation)
+                              )
+                   )
+  )
 }
 
 #' Constructor

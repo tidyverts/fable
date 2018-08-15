@@ -45,12 +45,9 @@ LM <- function(data, formula, ...){
   fit <- stats::lm(model_formula, data, ...)
   fit$call <- cl
   mable(
-    key_vals = as.list(data)[key_vars(data)],
-    data = (data %>%
-              grouped_df(key_vars(.)) %>%
-              nest)$data,
-    model = list(enclass(fit, "LM",
-                         !!!map(model_inputs[c("model", "response", "transformation")], eval_tidy)))
+    data,
+    model = add_class(fit, "LM"),
+    model_inputs
   )
 }
 

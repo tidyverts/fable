@@ -38,7 +38,7 @@ STL <- function(data, formula, ...){
   model_inputs <- parse_model(data, formula, specials = specials) %>% 
     flatten_first_args
   
-  eval_tidy(quo(model_STL(!!!model_inputs, ...)))
+  model_STL(data, model_inputs$model, model_inputs$response, model_inputs$transformation, model_inputs$args, ...)
 }
 
 #' @importFrom dplyr select bind_cols

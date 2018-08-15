@@ -64,10 +64,9 @@ RW <- function(data, formula = ~ lag(1)){
     flatten_first_args
   
   # Output model
-  out <- eval_tidy(quo(wrap_ts_model("Arima", !!!model_inputs, period = 1, cl=cl)))
+  out <- wrap_ts_model("Arima", data, model_inputs, period = 1, cl=cl)
   out[["model"]][[1]] <- enclass(out[["model"]][[1]], "RW")
   out
-  # TODO: Adjust prediction intervals to allow for drift coefficient standard error
 }
 
 #' @rdname RW
@@ -126,7 +125,7 @@ SNAIVE <- function(data, formula = ~ lag("smallest")){
     flatten_first_args
   
   # Output model
-  out <- eval_tidy(quo(wrap_ts_model("Arima", !!!model_inputs, period = 1, cl=cl)))
+  out <- wrap_ts_model("Arima", data, model_inputs, period = 1, cl=cl)
   out[["model"]][[1]] <- enclass(out[["model"]][[1]], "RW")
   out
 }

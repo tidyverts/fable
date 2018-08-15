@@ -27,6 +27,7 @@ NULL
 #' Create a new fable
 #'
 #' @inheritParams mable
+#' @param key_vals A set of key values
 #' @param forecast A list of tsibble forecasts
 #' @export
 fable <- function(key_vals, data, model, forecast){

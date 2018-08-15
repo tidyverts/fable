@@ -7,11 +7,11 @@
 fable(key_vals, data, model, forecast)
 }
 \arguments{
-\item{key_vals}{A list of values for keys}
+\item{key_vals}{A set of key values}
 
-\item{data}{The nested data (one row per model)}
+\item{data}{A tsibble used for modelling}
 
-\item{model}{A list of models}
+\item{model}{The fitted model}
 
 \item{forecast}{A list of tsibble forecasts}
 }

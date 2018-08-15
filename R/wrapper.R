@@ -1,27 +1,23 @@
 #' @importFrom tibble new_tibble
 #' @importFrom dplyr grouped_df
-wrap_ts_model <- function(modelfn, data, model, response, transformation, args, period = "all", cl = "Call information lost", ...){
+wrap_ts_model <- function(modelfn, data, parsed_model, period = "all", cl = "Call information lost", ...){
   period <- get_frequencies(period, data)
 
   # Fit model
-  fit <- eval_tidy(call2(modelfn, expr(msts(!!model_lhs(model), !!period)), !!!args, !!!dots_list(...)), data = data)
+  fit <- eval_tidy(call2(modelfn, expr(msts(!!model_lhs(parsed_model$model), !!period)), !!!parsed_model$args, !!!dots_list(...)), data = data)
 
   # Backtransform
-  fit$fitted <- invert_transformation(transformation)(fit$fitted)
-  fit$x <- invert_transformation(transformation)(fit$x)
+  fit$fitted <- invert_transformation(parsed_model$transformation)(fit$fitted)
+  fit$x <- invert_transformation(parsed_model$transformation)(fit$x)
   
   # Fix components
   fit$call <- cl
-  fit$series <- expr_text(model_lhs(model))
+  fit$series <- expr_text(model_lhs(parsed_model$model))
   # Output model
   mable(
-    key_vals = as.list(data)[key_vars(data)],
-    data = (data %>%
-      grouped_df(key_vars(.)) %>%
-      nest)$data,
-    model = list(enclass(fit, "ts_model",
-                         model = model, response = response,
-                         transformation = transformation))
+    data,
+    model = add_class(fit, "ts_model"),
+    parsed_model
   )
 }
 

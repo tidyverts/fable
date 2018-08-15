@@ -106,8 +106,7 @@ validate_model <- function(model, data = NULL){
 #' @export
 parse_model <- function(data, model, specials = NULL){
   # Parse model
-  quos(
-    data = data,
+  list2(
     model = model,
     !!!parse_model_lhs(model_lhs(model), data),
     !!!parse_model_rhs(model_rhs(model), data, specials)
@@ -147,7 +146,7 @@ parse_model_rhs <- function(model_rhs, data, specials = NULL){
 parse_model_lhs <- function(model_lhs, data){
   transformation <- as_transformation(model_lhs, data=data)
   response <- fn_fmls(transformation)$x
-  quos(
+  list(
     response = response,
     transformation = transformation
   )
