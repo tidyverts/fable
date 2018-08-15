@@ -6,14 +6,14 @@ test_that("validate_model", {
   }
   
   # Test expression capturing
-  expect_identical(test_fn(user_model), as.name("user_model"))
+  expect_identical(model_fn(user_model), as.name("user_model"))
   
   # Test formula evaluating
   user_model <- y~x
-  expect_identical(test_fn(user_model), user_model)
+  expect_identical(model_fn(user_model), user_model)
   
   # Test bare formula
-  expect_identical(test_fn(y~x), y~x)
+  expect_identical(model_fn(y~x), y~x)
   
   tsbl1 <- tsibble::tsibble(
     date = seq(as.Date("2017-01-01"), as.Date("2017-01-10"), by = 1),
