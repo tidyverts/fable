@@ -117,3 +117,18 @@ rm_class <- function(x, class){
 exclude <- function(match, vars = tidyselect::peek_vars()){
   vars[-match(match, vars)]
 }
+
+#' @importFrom purrr safely
+custom_error <- function(.f, error){
+  .f <- as_mapper(.f)
+  
+  function(...){
+    result <- safely(.f)(...)
+    if(!is.null(result[["error"]])){
+      abort(error)
+    }
+    else{
+      result[["result"]]
+    }
+  }
+}
