@@ -41,6 +41,7 @@ fable <- function(key_vals, data, model, forecast){
 #' 
 #' @export
 new_fable <- function(x){
+  stopifnot(!is.null(x[["model"]]), !is.null(x[["forecast"]]))
   if(!inherits(x[["model"]], "lst_mdl")){
     x[["model"]] <- add_class(x[["model"]], "lst_mdl")
   }

@@ -17,6 +17,7 @@ mable <- function(key_vals, data, model){
 #' 
 #' @export
 new_mable <- function(x){
+  stopifnot(!is.null(x[["model"]]))
   if(!inherits(x[["model"]], "lst_mdl")){
     x[["model"]] <- add_class(x[["model"]], "lst_mdl")
   }
