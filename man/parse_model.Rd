@@ -9,7 +9,7 @@ parse_model(data, model, specials = NULL)
 \arguments{
 \item{data}{A dataset}
 
-\item{model}{A formula}
+\item{model}{A validated model (from \code{validate_model})}
 
 \item{specials}{A list of functions used to be evaluated from the formula.
 If specials is NULL, no specials are computed}
