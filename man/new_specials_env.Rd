@@ -14,7 +14,7 @@ new_specials_env(..., .env = caller_env(), .required_specials = NULL,
 
 \item{.required_specials}{The names of specials which must be provided (and if not, are included used with no inputs).}
 
-\item{.bury}{If TRUE, the specials are bound to a child environment of env.}
+\item{.bury}{If TRUE, the specials are bound to a child environment of \code{.env}.}
 
 \item{.vals}{A list of named values to be bound to the special functions}
 }

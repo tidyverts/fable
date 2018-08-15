@@ -5,7 +5,7 @@
 #' @param ... A named set of functions which used to parse formula inputs
 #' @param .env The evaluation environment of the specials (to find other user objects)
 #' @param .required_specials The names of specials which must be provided (and if not, are included used with no inputs).
-#' @param .bury If TRUE, the specials are bound to a child environment of env. 
+#' @param .bury If TRUE, the specials are bound to a child environment of `.env`.
 #' @param .vals A list of named values to be bound to the special functions
 #' 
 #' @export
