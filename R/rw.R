@@ -195,15 +195,14 @@ forecast.RW <- function(object, data, h = NULL, newdata = NULL, ...){
 #' @export
 model_sum.RW <- function(x){
   order <- x$arma[c(1, 6, 2, 3, 7, 4, 5)]
-  drift <- NCOL(x$xreg) == 1 && is.element("drift", names(x$coef))
+  drift <- length(coef(x) == 1) && "drift" == names(x$coef)
   result <- case_when(
     order[2]==1 && drift ~ "RW",
     order[2]==1 ~ "NAIVE",
     order[5]==1 ~ "SNAIVE",
     TRUE ~ "RW"
     )
-  
-  if (!is.null(x$xreg)) {
+  if(length(coef(x) > 1)){
     if (drift) {
       result <- paste(result, "w/ drift")
     } else {
