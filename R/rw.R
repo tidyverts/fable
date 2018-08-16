@@ -116,6 +116,7 @@ SNAIVE <- function(data, formula = ~ lag("smallest")){
   estimate_RW(data=data, formula = formula, specials = specials, cl = cl)
 }
 
+#' @importFrom stats arima
 estimate_RW <- function(data, formula, specials, cl){
   # Parse model
   model_inputs <- parse_model(data, formula, specials = specials)
@@ -192,6 +193,7 @@ forecast.RW <- function(object, data, h = NULL, newdata = NULL, ...){
 }
 
 #' @importFrom dplyr case_when
+#' @importFrom stats coef
 #' @export
 model_sum.RW <- function(x){
   order <- x$arma[c(1, 6, 2, 3, 7, 4, 5)]
