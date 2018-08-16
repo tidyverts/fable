@@ -50,7 +50,7 @@ ETS <- function(data, formula, period = "smallest", ...){
   # Rebuild `ets` arguments
   parsed_args <- model_inputs$args
   required_args <- parsed_args[c("error", "trend", "season")]
-  required_args %>% imap(~ if(length(.x) > 1) {abort("Only one special of each type is allowed for ETS.")})
+  required_args %>% map(~ if(length(.x) > 1) {abort("Only one special of each type is allowed for ETS.")})
   
   args <- list(model = required_args %>% map(1) %>% map("method") %>% invoke("paste0", .),
                damped = required_args$trend[[1]]$damped,
