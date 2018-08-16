@@ -28,4 +28,12 @@ test_that("ETS", {
     USAccDeaths_tbl %>% ETS(value ~ error("A") + error("A")),
     "Only one special of each type is allowed for ETS."
   )
+  
+  fable_fc <- fable_fit %>% forecast
+  forecast_fc <- forecast_fit %>% forecast
+  
+  expect_equivalent(
+    summary(fable_fc)$mean,
+    unclass(forecast_fc$mean)
+  )
 })
