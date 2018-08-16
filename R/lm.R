@@ -98,5 +98,5 @@ model_sum.LM <- function(x){
 }
 
 as_model_matrix <- function(tbl){
-  stats::model.matrix(~ ., data = tbl)[,-1]
+  stats::model.matrix(~ ., data = tbl)[,-1, drop = FALSE]
 }
