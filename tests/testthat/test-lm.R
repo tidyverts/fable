@@ -19,6 +19,14 @@ test_that("LM", {
     unclass(fitted(forecast_fit))
   )
   
+  # Forecast
+  fable_fc <- fable_fit %>% forecast()
+  forecast_fc <- forecast_fit %>% forecast(h=12)
+  expect_equivalent(
+    summary(fable_fc)$mean,
+    unclass(forecast_fc$mean)
+  )
+  
   # Fourier
   fable_fit <- USAccDeaths_tbl %>% LM(value ~ trend() + fourier(K=5))
   forecast_fit <- forecast::tslm(USAccDeaths ~ trend + forecast::fourier(USAccDeaths, K=5))
@@ -32,13 +40,5 @@ test_that("LM", {
   expect_identical(
     model_sum(fable_fit$model[[1]]),
     "LM"
-  )
-  
-  # Forecast
-  fable_fc <- fable_fit %>% forecast()
-  forecast_fc <- forecast_fit %>% forecast(h=12)
-  expect_equivalent(
-    summary(fable_fc)$mean,
-    unclass(forecast_fc$mean)
   )
 })
