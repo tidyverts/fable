@@ -11,6 +11,10 @@ add_class <- function(x, new_class){
   `class<-`(x, union(new_class, class(x)))
 }
 
+rm_class <- function(x, class){ 
+  `class<-`(x, setdiff(class(x), class))
+} 
+
 #' @importFrom utils tail
 fc_idx <- function(idx, h){
   seq(tail(idx, 1), length.out = h + 1, by = time_unit(idx)) %>% tail(-1)

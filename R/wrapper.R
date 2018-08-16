@@ -31,7 +31,7 @@ forecast.ts_model <- function(object, data, bootstrap = FALSE, ...){
   if(bootstrap){
     abort("Bootstrap forecast intervals not yet supported for this model")
   }
-  class(object) <- class(object)[-match("ts_model", class(object))]
+  object <- rm_class(object, "ts_model")
   fc <- forecast(object, ...)
   # Assume normality
   se <- (fc$upper[,1] - fc$lower[,1])/qnorm(0.5 * (1 + fc$level[1] / 100))/2
