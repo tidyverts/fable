@@ -33,13 +33,11 @@ LM <- function(data, formula, ...){
   # Parse model
   model_inputs <- parse_model(data, formula)
   
-  model_formula <- eval_tidy(model_inputs$model)
-  
-  if(is_formula(model_formula)){
-    model_formula <- set_env(model_formula, new_env = specials)
+  if(is_formula(model_inputs$model)){
+    model_formula <- set_env(model_inputs$model, new_env = specials)
   }
   else{
-    model_formula <- new_formula(model_formula, 1, specials)
+    model_formula <- new_formula(model_inputs$model, 1, specials)
   }
   
   fit <- stats::lm(model_formula, data, ...)
