@@ -2,6 +2,7 @@
 
 S3method(components,STL)
 S3method(forecast,LM)
+S3method(forecast,RW)
 S3method(forecast,ts_model)
 S3method(model_sum,ARIMA)
 S3method(model_sum,LM)

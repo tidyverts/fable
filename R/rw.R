@@ -49,7 +49,6 @@ RW <- function(data, formula = ~ lag(1)){
       }
     },
     drift = function(drift = TRUE){
-      # list(include.constant = drift)
       as.matrix(`colnames<-`(trend(.data, origin = origin), "drift"))
     },
     xreg = function(...){
@@ -60,11 +59,69 @@ RW <- function(data, formula = ~ lag(1)){
     .vals = list(.data = data, origin = min(data[[expr_text(index(data))]]))
   )
   
+  estimate_RW(data = data, formula = formula, specials = specials, cl = cl)
+}
+
+#' @rdname RW
+#'
+#' @examples
+#' 
+#' forecast::gold %>% NAIVE
+#'
+#' @export
+NAIVE <- RW
+
+#' @rdname RW
+#'
+#' @examples
+#' library(tsibbledata)
+#' elecdemand %>% SNAIVE(Temperature ~ lag("day"))
+#'
+#' @export
+SNAIVE <- function(data, formula = ~ lag("smallest")){
+  # Capture user call
+  cl <- call_standardise(match.call())
+  # Coerce data
+  data <- as_tsibble(data)
+  
+  formula <- validate_model(formula, data)
+  
+  # Handle multivariate inputs
+  if(n_keys(data) > 1){
+    return(multi_univariate(data, cl))
+  }
+  
+  # Define specials
+  specials <- new_specials_env(
+    lag = function(lag = "smallest"){
+      lag <- get_frequencies(lag, .data)
+      if(lag == 1){
+        abort("Non-seasonal model specification provided, use RW() or provide a different lag specification.")
+      } else {
+        list(seasonal = list(order = c(0, 1, 0), period = lag))
+      }
+    },
+    drift = function(drift = TRUE){
+      as.matrix(`colnames<-`(trend(.data, origin = origin), "drift"))
+    },
+    xreg = function(...){
+      as_model_matrix(tibble(...))
+    },
+    
+    .env = caller_env(),
+    .required_specials = c("lag"),
+    .vals = list(.data = data)
+  )
+  
+  estimate_RW(data=data, formula = formula, specials = specials, cl = cl)
+}
+
+estimate_RW <- function(data, formula, specials, cl){
   # Parse model
   model_inputs <- parse_model(data, formula, specials = specials)
   
   y <- eval_tidy(model_lhs(model_inputs$model), data = data)
-
+  
   args <- model_inputs$args
   xreg <- cbind(args$drift[[1]], args$xreg[[1]])
   fit <- arima(
@@ -87,14 +144,6 @@ RW <- function(data, formula = ~ lag(1)){
   )
 }
 
-#' @rdname RW
-#'
-#' @examples
-#' 
-#' forecast::gold %>% NAIVE
-#'
-#' @export
-NAIVE <- RW
 
 #' @importFrom forecast forecast
 #' @importFrom purrr map2
@@ -140,59 +189,6 @@ forecast.RW <- function(object, data, h = NULL, newdata = NULL, ...){
                                      transformation = invert_transformation(object%@%"transformation"),
                                      abbr = "N")
     )
-}
-
-
-#' @rdname RW
-#'
-#' @examples
-#' library(tsibbledata)
-#' elecdemand %>% SNAIVE(Temperature ~ lag("day"))
-#'
-#' @export
-SNAIVE <- function(data, formula = ~ lag("smallest")){
-  # Capture user call
-  cl <- call_standardise(match.call())
-  # Coerce data
-  data <- as_tsibble(data)
-  
-  formula <- validate_model(formula, data)
-  
-  # Handle multivariate inputs
-  if(n_keys(data) > 1){
-    return(multi_univariate(data, cl))
-  }
-  
-  # Define specials
-  specials <- new_specials_env(
-    lag = function(lag = "smallest"){
-      lag <- get_frequencies(lag, .data)
-      if(lag == 1){
-        abort("Non-seasonal model specification provided, use RW() or provide a different lag specification.")
-      } else {
-        list(seasonal = list(order = c(0, 1, 0), period = lag))
-      }
-    },
-    drift = function(drift = TRUE){
-      list(include.constant = drift)
-    },
-    xreg = function(...){
-      list(xreg = tibble(...))
-    },
-    
-    .env = caller_env(),
-    .required_specials = c("lag"),
-    .vals = list(.data = data)
-  )
-  
-  # Parse model
-  model_inputs <- parse_model(data, formula, specials = specials) %>% 
-    flatten_first_args
-  
-  # Output model
-  out <- wrap_ts_model("Arima", data, model_inputs, period = 1, cl=cl)
-  out[["model"]][[1]] <- enclass(out[["model"]][[1]], "RW")
-  out
 }
 
 #' @importFrom dplyr case_when
