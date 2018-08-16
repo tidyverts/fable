@@ -35,7 +35,6 @@ Suggests:
     spelling,
     covr
 Remotes:
-    tidyverse/ggplot2,
     tidyverts/tsibble,
     tidyverts/tsibbledata,
     tidyverts/tsibblestats
