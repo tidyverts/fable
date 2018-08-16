@@ -43,30 +43,48 @@ RW <- function(data, formula = ~ lag(1)){
     lag = function(lag = 1){
       lag <- get_frequencies(lag, .data)
       if(lag == 1){
-        list(order = c(0, 1, 0))
+        list(order = c(0L, 1L, 0L), seasonal = list(order = c(0L, 0L, 0L), period = 1))
       } else {
-        list(seasonal = list(order = c(0, 1, 0), period = lag))
+        list(order = c(0L, 0L, 0L), seasonal = list(order = c(0L, 1L, 0L), period = lag))
       }
     },
     drift = function(drift = TRUE){
-      list(include.constant = drift)
+      # list(include.constant = drift)
+      as.matrix(`colnames<-`(trend(.data, origin = origin), "drift"))
     },
     xreg = function(...){
-      list(xreg = tibble(...))
+      as_model_matrix(tibble(...))
     },
     .env = caller_env(),
     .required_specials = c("lag"),
-    .vals = list(.data = data)
+    .vals = list(.data = data, origin = min(data[[expr_text(index(data))]]))
   )
   
   # Parse model
-  model_inputs <- parse_model(data, formula, specials = specials) %>% 
-    flatten_first_args
+  model_inputs <- parse_model(data, formula, specials = specials)
+  
+  y <- eval_tidy(model_lhs(model_inputs$model), data = data)
+
+  args <- model_inputs$args
+  xreg <- cbind(args$drift[[1]], args$xreg[[1]])
+  fit <- arima(
+    y,
+    order = args$lag[[1]]$order,
+    seasonal = args$lag[[1]]$seasonal,
+    xreg = xreg
+  )
+  
+  fit$residuals[seq_len(args$lag[[1]]$seasonal$period)] <- NA
+  fit$fitted <- y - fit$residuals
+  
+  fit$call <- cl
   
   # Output model
-  out <- wrap_ts_model("Arima", data, model_inputs, period = 1, cl=cl)
-  out[["model"]][[1]] <- enclass(out[["model"]][[1]], "RW")
-  out
+  mable(
+    data,
+    model = add_class(fit, "RW"),
+    model_inputs
+  )
 }
 
 #' @rdname RW
@@ -77,6 +95,50 @@ RW <- function(data, formula = ~ lag(1)){
 #'
 #' @export
 NAIVE <- RW
+
+#' @importFrom forecast forecast
+#' @importFrom purrr map2
+#' @importFrom stats qnorm time 
+#' @importFrom utils tail
+#' @importFrom dplyr pull
+#' @export
+forecast.RW <- function(object, data, h = NULL, newdata = NULL, ...){
+  if(is.null(newdata)){
+    if(is.null(h)){
+      h <- get_frequencies("all", data) %>%
+        .[.>2] %>%
+        min
+    }
+    future_idx <- data %>% pull(!!index(.)) %>% fc_idx(h)
+    newdata <- tsibble(!!!set_names(list(future_idx), expr_text(index(data))), index = !!index(data))
+  }
+  
+  if("drift" %in% names(coef(object))){
+    drift <- as.matrix(`colnames<-`(trend(newdata, origin = min(data[[expr_text(index(data))]])), "drift"))
+  }
+  
+  xreg <- names(coef(object))[-match("drift", names(coef(object)))]
+  if(length(xreg) > 0){
+    xreg <- as_model_matrix(eval_tidy(tibble(!!!parse_exprs(xreg)), data = newdata))
+  }
+  else{
+    xreg <- NULL
+  }
+  
+  xreg <- cbind(drift, xreg)
+  
+  object$call$xreg <- xreg # Bypass predict.Arima NCOL check
+  fc <- predict(object, n.ahead = NROW(newdata), newxreg = xreg, ...)
+  object$call$xreg <- NULL
+  
+  newdata %>%
+    mutate(mean = biasadj(invert_transformation(object%@%"transformation"), fc$se^2)(fc$pred),
+           distribution = new_fcdist(qnorm, fc$pred, sd = fc$se,
+                                     transformation = invert_transformation(object%@%"transformation"),
+                                     abbr = "N")
+    )
+}
+
 
 #' @rdname RW
 #'
