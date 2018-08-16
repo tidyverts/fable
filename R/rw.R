@@ -98,7 +98,7 @@ SNAIVE <- function(data, formula = ~ lag("smallest")){
       if(lag == 1){
         abort("Non-seasonal model specification provided, use RW() or provide a different lag specification.")
       } else {
-        list(seasonal = list(order = c(0, 1, 0), period = lag))
+        list(order = c(0L, 0L, 0L), seasonal = list(order = c(0L, 1L, 0L), period = lag))
       }
     },
     drift = function(drift = TRUE){
