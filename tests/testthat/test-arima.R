@@ -20,8 +20,8 @@ test_that("ARIMA", {
   fable_fit <- USAccDeaths_tbl %>% ARIMA(value ~ pdq(0,1,1) + PDQ(0,1,1))
   
   expect_identical(
-    fable_fit$model[[1]]$coef,
-    forecast_fit$coef
+    coef(fable_fit$model[[1]]),
+    coef(forecast_fit)
   )
   
   expect_identical(
