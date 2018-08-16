@@ -28,4 +28,12 @@ test_that("ARIMA", {
     model_sum(fable_fit$model[[1]]),
     "ARIMA(0,1,1)(0,1,1)[12]"
   )
+  
+  fable_fc <- fable_fit %>% forecast
+  forecast_fc <- forecast_fit %>% forecast
+  
+  expect_equivalent(
+    summary(fable_fc)$mean,
+    unclass(forecast_fc$mean)
+  )
 })
