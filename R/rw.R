@@ -117,7 +117,7 @@ forecast.RW <- function(object, data, h = NULL, newdata = NULL, ...){
     drift <- as.matrix(`colnames<-`(trend(newdata, origin = min(data[[expr_text(index(data))]])), "drift"))
   }
   else{
-    dirft <- NULL
+    drift <- NULL
   }
   
   xreg <- names(coef(object))[-match("drift", names(coef(object)))]
