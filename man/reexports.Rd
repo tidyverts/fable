@@ -11,12 +11,6 @@
 \alias{reexports}
 \alias{obj_sum}
 \alias{reexports}
-\alias{forecast}
-\alias{reexports}
-\alias{accuracy}
-\alias{reexports}
-\alias{getResponse}
-\alias{reexports}
 \alias{autoplot}
 \alias{reexports}
 \alias{autolayer}
@@ -27,8 +21,6 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
-  \item{forecast}{\code{\link[forecast]{forecast}}, \code{\link[forecast]{accuracy}}, \code{\link[forecast]{getResponse}}}
-
   \item{ggplot2}{\code{\link[ggplot2]{autoplot}}, \code{\link[ggplot2]{autolayer}}}
 
   \item{magrittr}{\code{\link[magrittr]{\%>\%}}}

@@ -2,6 +2,7 @@
 % Please edit documentation in R/fable.R
 \docType{package}
 \name{fable-package}
+\alias{fable}
 \alias{fable-package}
 \title{Forecasting Functions for Tidy Time Series}
 \description{
@@ -12,6 +13,14 @@ automatic ARIMA modelling.
 \details{
 \tabular{ll}{ Package: \tab fable\cr Type: \tab Package\cr License: \tab
 GPL3\cr LazyLoad: \tab yes\cr }
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/tidyverts/fable}
+  \item Report bugs at \url{https://github.com/tidyverts/fable/issues}
+}
+
 }
 \author{
 Rob J Hyndman, Mitchell O'Hara-Wild, Earo Wang

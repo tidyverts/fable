@@ -9,7 +9,7 @@ Authors@R: c(
     )
 Depends:
     R (>= 3.1.3),
-    tsibblestats
+    fablelite
 Imports:
     rlang (>= 0.2.0),
     purrr (>= 0.2.3),
@@ -37,7 +37,7 @@ Suggests:
 Remotes:
     tidyverts/tsibble,
     tidyverts/tsibbledata,
-    tidyverts/tsibblestats
+    tidyverts/fablelite
 ByteCompile: true
 VignetteBuilder: knitr
 License: GPL-3

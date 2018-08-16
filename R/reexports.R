@@ -13,18 +13,6 @@ pillar::type_sum
 #' @export
 pillar::obj_sum
 
-#' @importFrom forecast forecast
-#' @export
-forecast::forecast
-
-#' @importFrom forecast accuracy
-#' @export
-forecast::accuracy
-
-#' @importFrom forecast getResponse
-#' @export
-forecast::getResponse
-
 #' @importFrom ggplot2 autoplot
 #' @export
 ggplot2::autoplot
