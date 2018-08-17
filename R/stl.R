@@ -38,37 +38,28 @@ STL <- function(data, formula, ...){
   model_inputs <- parse_model(data, formula, specials = specials) %>% 
     flatten_first_args
   
-  model_STL(data, model_inputs$model, model_inputs$response, model_inputs$transformation, model_inputs$args, ...)
+  model_STL(data, model_inputs, ...)
 }
 
 #' @importFrom dplyr select bind_cols
 #' @importFrom tibble as_tibble
 #' @importFrom forecast msts mstl
-model_STL <- function(data, model, response, transformation, args, period = "all", ...){
-  period <- get_frequencies(args$period, data)
-  args$period <- NULL
+model_STL <- function(data, parsed_model, ...){
+  period <- get_frequencies(parsed_model$args$period, data)
+  parsed_model$args$period <- NULL
   
   # Drop unnecessary data
   data <- data %>%
-    select(!!index(.), !!response)
+    select(!!index(.), !!parsed_model$response)
   
   # Decompose data
-  decomp <- eval_tidy(quo(mstl(msts(!!model_lhs(model), !!period), !!!args)), data = data)
+  decomp <- eval_tidy(quo(mstl(msts(!!model_lhs(parsed_model$model), !!period), !!!parsed_model$args)), data = data)
   # Output tsibble decomposition
   dable(
-    key_vals = as.list(data)[key_vars(data)],
-    data = (data %>%
-              grouped_df(key_vars(.)) %>%
-              nest)$data,
-    decomposition = list(
-      enclass(
-        data %>% select(!!index(.)) %>% bind_cols(as_tibble(decomp[,-1])),
-        model = model,
-        response = response,
-        transformation = transformation,
-        subclass = "STL"
-      )
-    )
+    data,
+    decomposition = add_class(data %>% select(!!index(.)) %>% bind_cols(as_tibble(decomp[,-1])),
+                              "STL"),
+    parsed_model
   )
 }
 
