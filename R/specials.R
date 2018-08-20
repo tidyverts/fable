@@ -19,6 +19,8 @@ no_xreg <- function(...){
   abort("Exogenous regressors are not supported for this model type.")
 }
 
+origin <- NULL
+
 trend <- function(data, knots = NULL, origin = NULL){
   idx_num <- data %>% pull(!!index(data)) %>% units_since
   knots_num <- if(is.null(knots)){NULL} else {knots %>% units_since}
