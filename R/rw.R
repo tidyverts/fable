@@ -166,17 +166,17 @@ forecast.RW <- function(object, data, h = NULL, newdata = NULL, ...){
     drift <- NULL
   }
   
-  xreg <- names(coef(object))[-match("drift", names(coef(object)))]
-  if(length(xreg) > 0){
-    xreg <- as_model_matrix(eval_tidy(expr(tibble(!!!parse_exprs(xreg))), data = newdata))
-  }
-  else{
-    xreg <- NULL
-  }
-  xreg <- cbind(drift, xreg)
+  # xreg <- names(coef(object))[-match("drift", names(coef(object)))]
+  # if(length(xreg) > 0){
+  #   xreg <- as_model_matrix(eval_tidy(expr(tibble(!!!parse_exprs(xreg))), data = newdata))
+  # }
+  # else{
+  #   xreg <- NULL
+  # }
+  # xreg <- cbind(drift, xreg)
   
   object$call$xreg <- xreg # Bypass predict.Arima NCOL check
-  fc <- predict(object, n.ahead = NROW(newdata), newxreg = xreg, ...)
+  fc <- predict(object, n.ahead = NROW(newdata), newxreg = drift, ...)
   object$call$xreg <- NULL
   
   newdata %>%
