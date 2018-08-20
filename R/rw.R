@@ -51,9 +51,7 @@ RW <- function(data, formula = ~ lag(1)){
     drift = function(drift = TRUE){
       as.matrix(`colnames<-`(trend(.data, origin = origin), "drift"))
     },
-    xreg = function(...){
-      as_model_matrix(tibble(...))
-    },
+    xreg = no_xreg,
     .env = caller_env(),
     .required_specials = c("lag"),
     .vals = list(.data = data, origin = min(data[[expr_text(index(data))]]))
@@ -104,9 +102,7 @@ SNAIVE <- function(data, formula = ~ lag("smallest")){
     drift = function(drift = TRUE){
       as.matrix(`colnames<-`(trend(.data, origin = origin), "drift"))
     },
-    xreg = function(...){
-      as_model_matrix(tibble(...))
-    },
+    xreg = no_xreg,
     
     .env = caller_env(),
     .required_specials = c("lag"),
