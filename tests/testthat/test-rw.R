@@ -39,7 +39,7 @@ test_that("RW w/ drift", {
   
   expect_equivalent(
     upper(summary(fable_fc)$`80%`),
-    unclass(forecast_fc$upper[,"80%"])
+    unclass(forecast_fc$upper[,1])
   )
   
   expect_identical(
