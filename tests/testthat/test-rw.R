@@ -42,18 +42,18 @@ test_that("RW w/ drift", {
   )
 })
 
-test_that("RW w/ xreg", {
-  tr <- UKLungDeaths %>% head(-12)
-  ts <- UKLungDeaths %>% tail(12)
-  fable_fit <- tr %>% RW(mdeaths ~ fdeaths + drift())
-  
-  fable_fc <- fable_fit %>% forecast(newdata = ts)
-  
-  expect_identical(
-    model_sum(fable_fit$model[[1]]),
-    "lm w/ RW e"
-  )
-})
+# test_that("RW w/ xreg", {
+#   tr <- UKLungDeaths %>% head(-12)
+#   ts <- UKLungDeaths %>% tail(12)
+#   fable_fit <- tr %>% RW(mdeaths ~ fdeaths + drift())
+#   
+#   fable_fc <- fable_fit %>% forecast(newdata = ts)
+#   
+#   expect_identical(
+#     model_sum(fable_fit$model[[1]]),
+#     "lm w/ RW e"
+#   )
+# })
 
 test_that("SNAIVE", {
   fable_fit <- USAccDeaths_tbl %>% SNAIVE(value)
