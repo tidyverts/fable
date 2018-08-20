@@ -183,6 +183,10 @@ forecast.RW <- function(object, data, h = NULL, newdata = NULL, ...){
   fc <- predict(object, n.ahead = NROW(newdata), newxreg = drift, ...)
   object$call$xreg <- NULL
   
+  if("drift" %in% names(coef(object))){
+    fc$se <- sqrt(fc$se^2 + (seq_along(fc$se) * sqrt(object$var.coef["drift", "drift"]))^2)
+  }
+  
   newdata %>%
     select(!!index(.)) %>% 
     mutate(mean = biasadj(invert_transformation(object%@%"transformation"), fc$se^2)(fc$pred),
