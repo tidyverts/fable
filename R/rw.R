@@ -128,6 +128,10 @@ estimate_RW <- function(data, formula, specials, cl){
     xreg = xreg
   )
   
+  nstar <- length(fit$residuals) - fit$arma[6] - fit$arma[7] * fit$arma[5]
+  npar <- length(fit$coef) + 1
+  fit$sigma2 <- sum(fit$residuals ^ 2, na.rm = TRUE) / (nstar - npar + 1)
+  
   fit$residuals[seq_len(args$lag[[1]]$seasonal$period)] <- NA
   fit$fitted <- y - fit$residuals
   
