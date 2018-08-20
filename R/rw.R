@@ -175,7 +175,7 @@ forecast.RW <- function(object, data, h = NULL, newdata = NULL, ...){
   # }
   # xreg <- cbind(drift, xreg)
   
-  object$call$xreg <- xreg # Bypass predict.Arima NCOL check
+  object$call$xreg <- drift # Bypass predict.Arima NCOL check
   fc <- predict(object, n.ahead = NROW(newdata), newxreg = drift, ...)
   object$call$xreg <- NULL
   
