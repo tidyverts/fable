@@ -36,6 +36,12 @@ test_that("RW w/ drift", {
     summary(fable_fc)$mean,
     unclass(forecast_fc$mean)
   )
+  
+  expect_equivalent(
+    upper(summary(fable_fc)$`80%`),
+    unclass(forecast_fc$upper[,"80%"])
+  )
+  
   expect_identical(
     model_sum(fable_fit$model[[1]]),
     "RW w/ drift"
