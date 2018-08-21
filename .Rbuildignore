@@ -4,3 +4,4 @@ Makefile
 ^\.Rproj\.user$
 ^\.travis\.yml$
 ^data-raw$
+^codecov\.yml$
