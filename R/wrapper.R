@@ -5,7 +5,7 @@ wrap_ts_model <- function(modelfn, data, parsed_model, period = "all", cl = "Cal
   period <- get_frequencies(period, data)
 
   # Fit model
-  fit <- eval_tidy(call2(modelfn, expr(msts(!!model_lhs(parsed_model$model), !!period)), !!!parsed_model$args, !!!dots_list(...)), data = data)
+  fit <- eval_tidy(call2(modelfn, expr(msts(!!model_lhs(parsed_model$model), !!period)), !!!parsed_model$specials, !!!dots_list(...)), data = data)
 
   # Backtransform
   fit$fitted <- invert_transformation(parsed_model$transformation)(fit$fitted)

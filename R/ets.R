@@ -48,7 +48,7 @@ ETS <- function(data, formula, period = "smallest", ...){
   model_inputs <- parse_model(data, formula, specials = specials)
   
   # Rebuild `ets` arguments
-  parsed_args <- model_inputs$args
+  parsed_args <- model_inputs$specials
   required_args <- parsed_args[c("error", "trend", "season")]
   required_args %>% map(~ if(length(.x) > 1) {abort("Only one special of each type is allowed for ETS.")})
   
@@ -65,7 +65,7 @@ ETS <- function(data, formula, period = "smallest", ...){
                  append(required_args$trend[[1]]$phirange[2]) %>%
                  as.numeric
   )
-  model_inputs$args <- args
+  model_inputs$specials <- args
   
   # Output model
   wrap_ts_model("ets", data, model_inputs, period = period, cl = cl, ...)

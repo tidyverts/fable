@@ -119,7 +119,7 @@ estimate_RW <- function(data, formula, specials, cl){
   
   y <- eval_tidy(model_lhs(model_inputs$model), data = data)
   
-  args <- model_inputs$args
+  args <- model_inputs$specials
   xreg <- cbind(args$drift[[1]], args$xreg[[1]])
   fit <- arima(
     y,

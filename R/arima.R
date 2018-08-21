@@ -74,7 +74,7 @@ ARIMA <- function(data, formula, period = "smallest",
   # Parse model
   model_inputs <- parse_model(data, formula, specials = specials)
 
-  args <- model_inputs$args
+  args <- model_inputs$specials
   
   if(any(c(args$pdq[[1]]$manual$order, args$PDQ[[1]]$manual$seasonal) == "auto")){
     if(any(c(args$pdq[[1]]$manual$order, args$PDQ[[1]]$manual$seasonal) != "auto")){
@@ -94,9 +94,7 @@ ARIMA <- function(data, formula, period = "smallest",
     ts_model_fn <- "Arima"
   }
   
-  model_inputs$args <- args
-  
-  model_inputs <- flatten_first_args(model_inputs)
+  model_inputs$specials <- flatten_first_args(args)
   
   # Output model
   wrap_ts_model(ts_model_fn, data, model_inputs, period = period, cl=cl, ...)
