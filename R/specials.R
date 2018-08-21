@@ -50,6 +50,7 @@ season <- function(data, period){
   tibble(!!!season_exprs)
 }
 
+#' @importFrom purrr imap
 fourier <- function(data, period, K, origin = NULL){ 
   idx_num <- data %>% pull(!!index(data)) %>% units_since
   if(!is.null(origin)){
