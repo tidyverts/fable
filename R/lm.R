@@ -80,7 +80,7 @@ forecast.LM <- function(object, data, newdata = NULL, h=NULL, ...){
 }
 
 #' @export
-interpolate.LM <- function(model, data){
+interpolate.LM <- function(model, data, ...){
   data[[model%@%"response"]] <- predict(model, newdata = data)
   data
 }
