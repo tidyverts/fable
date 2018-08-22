@@ -40,12 +40,7 @@ LM <- function(data, formula, ...){
     model_formula <- new_formula(model_inputs$model, 1, specials)
   }
   
-  fit <- stats::lm(model_formula, data, na.action = na.exclude, ...)
-  if(length(fit$fitted.values) < NROW(data)){
-    # Fit the missing values
-    fit$fitted.values <- predict(fit, newdata = data)
-    fit$residuals <- eval_tidy(model_lhs(model_formula), data = data) - fit$fitted.values
-  }
+  fit <- stats::lm(model_formula, data, ...)
   fit$call <- cl
   mable(
     data,
