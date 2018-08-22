@@ -79,6 +79,12 @@ forecast.LM <- function(object, data, newdata = NULL, h=NULL, ...){
            )
 }
 
+#' @export
+interpolate.LM <- function(model, data){
+  data[[model%@%"response"]] <- predict(model, newdata = data)
+  data
+}
+
 #xreg is handled by lm
 lm_specials <- list(
   trend = function(knots = NULL){
