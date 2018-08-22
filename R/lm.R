@@ -39,8 +39,8 @@ LM <- function(data, formula, ...){
   else{
     model_formula <- new_formula(model_inputs$model, 1, specials)
   }
-  
-  fit <- stats::lm(model_formula, data, ...)
+  fit <- stats::lm(model_formula, data, na.action = na.exclude, ...)
+
   fit$call <- cl
   mable(
     data,
