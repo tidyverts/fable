@@ -81,7 +81,9 @@ forecast.LM <- function(object, data, newdata = NULL, h=NULL, ...){
 
 #' @export
 interpolate.LM <- function(model, data, ...){
-  data[[model%@%"response"]] <- predict(model, newdata = data)
+  resp <- model%@%"response"
+  missingVals <- is.na(data[[resp]])
+  data[[resp]][missingVals] <- predict(model, newdata = data)[missingVals]
   data
 }
 
