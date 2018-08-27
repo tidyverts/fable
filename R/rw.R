@@ -128,7 +128,12 @@ estimate_RW <- function(data, formula, specials, cl){
     xreg = xreg
   )
   
-  nstar <- length(fit$residuals) - fit$arma[6] - fit$arma[7] * fit$arma[5]
+  missing <- is.na(fit$residuals)
+  firstnonmiss <- head(which(!missing),1)
+  lastnonmiss <- tail(which(!missing),1)
+  n <- lastnonmiss - firstnonmiss + 1
+  nstar <- n - fit$arma[6] - fit$arma[7] * fit$arma[5]
+  
   npar <- length(fit$coef) + 1
   fit$sigma2 <- sum(fit$residuals ^ 2, na.rm = TRUE) / (nstar - npar + 1)
   
