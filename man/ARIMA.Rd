@@ -5,8 +5,8 @@
 \title{Fit ARIMA model to univariate time series}
 \usage{
 ARIMA(data, formula, period = "smallest", ic = c("aicc", "aic", "bic"),
-  test = c("kpss", "adf", "pp"), seasonal.test = c("seas", "ocsb", "hegy",
-  "ch"), ...)
+  test = c("kpss", "adf", "pp"), seasonal.test = c("seas", "ocsb",
+  "hegy", "ch"), ...)
 }
 \arguments{
 \item{data}{A data frame}
