@@ -129,7 +129,7 @@ estimate_RW <- function(data, formula, specials, cl){
   )
   
   missing <- is.na(fit$residuals)
-  firstnonmiss <- head(which(!missing),1)
+  firstnonmiss <- which(!missing)[1]
   lastnonmiss <- tail(which(!missing),1)
   n <- lastnonmiss - firstnonmiss + 1
   nstar <- n - fit$arma[6] - fit$arma[7] * fit$arma[5]
