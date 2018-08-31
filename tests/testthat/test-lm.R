@@ -20,7 +20,7 @@ test_that("LM", {
   )
   
   # Forecast
-  fable_fc <- fable_fit %>% forecast()
+  fable_fc <- fable_fit %>% forecast(h=12)
   forecast_fc <- forecast_fit %>% forecast(h=12)
   expect_equivalent(
     summary(fable_fc)$mean,

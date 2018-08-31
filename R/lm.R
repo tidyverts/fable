@@ -71,12 +71,14 @@ forecast.LM <- function(object, data, newdata = NULL, h=NULL, ...){
   
   fc <- predict(object, newdata, se.fit = TRUE)
   
-  newdata %>%
-    mutate(mean = biasadj(invert_transformation(object%@%"transformation"), fc$se.fit^2)(fc$fit),
-           distribution = new_fcdist(qnorm, fc$fit, sd = fc$se.fit,
-                                     transformation = invert_transformation(object%@%"transformation"),
-                                     abbr = "N")
-           )
+  construct_fc(newdata, fc$fit, fc$se.fit, new_fcdist(qnorm, fc$fit, sd = fc$se.fit, abbr = "N"))
+  
+  # newdata %>%
+  #   mutate(mean = biasadj(invert_transformation(object%@%"transformation"), fc$se.fit^2)(fc$fit),
+  #          distribution = new_fcdist(qnorm, fc$fit, sd = fc$se.fit,
+  #                                    transformation = invert_transformation(object%@%"transformation"),
+  #                                    abbr = "N")
+  #          )
 }
 
 #' @export

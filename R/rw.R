@@ -192,13 +192,7 @@ forecast.RW <- function(object, data, h = NULL, newdata = NULL, ...){
     fc$se <- sqrt(fc$se^2 + (seq_along(fc$se) * sqrt(object$var.coef["drift", "drift"]))^2)
   }
   
-  newdata %>%
-    select(!!index(.)) %>% 
-    mutate(mean = biasadj(invert_transformation(object%@%"transformation"), fc$se^2)(fc$pred),
-           distribution = new_fcdist(qnorm, fc$pred, sd = fc$se,
-                                     transformation = invert_transformation(object%@%"transformation"),
-                                     abbr = "N")
-    )
+  construct_fc(newdata, fc$pred, fc$se, new_fcdist(qnorm, fc$pred, sd = fc$se, abbr = "N"))
 }
 
 #' @importFrom dplyr case_when

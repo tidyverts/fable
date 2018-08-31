@@ -28,19 +28,20 @@ wrap_ts_model <- function(modelfn, data, parsed_model, period = "all", cl = "Cal
 #' @importFrom utils tail
 #' @importFrom dplyr pull
 #' @export
-forecast.ts_model <- function(object, data, bootstrap = FALSE, ...){
-  if(bootstrap){
-    abort("Bootstrap forecast intervals not yet supported for this model")
+forecast.ts_model <- function(object, data, newdata, ...){
+  # Add smarter checking
+  if(!is_regular(newdata)){
+    abort("Forecasts must be regularly spaced")
   }
+  
+  h <- NROW(newdata)
   object <- rm_class(object, "ts_model")
-  fc <- forecast(object, ...)
+  fc <- forecast(object, h=h, ...)
+  
   # Assume normality
   se <- (fc$upper[,1] - fc$lower[,1])/qnorm(0.5 * (1 + fc$level[1] / 100))/2
-  future_idx <- data %>% pull(!!index(.)) %>% fc_idx(length(fc$mean))
-  tsibble(!!index(data) := future_idx,
-          mean = biasadj(invert_transformation(object%@%"transformation"), se^2)(fc$mean), 
-          distribution = new_fcdist(qnorm, fc$mean, sd = se, transformation = invert_transformation(object%@%"transformation"), abbr = "N"),
-          index = !!index(data))
+  
+  construct_fc(newdata, fc$mean, se, new_fcdist(qnorm, fc$mean, sd = se, abbr = "N"))
 }
 
 #' @export
