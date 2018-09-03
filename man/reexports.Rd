@@ -5,10 +5,6 @@
 \alias{reexports}
 \alias{\%>\%}
 \alias{as_tsibble}
-\alias{type_sum}
-\alias{obj_sum}
-\alias{autoplot}
-\alias{autolayer}
 \title{Objects exported from other packages}
 \keyword{internal}
 \description{
@@ -16,12 +12,6 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
-  \item{ggplot2}{\code{\link[ggplot2]{autoplot}}, \code{\link[ggplot2]{autolayer}}}
-
-  \item{magrittr}{\code{\link[magrittr]{\%>\%}}}
-
-  \item{pillar}{\code{\link[pillar]{type_sum}}, \code{\link[pillar]{obj_sum}}}
-
-  \item{tsibble}{\code{\link[tsibble]{as_tsibble}}}
+  \item{tsibble}{\code{\link[tsibble]{\%>\%}}, \code{\link[tsibble]{as_tsibble}}}
 }}
 

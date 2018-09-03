@@ -1,5 +1,4 @@
 #' @importFrom tibble new_tibble
-#' @importFrom dplyr grouped_df
 #' @importFrom forecast msts
 wrap_ts_model <- function(modelfn, data, parsed_model, period = "all", cl = "Call information lost", ...){
   period <- get_frequencies(period, data)
