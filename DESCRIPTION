@@ -16,8 +16,7 @@ Imports:
     tibble (>= 1.4.1),
     tsibble (>= 0.5.1.9000),
     forecast,
-    stats,
-    numDeriv
+    stats
 Suggests:
     tsibbledata,
     knitr,
