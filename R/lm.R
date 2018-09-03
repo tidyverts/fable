@@ -51,17 +51,7 @@ LM <- function(data, formula, ...){
 
 #' @importFrom stats predict
 #' @export
-forecast.LM <- function(object, data, newdata = NULL, h=NULL, ...){
-  if(is.null(newdata)){
-    if(is.null(h)){
-      h <- get_frequencies("all", data) %>%
-        .[.>2] %>%
-        min
-    }
-    future_idx <- data %>% pull(!!index(.)) %>% fc_idx(h)
-    newdata <- tsibble(!!!set_names(list(future_idx), expr_text(index(data))), index = !!index(data))
-  }
-
+forecast.LM <- function(object, data, newdata = NULL, ...){
   # Update bound values to special environment for re-evaluation
   attr(object$terms, ".Environment") <- new_specials_env(
     !!!lm_specials,
