@@ -155,17 +155,10 @@ estimate_RW <- function(data, formula, specials, cl){
 #' @importFrom purrr map2
 #' @importFrom stats qnorm time 
 #' @importFrom utils tail
-#' @importFrom dplyr pull
 #' @export
-forecast.RW <- function(object, data, h = NULL, newdata = NULL, ...){
-  if(is.null(newdata)){
-    if(is.null(h)){
-      h <- get_frequencies("all", data) %>%
-        .[.>2] %>%
-        min
-    }
-    future_idx <- data %>% pull(!!index(.)) %>% fc_idx(h)
-    newdata <- tsibble(!!!set_names(list(future_idx), expr_text(index(data))), index = !!index(data))
+forecast.RW <- function(object, data, newdata = NULL, ...){
+  if(!is_regular(newdata)){
+    abort("Forecasts must be regularly spaced")
   }
   
   if("drift" %in% names(coef(object))){
