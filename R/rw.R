@@ -188,17 +188,20 @@ forecast.RW <- function(object, data, newdata = NULL, ...){
   construct_fc(newdata, fc$pred, fc$se, new_fcdist(qnorm, fc$pred, sd = fc$se, abbr = "N"))
 }
 
-#' @importFrom dplyr case_when
 #' @importFrom stats coef
 #' @export
 model_sum.RW <- function(x){
   order <- x$arma[c(1, 6, 2, 3, 7, 4, 5)]
   xreg <- length(coef(x) > 0)
-  result <- case_when(
-    order[2]==1 && !xreg ~ "NAIVE",
-    order[5]==1 ~ "SNAIVE",
-    TRUE ~ "RW"
-    )
+  result <- if(order[2] == 1 && !xreg){
+    "NAIVE"
+  }
+  else if(order[5] == 1){
+    "SNAIVE"
+  }
+  else{
+    "RW"
+  }
   if(xreg){
     if (length(coef(x)) == 1 && "drift" == names(x$coef)) {
       result <- paste(result, "w/ drift")
