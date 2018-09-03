@@ -16,7 +16,6 @@ Imports:
     tibble (>= 1.4.1),
     tsibble (>= 0.1.5.9000),
     pillar (>= 1.0.1),
-    dplyr (>= 0.7.3),
     forecast,
     stats,
     numDeriv

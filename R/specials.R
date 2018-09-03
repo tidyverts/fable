@@ -22,7 +22,7 @@ no_xreg <- function(...){
 origin <- NULL
 
 trend <- function(data, knots = NULL, origin = NULL){
-  idx_num <- data %>% pull(!!index(data)) %>% units_since
+  idx_num <- data[[expr_text(index(data))]] %>% units_since
   knots_num <- if(is.null(knots)){NULL} else {knots %>% units_since}
   if(!is.null(origin)){
     origin_num <- units_since(origin)
@@ -40,7 +40,7 @@ trend <- function(data, knots = NULL, origin = NULL){
 }
 
 season <- function(data, period){
-  idx_num <- data %>% pull(!!index(data)) %>% units_since
+  idx_num <- data[[expr_text(index(data))]] %>% units_since
   index_interval <- idx_num %>% time_unit()
   idx_num <- idx_num/index_interval
   period <- get_frequencies(period, data)
@@ -52,7 +52,7 @@ season <- function(data, period){
 
 #' @importFrom purrr imap
 fourier <- function(data, period, K, origin = NULL){ 
-  idx_num <- data %>% pull(!!index(data)) %>% units_since
+  idx_num <- data[[expr_text(index(data))]] %>% units_since
   if(!is.null(origin)){
     idx_num <- idx_num - units_since(origin)
   }

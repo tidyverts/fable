@@ -25,7 +25,6 @@ wrap_ts_model <- function(modelfn, data, parsed_model, period = "all", cl = "Cal
 #' @importFrom purrr map2
 #' @importFrom stats qnorm time 
 #' @importFrom utils tail
-#' @importFrom dplyr pull
 #' @export
 forecast.ts_model <- function(object, data, newdata, ...){
   # Add smarter checking
