@@ -15,7 +15,6 @@ Imports:
     purrr (>= 0.2.3),
     tibble (>= 1.4.1),
     tsibble (>= 0.1.5.9000),
-    pillar (>= 1.0.1),
     forecast,
     stats,
     numDeriv
