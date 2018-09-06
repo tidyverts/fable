@@ -25,7 +25,7 @@ wrap_ts_model <- function(modelfn, data, parsed_model, period = "all", cl = "Cal
 #' @importFrom stats qnorm time 
 #' @importFrom utils tail
 #' @export
-forecast.ts_model <- function(object, data, newdata, ...){
+forecast.ts_model <- function(object, newdata, ...){
   # Add smarter checking
   if(!is_regular(newdata)){
     abort("Forecasts must be regularly spaced")

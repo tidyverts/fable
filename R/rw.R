@@ -39,6 +39,7 @@ RW <- function(data, formula = ~ lag(1)){
   }
   
   # Define specials
+  origin <- min(data[[expr_text(index(data))]])
   specials <- new_specials_env(
     lag = function(lag = 1){
       lag <- get_frequencies(lag, .data)
@@ -54,7 +55,7 @@ RW <- function(data, formula = ~ lag(1)){
     xreg = no_xreg,
     .env = caller_env(),
     .required_specials = c("lag"),
-    .vals = list(.data = data, origin = min(data[[expr_text(index(data))]]))
+    .vals = list(.data = data, origin = origin)
   )
   
   estimate_RW(data = data, formula = formula, specials = specials, cl = cl)
@@ -146,7 +147,7 @@ estimate_RW <- function(data, formula, specials, cl){
   # Output model
   mable(
     data,
-    model = add_class(fit, "RW"),
+    model = enclass(fit, "RW", origin = min(data[[expr_text(index(data))]])),
     model_inputs
   )
 }
@@ -157,13 +158,13 @@ estimate_RW <- function(data, formula, specials, cl){
 #' @importFrom stats qnorm time 
 #' @importFrom utils tail
 #' @export
-forecast.RW <- function(object, data, newdata = NULL, ...){
+forecast.RW <- function(object, newdata = NULL, ...){
   if(!is_regular(newdata)){
     abort("Forecasts must be regularly spaced")
   }
   
   if("drift" %in% names(coef(object))){
-    drift <- as.matrix(`colnames<-`(trend(newdata, origin = min(data[[expr_text(index(data))]])), "drift"))
+    drift <- as.matrix(`colnames<-`(trend(newdata, origin = object%@%"origin"), "drift"))
   }
   else{
     drift <- NULL

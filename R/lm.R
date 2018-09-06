@@ -24,10 +24,11 @@ LM <- function(data, formula, ...){
   }
   
   # Define specials
+  origin <- min(data[[expr_text(index(data))]])
   specials <- new_specials_env(
     !!!lm_specials,
     .env = caller_env(),
-    .vals = list(.data = data, origin = min(data[[expr_text(index(data))]]))
+    .vals = list(.data = data, origin = origin)
   )
   
   # Parse model
@@ -44,31 +45,24 @@ LM <- function(data, formula, ...){
   fit$call <- cl
   mable(
     data,
-    model = add_class(fit, "LM"),
+    model = enclass(fit, "LM", origin = origin),
     model_inputs
   )
 }
 
 #' @importFrom stats predict
 #' @export
-forecast.LM <- function(object, data, newdata = NULL, ...){
+forecast.LM <- function(object, newdata, ...){
   # Update bound values to special environment for re-evaluation
   attr(object$terms, ".Environment") <- new_specials_env(
     !!!lm_specials,
     .env = caller_env(),
-    .vals = list(.data = newdata, origin = min(data[[expr_text(index(data))]]))
+    .vals = list(.data = newdata, origin = object%@%"origin")
   )
   
   fc <- predict(object, newdata, se.fit = TRUE)
   
   construct_fc(newdata, fc$fit, fc$se.fit, new_fcdist(qnorm, fc$fit, sd = fc$se.fit, abbr = "N"))
-  
-  # newdata %>%
-  #   mutate(mean = biasadj(invert_transformation(object%@%"transformation"), fc$se.fit^2)(fc$fit),
-  #          distribution = new_fcdist(qnorm, fc$fit, sd = fc$se.fit,
-  #                                    transformation = invert_transformation(object%@%"transformation"),
-  #                                    abbr = "N")
-  #          )
 }
 
 #' @export
