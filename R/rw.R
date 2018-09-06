@@ -90,6 +90,7 @@ SNAIVE <- function(data, formula = ~ lag("smallest")){
   }
   
   # Define specials
+  origin <- min(data[[expr_text(index(data))]])
   specials <- new_specials_env(
     lag = function(lag = "smallest"){
       lag <- get_frequencies(lag, .data)
@@ -106,7 +107,7 @@ SNAIVE <- function(data, formula = ~ lag("smallest")){
     
     .env = caller_env(),
     .required_specials = c("lag"),
-    .vals = list(.data = data)
+    .vals = list(.data = data, origin = origin)
   )
   
   estimate_RW(data=data, formula = formula, specials = specials, cl = cl)
