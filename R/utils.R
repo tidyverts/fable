@@ -33,6 +33,17 @@ fc_idx <- function(idx, h){
   seq(tail(idx, 1), length.out = h + 1, by = time_unit(idx)) %>% tail(-1)
 }
 
+#' Is an object constant?
+#'
+#' Returns true if the object's numerical values do not vary.
+#'
+#' @param x object to be tested
+is.constant <- function(x) {
+  x <- as.numeric(x)
+  y <- rep(x[1], length(x))
+  return(isTRUE(all.equal(x, y)))
+}
+
 assignSpecials <- function(x, env = caller_env()){
   x %>% 
     imap(function(.x, nm){
