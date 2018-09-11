@@ -80,11 +80,11 @@ ARIMA2 <- function(data, formula, unit_root_opts = list(), selection_opts = list
   
   # Find best model
   model_opts <- expand.grid(p = p, d = d, q = q, P = P, D = D, Q = Q)
+  best <- NULL
   if(FALSE){
     abort("Stepwise model selection is not yet supported")
   }
   else{
-    best <- NULL
     purrr::pmap(model_opts,
          function(p, d, q, P, D, Q){
            new <- purrr::possibly(arima, NULL)(y, order = c(p, d, q),
@@ -98,16 +98,14 @@ ARIMA2 <- function(data, formula, unit_root_opts = list(), selection_opts = list
   }
   
   # Construct appropriate output
-  fit <- best
+  best$fitted <- y - best$residuals
   
-  fit$fitted <- y - fit$residuals
-  
-  fit$call <- cl
+  best$call <- cl
   
   # Output model
   mable(
     data,
-    model = enclass(fit, "ARIMA2", origin = origin),
+    model = enclass(best, "ARIMA2", origin = origin),
     model_inputs
   )
 }
