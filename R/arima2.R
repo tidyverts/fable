@@ -153,16 +153,22 @@ model_sum.ARIMA2 <- function(x){
 
 arima_specials <- list(
   pdq = function(p = 0:5, d = 0:2, q = 0:5,
-                 start.p = 2, start.q = 2){
+                 start.p = 2, start.d = 0, start.q = 2){
     p <- p[p <= floor(NROW(.data) / 3)]
     q <- q[q <= floor(NROW(.data) / 3)]
+    start.p <- p[which.min(abs(p - start.p))]
+    start.d <- d[which.min(abs(d - start.d))]
+    start.q <- q[which.min(abs(q - start.q))]
     as.list(environment())
   },
   PDQ = function(P = 0:2, D = 0:1, Q = 0:2, period = "smallest",
-                 start.P = 1, start.Q = 1){
+                 start.P = 1, start.D = 0, start.Q = 1){
     period <- get_frequencies(period, .data)
     P <- P[P <= floor(NROW(.data) / 3 / period)]
     Q <- Q[Q <= floor(NROW(.data) / 3 / period)]
+    start.P <- P[which.min(abs(P - start.P))]
+    start.D <- D[which.min(abs(D - start.D))]
+    start.Q <- Q[which.min(abs(Q - start.Q))]
     as.list(environment())
   }
 )
