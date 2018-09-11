@@ -1,9 +1,7 @@
 #' Estimate an ARIMA model
 #' @param data A tsibble
 #' @param formula Model specification.
-#' @param ic The information criterion used to choose the best model
-#' @param test The unit root test used for selecting non-seasonal differences
-#' @param seasonal.test The seasonal unit root test for selecting seasonal differences
+#' @param stepwise Should stepwise be used?
 #' @param ... Further arguments for arima
 #' 
 #' @export
@@ -18,7 +16,7 @@
 #' @importFrom forecast Arima auto.arima
 #' @importFrom stats model.matrix
 #' @importFrom purrr reduce
-ARIMA2 <- function(data, formula, unit_root_opts = list(), selection_opts = list(), ...){
+ARIMA2 <- function(data, formula, stepwise = TRUE, ...){
   # Capture user call
   cl <- call_standardise(match.call())
   
@@ -76,25 +74,52 @@ ARIMA2 <- function(data, formula, unit_root_opts = list(), selection_opts = list
     xreg <- NULL
   }
   
-  # Select differencing
+  # Select differencing (currently done by AIC)
   
   # Find best model
-  model_opts <- expand.grid(p = p, d = d, q = q, P = P, D = D, Q = Q)
   best <- NULL
-  if(FALSE){
-    abort("Stepwise model selection is not yet supported")
+  compare_arima <- function(p, d, q, P, D, Q){
+    new <- purrr::possibly(arima, NULL)(y, order = c(p, d, q),
+                                        seasonal = list(order = c(P, D, Q), period = period),
+                                        xreg = xreg, ...)
+    if((new$aic%||%Inf) < (best$aic%||%Inf)){
+      best <<- new
+    }
+    (new$aic%||%Inf)
+  }
+  
+  model_opts <- expand.grid(p = p, d = d, q = q, P = P, D = D, Q = Q)
+  if(stepwise){
+    ic <- rep(NA_integer_, NROW(model_opts))
+    
+    current <- c(start.p, start.d, start.q, start.P, start.D, start.Q)
+    
+    initial <- list(start = current,
+                    null = c(0, start.d, 0, 0, start.D, 0),
+                    ar = c(1, start.d, 0, 1, start.D, 0),
+                    ma = c(0, start.d, 1, 0, start.D, 1))
+    
+    step_order <- na.omit(match(initial, lapply(split(model_opts, seq_len(NROW(model_opts))), as.numeric)))
+    
+    k <- 0
+    best_ic <- Inf
+    while(NROW(model_opts[step_order,]) > 0 && k < 94){
+      k <- k + 1
+      ic[step_order[1]] <- do.call(compare_arima, c(model_opts[step_order[1],]))
+      if(ic[step_order[1]] < best_ic){
+        best_ic <- ic[step_order[1]]
+        current <- as.numeric(model_opts[step_order[1],])
+        dist <- apply(model_opts, 1, function(x) sum((x-current)^2))
+        step_order <- order(dist, model_opts$P, model_opts$Q, model_opts$p, model_opts$q)[seq_len(sum(dist <= 2))]
+        step_order <- step_order[is.na(ic[step_order])]
+      }
+      else{
+        step_order <- step_order[-1]
+      }
+    }
   }
   else{
-    purrr::pmap(model_opts,
-         function(p, d, q, P, D, Q){
-           new <- purrr::possibly(arima, NULL)(y, order = c(p, d, q),
-                 seasonal = list(order = c(P, D, Q), period = period),
-                 xreg = xreg, ...)
-           if((new$aic%||%Inf) < (best$aic%||%Inf)){
-             best <<- new
-           }
-           new$aic%||%Inf
-         })
+    purrr::pmap(model_opts, compare_arima)
   }
   
   # Construct appropriate output
