@@ -35,25 +35,9 @@ ARIMA2 <- function(data, formula, unit_root_opts = list(), selection_opts = list
   # Define specials
   origin <- min(data[[expr_text(index(data))]])
   specials <- new_specials_env(
-    pdq = function(p = NULL, d = NULL, q = NULL,
-                   max.p = 5, max.d = 2, max.q = 5,
-                   start.p = 2, start.q = 2){
-      max.p <- min(max.p, floor(NROW(.data) / 3))
-      max.q <- min(max.q, floor(NROW(.data) / 3))
-      as.list(environment())
-    },
-    PDQ = function(P = NULL, D = NULL, Q = NULL, period = "smallest",
-                   max.P = 2, max.D = 1, max.Q = 2,
-                   start.P = 1, start.Q = 1){
-      period <- get_frequencies(period, .data)
-      max.P <- min(max.P, floor(NROW(.data) / 3 / period))
-      max.Q <- min(max.Q, floor(NROW(.data) / 3 / period))
-      as.list(environment())
-    },
-    
+    !!!arima_specials,
     !!!lm_specials,
     xreg = model_xreg,
-    
     .env = caller_env(),
     .required_specials = c("pdq", "PDQ"),
     .vals = list(.data = data, origin = origin)
@@ -127,3 +111,21 @@ model_sum.ARIMA <- function(x){
   }
   result
 }
+
+arima_specials <- list(
+  pdq = function(p = NULL, d = NULL, q = NULL,
+                 max.p = 5, max.d = 2, max.q = 5,
+                 start.p = 2, start.q = 2){
+    max.p <- min(max.p, floor(NROW(.data) / 3))
+    max.q <- min(max.q, floor(NROW(.data) / 3))
+    as.list(environment())
+  },
+  PDQ = function(P = NULL, D = NULL, Q = NULL, period = "smallest",
+                 max.P = 2, max.D = 1, max.Q = 2,
+                 start.P = 1, start.Q = 1){
+    period <- get_frequencies(period, .data)
+    max.P <- min(max.P, floor(NROW(.data) / 3 / period))
+    max.Q <- min(max.Q, floor(NROW(.data) / 3 / period))
+    as.list(environment())
+  }
+)
