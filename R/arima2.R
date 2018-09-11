@@ -96,13 +96,13 @@ ARIMA2 <- function(data, formula, unit_root_opts = list(), selection_opts = list
   # Output model
   mable(
     data,
-    model = enclass(fit, "ARIMA", origin = origin),
+    model = enclass(fit, "ARIMA2", origin = origin),
     model_inputs
   )
 }
 
 #' @export
-model_sum.ARIMA <- function(x){
+model_sum.ARIMA2 <- function(x){
   order <- x$arma[c(1, 6, 2, 3, 7, 4, 5)]
   m <- order[7]
   result <- paste("ARIMA(", order[1], ",", order[2], ",", order[3], ")", sep = "")
