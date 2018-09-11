@@ -79,15 +79,26 @@ ARIMA2 <- function(data, formula, unit_root_opts = list(), selection_opts = list
   # Select differencing
   
   # Find best model
-  
-  # Construct appropriate output
-  if(any(is.null(c(p, d, q, P, D, Q)))){
-    abort("Automatic model selection is not yet supported")
+  model_opts <- expand.grid(p = p, d = d, q = q, P = P, D = D, Q = Q)
+  if(FALSE){
+    abort("Stepwise model selection is not yet supported")
+  }
+  else{
+    best <- NULL
+    purrr::pmap(model_opts,
+         function(p, d, q, P, D, Q){
+           new <- purrr::possibly(arima, NULL)(y, order = c(p, d, q),
+                 seasonal = list(order = c(P, D, Q), period = period),
+                 xreg = xreg, ...)
+           if((new$aic%||%Inf) < (best$aic%||%Inf)){
+             best <<- new
+           }
+           new$aic%||%Inf
+         })
   }
   
-  fit <- arima(y, order = c(p, d, q),
-               seasonal = list(order = c(P, D, Q), period = period),
-               xreg = xreg, ...)
+  # Construct appropriate output
+  fit <- best
   
   fit$fitted <- y - fit$residuals
   
