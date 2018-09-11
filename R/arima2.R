@@ -102,6 +102,36 @@ ARIMA2 <- function(data, formula, unit_root_opts = list(), selection_opts = list
 }
 
 #' @export
+forecast.ARIMA2 <- function(object, newdata = NULL, ...){
+  if(!is_regular(newdata)){
+    abort("Forecasts must be regularly spaced")
+  }
+  
+  # Evaluate xreg from newdata
+  specials <- new_specials_env(
+    !!!arima_specials,
+    !!!lm_specials,
+    xreg = model_xreg,
+    .env = caller_env(),
+    .required_specials = c("pdq", "PDQ"),
+    .vals = list(.data = newdata, origin = object%@%"origin")
+  )
+  vals <- parse_model_rhs(model_rhs(formula(object)), newdata, specials)
+  xreg <- vals$specials[c("xreg", names(lm_specials))] %>% 
+    purrr::compact() %>% 
+    map(~ invoke("cbind", .x)) %>% 
+    invoke("cbind", .)
+  
+  # Produce predictions
+  object$call$xreg <- xreg # Bypass predict.Arima NCOL check
+  fc <- predict(object, n.ahead = NROW(newdata), newxreg = xreg, ...)
+  object$call$xreg <- NULL
+  
+  # Output forecasts
+  construct_fc(newdata, fc$pred, fc$se, new_fcdist(qnorm, fc$pred, sd = fc$se, abbr = "N"))
+}
+
+#' @export
 model_sum.ARIMA2 <- function(x){
   order <- x$arma[c(1, 6, 2, 3, 7, 4, 5)]
   m <- order[7]
