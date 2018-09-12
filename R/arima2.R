@@ -90,30 +90,38 @@ ARIMA2 <- function(data, formula, stepwise = TRUE, ...){
   
   model_opts <- expand.grid(p = p, d = d, q = q, P = P, D = D, Q = Q)
   if(stepwise){
+    # Prepare model comparison vector
     ic <- rep(NA_integer_, NROW(model_opts))
+    best_ic <- Inf
     
-    current <- c(start.p, start.d, start.q, start.P, start.D, start.Q)
-    
-    initial <- list(start = current,
+    # Initial 4 models
+    initial <- list(start = c(start.p, start.d, start.q, start.P, start.D, start.Q),
                     null = c(0, start.d, 0, 0, start.D, 0),
                     ar = c(1, start.d, 0, 1, start.D, 0),
                     ma = c(0, start.d, 1, 0, start.D, 1))
-    
     step_order <- na.omit(match(initial, lapply(split(model_opts, seq_len(NROW(model_opts))), as.numeric)))
+    greedy <- FALSE
     
+    # Stepwise search
     k <- 0
-    best_ic <- Inf
     while(NROW(model_opts[step_order,]) > 0 && k < 94){
       k <- k + 1
+      
+      # Evaluate model
       ic[step_order[1]] <- do.call(compare_arima, c(model_opts[step_order[1],]))
+      
       if(ic[step_order[1]] < best_ic){
+        # Update best model and score
         best_ic <- ic[step_order[1]]
         current <- as.numeric(model_opts[step_order[1],])
+        
+        # Calculate new possible steps
         dist <- apply(model_opts, 1, function(x) sum((x-current)^2))
         step_order <- order(dist, model_opts$P, model_opts$Q, model_opts$p, model_opts$q)[seq_len(sum(dist <= 2))]
         step_order <- step_order[is.na(ic[step_order])]
       }
       else{
+        # Move to next possible step
         step_order <- step_order[-1]
       }
     }
