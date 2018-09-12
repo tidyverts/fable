@@ -178,7 +178,8 @@ forecast.ARIMA2 <- function(object, newdata = NULL, ...){
     invoke("cbind", .)
   
   # Produce predictions
-  object$call$xreg <- xreg # Bypass predict.Arima NCOL check
+  # Remove unnecessary warning for xreg
+  object$call$xreg <- expr(matrix(nrow = !!length(residuals(object)), ncol = !!NCOL(xreg)))
   fc <- predict(object, n.ahead = NROW(newdata), newxreg = xreg, ...)
   object$call$xreg <- NULL
   
