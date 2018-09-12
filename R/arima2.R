@@ -80,9 +80,10 @@ ARIMA2 <- function(data, formula, stepwise = TRUE, greedy = TRUE, ...){
   # Find best model
   best <- NULL
   compare_arima <- function(p, d, q, P, D, Q){
-    new <- purrr::possibly(arima, NULL)(y, order = c(p, d, q),
-                                        seasonal = list(order = c(P, D, Q), period = period),
-                                        xreg = xreg, ...)
+    new <- purrr::possibly(purrr::quietly(arima), NULL)(
+      y, order = c(p, d, q),
+      seasonal = list(order = c(P, D, Q), period = period),
+      xreg = xreg, ...)$result
     if((new$aic%||%Inf) < (best$aic%||%Inf)){
       best <<- new
     }
