@@ -2,6 +2,7 @@
 #' @param data A tsibble
 #' @param formula Model specification.
 #' @param stepwise Should stepwise be used?
+#' @param greedy Should the stepwise search move to the next best option immediately?
 #' @param ... Further arguments for arima
 #' 
 #' @export
@@ -16,7 +17,7 @@
 #' @importFrom forecast Arima auto.arima
 #' @importFrom stats model.matrix
 #' @importFrom purrr reduce
-ARIMA2 <- function(data, formula, stepwise = TRUE, ...){
+ARIMA2 <- function(data, formula, stepwise = TRUE, greedy = TRUE, ...){
   # Capture user call
   cl <- call_standardise(match.call())
   
@@ -95,12 +96,12 @@ ARIMA2 <- function(data, formula, stepwise = TRUE, ...){
     best_ic <- Inf
     
     # Initial 4 models
-    initial <- list(start = c(start.p, start.d, start.q, start.P, start.D, start.Q),
+    initial_opts <- list(start = c(start.p, start.d, start.q, start.P, start.D, start.Q),
                     null = c(0, start.d, 0, 0, start.D, 0),
                     ar = c(1, start.d, 0, 1, start.D, 0),
                     ma = c(0, start.d, 1, 0, start.D, 1))
-    step_order <- na.omit(match(initial, lapply(split(model_opts, seq_len(NROW(model_opts))), as.numeric)))
-    greedy <- FALSE
+    step_order <- na.omit(match(initial_opts, lapply(split(model_opts, seq_len(NROW(model_opts))), as.numeric)))
+    initial <- TRUE
     
     # Stepwise search
     k <- 0
@@ -108,13 +109,24 @@ ARIMA2 <- function(data, formula, stepwise = TRUE, ...){
       k <- k + 1
       
       # Evaluate model
-      ic[step_order[1]] <- do.call(compare_arima, c(model_opts[step_order[1],]))
+      ic[step_order[1]] <- do.call(compare_arima, model_opts[step_order[1],])
       
-      if(ic[step_order[1]] < best_ic){
-        # Update best model and score
-        best_ic <- ic[step_order[1]]
-        current <- as.numeric(model_opts[step_order[1],])
-        
+      if(greedy && !initial){
+        if(update_step <- ic[step_order[1]] < best_ic){
+          # Update best model and score
+          best_ic <- ic[step_order[1]]
+          current <- as.numeric(model_opts[step_order[1],])
+        }
+      }
+      else{
+        if(update_step <- length(step_order) == 1){
+          best_ic <- min(ic, na.rm = TRUE)
+          current <- as.numeric(model_opts[which.min(ic),])
+        }
+      }
+      
+      if(update_step){
+        initial <- FALSE
         # Calculate new possible steps
         dist <- apply(model_opts, 1, function(x) sum((x-current)^2))
         step_order <- order(dist, model_opts$P, model_opts$Q, model_opts$p, model_opts$q)[seq_len(sum(dist <= 2))]
