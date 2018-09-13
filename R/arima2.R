@@ -12,7 +12,8 @@
 #' USAccDeaths %>% ARIMA2(log(value) ~ pdq(0,1,1) + PDQ(0,1,1))
 #' 
 #' # Automatic ARIMA specification
-#' tsibbledata::UKLungDeaths %>% ARIMA2(log(mdeaths) ~ pdq(0,1,1) + PDQ(0,0,1) + fdeaths + fourier(K=4))
+#' tsibbledata::UKLungDeaths %>%
+#'   ARIMA2(log(mdeaths) ~ pdq(0,1,1) + PDQ(0,0,1) + fdeaths + fourier(K=4))
 #' 
 #' @importFrom forecast Arima auto.arima
 #' @importFrom stats model.matrix

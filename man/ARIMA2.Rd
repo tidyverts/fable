@@ -25,6 +25,7 @@ Estimate an ARIMA model
 USAccDeaths \%>\% ARIMA2(log(value) ~ pdq(0,1,1) + PDQ(0,1,1))
 
 # Automatic ARIMA specification
-tsibbledata::UKLungDeaths \%>\% ARIMA2(log(mdeaths) ~ pdq(0,1,1) + PDQ(0,0,1) + fdeaths + fourier(K=4))
+tsibbledata::UKLungDeaths \%>\%
+  ARIMA2(log(mdeaths) ~ pdq(0,1,1) + PDQ(0,0,1) + fdeaths + fourier(K=4))
 
 }
