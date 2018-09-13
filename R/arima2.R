@@ -50,6 +50,7 @@ ARIMA2 <- function(data, formula, stepwise = TRUE, greedy = TRUE, ...){
   y <- eval_tidy(model_lhs(model_inputs$model), data = data)
   
   # Get args
+  p <- d <- q <- P <- D <- Q <- period <- start.p <- start.d <- start.q <- start.P <- start.D <- start.Q <- NULL 
   assignSpecials(model_inputs$specials[c("pdq", "PDQ")])
   
   # Check xreg
@@ -157,6 +158,7 @@ ARIMA2 <- function(data, formula, stepwise = TRUE, greedy = TRUE, ...){
   )
 }
 
+#' @importFrom stats formula
 #' @export
 forecast.ARIMA2 <- function(object, newdata = NULL, ...){
   if(!is_regular(newdata)){
