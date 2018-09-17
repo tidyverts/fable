@@ -18,7 +18,7 @@
 #' @importFrom forecast Arima auto.arima
 #' @importFrom stats model.matrix
 #' @importFrom purrr reduce
-ARIMA2 <- function(data, formula, stepwise = TRUE, greedy = TRUE, ...){
+ARIMA2 <- function(data, formula, stepwise = TRUE, greedy = TRUE, approximation = FALSE, ...){
   # Capture user call
   cl <- call_standardise(match.call())
   
@@ -79,15 +79,28 @@ ARIMA2 <- function(data, formula, stepwise = TRUE, greedy = TRUE, ...){
   
   # Select differencing (currently done by AIC)
   
+  
+  if (approximation) {
+    method <- "CSS"
+    offset <- with(stats::arima(y, order = c(0, d, 0), xreg = xreg, ...),
+                   -2 * loglik - NROW(data) * log(sigma2))
+  } else {
+    method <- "CSS-ML"
+  }
+  
   # Find best model
   best <- NULL
   compare_arima <- function(p, d, q, P, D, Q){
     new <- purrr::possibly(purrr::quietly(arima), NULL)(
       y, order = c(p, d, q),
       seasonal = list(order = c(P, D, Q), period = period),
-      xreg = xreg, ...)$result
+      xreg = xreg, method = method, ...)$result
+    
     nstar <- length(y) - d - D * period
     npar <- length(new$coef) + 1
+    if (approximation) {
+      new$aic <- offset + nstar * log(new$sigma2) + 2 * npar
+    }
     
     # Adjust residual variance to be unbiased
     new$sigma2 <- sum(new$residuals ^ 2, na.rm = TRUE) / (nstar - npar + 1)
@@ -108,7 +121,6 @@ ARIMA2 <- function(data, formula, stepwise = TRUE, greedy = TRUE, ...){
             }
           }
       )
-        
 
       if (isTRUE(min(minroot) < 1 + 1e-2)) { # Previously 1+1e-3
         new <- NULL
@@ -172,6 +184,19 @@ ARIMA2 <- function(data, formula, stepwise = TRUE, greedy = TRUE, ...){
   }
   else{
     ic <- purrr::pmap_dbl(model_opts, compare_arima)
+  }
+  
+  if (approximation && !is.null(best$arma)) {
+    method <- "CSS-ML"
+    best <- NULL
+    step_order <- order(ic)[seq_len(sum(!is.na(ic)))]
+    for (mod_spec in step_order)
+    {
+      ic <- do.call(compare_arima, model_opts[mod_spec,])
+      if (isTRUE(is.finite(ic))) {
+        break
+      }
+    }
   }
   
   if(is.null(best)){
