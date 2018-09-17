@@ -171,7 +171,7 @@ ARIMA2 <- function(data, formula, stepwise = TRUE, greedy = TRUE, ...){
     }
   }
   else{
-    purrr::pmap(model_opts, compare_arima)
+    ic <- purrr::pmap_dbl(model_opts, compare_arima)
   }
   
   # Construct appropriate output
