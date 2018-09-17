@@ -86,6 +86,35 @@ ARIMA2 <- function(data, formula, stepwise = TRUE, greedy = TRUE, ...){
       y, order = c(p, d, q),
       seasonal = list(order = c(P, D, Q), period = period),
       xreg = xreg, ...)$result
+    nstar <- length(y) - d - D * period
+    npar <- length(new$coef) + 1
+    
+    # Adjust residual variance to be unbiased
+    new$sigma2 <- sum(new$residuals ^ 2, na.rm = TRUE) / (nstar - npar + 1)
+    
+    # Check for unit roots
+    if(!is.null(new)){
+      minroot <- map_dbl(list(phi = new$model$phi,
+           theta = new$model$theta),
+          function(testvec){
+            k <- abs(testvec) > 1e-8
+            if (any(k)) {
+              last.nonzero <- max(which(k))
+              testvec <- testvec[1:last.nonzero]
+              min(abs(polyroot(c(1, testvec))))
+            }
+            else{
+              2
+            }
+          }
+      )
+        
+
+      if (isTRUE(min(minroot) < 1 + 1e-2)) { # Previously 1+1e-3
+        new <- NULL
+      } # Don't like this model
+    }
+    
     if((new$aic%||%Inf) < (best$aic%||%Inf)){
       best <<- new
     }
