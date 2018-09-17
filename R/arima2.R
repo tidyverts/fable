@@ -3,6 +3,7 @@
 #' @param formula Model specification.
 #' @param stepwise Should stepwise be used?
 #' @param greedy Should the stepwise search move to the next best option immediately?
+#' @param approximation Should CSS be used during model selection?
 #' @param ... Further arguments for arima
 #' 
 #' @export

@@ -4,7 +4,8 @@
 \alias{ARIMA2}
 \title{Estimate an ARIMA model}
 \usage{
-ARIMA2(data, formula, stepwise = TRUE, greedy = TRUE, ...)
+ARIMA2(data, formula, stepwise = TRUE, greedy = TRUE,
+  approximation = FALSE, ...)
 }
 \arguments{
 \item{data}{A tsibble}
@@ -14,6 +15,8 @@ ARIMA2(data, formula, stepwise = TRUE, greedy = TRUE, ...)
 \item{stepwise}{Should stepwise be used?}
 
 \item{greedy}{Should the stepwise search move to the next best option immediately?}
+
+\item{approximation}{Should CSS be used during model selection?}
 
 \item{...}{Further arguments for arima}
 }
