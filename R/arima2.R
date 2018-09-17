@@ -174,6 +174,10 @@ ARIMA2 <- function(data, formula, stepwise = TRUE, greedy = TRUE, ...){
     ic <- purrr::pmap_dbl(model_opts, compare_arima)
   }
   
+  if(is.null(best)){
+    stop("Could not find an appropriate ARIMA model.")
+  }
+  
   # Construct appropriate output
   best$fitted <- y - best$residuals
   
