@@ -19,7 +19,6 @@
 #' 
 #' @importFrom forecast Arima auto.arima
 #' @importFrom stats model.matrix
-#' @importFrom purrr reduce
 ARIMA <- function(data, formula, period = "smallest", 
                   ic=c("aicc", "aic", "bic"),
                   test=c("kpss", "adf", "pp"), seasonal.test=c("seas", "ocsb", "hegy", "ch"), ...){

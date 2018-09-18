@@ -18,7 +18,6 @@
 #' 
 #' @importFrom forecast Arima auto.arima
 #' @importFrom stats model.matrix
-#' @importFrom purrr reduce
 ARIMA2 <- function(data, formula, stepwise = TRUE, greedy = TRUE, approximation = FALSE, ...){
   # Capture user call
   cl <- call_standardise(match.call())
