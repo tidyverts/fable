@@ -45,7 +45,7 @@ season <- function(data, period){
   idx_num <- idx_num/index_interval
   period <- get_frequencies(period, data)
   season_exprs <- period %>% 
-    map(~ expr(as.factor((idx_num%%(!!period))+1))) %>%
+    map(function(.x) expr(as.factor((idx_num%%(!!.x))+1))) %>%
     set_names(names(period))
   tibble(!!!season_exprs)
 }
