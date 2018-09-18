@@ -68,7 +68,7 @@ ARIMA2 <- function(data, formula, stepwise = TRUE, greedy = TRUE, approximation 
     }
     
     # Now check if it is rank deficient
-    sv <- svd(na.omit(cbind(rep(1, NROW(xreg)), xreg)))$d
+    sv <- svd(stats::na.omit(cbind(rep(1, NROW(xreg)), xreg)))$d
     if (min(sv) / sum(sv) < .Machine$double.eps) {
       stop("xreg is rank deficient")
     }
@@ -216,7 +216,7 @@ ARIMA2 <- function(data, formula, stepwise = TRUE, greedy = TRUE, approximation 
   )
 }
 
-#' @importFrom stats formula
+#' @importFrom stats formula residuals
 #' @export
 forecast.ARIMA2 <- function(object, newdata = NULL, ...){
   if(!is_regular(newdata)){
