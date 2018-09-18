@@ -87,6 +87,14 @@ pmap <- function(.l, .f, ...) {
     SIMPLIFY = FALSE, USE.NAMES = FALSE
   ))
 }
+pmap_dbl <- function(.l, .f, ...) {
+  args <- args_recycle(.l)
+  as.vector(do.call("mapply", c(
+    FUN = list(quote(.f)),
+    args, MoreArgs = quote(list(...)),
+    SIMPLIFY = FALSE, USE.NAMES = FALSE
+  )), mode = "double")
+}
 
 probe <- function(.x, .p, ...) {
   if (is_logical(.p)) {
@@ -160,22 +168,6 @@ accumulate_right <- function(.x, .f, ..., .init) {
   Reduce(f, .x, init = .init, right = TRUE, accumulate = TRUE)
 }
 
-detect <- function(.x, .f, ..., .right = FALSE, .p = is_true) {
-  for (i in index(.x, .right)) {
-    if (.p(.f(.x[[i]], ...))) {
-      return(.x[[i]])
-    }
-  }
-  NULL
-}
-detect_index <- function(.x, .f, ..., .right = FALSE, .p = is_true) {
-  for (i in index(.x, .right)) {
-    if (.p(.f(.x[[i]], ...))) {
-      return(i)
-    }
-  }
-  0L
-}
 invoke <- function(.f, .x, ..., .env = NULL){
   .env <- .env %||% parent.frame()
   args <- c(as.list(.x), list(...))
