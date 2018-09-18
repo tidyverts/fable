@@ -17,7 +17,7 @@
 
 globalVariables(".")
 
-#' @import rlang
+#' @rawNamespace import(rlang, except = invoke)
 #' @import tsibble
 #' @import fablelite
 #' @importFrom tibble tibble
