@@ -91,7 +91,7 @@ ARIMA2 <- function(data, formula, stepwise = TRUE, greedy = TRUE, approximation 
   # Find best model
   best <- NULL
   compare_arima <- function(p, d, q, P, D, Q){
-    new <- purrr::possibly(purrr::quietly(arima), NULL)(
+    new <- possibly(quietly(arima), NULL)(
       y, order = c(p, d, q),
       seasonal = list(order = c(P, D, Q), period = period),
       xreg = xreg, method = method, ...)$result
@@ -183,7 +183,7 @@ ARIMA2 <- function(data, formula, stepwise = TRUE, greedy = TRUE, approximation 
     }
   }
   else{
-    ic <- purrr::pmap_dbl(model_opts, compare_arima)
+    ic <- pmap_dbl(model_opts, compare_arima)
   }
   
   if (approximation && !is.null(best$arma)) {
