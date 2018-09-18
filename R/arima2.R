@@ -56,8 +56,8 @@ ARIMA2 <- function(data, formula, stepwise = TRUE, greedy = TRUE, approximation 
   
   # Check xreg
   xreg <- model_inputs$specials[c("xreg", names(lm_specials))] %>% 
-    purrr::compact() %>% 
-    map(~ invoke("cbind", .x)) %>% 
+    compact() %>% 
+    map(function(.x){invoke("cbind", .x)}) %>% 
     invoke("cbind", .)
   
   if(!is_empty(xreg)){
@@ -235,8 +235,8 @@ forecast.ARIMA2 <- function(object, newdata = NULL, ...){
   )
   vals <- parse_model_rhs(model_rhs(formula(object)), newdata, specials)
   xreg <- vals$specials[c("xreg", names(lm_specials))] %>% 
-    purrr::compact() %>% 
-    map(~ invoke("cbind", .x)) %>% 
+    compact() %>% 
+    map(function(.x){invoke("cbind", .x)}) %>% 
     invoke("cbind", .)
   
   # Produce predictions

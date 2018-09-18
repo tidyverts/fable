@@ -10,7 +10,7 @@ exprs_xreg <- function(...){
 model_xreg <- function(...){
   model_formula <- new_formula(
     lhs = NULL,
-    rhs = reduce(enexprs(...), ~ call2("+", .x, .y))
+    rhs = reduce(enexprs(...), function(.x, .y) call2("+", .x, .y))
   )
   model.frame(model_formula, data = .data)
 }
@@ -33,8 +33,8 @@ trend <- function(data, knots = NULL, origin = NULL){
   idx_num <- idx_num/index_interval
   knots_num <- knots_num/index_interval
   knots_exprs <- knots_num %>%
-    map(~ pmax(0, idx_num-.x)) %>%
-    set_names(map_chr(knots, ~ paste0("trend_",format(.x))))
+    map(function(.x) pmax(0, idx_num-.x)) %>%
+    set_names(map_chr(knots, function(.x) paste0("trend_",format(.x))))
   tibble(trend = idx_num,
          !!!knots_exprs)
 }
@@ -50,7 +50,6 @@ season <- function(data, period){
   tibble(!!!season_exprs)
 }
 
-#' @importFrom purrr imap
 fourier <- function(data, period, K, origin = NULL){ 
   idx_num <- data[[expr_text(tsibble::index(data))]] %>% units_since
   if(!is.null(origin)){
@@ -72,7 +71,7 @@ fourier <- function(data, period, K, origin = NULL){
    }) %>%
     invoke(c, .) %>%
     .[!duplicated(.)] %>%
-    imap(function(p, name){
+    map2(., names(.), function(p, name){
       out <- exprs(C = cospi(2 * !!p * idx_num))
       if(abs(2 * p - round(2 * p)) > .Machine$double.eps){
         out <- c(out, exprs(S = sinpi(2 * !!p * idx_num)))

@@ -60,7 +60,7 @@ ARIMA <- function(data, formula, period = "smallest",
     xreg = function(...){
       model_formula <- new_formula(
         lhs = NULL,
-        rhs = reduce(c(0, enexprs(...)), ~ call2("+", .x, .y))
+        rhs = reduce(c(0, enexprs(...)), function(.x, .y){call2("+", .x, .y)})
       )
       
       list(xreg = model.matrix(model_formula, data = .data))

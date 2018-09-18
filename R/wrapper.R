@@ -21,7 +21,6 @@ wrap_ts_model <- function(modelfn, data, parsed_model, period = "all", cl = "Cal
 }
 
 #' @importFrom forecast forecast
-#' @importFrom purrr map2
 #' @importFrom stats qnorm time 
 #' @importFrom utils tail
 #' @export

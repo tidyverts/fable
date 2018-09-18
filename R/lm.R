@@ -24,7 +24,7 @@ LM <- function(data, formula, ...){
   }
   
   # Define specials
-  origin <- min(data[[expr_text(index(data))]])
+  origin <- min(data[[expr_text(tsibble::index(data))]])
   specials <- new_specials_env(
     !!!lm_specials,
     .env = caller_env(),

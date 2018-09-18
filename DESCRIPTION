@@ -12,7 +12,6 @@ Depends:
     fablelite
 Imports:
     rlang (>= 0.2.0),
-    purrr (>= 0.2.3),
     tibble (>= 1.4.1),
     tsibble (>= 0.5.1.9000),
     forecast,

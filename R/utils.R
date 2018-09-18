@@ -1,12 +1,11 @@
 flatten_first_args <- function(specials){
   specials %>%
-    map(~ if(length(.x) > 1){stop("Only one special of each type is allowed for this model")} else {.x[[1]]}) %>%
+    map(function(.x) if(length(.x) > 1){stop("Only one special of each type is allowed for this model")} else {.x[[1]]}) %>%
     set_names(NULL) %>%
     unlist(recursive = FALSE) %>%
     as.list # If no args are provided, unlist removes list structure
 }
 
-#' @importFrom purrr imap reduce
 enclass <- function(x, subclass = NULL, ...){
   dots_list(...) %>%
     imap(function(value, name) set_names(list(value), name)) %>%
@@ -49,6 +48,6 @@ assignSpecials <- function(x, env = caller_env()){
     imap(function(.x, nm){
       if(length(.x) > 1) warn(sprintf("Only one special for `%s` is allowed, defaulting to the first usage", nm))
       .x[[1]] %>% 
-        imap(~ assign(.y, .x, envir = env))
+        imap(function(.x, .y) assign(.y, .x, envir = env))
   })
 }

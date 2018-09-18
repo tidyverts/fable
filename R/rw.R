@@ -154,7 +154,6 @@ estimate_RW <- function(data, formula, specials, cl){
 
 
 #' @importFrom forecast forecast
-#' @importFrom purrr map2
 #' @importFrom stats qnorm time 
 #' @importFrom utils tail
 #' @export

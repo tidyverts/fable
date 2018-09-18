@@ -50,18 +50,18 @@ ETS <- function(data, formula, period = "smallest", ...){
   # Rebuild `ets` arguments
   parsed_args <- model_inputs$specials
   required_args <- parsed_args[c("error", "trend", "season")]
-  required_args %>% map(~ if(length(.x) > 1) {abort("Only one special of each type is allowed for ETS.")})
+  required_args %>% map(function(.x){if(length(.x) > 1) {abort("Only one special of each type is allowed for ETS.")}})
   
-  args <- list(model = required_args %>% map(1) %>% map("method") %>% invoke("paste0", .),
+  args <- list(model = required_args %>% map(function(.x) .x[[1]]) %>% map(function(.x) .x[["method"]]) %>% invoke("paste0", .),
                damped = required_args$trend[[1]]$damped,
                alpha = required_args$error[[1]]$alpha,
                beta = required_args$trend[[1]]$beta,
                gamma = required_args$season[[1]]$gamma,
                phi = required_args$trend[[1]]$phi,
-               lower = required_args %>% map(1) %>% map(~ .x[["range"]][1]) %>% invoke("c", .) %>%
+               lower = required_args %>% map(function(.x) .x[[1]]) %>% map(function(.x) .x[["range"]][1]) %>% invoke("c", .) %>%
                  append(required_args$trend[[1]]$phirange[1]) %>%
                  as.numeric,
-               upper = required_args %>% map(1) %>% map(~ .x[["range"]][2]) %>% invoke("c", .) %>%
+               upper = required_args %>% map(function(.x) .x[[1]]) %>% map(function(.x) .x[["range"]][2]) %>% invoke("c", .) %>%
                  append(required_args$trend[[1]]$phirange[2]) %>%
                  as.numeric
   )

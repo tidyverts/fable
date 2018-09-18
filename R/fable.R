@@ -21,5 +21,4 @@ globalVariables(".")
 #' @import tsibble
 #' @import fablelite
 #' @importFrom tibble tibble
-#' @importFrom purrr map map2 map_lgl map_chr map_dbl
 NULL
