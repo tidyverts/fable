@@ -94,19 +94,19 @@ ARIMA2 <- function(data, formula, stepwise = TRUE, greedy = TRUE, approximation 
     new <- possibly(quietly(arima), NULL)(
       y, order = c(p, d, q),
       seasonal = list(order = c(P, D, Q), period = period),
-      xreg = xreg, method = method, ...)$result
-    
-    nstar <- length(y) - d - D * period
-    npar <- length(new$coef) + 1
-    if (approximation) {
-      new$aic <- offset + nstar * log(new$sigma2) + 2 * npar
-    }
-    
-    # Adjust residual variance to be unbiased
-    new$sigma2 <- sum(new$residuals ^ 2, na.rm = TRUE) / (nstar - npar + 1)
-    
-    # Check for unit roots
+      xreg = xreg, method = method, ...)
+
     if(!is.null(new)){
+      nstar <- length(y) - d - D * period
+      npar <- length(new$coef) + 1
+      if (approximation) {
+        new$aic <- offset + nstar * log(new$sigma2) + 2 * npar
+      }
+      
+      # Adjust residual variance to be unbiased
+      new$sigma2 <- sum(new$residuals ^ 2, na.rm = TRUE) / (nstar - npar + 1)
+      
+      # Check for unit roots
       minroot <- map_dbl(list(phi = new$model$phi,
            theta = new$model$theta),
           function(testvec){

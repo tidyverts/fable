@@ -206,6 +206,6 @@ possibly <- function (.f, otherwise, quiet = TRUE)
 }
 quietly <- function (.f) 
 {
-  function(...) capture_output(.f(...))
+  function(...) suppressMessages(suppressWarnings(.f(...)))
 }
 # nocov end
