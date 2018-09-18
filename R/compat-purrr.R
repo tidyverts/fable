@@ -176,13 +176,6 @@ detect_index <- function(.x, .f, ..., .right = FALSE, .p = is_true) {
   }
   0L
 }
-index <- function(x, right = FALSE) {
-  idx <- seq_along(x)
-  if (right) {
-    idx <- rev(idx)
-  }
-  idx
-}
 invoke <- function(.f, .x, ..., .env = NULL){
   .env <- .env %||% parent.frame()
   args <- c(as.list(.x), list(...))
