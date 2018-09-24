@@ -25,8 +25,8 @@ trend <- function(x, knots = NULL, origin = NULL){
   UseMethod("trend")
 }
 
-trend.tbl_ts <- function(data, knots = NULL, origin = NULL){
-  idx_num <- data[[expr_text(tsibble::index(data))]] %>% units_since
+trend.tbl_ts <- function(x, knots = NULL, origin = NULL){
+  idx_num <- x[[expr_text(tsibble::index(x))]] %>% units_since
   knots_num <- if(is.null(knots)){NULL} else {knots %>% units_since}
   index_interval <- idx_num %>% time_unit()
   idx_num <- idx_num/index_interval
