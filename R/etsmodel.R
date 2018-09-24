@@ -99,7 +99,7 @@ etsmodel <- function(y, m, errortype, trendtype, seasontype, damped,
   mse <- e$amse[1]
   amse <- mean(e$amse)
   
-  states <- ts(e$states, frequency = tsp.y[3], start = tsp.y[1] - 1 / tsp.y[3])
+  states <- e$states
   colnames(states)[1] <- "l"
   if (trendtype != "N") {
     colnames(states)[2] <- "b"
@@ -108,9 +108,7 @@ etsmodel <- function(y, m, errortype, trendtype, seasontype, damped,
     colnames(states)[(2 + (trendtype != "N")):ncol(states)] <- paste("s", 1:m, sep = "")
   }
   
-  tmp <- c("alpha", rep("beta", trendtype != "N"), rep("gamma", seasontype != "N"), rep("phi", damped))
   fit.par <- c(fit.par, par.noopt)
-  #    fit.par <- fit.par[order(names(fit.par))]
   if (errortype == "A") {
     fits <- y - e$e
   } else {
@@ -118,7 +116,8 @@ etsmodel <- function(y, m, errortype, trendtype, seasontype, damped,
   }
   
   return(list(
-    loglik = -0.5 * e$lik, aic = aic, bic = bic, aicc = aicc, mse = mse, amse = amse, fit = fred, residuals = ts(e$e, frequency = tsp.y[3], start = tsp.y[1]), fitted = ts(fits, frequency = tsp.y[3], start = tsp.y[1]),
+    loglik = -0.5 * e$lik, aic = aic, bic = bic, aicc = aicc, mse = mse, amse = amse,
+    fit = fred, residuals = e$e, fitted = fits,
     states = states, par = fit.par
   ))
 }
@@ -433,11 +432,8 @@ pegelsresid.C <- function(y, m, init.state, errortype, trendtype, seasontype, da
       Cout[[13]] <- NA
     }
   }
-  tsp.y <- tsp(y)
-  e <- ts(Cout[[12]])
-  tsp(e) <- tsp.y
   
-  return(list(lik = Cout[[13]], amse = Cout[[14]], e = e, states = matrix(Cout[[3]], nrow = n + 1, ncol = p, byrow = TRUE)))
+  return(list(lik = Cout[[13]], amse = Cout[[14]], e = Cout[[12]], states = matrix(Cout[[3]], nrow = n + 1, ncol = p, byrow = TRUE)))
 }
 
 admissible <- function(alpha, beta, gamma, phi, m) {
