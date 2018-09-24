@@ -50,14 +50,23 @@ trend.numeric <- function(x, knots = NULL, origin = NULL){
          !!!knots_exprs)
 }
 
-season <- function(data, period){
-  idx_num <- data[[expr_text(tsibble::index(data))]] %>% units_since
+season <- function(x, period){
+  UseMethod("season")
+}
+
+season.tbl_ts <- function(x, period){
+  idx_num <- x[[expr_text(tsibble::index(x))]] %>% units_since
   index_interval <- idx_num %>% time_unit()
   idx_num <- idx_num/index_interval
-  period <- get_frequencies(period, data)
+  period <- get_frequencies(period, x)
+  
+  season(idx_num, period)
+}
+
+season.numeric <- function(x, period){
   season_exprs <- period %>% 
-    map(function(.x) expr(as.factor((idx_num%%(!!.x))+1))) %>%
-    set_names(names(period))
+    map(function(.x) expr(as.factor((x%%(!!.x))+1))) %>%
+    set_names(names(period)%||%paste0("season_", period))
   tibble(!!!season_exprs)
 }
 
