@@ -98,3 +98,54 @@ ETS2 <- function(data, formula, ...){
 model_sum.ets <- function(x){
   x$method
 }
+
+#' @export
+print.ets <- function(x, ...) {
+  cat(paste(x$method, "\n\n"))
+  cat(paste("Call:\n", deparse(x$call), "\n\n"))
+  ncoef <- length(x$initstate)
+  if (!is.null(x$lambda)) {
+    cat("  Box-Cox transformation: lambda=", round(x$lambda, 4), "\n\n")
+  }
+  
+  cat("  Smoothing parameters:\n")
+  cat(paste("    alpha =", round(x$par["alpha"], 4), "\n"))
+  if (x$components[2] != "N") {
+    cat(paste("    beta  =", round(x$par["beta"], 4), "\n"))
+  }
+  if (x$components[3] != "N") {
+    cat(paste("    gamma =", round(x$par["gamma"], 4), "\n"))
+  }
+  if (x$components[4] != "FALSE") {
+    cat(paste("    phi   =", round(x$par["phi"], 4), "\n"))
+  }
+  
+  cat("\n  Initial states:\n")
+  cat(paste("    l =", round(x$initstate[1], 4), "\n"))
+  if (x$components[2] != "N") {
+    cat(paste("    b =", round(x$initstate[2], 4), "\n"))
+  } else {
+    x$initstate <- c(x$initstate[1], NA, x$initstate[2:ncoef])
+    ncoef <- ncoef + 1
+  }
+  if (x$components[3] != "N") {
+    cat("    s = ")
+    if (ncoef <= 8) {
+      cat(round(x$initstate[3:ncoef], 4))
+    } else {
+      cat(round(x$initstate[3:8], 4))
+      cat("\n           ")
+      cat(round(x$initstate[9:ncoef], 4))
+    }
+    cat("\n")
+  }
+  
+  cat("\n  sigma:  ")
+  cat(round(sqrt(x$sigma2), 4))
+  if (!is.null(x$aic)) {
+    stats <- c(x$aic, x$aicc, x$bic)
+    names(stats) <- c("AIC", "AICc", "BIC")
+    cat("\n\n")
+    print(stats)
+  }
+}
