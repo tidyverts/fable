@@ -43,7 +43,7 @@ etsmodel <- function(y, m, errortype, trendtype, seasontype, damped,
   }
   
   # Initialize state
-  init.state <- initstate(y, trendtype, seasontype)
+  init.state <- initstate(y, m, trendtype, seasontype)
   nstate <- length(init.state)
   par <- c(par, init.state)
   lower <- c(lower, rep(-Inf, nstate))
@@ -303,17 +303,17 @@ check.param <- function(alpha, beta, gamma, phi, lower, upper, bounds, m) {
   return(1)
 }
 
-initstate <- function(y, trendtype, seasontype) {
+initstate <- function(y, m, trendtype, seasontype) {
   if (seasontype != "N") {
     # Do decomposition
-    m <- frequency(y)
     n <- length(y)
     if (n < 4) {
       stop("You've got to be joking (not enough data).")
     } else if (n < 3 * m) # Fit simple Fourier model.
     {
-      fouriery <- fourier(y, 1)
-      fit <- tslm(y ~ trend + fouriery)
+      fouriery <- fourier(y, m, 1)
+      trendy <- seq_along(y)
+      fit <- lm(y ~ trendy + fouriery)
       if (seasontype == "A") {
         y.d <- list(seasonal = y - fit$coef[1] - fit$coef[2] * (1:n))
       } else { # seasontype=="M". Biased method, but we only need a starting point
@@ -321,7 +321,7 @@ initstate <- function(y, trendtype, seasontype) {
       }
     }
     else { # n is large enough to do a decomposition
-      y.d <- decompose(y, type = switch(seasontype, A = "additive", M = "multiplicative"))
+      y.d <- decompose(ts(y, frequency = m), type = switch(seasontype, A = "additive", M = "multiplicative"))
     }
     
     init.seas <- rev(y.d$seasonal[2:m]) # initial seasonal component
