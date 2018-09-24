@@ -14,6 +14,7 @@ Imports:
     rlang (>= 0.2.0),
     tsibble (>= 0.5.1.9000),
     forecast,
+    Rcpp (>= 0.11.0),
     stats
 Suggests:
     tsibbledata,
@@ -26,6 +27,9 @@ Remotes:
     tidyverts/tsibble,
     tidyverts/tsibbledata,
     tidyverts/fablelite
+LinkingTo:
+  Rcpp (>= 0.11.0),
+  RcppArmadillo (>= 0.2.35)
 ByteCompile: true
 VignetteBuilder: knitr
 License: GPL-3

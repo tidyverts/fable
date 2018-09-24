@@ -20,5 +20,6 @@ globalVariables(".")
 #' @rawNamespace import(rlang, except = invoke)
 #' @import tsibble
 #' @import fablelite
-#' @importFrom tibble tibble
+#' @import Rcpp
+#' @useDynLib fable, .registration = TRUE
 NULL
