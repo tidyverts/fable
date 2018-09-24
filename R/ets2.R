@@ -49,12 +49,31 @@ ETS2 <- function(data, formula, ...){
     },
     season = function(method = c("N", "A", "M"), gamma = NULL, range = c(1e-04, 0.9999), period = "smallest"){
       if (!all(is.element(method, c("N", "A", "M")))) {
-        stop("Invalid season type")
+        abort("Invalid season type")
       }
       if(range[1]>range[2]){
         abort("Lower seasonal limits must be less than upper limits")
       }
-      list(method = method, gamma = gamma, range = range, period = get_frequencies(period, .data))
+      
+      m <- get_frequencies(period, .data)
+      if (m < 1 || NROW(.data) <= m) {
+        method <- "N"
+      }
+      if (m == 1) {
+        if (!is.element("N", method)) {
+          abort("Nonseasonal data")
+        }
+        method <- "N"
+      }
+      if (m > 24) {
+        if (!is.element("N", method)) {
+          abort("Frequency too high for seasonal period")
+        } else if (length(method) > 1) {
+          warn("I can't handle data with frequency greater than 24. Seasonality will be ignored.")
+          method <- "N"
+        }
+      }
+      list(method = method, gamma = gamma, range = range, period = m)
     },
     xreg = no_xreg,
     
