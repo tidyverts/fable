@@ -45,7 +45,7 @@ ETS2 <- function(data, formula, ...){
         abort("Lower dampening limits must be less than upper limits")
       }
       list(method = method, beta = beta, range = range,
-           damped = damped, phi = phi, phirange = phirange)
+           phi = phi, phirange = phirange)
     },
     season = function(method = c("N", "A", "M"), gamma = NULL, range = c(1e-04, 0.9999), period = "smallest"){
       if (!all(is.element(method, c("N", "A", "M")))) {
