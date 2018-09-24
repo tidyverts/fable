@@ -144,7 +144,7 @@ ARIMA2 <- function(data, formula, stepwise = TRUE, greedy = TRUE, approximation 
                     null = c(0, start.d, 0, 0, start.D, 0),
                     ar = c(1, start.d, 0, 1, start.D, 0),
                     ma = c(0, start.d, 1, 0, start.D, 1))
-    step_order <- na.omit(match(initial_opts, lapply(split(model_opts, seq_len(NROW(model_opts))), as.numeric)))
+    step_order <- stats::na.omit(match(initial_opts, lapply(split(model_opts, seq_len(NROW(model_opts))), as.numeric)))
     initial <- TRUE
     
     # Stepwise search
