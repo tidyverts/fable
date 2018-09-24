@@ -21,21 +21,32 @@ no_xreg <- function(...){
 
 origin <- NULL
 
-trend <- function(data, knots = NULL, origin = NULL){
+trend <- function(x, knots = NULL, origin = NULL){
+  UseMethod("trend")
+}
+
+trend.tbl_ts <- function(data, knots = NULL, origin = NULL){
   idx_num <- data[[expr_text(tsibble::index(data))]] %>% units_since
   knots_num <- if(is.null(knots)){NULL} else {knots %>% units_since}
-  if(!is.null(origin)){
-    origin_num <- units_since(origin)
-    idx_num <- idx_num - origin_num
-    knots_num <- knots_num - origin_num
-  }
   index_interval <- idx_num %>% time_unit()
   idx_num <- idx_num/index_interval
   knots_num <- knots_num/index_interval
-  knots_exprs <- knots_num %>%
-    map(function(.x) pmax(0, idx_num-.x)) %>%
+  if(!is.null(origin)){
+    origin <- units_since(origin)/index_interval
+  }
+  
+  trend(idx_num, knots_num, origin)
+}
+
+trend.numeric <- function(x, knots = NULL, origin = NULL){
+  if(!is.null(origin)){
+    x <- x - origin
+    knots <- knots - origin
+  }
+  knots_exprs <- knots %>%
+    map(function(.x) pmax(0, x-.x)) %>%
     set_names(map_chr(knots, function(.x) paste0("trend_",format(.x))))
-  tibble(trend = idx_num,
+  tibble(trend = x,
          !!!knots_exprs)
 }
 
