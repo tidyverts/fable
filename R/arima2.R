@@ -240,7 +240,9 @@ forecast.ARIMA2 <- function(object, newdata = NULL, ...){
   
   # Produce predictions
   # Remove unnecessary warning for xreg
-  object$call$xreg <- expr(matrix(nrow = !!length(residuals(object)), ncol = !!NCOL(xreg)))
+  if(!is.null(xreg)){
+    object$call$xreg <- expr(matrix(nrow = !!length(residuals(object)), ncol = !!NCOL(xreg)))
+  }
   fc <- predict(object, n.ahead = NROW(newdata), newxreg = xreg, ...)
   object$call$xreg <- NULL
   
