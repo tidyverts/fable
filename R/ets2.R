@@ -158,11 +158,7 @@ model_sum.ets <- function(x){
 #' @export
 print.ets <- function(x, ...) {
   cat(paste(x$method, "\n\n"))
-  cat(paste("Call:\n", deparse(x$call), "\n\n"))
   ncoef <- length(x$initstate)
-  if (!is.null(x$lambda)) {
-    cat("  Box-Cox transformation: lambda=", round(x$lambda, 4), "\n\n")
-  }
   
   cat("  Smoothing parameters:\n")
   cat(paste("    alpha =", round(x$par["alpha"], 4), "\n"))
@@ -172,7 +168,7 @@ print.ets <- function(x, ...) {
   if (x$components[3] != "N") {
     cat(paste("    gamma =", round(x$par["gamma"], 4), "\n"))
   }
-  if (x$components[4] != "FALSE") {
+  if (x$components[4]) {
     cat(paste("    phi   =", round(x$par["phi"], 4), "\n"))
   }
   
