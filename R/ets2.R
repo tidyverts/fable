@@ -141,7 +141,13 @@ ETS2 <- function(data, formula, restrict = TRUE, ...){
   best$initstate <- best$states[1, ]
   np <- length(best$par)
   best$sigma2 <- sum(best$residuals^2, na.rm = TRUE) / (length(y) - np)
-  add_class(best, "ets")
+  
+  # Output model
+  mable(
+    data,
+    model = add_class(best, "ets"),
+    model_inputs
+  )
 }
 
 #' @export
