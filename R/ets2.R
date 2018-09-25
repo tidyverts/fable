@@ -1,6 +1,7 @@
 #' @inherit forecast::ets
 #' @param data A data frame
 #' @param formula Model specification.
+#' @param restrict If TRUE (default), the models with infinite variance will not be allowed.
 #' 
 #' @export
 #' 
