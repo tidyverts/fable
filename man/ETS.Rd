@@ -4,14 +4,14 @@
 \alias{ETS}
 \title{Exponential smoothing state space model}
 \usage{
-ETS(data, formula, period = "smallest", ...)
+ETS(data, formula, restrict = TRUE, ...)
 }
 \arguments{
 \item{data}{A data frame}
 
 \item{formula}{Model specification.}
 
-\item{period}{Time series frequency for seasonal component.}
+\item{restrict}{If TRUE (default), the models with infinite variance will not be allowed.}
 
 \item{...}{Other undocumented arguments.}
 }
@@ -36,7 +36,6 @@ Hyndman, et al, 2002, below.)
 \examples{
 
 USAccDeaths \%>\% ETS(log(value) ~ season("A"))
-
 }
 \references{
 Hyndman, R.J., Koehler, A.B., Snyder, R.D., and Grose, S. (2002)
