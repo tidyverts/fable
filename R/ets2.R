@@ -145,18 +145,18 @@ ETS2 <- function(data, formula, restrict = TRUE, ...){
   # Output model
   mable(
     data,
-    model = add_class(best, "ets"),
+    model = add_class(best, "ETS"),
     model_inputs
   )
 }
 
 #' @export
-model_sum.ets <- function(x){
+model_sum.ETS <- function(x){
   x$method
 }
 
 #' @export
-print.ets <- function(x, ...) {
+print.ETS <- function(x, ...) {
   cat(paste(x$method, "\n\n"))
   ncoef <- length(x$initstate)
   
