@@ -70,14 +70,23 @@ season.numeric <- function(x, period){
   tibble(!!!season_exprs)
 }
 
-fourier <- function(data, period, K, origin = NULL){ 
-  idx_num <- data[[expr_text(tsibble::index(data))]] %>% units_since
-  if(!is.null(origin)){
-    idx_num <- idx_num - units_since(origin)
-  }
+fourier <- function(x, period, K, origin = NULL){
+  UseMethod("fourier")
+}
+
+fourier.tbl_ts <- function(x, period, K, origin = NULL){
+  idx_num <- x[[expr_text(tsibble::index(x))]] %>% units_since
   index_interval <- idx_num %>% time_unit()
   idx_num <- idx_num/index_interval
-  period <- get_frequencies(period, data)
+  if(!is.null(origin)){
+    origin <- units_since(origin)/ index_interval
+  }
+  period <- get_frequencies(period, x)
+  
+  fourier(idx_num, period, K, origin)
+}
+
+fourier.numeric <- function(x, period, K, origin = NULL){
   if (length(period) != length(K)) {
     abort("Number of periods does not match number of orders")
   }
@@ -92,9 +101,9 @@ fourier <- function(data, period, K, origin = NULL){
     invoke(c, .) %>%
     .[!duplicated(.)] %>%
     map2(., names(.), function(p, name){
-      out <- exprs(C = cospi(2 * !!p * idx_num))
+      out <- exprs(C = cospi(2 * !!p * x))
       if(abs(2 * p - round(2 * p)) > .Machine$double.eps){
-        out <- c(out, exprs(S = sinpi(2 * !!p * idx_num)))
+        out <- c(out, exprs(S = sinpi(2 * !!p * x)))
       }
       names(out) <- paste0(names(out), name)
       out
