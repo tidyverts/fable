@@ -112,6 +112,28 @@ ETS2 <- function(data, formula, restrict = TRUE, ...){
                        (errortype == "M" & trendtype == "M" & seasontype == "A"))    # MMA
     model_opts <- model_opts[!restricted,]
   }
+  
+  # Find best model
+  best <- NULL
+  compare_ets <- function(errortype, trendtype, seasontype, damped){
+    new <- possibly(quietly(etsmodel), NULL)(
+      y, m = ets_spec$season$period,
+      errortype = errortype, trendtype = trendtype, seasontype = seasontype, damped = damped,
+      alpha = ets_spec$error$alpha, alpharange = ets_spec$error$range,
+      beta = ets_spec$trend$beta, betarange = ets_spec$trend$range,
+      phi = ets_spec$trend$phi, phirange = ets_spec$trend$phirange,
+      gamma = ets_spec$season$gamma, gammarange = ets_spec$season$range,
+      opt.crit = "lik", nmse = 3, bounds = "both", ...)
+    
+    if((new$aic%||%Inf) < (best$aic%||%Inf)){
+      best <<- new
+    }
+    (new$aic%||%Inf)
+  }
+  
+  ic <- pmap_dbl(model_opts, compare_ets)
+  
+  best
 }
 
 #' @export
