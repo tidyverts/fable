@@ -227,3 +227,8 @@ print.ETS <- function(x, ...) {
     print(stats)
   }
 }
+
+#' @export
+coef.ETS <- function(object, ...) {
+  object$par
+}
