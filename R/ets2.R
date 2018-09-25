@@ -133,8 +133,15 @@ ETS2 <- function(data, formula, restrict = TRUE, ...){
   }
   
   ic <- pmap_dbl(model_opts, compare_ets)
+  best_spec <- model_opts[which.min(ic),]
   
-  best
+  best$method <- with(best_spec,
+                      paste("ETS(", errortype, ",", trendtype, ifelse(damped, "d", ""), ",", seasontype, ")", sep = ""))
+  best$components <- as.character(best_spec)
+  best$initstate <- best$states[1, ]
+  np <- length(best$par)
+  best$sigma2 <- sum(best$residuals^2, na.rm = TRUE) / (length(y) - np)
+  add_class(best, "ets")
 }
 
 #' @export
