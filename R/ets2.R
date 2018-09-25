@@ -151,6 +151,32 @@ ETS2 <- function(data, formula, restrict = TRUE, ...){
 }
 
 #' @export
+forecast.ETS <- function(object, newdata = NULL, ...){
+  if(!is_regular(newdata)){
+    abort("Forecasts must be regularly spaced")
+  }
+  
+  errortype <- object$components[1]
+  trendtype <- object$components[2]
+  seasontype <- object$components[3]
+  damped <- as.logical(object$components[4])
+  
+  fc_class <- if (errortype == "A" && trendtype %in% c("A", "N") && seasontype %in% c("N", "A")) {
+    f <- ets_fc_class1
+  } else if (errortype == "M" && trendtype %in% c("A", "N") && seasontype %in% c("N", "A")) {
+    f <- ets_fc_class2
+  } else if (errortype == "M" && trendtype != "M" && seasontype == "M") {
+    f <- ets_fc_class3
+  } else {
+    abort("Forecasts from this ets method require bootstrapping which is not yet supported")
+  }
+  fc <- fc_class(h = NROW(newdata), last.state = object$states[NROW(object$states),],
+                 trendtype, seasontype, damped, object$m, object$sigma2, object$par)
+  
+  construct_fc(newdata, fc$mu, sqrt(fc$var), new_fcdist(qnorm, fc$mu, sd = sqrt(fc$var), abbr = "N"))
+}
+
+#' @export
 model_sum.ETS <- function(x){
   x$method
 }

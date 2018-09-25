@@ -487,3 +487,105 @@ admissible <- function(alpha, beta, gamma, phi, m) {
   # Passed all tests
   return(1)
 }
+
+ets_fc_class1 <- function(h, last.state, trendtype, seasontype, damped, m, sigma2, par) {
+  p <- length(last.state)
+  H <- matrix(c(1, rep(0, p - 1)), nrow = 1)
+  if (seasontype == "A") {
+    H[1, p] <- 1
+  }
+  if (trendtype == "A") {
+    if (damped) {
+      H[1, 2] <- par["phi"]
+    } else {
+      H[1, 2] <- 1
+    }
+  }
+  F <- matrix(0, p, p)
+  F[1, 1] <- 1
+  if (trendtype == "A") {
+    if (damped) {
+      F[1, 2] <- F[2, 2] <- par["phi"]
+    } else {
+      F[1, 2] <- F[2, 2] <- 1
+    }
+  }
+  if (seasontype == "A") {
+    F[p - m + 1, p] <- 1
+    F[(p - m + 2):p, (p - m + 1):(p - 1)] <- diag(m - 1)
+  }
+  G <- matrix(0, nrow = p, ncol = 1)
+  G[1, 1] <- par["alpha"]
+  if (trendtype == "A") {
+    G[2, 1] <- par["beta"]
+  }
+  if (seasontype == "A") {
+    G[3, 1] <- par["gamma"]
+  }
+  mu <- numeric(h)
+  Fj <- diag(p)
+  cj <- numeric(h - 1)
+  if (h > 1) {
+    for (i in 1:(h - 1))
+    {
+      mu[i] <- H %*% Fj %*% last.state
+      cj[i] <- H %*% Fj %*% G
+      Fj <- Fj %*% F
+    }
+    cj2 <- cumsum(cj ^ 2)
+    var <- sigma2 * c(1, 1 + cj2)
+  }
+  else {
+    var <- sigma2
+  }
+  mu[h] <- H %*% Fj %*% last.state
+  
+  return(list(mu = mu, var = var, cj = cj))
+}
+
+ets_fc_class2 <- function(h, last.state, trendtype, seasontype, damped, m, sigma2, par) {
+  tmp <- class1(h, last.state, trendtype, seasontype, damped, m, sigma2, par)
+  theta <- numeric(h)
+  theta[1] <- tmp$mu[1] ^ 2
+  if (h > 1) {
+    for (j in 2:h)
+      theta[j] <- tmp$mu[j] ^ 2 + sigma2 * sum(tmp$cj[1:(j - 1)] ^ 2 * theta[(j - 1):1])
+  }
+  var <- (1 + sigma2) * theta - tmp$mu ^ 2
+  return(list(mu = tmp$mu, var = var))
+}
+
+ets_fc_class3 <- function(h, last.state, trendtype, seasontype, damped, m, sigma2, par) {
+  p <- length(last.state)
+  H1 <- matrix(rep(1, 1 + (trendtype != "N")), nrow = 1)
+  H2 <- matrix(c(rep(0, m - 1), 1), nrow = 1)
+  if (trendtype == "N") {
+    F1 <- 1
+    G1 <- par["alpha"]
+  }
+  else {
+    F1 <- rbind(c(1, 1), c(0, ifelse(damped, par["phi"], 1)))
+    G1 <- rbind(c(par["alpha"], par["alpha"]), c(par["beta"], par["beta"]))
+  }
+  F2 <- rbind(c(rep(0, m - 1), 1), cbind(diag(m - 1), rep(0, m - 1)))
+  
+  G2 <- matrix(0, m, m)
+  G2[1, m] <- par["gamma"]
+  Mh <- matrix(last.state[1:(p - m)]) %*% matrix(last.state[(p - m + 1):p], nrow = 1)
+  Vh <- matrix(0, length(Mh), length(Mh))
+  H21 <- H2 %x% H1
+  F21 <- F2 %x% F1
+  G21 <- G2 %x% G1
+  K <- (G2 %x% F1) + (F2 %x% G1)
+  mu <- var <- numeric(h)
+  for (i in 1:h)
+  {
+    mu[i] <- H1 %*% Mh %*% t(H2)
+    var[i] <- (1 + sigma2) * H21 %*% Vh %*% t(H21) + sigma2 * mu[i] ^ 2
+    vecMh <- c(Mh)
+    Vh <- F21 %*% Vh %*% t(F21) + sigma2 * (F21 %*% Vh %*% t(G21) + G21 %*% Vh %*% t(F21) +
+                                              K %*% (Vh + vecMh %*% t(vecMh)) %*% t(K) + sigma2 * G21 %*% (3 * Vh + 2 * vecMh %*% t(vecMh)) %*% t(G21))
+    Mh <- F1 %*% Mh %*% t(F2) + G1 %*% Mh %*% t(G2) * sigma2
+  }
+  return(list(mu = mu, var = var))
+}
