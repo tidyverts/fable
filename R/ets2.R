@@ -134,7 +134,7 @@ ETS2 <- function(data, formula, restrict = TRUE, ...){
   
   ic <- pmap_dbl(model_opts, compare_ets)
   best_spec <- model_opts[which.min(ic),]
-  
+  best$m <- ets_spec$season$period
   best$method <- with(best_spec,
                       paste("ETS(", errortype, ",", trendtype, ifelse(damped, "d", ""), ",", seasontype, ")", sep = ""))
   best$components <- as.character(best_spec)
