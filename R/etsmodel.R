@@ -2,6 +2,7 @@ etsmodel <- function(y, m, errortype, trendtype, seasontype, damped,
                      alpha=NULL, beta=NULL, gamma=NULL, phi=NULL,
                      alpharange=NULL, betarange=NULL, gammarange=NULL, phirange=NULL,
                      opt.crit, nmse, bounds, maxit=2000, trace=FALSE) {
+  m <- as.numeric(m)
   if (seasontype ==  "N") {
     m <- 1
   }
