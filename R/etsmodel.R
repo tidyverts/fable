@@ -100,13 +100,15 @@ etsmodel <- function(y, m, errortype, trendtype, seasontype, damped,
   amse <- mean(e$amse)
   
   states <- e$states
-  colnames(states)[1] <- "l"
+  
+  states_cn <- "l"
   if (trendtype != "N") {
-    colnames(states)[2] <- "b"
+    states_cn <- c(states_cn, "b")
   }
   if (seasontype != "N") {
-    colnames(states)[(2 + (trendtype != "N")):ncol(states)] <- paste("s", 1:m, sep = "")
+    states_cn <- c(states_cn, paste("s", 1:m, sep = ""))
   }
+  colnames(states) <- states_cn
   
   fit.par <- c(fit.par, par.noopt)
   if (errortype == "A") {
