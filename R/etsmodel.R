@@ -22,7 +22,7 @@ etsmodel <- function(y, m, errortype, trendtype, seasontype, damped,
   names(alpha) <- names(beta) <- names(gamma) <- names(phi) <- NULL
   par.noopt <- c(alpha = alpha, beta = beta, gamma = gamma, phi = phi)
   if (!is.null(par.noopt)) {
-    par.noopt <- c(na.omit(par.noopt))
+    par.noopt <- c(stats::na.omit(par.noopt))
   }
   if (!is.na(par["alpha"])) {
     alpha <- par["alpha"]
@@ -311,9 +311,9 @@ initstate <- function(y, m, trendtype, seasontype) {
       stop("You've got to be joking (not enough data).")
     } else if (n < 3 * m) # Fit simple Fourier model.
     {
-      fouriery <- fourier(y, m, 1)
+      fouriery <- fourier(seq_along(y), m, 1)
       trendy <- seq_along(y)
-      fit <- lm(y ~ trendy + fouriery)
+      fit <- stats::lm(y ~ trendy + fouriery)
       if (seasontype == "A") {
         y.d <- list(seasonal = y - fit$coef[1] - fit$coef[2] * (1:n))
       } else { # seasontype=="M". Biased method, but we only need a starting point
@@ -321,14 +321,14 @@ initstate <- function(y, m, trendtype, seasontype) {
       }
     }
     else { # n is large enough to do a decomposition
-      y.d <- decompose(ts(y, frequency = m), type = switch(seasontype, A = "additive", M = "multiplicative"))
+      y.d <- stats::decompose(stats::ts(y, frequency = m), type = switch(seasontype, A = "additive", M = "multiplicative"))
     }
     
     init.seas <- rev(y.d$seasonal[2:m]) # initial seasonal component
     names(init.seas) <- paste("s", 0:(m - 2), sep = "")
     # Seasonally adjusted data
     if (seasontype == "A") {
-      y.sa <- y - y.d$seasonal
+      y.sa <- y - as.numeric(y.d$seasonal)
     } else {
       init.seas <- pmax(init.seas, 1e-2) # We do not want negative seasonal indexes
       if (sum(init.seas) > m) {
@@ -345,14 +345,13 @@ initstate <- function(y, m, trendtype, seasontype) {
   }
   
   maxn <- min(max(10, 2 * m), length(y.sa))
-  
   if (trendtype == "N") {
     l0 <- mean(y.sa[1:maxn])
     b0 <- NULL
   }
   else # Simple linear regression on seasonally adjusted data
   {
-    fit <- lsfit(1:maxn, y.sa[1:maxn])
+    fit <- stats::lsfit(1:maxn, y.sa[1:maxn])
     if (trendtype == "A") {
       l0 <- fit$coef[1]
       b0 <- fit$coef[2]
