@@ -33,7 +33,7 @@ ETS <- function(data, formula, restrict = TRUE, ...){
       }
       list(method = method, alpha = alpha, range = range)
     },
-    trend = function(method = c("N", "A", "Ad", "M", "Md"),
+    trend = function(method = c("N", "A", "Ad"),
                      beta = NULL, range = c(1e-04, 0.9999),
                      phi = NULL, phirange = c(0.8, 0.98)){
       if (!all(is.element(method, c("N", "A", "Ad", "M", "Md")))) {
