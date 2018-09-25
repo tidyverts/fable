@@ -7,7 +7,7 @@
 #' @examples 
 #' 
 #' USAccDeaths %>% ETS2(log(value) ~ season("A"))
-ETS2 <- function(data, formula, ...){
+ETS2 <- function(data, formula, restrict = TRUE, ...){
   # Capture user call
   cl <- call_standardise(match.call())
   
@@ -94,12 +94,24 @@ ETS2 <- function(data, formula, ...){
   # Get response
   y <- eval_tidy(model_lhs(model_inputs$model), data = data)
   
+  # Build possible models
   model_opts <- expand.grid(errortype = ets_spec$error$method,
                             trendtype = ets_spec$trend$method,
                             seasontype = ets_spec$season$method,
                             stringsAsFactors = FALSE)
   model_opts$damped <- nchar(model_opts$trendtype) > 1
   model_opts$trendtype <- substr(model_opts$trendtype, 1, 1)
+  
+  # Remove bad models
+  if(min(y) < 0){
+    model_opts <- model_opts[model_opts$errortype != "M",]
+  }
+  if(restrict){
+    restricted <- with(model_opts, 
+                       (errortype == "A" & (trendtype == "M" | seasontype == "M")) | # AMM, AAM, AMA
+                       (errortype == "M" & trendtype == "M" & seasontype == "A"))    # MMA
+    model_opts <- model_opts[!restricted,]
+  }
 }
 
 #' @export
