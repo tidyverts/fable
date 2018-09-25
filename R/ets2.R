@@ -168,7 +168,7 @@ print.ETS <- function(x, ...) {
   if (x$components[3] != "N") {
     cat(paste("    gamma =", round(x$par["gamma"], 4), "\n"))
   }
-  if (x$components[4]) {
+  if (x$components[4] != "FALSE") {
     cat(paste("    phi   =", round(x$par["phi"], 4), "\n"))
   }
   
