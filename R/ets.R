@@ -126,13 +126,13 @@ ETS <- function(data, formula, restrict = TRUE, ...){
       gamma = ets_spec$season$gamma, gammarange = ets_spec$season$range,
       opt.crit = "lik", nmse = 3, bounds = "both", ...)
     
-    if((new$aic%||%Inf) < (best$aic%||%Inf)){
+    if((new$aicc%||%Inf) < (best$aicc%||%Inf)){
       best <<- new
     }
-    (new$aic%||%Inf)
+    (new$aicc%||%Inf)
   }
-  
   ic <- pmap_dbl(model_opts, compare_ets)
+  
   best_spec <- model_opts[which.min(ic),]
   best$m <- ets_spec$season$period
   best$method <- with(best_spec,
