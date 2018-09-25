@@ -4,3 +4,6 @@
 .Ruserdata
 Makefile
 inst/doc
+src/*.o
+src/*.so
+src/*.dll
