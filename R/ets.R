@@ -24,36 +24,41 @@ ETS <- function(data, formula, restrict = TRUE, ...){
   
   # Define specials
   specials <- new_specials_env(
-    error = function(method = c("A", "M"), alpha = NULL, range = c(1e-04, 0.9999)){
+    error = function(method = c("A", "M")){
       if (!all(is.element(method, c("A", "M")))) {
         stop("Invalid error type")
       }
-      if(range[1]>range[2]){
-        abort("Lower error limits must be less than upper limits")
-      }
-      list(method = method, alpha = alpha, range = range)
+      list(method = method)
     },
     trend = function(method = c("N", "A", "Ad"),
-                     beta = NULL, range = c(1e-04, 0.9999),
+                     alpha = NULL, alpharange = c(1e-04, 0.9999),
+                     beta = NULL, betarange = c(1e-04, 0.9999),
                      phi = NULL, phirange = c(0.8, 0.98)){
       if (!all(is.element(method, c("N", "A", "Ad", "M", "Md")))) {
         stop("Invalid trend type")
       }
-      if(range[1]>range[2]){
-        abort("Lower trend limits must be less than upper limits")
+      if(alpharange[1]>alpharange[2]){
+        abort("Lower alpha limits must be less than upper limits")
+      }
+      if(betarange[1]>betarange[2]){
+        abort("Lower beta limits must be less than upper limits")
       }
       if(phirange[1]>phirange[2]){
-        abort("Lower dampening limits must be less than upper limits")
+        abort("Lower phi limits must be less than upper limits")
       }
-      list(method = method, beta = beta, range = range,
+      list(method = method,
+           alpha = alpha, alpharange = range,
+           beta = beta, betarange = range,
            phi = phi, phirange = phirange)
     },
-    season = function(method = c("N", "A", "M"), gamma = NULL, range = c(1e-04, 0.9999), period = "smallest"){
+    season = function(method = c("N", "A", "M"),
+                      gamma = NULL, gammarange = c(1e-04, 0.9999),
+                      period = "smallest"){
       if (!all(is.element(method, c("N", "A", "M")))) {
         abort("Invalid season type")
       }
-      if(range[1]>range[2]){
-        abort("Lower seasonal limits must be less than upper limits")
+      if(gammarange[1]>gammarange[2]){
+        abort("Lower gamma limits must be less than upper limits")
       }
       
       m <- get_frequencies(period, .data)
@@ -120,10 +125,10 @@ ETS <- function(data, formula, restrict = TRUE, ...){
     new <- possibly(quietly(etsmodel), NULL)(
       y, m = ets_spec$season$period,
       errortype = errortype, trendtype = trendtype, seasontype = seasontype, damped = damped,
-      alpha = ets_spec$error$alpha, alpharange = ets_spec$error$range,
-      beta = ets_spec$trend$beta, betarange = ets_spec$trend$range,
+      alpha = ets_spec$trend$alpha, alpharange = ets_spec$trend$alpharange,
+      beta = ets_spec$trend$beta, betarange = ets_spec$trend$betarange,
       phi = ets_spec$trend$phi, phirange = ets_spec$trend$phirange,
-      gamma = ets_spec$season$gamma, gammarange = ets_spec$season$range,
+      gamma = ets_spec$season$gamma, gammarange = ets_spec$season$gammarange,
       opt.crit = "lik", nmse = 3, bounds = "both", ...)
     
     if((new$aicc%||%Inf) < (best$aicc%||%Inf)){
