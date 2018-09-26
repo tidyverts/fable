@@ -47,8 +47,8 @@ ETS <- function(data, formula, restrict = TRUE, ...){
         abort("Lower phi limits must be less than upper limits")
       }
       list(method = method,
-           alpha = alpha, alpharange = range,
-           beta = beta, betarange = range,
+           alpha = alpha, alpharange = alpharange,
+           beta = beta, betarange = betarange,
            phi = phi, phirange = phirange)
     },
     season = function(method = c("N", "A", "M"),
@@ -79,7 +79,7 @@ ETS <- function(data, formula, restrict = TRUE, ...){
           method <- "N"
         }
       }
-      list(method = method, gamma = gamma, range = range, period = m)
+      list(method = method, gamma = gamma, gammarange = gammarange, period = m)
     },
     xreg = no_xreg,
     
