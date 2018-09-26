@@ -490,37 +490,37 @@ admissible <- function(alpha, beta, gamma, phi, m) {
 
 ets_fc_class1 <- function(h, last.state, trendtype, seasontype, damped, m, sigma2, par) {
   p <- length(last.state)
-  H <- matrix(c(1, rep(0, p - 1)), nrow = 1)
+  .H <- matrix(c(1, rep(0, p - 1)), nrow = 1)
   if (seasontype == "A") {
-    H[1, p] <- 1
+    .H[1, p] <- 1
   }
   if (trendtype == "A") {
     if (damped) {
-      H[1, 2] <- par["phi"]
+      .H[1, 2] <- par["phi"]
     } else {
-      H[1, 2] <- 1
+      .H[1, 2] <- 1
     }
   }
-  F <- matrix(0, p, p)
-  F[1, 1] <- 1
+  .F <- matrix(0, p, p)
+  .F[1, 1] <- 1
   if (trendtype == "A") {
     if (damped) {
-      F[1, 2] <- F[2, 2] <- par["phi"]
+      .F[1, 2] <- .F[2, 2] <- par["phi"]
     } else {
-      F[1, 2] <- F[2, 2] <- 1
+      .F[1, 2] <- .F[2, 2] <- 1
     }
   }
   if (seasontype == "A") {
-    F[p - m + 1, p] <- 1
-    F[(p - m + 2):p, (p - m + 1):(p - 1)] <- diag(m - 1)
+    .F[p - m + 1, p] <- 1
+    .F[(p - m + 2):p, (p - m + 1):(p - 1)] <- diag(m - 1)
   }
-  G <- matrix(0, nrow = p, ncol = 1)
-  G[1, 1] <- par["alpha"]
+  .G <- matrix(0, nrow = p, ncol = 1)
+  .G[1, 1] <- par["alpha"]
   if (trendtype == "A") {
-    G[2, 1] <- par["beta"]
+    .G[2, 1] <- par["beta"]
   }
   if (seasontype == "A") {
-    G[3, 1] <- par["gamma"]
+    .G[3, 1] <- par["gamma"]
   }
   mu <- numeric(h)
   Fj <- diag(p)
@@ -528,9 +528,9 @@ ets_fc_class1 <- function(h, last.state, trendtype, seasontype, damped, m, sigma
   if (h > 1) {
     for (i in 1:(h - 1))
     {
-      mu[i] <- H %*% Fj %*% last.state
-      cj[i] <- H %*% Fj %*% G
-      Fj <- Fj %*% F
+      mu[i] <- .H %*% Fj %*% last.state
+      cj[i] <- .H %*% Fj %*% .G
+      Fj <- Fj %*% .F
     }
     cj2 <- cumsum(cj ^ 2)
     var <- sigma2 * c(1, 1 + cj2)
@@ -538,7 +538,7 @@ ets_fc_class1 <- function(h, last.state, trendtype, seasontype, damped, m, sigma
   else {
     var <- sigma2
   }
-  mu[h] <- H %*% Fj %*% last.state
+  mu[h] <- .H %*% Fj %*% last.state
   
   return(list(mu = mu, var = var, cj = cj))
 }
