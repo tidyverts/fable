@@ -65,6 +65,26 @@ forecast.LM <- function(object, newdata, ...){
   construct_fc(newdata, fc$fit, fc$se.fit, new_fcdist(qnorm, fc$fit, sd = fc$se.fit, abbr = "N"))
 }
 
+#' @importFrom fablelite simulate
+#' @export
+simulate.LM <- function(object, new_data, ...){
+  attr(object$terms, ".Environment") <- new_specials_env(
+    !!!lm_specials,
+    .env = caller_env(),
+    .vals = list(.data = new_data, origin = object%@%"origin")
+  )
+  
+  pred <- predict(object, newdata = new_data)
+  
+  if(is.null(new_data[[".innov"]])){
+    vars <- deviance(object)/df.residual(object)
+    new_data[[".innov"]] <- rnorm(length(pred), sd = sqrt(vars))
+  }
+  
+  transmute(new_data,
+            .sim = pred + .innov)
+}
+
 #' @export
 interpolate.LM <- function(model, data, ...){
   resp <- response(model)
