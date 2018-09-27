@@ -544,7 +544,7 @@ ets_fc_class1 <- function(h, last.state, trendtype, seasontype, damped, m, sigma
 }
 
 ets_fc_class2 <- function(h, last.state, trendtype, seasontype, damped, m, sigma2, par) {
-  tmp <- class1(h, last.state, trendtype, seasontype, damped, m, sigma2, par)
+  tmp <- ets_fc_class1(h, last.state, trendtype, seasontype, damped, m, sigma2, par)
   theta <- numeric(h)
   theta[1] <- tmp$mu[1] ^ 2
   if (h > 1) {
