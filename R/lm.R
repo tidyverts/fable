@@ -77,12 +77,11 @@ simulate.LM <- function(object, new_data, ...){
   pred <- predict(object, newdata = new_data)
   
   if(is.null(new_data[[".innov"]])){
-    vars <- deviance(object)/df.residual(object)
-    new_data[[".innov"]] <- rnorm(length(pred), sd = sqrt(vars))
+    vars <- stats::deviance(object)/stats::df.residual(object)
+    innov <- stats::rnorm(length(pred), sd = sqrt(vars))
   }
   
-  transmute(new_data,
-            .sim = pred + .innov)
+  transmute(new_data, .sim = pred + innov)
 }
 
 #' @export
