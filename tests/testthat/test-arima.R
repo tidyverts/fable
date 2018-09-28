@@ -50,7 +50,7 @@ test_that("ARIMA with xregs", {
     coef(forecast_fit)
   )
   
-  fable_fc <- fable_fit %>% forecast(h=12, xreg = ts[["fdeaths"]])
+  fable_fc <- fable_fit %>% forecast(12, xreg = ts[["fdeaths"]])
   forecast_fc <- forecast_fit %>% forecast(xreg = tail(fdeaths, 12))
   
   expect_equivalent(

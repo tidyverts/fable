@@ -9,7 +9,7 @@ test_that("NAIVE", {
     unclass(fitted(forecast_fc))
   )
   
-  fable_fc <- fable_fit %>% forecast(h=12)
+  fable_fc <- fable_fit %>% forecast(12)
   
   expect_equivalent(
     summary(fable_fc)$mean,
@@ -30,7 +30,7 @@ test_that("RW w/ drift", {
     unclass(fitted(forecast_fc))
   )
   
-  fable_fc <- fable_fit %>% forecast(h=12)
+  fable_fc <- fable_fit %>% forecast(12)
   
   expect_equivalent(
     summary(fable_fc)$mean,
@@ -70,7 +70,7 @@ test_that("SNAIVE", {
     unclass(fitted(forecast_fc))
   )
   
-  fable_fc <- fable_fit %>% forecast(h=12)
+  fable_fc <- fable_fit %>% forecast(12)
   
   expect_equivalent(
     summary(fable_fc)$mean,
