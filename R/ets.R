@@ -207,6 +207,57 @@ forecast.ETS <- function(object, newdata = NULL, bootstrap = FALSE, times = 5000
 }
 
 #' @export
+simulate.ETS <- function(object, new_data, ...){
+  if(!is_regular(new_data)){
+    abort("Simulation new_data must be regularly spaced")
+  }
+  
+  start_idx <- min(new_data[[expr_text(index(new_data))]])
+  start_pos <- match(start_idx, object$states[[index(object$states)]])
+  
+  if(is.na(start_pos)){
+    abort("The first observation index of simulation data must be within the model's training set.")
+  }
+  
+  initstate <- as.numeric(object$states[start_pos, measured_vars(object$states)])
+  
+  if(is.null(new_data[[".innov"]])){
+    new_data[[".innov"]] <- rnorm(NROW(new_data), sd = object$fit$sigma)
+  }
+  
+  if (object$spec$errortype == "M") {
+    new_data[[".innov"]] <- pmax(-1, new_data[[".innov"]])
+  }
+  
+  get_par <- function(par){object$par$estimate[object$par$term==par]}
+  
+  result <- new_data %>% 
+    group_by_key() %>% 
+    transmute(".sim" := .C(
+      "etssimulate",
+      as.double(initstate),
+      as.integer(object$fit$period),
+      as.integer(switch(object$spec$errortype, "A" = 1, "M" = 2)),
+      as.integer(switch(object$spec$trendtype, "N" = 0, "A" = 1, "M" = 2)),
+      as.integer(switch(object$spec$seasontype, "N" = 0, "A" = 1, "M" = 2)),
+      as.double(get_par("alpha")),
+      as.double(ifelse(object$spec$trendtype == "N", 0, get_par("beta"))),
+      as.double(ifelse(object$spec$seasontype == "N", 0, get_par("gamma"))),
+      as.double(ifelse(!object$spec$damped, 1, get_par("phi"))),
+      as.integer(length(.innov)),
+      as.double(numeric(length(.innov))),
+      as.double(.innov),
+      PACKAGE = "fable"
+    )[[11]])
+    
+  if (is.na(result[[".sim"]][1])) {
+    stop("Problem with multiplicative damped trend")
+  }
+  
+  result
+}
+
+#' @export
 model_sum.ETS <- function(x){
   x$fit$method
 }
