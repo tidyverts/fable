@@ -36,4 +36,11 @@ test_that("ETS", {
     summary(fable_fc)$mean,
     unclass(forecast_fc$mean)
   )
+  
+  # Test simulation
+  fable_fit %>% 
+    simulate(USAccDeaths_tbl)
+  fable_fit %>% 
+    simulate(USAccDeaths_tbl %>% 
+               mutate(index = index + 72))
 })
