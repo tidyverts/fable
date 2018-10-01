@@ -99,6 +99,7 @@ ETS <- function(data, formula, restrict = TRUE, ...){
   
   # Get response
   y <- eval_tidy(model_lhs(model_inputs$model), data = data)
+  idx <- data[[expr_text(index(data))]]
   
   # Build possible models
   model_opts <- expand.grid(errortype = ets_spec$error$method,
@@ -139,95 +140,104 @@ ETS <- function(data, formula, restrict = TRUE, ...){
   ic <- pmap_dbl(model_opts, compare_ets)
   
   best_spec <- model_opts[which.min(ic),]
-  best$m <- ets_spec$season$period
-  best$method <- with(best_spec,
-                      paste("ETS(", errortype, ",", trendtype, ifelse(damped, "d", ""), ",", seasontype, ")", sep = ""))
-  best$components <- as.character(best_spec)
-  best$initstate <- best$states[1, ]
-  np <- length(best$par)
-  best$sigma2 <- sum(best$residuals^2, na.rm = TRUE) / (length(y) - np)
+
+  fit <- structure(
+    list(
+      par = tibble(term = names(best$par), estimate = best$par),
+      est = data %>% 
+        transmute(
+          !!model_lhs(model_inputs$model),
+          .fitted = best$fitted,
+          .resid = best$residuals
+        ),
+      fit = tibble(method = with(best_spec, paste("ETS(", errortype, ",", trendtype, ifelse(damped, "d", ""), ",", seasontype, ")", sep = "")),
+                   period = ets_spec$season$period,
+                   sigma = sqrt(sum(best$residuals^2, na.rm = TRUE) / (length(y) - length(best$par))),
+                   logLik = best$loglik, AIC = best$aic, AICc = best$aicc, BIC = best$bic,
+                   MSE = best$mse, AMSE = best$amse),
+      states = tsibble(
+        !!!set_names(list(seq(idx[[1]], by = time_unit(idx), length.out = NROW(best$states))), expr_text(index(data))),
+        !!!set_names(split(best$states, col(best$states)), colnames(best$states)),
+        index = expr_text(index(data))
+      ),
+      spec = as_tibble(best_spec)
+    ),
+    class = "ETS"
+  )
   
   # Output model
   mable(
     data,
-    model = add_class(best, "ETS"),
+    model = fit,
     model_inputs
   )
 }
 
 #' @export
-forecast.ETS <- function(object, newdata = NULL, ...){
+forecast.ETS <- function(object, newdata = NULL, bootstrap = FALSE, times = 5000, ...){
   if(!is_regular(newdata)){
     abort("Forecasts must be regularly spaced")
   }
   
-  errortype <- object$components[1]
-  trendtype <- object$components[2]
-  seasontype <- object$components[3]
-  damped <- as.logical(object$components[4])
+  errortype <- object$spec$errortype
+  trendtype <- object$spec$trendtype
+  seasontype <- object$spec$seasontype
+  damped <- object$spec$damped
   
   fc_class <- if (errortype == "A" && trendtype %in% c("A", "N") && seasontype %in% c("N", "A")) {
-    f <- ets_fc_class1
+    ets_fc_class1
   } else if (errortype == "M" && trendtype %in% c("A", "N") && seasontype %in% c("N", "A")) {
-    f <- ets_fc_class2
+    ets_fc_class2
   } else if (errortype == "M" && trendtype != "M" && seasontype == "M") {
-    f <- ets_fc_class3
+    ets_fc_class3
   } else {
+    bootstrap <- TRUE
+  }
+  if(bootstrap){
     abort("Forecasts from this ets method require bootstrapping which is not yet supported")
   }
-  fc <- fc_class(h = NROW(newdata), last.state = object$states[NROW(object$states),],
-                 trendtype, seasontype, damped, object$m, object$sigma2, object$par)
+  else{
+    fc <- fc_class(h = NROW(newdata),
+                   last.state = as.numeric(object$states[NROW(object$states),measured_vars(object$states)]),
+                   trendtype, seasontype, damped, object$fit$period, object$fit$sigma^2, 
+                   set_names(object$par$estimate, object$par$term))
+  }
   
   construct_fc(newdata, fc$mu, sqrt(fc$var), new_fcdist(qnorm, fc$mu, sd = sqrt(fc$var), abbr = "N"))
 }
 
 #' @export
 model_sum.ETS <- function(x){
-  x$method
+  x$fit$method
 }
 
 #' @export
 print.ETS <- function(x, ...) {
-  cat(paste(x$method, "\n\n"))
-  ncoef <- length(x$initstate)
+  cat(paste(x$fit$method, "\n\n"))
+  ncoef <- length(measured_vars(x$states))
+  
+  get_par <- function(par){x$par$estimate[x$par$term==par]}
   
   cat("  Smoothing parameters:\n")
-  cat(paste("    alpha =", round(x$par["alpha"], 4), "\n"))
-  if (x$components[2] != "N") {
-    cat(paste("    beta  =", round(x$par["beta"], 4), "\n"))
+  cat(paste("    alpha =", format(get_par("alpha")), "\n"))
+  if (x$spec$trendtype != "N") {
+    cat(paste("    beta  =", format(get_par("beta")), "\n"))
   }
-  if (x$components[3] != "N") {
-    cat(paste("    gamma =", round(x$par["gamma"], 4), "\n"))
+  if (x$spec$seasontype != "N") {
+    cat(paste("    gamma =", format(get_par("gamma")), "\n"))
   }
-  if (x$components[4] != "FALSE") {
-    cat(paste("    phi   =", round(x$par["phi"], 4), "\n"))
+  if (x$spec$damped) {
+    cat(paste("    phi   =", format(get_par("phi")), "\n"))
   }
   
   cat("\n  Initial states:\n")
-  cat(paste("    l =", round(x$initstate[1], 4), "\n"))
-  if (x$components[2] != "N") {
-    cat(paste("    b =", round(x$initstate[2], 4), "\n"))
-  } else {
-    x$initstate <- c(x$initstate[1], NA, x$initstate[2:ncoef])
-    ncoef <- ncoef + 1
-  }
-  if (x$components[3] != "N") {
-    cat("    s = ")
-    if (ncoef <= 8) {
-      cat(round(x$initstate[3:ncoef], 4))
-    } else {
-      cat(round(x$initstate[3:8], 4))
-      cat("\n           ")
-      cat(round(x$initstate[9:ncoef], 4))
-    }
-    cat("\n")
-  }
+  print.data.frame(x$states[1,measured_vars(x$states)], row.names = FALSE)
+  cat("\n")
   
   cat("\n  sigma:  ")
-  cat(round(sqrt(x$sigma2), 4))
-  if (!is.null(x$aic)) {
-    stats <- c(x$aic, x$aicc, x$bic)
-    names(stats) <- c("AIC", "AICc", "BIC")
+  cat(round(x$fit$sigma, 4))
+  if (!is.null(x$fit$AIC)) {
+    stats <- c(AIC = x$fit$AIC, AICc = x$fit$AICc, BIC = x$fit$BIC)
     cat("\n\n")
     print(stats)
   }
@@ -235,5 +245,5 @@ print.ETS <- function(x, ...) {
 
 #' @export
 coef.ETS <- function(object, ...) {
-  object$par
+  set_names(object$par$estimate, object$par$term)
 }
