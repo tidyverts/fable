@@ -319,6 +319,11 @@ fitted.ETS <- function(object, ...){
 }
 
 #' @export
+residuals.ETS <- function(object, ...){
+  object$est[[".resid"]]
+}
+
+#' @export
 model_sum.ETS <- function(x){
   x$fit$method
 }
