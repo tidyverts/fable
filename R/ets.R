@@ -314,6 +314,11 @@ refit.ETS <- function(object, new_data, reestimate = FALSE, reinitialise = TRUE,
 }
 
 #' @export
+fitted.ETS <- function(object, ...){
+  object$est[[".fitted"]]
+}
+
+#' @export
 model_sum.ETS <- function(x){
   x$fit$method
 }
