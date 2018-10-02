@@ -31,14 +31,11 @@ LM <- function(data, formula, ...){
     .vals = list(.data = data, origin = origin)
   )
   
-  # Parse model
-  model_inputs <- parse_model(data, formula)
-  
-  if(is_formula(model_inputs$model)){
-    model_formula <- set_env(model_inputs$model, new_env = specials)
+  if(is_formula(formula)){
+    model_formula <- set_env(formula, new_env = specials)
   }
   else{
-    model_formula <- new_formula(model_inputs$model, 1, specials)
+    model_formula <- new_formula(formula, 1, specials)
   }
   fit <- stats::lm(model_formula, data, na.action = stats::na.exclude, ...)
 
