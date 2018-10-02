@@ -258,6 +258,62 @@ simulate.ETS <- function(object, new_data, ...){
 }
 
 #' @export
+refit.ETS <- function(object, new_data, reestimate = FALSE, reinitialise = TRUE, ...){
+  est_par <- function(par){
+    if(any(pos <- object$par$term==par) && !reestimate){
+      object$par$estimate[pos]
+    } else {
+      NULL
+    }
+  }
+  
+  if(!reinitialise){
+    abort("Using initial paramaters is currently not implemented.")
+  }
+  
+  y <- new_data %>% 
+    transmute(
+      !!model_lhs(formula(object))
+    )
+  idx <- y[[expr_text(index(y))]]
+  
+  best <- etsmodel(
+    y[[measured_vars(y)]], m = object$fit$period,
+    errortype = object$spec$errortype, trendtype = object$spec$trendtype,
+    seasontype = object$spec$seasontype, damped = object$spec$damped,
+    alpha = est_par("alpha"), beta = est_par("beta"), phi = est_par("phi"), gamma = est_par("gamma"),
+    alpharange = c(1e-04, 0.9999), betarange = c(1e-04, 0.9999),
+    gammarange = c(1e-04, 0.9999), phirange = c(0.8, 0.98),
+    opt.crit = "lik", nmse = 3, bounds = "both")
+  
+  fit <- structure(
+    list(
+      par = tibble(term = names(best$par), estimate = best$par),
+      est = mutate(y, .fitted = best$fitted, .resid = best$residuals),
+      fit = tibble(method = object$fit$method,
+                   period = object$fit$period,
+                   sigma = sqrt(sum(best$residuals^2, na.rm = TRUE) / (NROW(y) - length(best$par))),
+                   logLik = best$loglik, AIC = best$aic, AICc = best$aicc, BIC = best$bic,
+                   MSE = best$mse, AMSE = best$amse),
+      states = tsibble(
+        !!!set_names(list(seq(idx[[1]], by = time_unit(idx), length.out = NROW(best$states))), expr_text(index(new_data))),
+        !!!set_names(split(best$states, col(best$states)), colnames(best$states)),
+        index = expr_text(index(new_data))
+      ),
+      spec = object$spec
+    ),
+    class = "ETS"
+  )
+  
+  # Output model
+  mable(
+    new_data,
+    fit,
+    object%@%"fable"
+  )
+}
+
+#' @export
 model_sum.ETS <- function(x){
   x$fit$method
 }
