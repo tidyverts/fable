@@ -222,7 +222,7 @@ simulate.ETS <- function(object, new_data, ...){
   initstate <- as.numeric(object$states[start_pos, measured_vars(object$states)])
   
   if(is.null(new_data[[".innov"]])){
-    new_data[[".innov"]] <- rnorm(NROW(new_data), sd = object$fit$sigma)
+    new_data[[".innov"]] <- stats::rnorm(NROW(new_data), sd = object$fit$sigma)
   }
   
   if (object$spec$errortype == "M") {
@@ -244,9 +244,9 @@ simulate.ETS <- function(object, new_data, ...){
       as.double(ifelse(object$spec$trendtype == "N", 0, get_par("beta"))),
       as.double(ifelse(object$spec$seasontype == "N", 0, get_par("gamma"))),
       as.double(ifelse(!object$spec$damped, 1, get_par("phi"))),
-      as.integer(length(.innov)),
-      as.double(numeric(length(.innov))),
-      as.double(.innov),
+      as.integer(length(!!sym(".innov"))),
+      as.double(numeric(length(!!sym(".innov")))),
+      as.double(!!sym(".innov")),
       PACKAGE = "fable"
     )[[11]])
     
