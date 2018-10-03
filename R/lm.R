@@ -92,6 +92,29 @@ interpolate.LM <- function(model, data, ...){
   data
 }
 
+#' @export
+refit.LM <- function(object, new_data, reestimate = FALSE, ...){
+  attr(object$terms, ".Environment") <- new_specials_env(
+    !!!lm_specials,
+    .env = caller_env(),
+    .vals = list(.data = new_data, origin = object%@%"origin")
+  )
+  
+  fit <- stats::lm(formula(object$terms), data = new_data)
+  fit$call <- object$call
+  if(!reestimate){
+    fit$coefficients <- object$coefficients
+    fit$fitted.values <- predict(object, new_data)
+    fit$residuals <- fit$model[,fit$terms%@%"response"] - fit$fitted.values
+  }
+  
+  mable(
+    new_data,
+    model = enclass(fit, "LM", origin = object%@%"origin"),
+    object%@%"fable"
+  )
+}
+
 #xreg is handled by lm
 lm_specials <- list(
   trend = function(knots = NULL){
