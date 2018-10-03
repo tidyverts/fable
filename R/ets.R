@@ -361,6 +361,11 @@ print.ETS <- function(x, ...) {
 }
 
 #' @export
+summary.ets <- function(object, ...) {
+  print(object)
+}
+
+#' @export
 coef.ETS <- function(object, ...) {
   set_names(object$par$estimate, object$par$term)
 }
