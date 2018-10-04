@@ -324,6 +324,13 @@ residuals.ETS <- function(object, ...){
 }
 
 #' @export
+components.ETS <- function(object, ...){
+  cmp <- match(c(expr_text(index(object$states)), "l", "b", "s1"), colnames(object$states))
+  out <- object$states[,stats::na.exclude(cmp)]
+  `colnames<-`(out, c(expr_text(index(object$states)), "level", "slope", "season"))
+}
+
+#' @export
 model_sum.ETS <- function(x){
   x$fit$method
 }
