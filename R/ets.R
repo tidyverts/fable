@@ -368,7 +368,7 @@ print.ETS <- function(x, ...) {
 }
 
 #' @export
-summary.ets <- function(object, ...) {
+summary.ETS <- function(object, ...) {
   print(object)
 }
 
