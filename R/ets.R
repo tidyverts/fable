@@ -174,7 +174,7 @@ ETS <- function(data, formula, restrict = TRUE, ...){
 }
 
 #' @export
-forecast.ETS <- function(object, newdata = NULL, bootstrap = FALSE, times = 5000, ...){
+forecast.ETS <- function(object, newdata = NULL, simulate = FALSE, times = 5000, ...){
   if(!is_regular(newdata)){
     abort("Forecasts must be regularly spaced")
   }
@@ -183,6 +183,7 @@ forecast.ETS <- function(object, newdata = NULL, bootstrap = FALSE, times = 5000
   trendtype <- object$spec$trendtype
   seasontype <- object$spec$seasontype
   damped <- object$spec$damped
+  laststate <- as.numeric(object$states[NROW(object$states),measured_vars(object$states)])
   
   fc_class <- if (errortype == "A" && trendtype %in% c("A", "N") && seasontype %in% c("N", "A")) {
     ets_fc_class1
@@ -191,19 +192,37 @@ forecast.ETS <- function(object, newdata = NULL, bootstrap = FALSE, times = 5000
   } else if (errortype == "M" && trendtype != "M" && seasontype == "M") {
     ets_fc_class3
   } else {
-    bootstrap <- TRUE
+    simulate <- TRUE
   }
-  if(bootstrap){
-    abort("Forecasts from this ets method require bootstrapping which is not yet supported")
+  if(simulate){
+    sim <- map(seq_len(times), function(x) simulate(object, newdata, times = times)[[".sim"]]) %>% 
+      transpose %>% 
+      map(as.numeric)
+    pred <- .C(
+      "etsforecast",
+      as.double(laststate),
+      as.integer(object$fit$period),
+      as.integer(switch(trendtype, "N" = 0, "A" = 1, "M" = 2)),
+      as.integer(switch(seasontype, "N" = 0, "A" = 1, "M" = 2)),
+      as.double(ifelse(damped, obj$par["phi"], 1)),
+      as.integer(NROW(newdata)),
+      as.double(numeric(NROW(newdata))),
+      PACKAGE = "fable"
+    )[[7]]
+    
+    quantiles <- function(p, x = list(), ...){
+      map_dbl(x, function(x) as.numeric(quantile(x, p, ...)))
+    }
+    
+    construct_fc(newdata, pred, map_dbl(sim, sd), sample_quantile(sim))
   }
   else{
     fc <- fc_class(h = NROW(newdata),
-                   last.state = as.numeric(object$states[NROW(object$states),measured_vars(object$states)]),
+                   last.state = laststate,
                    trendtype, seasontype, damped, object$fit$period, object$fit$sigma^2, 
                    set_names(object$par$estimate, object$par$term))
+    construct_fc(newdata, fc$mu, sqrt(fc$var), new_fcdist(qnorm, fc$mu, sd = sqrt(fc$var), abbr = "N"))
   }
-  
-  construct_fc(newdata, fc$mu, sqrt(fc$var), new_fcdist(qnorm, fc$mu, sd = sqrt(fc$var), abbr = "N"))
 }
 
 #' @export
