@@ -226,7 +226,7 @@ forecast.ETS <- function(object, newdata = NULL, simulate = FALSE, times = 5000,
 }
 
 #' @export
-simulate.ETS <- function(object, new_data, ...){
+simulate.ETS <- function(object, new_data, bootstrap = FALSE, ...){
   if(!is_regular(new_data)){
     abort("Simulation new_data must be regularly spaced")
   }
@@ -241,7 +241,13 @@ simulate.ETS <- function(object, new_data, ...){
   initstate <- as.numeric(object$states[start_pos, measured_vars(object$states)])
   
   if(is.null(new_data[[".innov"]])){
-    new_data[[".innov"]] <- stats::rnorm(NROW(new_data), sd = object$fit$sigma)
+    if(bootstrap){
+      new_data[[".innov"]] <- sample(stats::na.omit(residuals(object) - mean(residuals(object), na.rm = TRUE)),
+                                     NROW(new_data), replace = TRUE)
+    }
+    else{
+      new_data[[".innov"]] <- stats::rnorm(NROW(new_data), sd = object$fit$sigma)
+    }
   }
   
   if (object$spec$errortype == "M") {
