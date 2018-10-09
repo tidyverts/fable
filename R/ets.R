@@ -209,11 +209,7 @@ forecast.ETS <- function(object, new_data = NULL, simulate = FALSE, bootstrap = 
       as.double(numeric(NROW(new_data))),
       PACKAGE = "fable"
     )[[7]]
-    
-    quantiles <- function(p, x = list(), ...){
-      map_dbl(x, function(x) as.numeric(quantile(x, p, ...)))
-    }
-    
+
     construct_fc(new_data, pred, map_dbl(sim, stats::sd), sample_quantile(sim))
   }
   else{
