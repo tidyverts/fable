@@ -218,21 +218,21 @@ ARIMA2 <- function(data, formula, stepwise = TRUE, greedy = TRUE, approximation 
 
 #' @importFrom stats formula residuals
 #' @export
-forecast.ARIMA2 <- function(object, newdata = NULL, ...){
-  if(!is_regular(newdata)){
+forecast.ARIMA2 <- function(object, new_data = NULL, ...){
+  if(!is_regular(new_data)){
     abort("Forecasts must be regularly spaced")
   }
   
-  # Evaluate xreg from newdata
+  # Evaluate xreg from new_data
   specials <- new_specials_env(
     !!!arima_specials,
     !!!lm_specials,
     xreg = model_xreg,
     .env = caller_env(),
     .required_specials = c("pdq", "PDQ"),
-    .vals = list(.data = newdata, origin = object%@%"origin")
+    .vals = list(.data = new_data, origin = object%@%"origin")
   )
-  vals <- parse_model_rhs(model_rhs(formula(object)), newdata, specials)
+  vals <- parse_model_rhs(model_rhs(formula(object)), new_data, specials)
   xreg <- vals$specials[c("xreg", names(lm_specials))] %>% 
     compact() %>% 
     map(function(.x){invoke("cbind", .x)}) %>% 
@@ -243,11 +243,11 @@ forecast.ARIMA2 <- function(object, newdata = NULL, ...){
   if(!is.null(xreg)){
     object$call$xreg <- expr(matrix(nrow = !!length(residuals(object)), ncol = !!NCOL(xreg)))
   }
-  fc <- predict(object, n.ahead = NROW(newdata), newxreg = xreg, ...)
+  fc <- predict(object, n.ahead = NROW(new_data), newxreg = xreg, ...)
   object$call$xreg <- NULL
   
   # Output forecasts
-  construct_fc(newdata, fc$pred, fc$se, new_fcdist(qnorm, fc$pred, sd = fc$se, abbr = "N"))
+  construct_fc(new_data, fc$pred, fc$se, new_fcdist(qnorm, fc$pred, sd = fc$se, abbr = "Normal"))
 }
 
 #' @export

@@ -52,17 +52,17 @@ LM <- function(data, formula, ...){
 
 #' @importFrom stats predict
 #' @export
-forecast.LM <- function(object, newdata, ...){
+forecast.LM <- function(object, new_data, ...){
   # Update bound values to special environment for re-evaluation
   attr(object$terms, ".Environment") <- new_specials_env(
     !!!lm_specials,
     .env = caller_env(),
-    .vals = list(.data = newdata, origin = object%@%"origin")
+    .vals = list(.data = new_data, origin = object%@%"origin")
   )
   
-  fc <- predict(object, newdata, se.fit = TRUE)
+  fc <- predict(object, new_data, se.fit = TRUE)
   
-  construct_fc(newdata, fc$fit, fc$se.fit, new_fcdist(qnorm, fc$fit, sd = fc$se.fit, abbr = "N"))
+  construct_fc(new_data, fc$fit, fc$se.fit, new_fcdist(qnorm, fc$fit, sd = fc$se.fit, abbr = "N"))
 }
 
 #' @importFrom fablelite simulate

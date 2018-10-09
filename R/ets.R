@@ -174,8 +174,8 @@ ETS <- function(data, formula, restrict = TRUE, ...){
 }
 
 #' @export
-forecast.ETS <- function(object, newdata = NULL, simulate = FALSE, bootstrap = FALSE, times = 5000, ...){
-  if(!is_regular(newdata)){
+forecast.ETS <- function(object, new_data = NULL, simulate = FALSE, bootstrap = FALSE, times = 5000, ...){
+  if(!is_regular(new_data)){
     abort("Forecasts must be regularly spaced")
   }
   
@@ -195,7 +195,7 @@ forecast.ETS <- function(object, newdata = NULL, simulate = FALSE, bootstrap = F
     simulate <- TRUE
   }
   if(simulate || bootstrap){
-    sim <- map(seq_len(times), function(x) simulate(object, newdata, times = times, bootstrap = bootstrap)[[".sim"]]) %>% 
+    sim <- map(seq_len(times), function(x) simulate(object, new_data, times = times, bootstrap = bootstrap)[[".sim"]]) %>% 
       transpose %>% 
       map(as.numeric)
     pred <- .C(
@@ -204,9 +204,9 @@ forecast.ETS <- function(object, newdata = NULL, simulate = FALSE, bootstrap = F
       as.integer(object$fit$period),
       as.integer(switch(trendtype, "N" = 0, "A" = 1, "M" = 2)),
       as.integer(switch(seasontype, "N" = 0, "A" = 1, "M" = 2)),
-      as.integer(NROW(newdata)),
-      as.double(numeric(NROW(newdata))),
       as.double(ifelse(damped, object$par[["estimate"]][[object$term == "phi"]], 1)),
+      as.integer(NROW(new_data)),
+      as.double(numeric(NROW(new_data))),
       PACKAGE = "fable"
     )[[7]]
     
@@ -214,14 +214,14 @@ forecast.ETS <- function(object, newdata = NULL, simulate = FALSE, bootstrap = F
       map_dbl(x, function(x) as.numeric(quantile(x, p, ...)))
     }
     
-    construct_fc(newdata, pred, map_dbl(sim, sd), sample_quantile(sim))
+    construct_fc(new_data, pred, map_dbl(sim, stats::sd), sample_quantile(sim))
   }
   else{
-    fc <- fc_class(h = NROW(newdata),
+    fc <- fc_class(h = NROW(new_data),
                    last.state = laststate,
                    trendtype, seasontype, damped, object$fit$period, object$fit$sigma^2, 
                    set_names(object$par$estimate, object$par$term))
-    construct_fc(newdata, fc$mu, sqrt(fc$var), new_fcdist(qnorm, fc$mu, sd = sqrt(fc$var), abbr = "N"))
+    construct_fc(new_data, fc$mu, sqrt(fc$var), new_fcdist(qnorm, fc$mu, sd = sqrt(fc$var), abbr = "N"))
   }
 }
 

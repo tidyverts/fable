@@ -157,13 +157,13 @@ estimate_RW <- function(data, formula, specials, cl){
 #' @importFrom stats qnorm time 
 #' @importFrom utils tail
 #' @export
-forecast.RW <- function(object, newdata = NULL, ...){
-  if(!is_regular(newdata)){
+forecast.RW <- function(object, new_data = NULL, ...){
+  if(!is_regular(new_data)){
     abort("Forecasts must be regularly spaced")
   }
   
   if("drift" %in% names(coef(object))){
-    drift <- as.matrix(`colnames<-`(trend(newdata, origin = object%@%"origin"), "drift"))
+    drift <- as.matrix(`colnames<-`(trend(new_data, origin = object%@%"origin"), "drift"))
   }
   else{
     drift <- NULL
@@ -171,7 +171,7 @@ forecast.RW <- function(object, newdata = NULL, ...){
   
   # xreg <- names(coef(object))[-match("drift", names(coef(object)))]
   # if(length(xreg) > 0){
-  #   xreg <- as_model_matrix(eval_tidy(expr(tibble(!!!parse_exprs(xreg))), data = newdata))
+  #   xreg <- as_model_matrix(eval_tidy(expr(tibble(!!!parse_exprs(xreg))), data = new_data))
   # }
   # else{
   #   xreg <- NULL
@@ -179,14 +179,14 @@ forecast.RW <- function(object, newdata = NULL, ...){
   # xreg <- cbind(drift, xreg)
   
   object$call$xreg <- drift # Bypass predict.Arima NCOL check
-  fc <- predict(object, n.ahead = NROW(newdata), newxreg = drift, ...)
+  fc <- predict(object, n.ahead = NROW(new_data), newxreg = drift, ...)
   object$call$xreg <- NULL
   
   if("drift" %in% names(coef(object))){
     fc$se <- sqrt(fc$se^2 + (seq_along(fc$se) * sqrt(object$var.coef["drift", "drift"]))^2)
   }
   
-  construct_fc(newdata, fc$pred, fc$se, new_fcdist(qnorm, fc$pred, sd = fc$se, abbr = "N"))
+  construct_fc(new_data, fc$pred, fc$se, new_fcdist(qnorm, fc$pred, sd = fc$se, abbr = "N"))
 }
 
 #' @importFrom stats coef

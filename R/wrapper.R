@@ -24,20 +24,20 @@ wrap_ts_model <- function(modelfn, data, parsed_model, period = "all", cl = "Cal
 #' @importFrom stats qnorm time 
 #' @importFrom utils tail
 #' @export
-forecast.ts_model <- function(object, newdata, ...){
+forecast.ts_model <- function(object, new_data, ...){
   # Add smarter checking
-  if(!is_regular(newdata)){
+  if(!is_regular(new_data)){
     abort("Forecasts must be regularly spaced")
   }
   
-  h <- NROW(newdata)
+  h <- NROW(new_data)
   object <- rm_class(object, "ts_model")
   fc <- forecast(object, h=h, ...)
   
   # Assume normality
   se <- (fc$upper[,1] - fc$lower[,1])/qnorm(0.5 * (1 + fc$level[1] / 100))/2
   
-  construct_fc(newdata, fc$mean, se, new_fcdist(qnorm, fc$mean, sd = se, abbr = "N"))
+  construct_fc(new_data, fc$mean, se, new_fcdist(qnorm, fc$mean, sd = se, abbr = "N"))
 }
 
 #' @export
