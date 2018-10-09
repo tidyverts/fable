@@ -7,13 +7,13 @@
 #' 
 #' @examples 
 #' 
-#' USAccDeaths %>% ETS(log(value) ~ season("A"))
+#' USAccDeaths %>% as_tsibble %>% ETS(log(value) ~ season("A"))
 ETS <- function(data, formula, restrict = TRUE, ...){
   # Capture user call
   cl <- call_standardise(match.call())
   
-  # Coerce data
-  data <- as_tsibble(data)
+  # Check data
+  stopifnot(is_tsibble(data))
   
   formula <- validate_model(formula, data)
   

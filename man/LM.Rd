@@ -18,5 +18,5 @@ Fit a linear model with time series components
 }
 \examples{
 
-USAccDeaths \%>\% LM(log(value) ~ trend() + season())
+USAccDeaths \%>\% as_tsibble \%>\% LM(log(value) ~ trend() + season())
 }

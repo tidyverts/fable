@@ -35,7 +35,7 @@ Hyndman, et al, 2002, below.)
 }
 \examples{
 
-USAccDeaths \%>\% ETS(log(value) ~ season("A"))
+USAccDeaths \%>\% as_tsibble \%>\% ETS(log(value) ~ season("A"))
 }
 \references{
 Hyndman, R.J., Koehler, A.B., Snyder, R.D., and Grose, S. (2002)

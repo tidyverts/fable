@@ -12,7 +12,7 @@
 #' 
 #' @examples 
 #' # Manual ARIMA specification
-#' USAccDeaths %>% ARIMA(log(value) ~ pdq(0,1,1) + PDQ(0,1,1))
+#' USAccDeaths %>% as_tsibble %>% ARIMA(log(value) ~ pdq(0,1,1) + PDQ(0,1,1))
 #' 
 #' # Automatic ARIMA specification
 #' tsibbledata::UKLungDeaths %>% ARIMA(mdeaths ~ fdeaths)
@@ -25,8 +25,8 @@ ARIMA <- function(data, formula, period = "smallest",
   # Capture user call
   cl <- call_standardise(match.call())
   
-  # Coerce data
-  data <- as_tsibble(data)
+  # Check data
+  stopifnot(is_tsibble(data))
   
   formula <- validate_model(formula, data)
   
