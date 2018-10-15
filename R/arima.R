@@ -189,7 +189,6 @@ ARIMA <- function(data, formula, stepwise = TRUE, greedy = TRUE, approximation =
   else{
     ic <- pmap_dbl(model_opts, compare_arima)
   }
-  
   if (approximation && !is.null(best$arma)) {
     method <- "CSS-ML"
     best <- NULL
@@ -306,8 +305,16 @@ arima_specials <- list(
   PDQ = function(P = 0:2, D = 0:1, Q = 0:2, period = "smallest",
                  start.P = 1, start.D = 0, start.Q = 1){
     period <- get_frequencies(period, .data)
-    P <- P[P <= floor(NROW(.data) / 3 / period)]
-    Q <- Q[Q <= floor(NROW(.data) / 3 / period)]
+    if(period == 1){
+      # Not seasonal
+      P <- 0
+      D <- 0
+      Q <- 0
+    }
+    else{
+      P <- P[P <= floor(NROW(.data) / 3 / period)]
+      Q <- Q[Q <= floor(NROW(.data) / 3 / period)]
+    }
     start.P <- P[which.min(abs(P - start.P))]
     start.D <- D[which.min(abs(D - start.D))]
     start.Q <- Q[which.min(abs(Q - start.Q))]
