@@ -33,21 +33,21 @@ ARIMA2 <- function(data, formula, stepwise = TRUE, greedy = TRUE, approximation 
   }
   
   # Define specials
-  origin <- min(data[[expr_text(index(data))]])
   specials <- new_specials_env(
     !!!arima_specials,
     !!!lm_specials,
     xreg = model_xreg,
     .env = caller_env(),
     .required_specials = c("pdq", "PDQ"),
-    .vals = list(.data = data, origin = origin)
+    .vals = list(.data = data, origin = min(data[[expr_text(index(data))]]))
   )
   
   # Parse model
   model_inputs <- parse_model(data, formula, specials = specials)
   
   # Get response
-  y <- eval_tidy(model_lhs(model_inputs$model), data = data)
+  est <- transmute(data, !!model_lhs(model_inputs$model))
+  y <- est[[measured_vars(est)]]
   
   # Get args
   p <- d <- q <- P <- D <- Q <- period <- start.p <- start.d <- start.q <- start.P <- start.D <- start.Q <- NULL 
@@ -208,17 +208,40 @@ ARIMA2 <- function(data, formula, stepwise = TRUE, greedy = TRUE, approximation 
     stop("Could not find an appropriate ARIMA model.")
   }
   
-  # Construct appropriate output
-  best$fitted <- y - best$residuals
-  
+  # Fix model call
   best$call <- cl
   
   # Output model
   mable(
     data,
-    model = enclass(best, "ARIMA2", origin = origin),
+    model = 
+      structure(
+        list(
+          par = tibble(term = names(coef(best)), estimate = coef(best)),
+          est = mutate(est,
+                       .fitted = y - best$residuals,
+                       .resid = best$residuals
+          ),
+          fit = tibble(method = model_sum(best), 
+                       period = period,
+                       sigma = sqrt(best$sigma2),
+                       logLik = best$loglik,
+                       AIC = best$aic),
+          model = best
+        ),
+      class = "ARIMA2"),
     model_inputs
   )
+}
+
+#' @export
+fitted.ARIMA2 <- function(object, ...){
+  object$est[[".fitted"]]
+}
+
+#' @export
+residuals.ARIMA2 <- function(object, ...){
+  object$est[[".resid"]]
 }
 
 #' @importFrom stats formula residuals
@@ -235,7 +258,7 @@ forecast.ARIMA2 <- function(object, new_data = NULL, ...){
     xreg = model_xreg,
     .env = caller_env(),
     .required_specials = c("pdq", "PDQ"),
-    .vals = list(.data = new_data, origin = object%@%"origin")
+    .vals = list(.data = new_data, origin = min(object$est[[expr_text(index(object$est))]]))
   )
   vals <- parse_model_rhs(model_rhs(formula(object)), new_data, specials)
   xreg <- vals$specials[c("xreg", names(lm_specials))] %>% 
@@ -248,15 +271,20 @@ forecast.ARIMA2 <- function(object, new_data = NULL, ...){
   if(!is.null(xreg)){
     object$call$xreg <- expr(matrix(nrow = !!length(residuals(object)), ncol = !!NCOL(xreg)))
   }
-  fc <- predict(object, n.ahead = NROW(new_data), newxreg = xreg, ...)
+  fc <- predict(object$model, n.ahead = NROW(new_data), newxreg = xreg, ...)
   object$call$xreg <- NULL
   
   # Output forecasts
-  construct_fc(new_data, fc$pred, fc$se, new_fcdist(qnorm, fc$pred, sd = fc$se, abbr = "Normal"))
+  construct_fc(new_data, fc$pred, fc$se, new_fcdist(qnorm, fc$pred, sd = fc$se, abbr = "N"))
 }
 
 #' @export
 model_sum.ARIMA2 <- function(x){
+  x$fit$method
+}
+
+#' @export
+model_sum.Arima <- function(x){
   order <- x$arma[c(1, 6, 2, 3, 7, 4, 5)]
   m <- order[7]
   result <- paste("ARIMA(", order[1], ",", order[2], ",", order[3], ")", sep = "")
