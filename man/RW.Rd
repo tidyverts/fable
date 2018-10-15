@@ -40,7 +40,7 @@ library(tsibbledata)
 elecdemand \%>\% RW(Demand ~ drift())
 
 
-forecast::gold \%>\% as_tsibble \%>\% NAIVE
+Nile \%>\% as_tsibble \%>\% NAIVE
 
 library(tsibbledata)
 elecdemand \%>\% SNAIVE(Temperature ~ lag("day"))

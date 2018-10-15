@@ -16,7 +16,6 @@
 #' tsibbledata::UKLungDeaths %>%
 #'   ARIMA(log(mdeaths) ~ pdq(0,1,1) + PDQ(0,0,1) + fdeaths + fourier(K=4))
 #' 
-#' @importFrom forecast Arima auto.arima
 #' @importFrom stats model.matrix
 ARIMA <- function(data, formula, stepwise = TRUE, greedy = TRUE, approximation = FALSE, ...){
   # Capture user call

@@ -65,7 +65,7 @@ RW <- function(data, formula = ~ lag(1)){
 #'
 #' @examples
 #' 
-#' forecast::gold %>% as_tsibble %>% NAIVE
+#' Nile %>% as_tsibble %>% NAIVE
 #'
 #' @export
 NAIVE <- RW
@@ -154,8 +154,8 @@ estimate_RW <- function(data, formula, specials, cl){
 }
 
 
-#' @importFrom forecast forecast
-#' @importFrom stats qnorm time 
+#' @importFrom fablelite forecast
+#' @importFrom stats qnorm time
 #' @importFrom utils tail
 #' @export
 forecast.RW <- function(object, new_data = NULL, ...){
