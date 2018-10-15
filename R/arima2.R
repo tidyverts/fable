@@ -78,7 +78,9 @@ ARIMA2 <- function(data, formula, stepwise = TRUE, greedy = TRUE, approximation 
   }
   
   # Select differencing (currently done by AIC)
-  
+  if(length(d) > 1 | length(D) > 1){
+    abort("Automatic selection of differencing is currently not implemented. Please specify `d` and `D` as a single value.")
+  }
   
   if (approximation) {
     method <- "CSS"
@@ -106,25 +108,28 @@ ARIMA2 <- function(data, formula, stepwise = TRUE, greedy = TRUE, approximation 
       # Adjust residual variance to be unbiased
       new$sigma2 <- sum(new$residuals ^ 2, na.rm = TRUE) / (nstar - npar + 1)
       
-      # Check for unit roots
-      minroot <- map_dbl(list(phi = new$model$phi,
-           theta = new$model$theta),
-          function(testvec){
-            k <- abs(testvec) > 1e-8
-            if (any(k)) {
-              last.nonzero <- max(which(k))
-              testvec <- testvec[1:last.nonzero]
-              min(abs(polyroot(c(1, testvec))))
-            }
-            else{
-              2
-            }
-          }
-      )
-
-      if (isTRUE(min(minroot) < 1 + 1e-2)) { # Previously 1+1e-3
-        new <- NULL
-      } # Don't like this model
+      # If automatically selecting a model
+      if(NROW(model_opts) > 1){
+        # Check for unit roots
+        minroot <- map_dbl(list(phi = new$model$phi,
+                                theta = new$model$theta),
+                           function(testvec){
+                             k <- abs(testvec) > 1e-8
+                             if (any(k)) {
+                               last.nonzero <- max(which(k))
+                               testvec <- testvec[1:last.nonzero]
+                               min(abs(polyroot(c(1, testvec))))
+                             }
+                             else{
+                               2
+                             }
+                           }
+        )
+        
+        if (isTRUE(min(minroot) < 1 + 1e-2)) { # Previously 1+1e-3
+          new <- NULL
+        } # Don't like this model
+      }
     }
     
     if((new$aic%||%Inf) < (best$aic%||%Inf)){
