@@ -2,50 +2,33 @@
 % Please edit documentation in R/arima.R
 \name{ARIMA}
 \alias{ARIMA}
-\title{Fit ARIMA model to univariate time series}
+\title{Estimate an ARIMA model}
 \usage{
-ARIMA(data, formula, period = "smallest", ic = c("aicc", "aic", "bic"),
-  test = c("kpss", "adf", "pp"), seasonal.test = c("seas", "ocsb",
-  "hegy", "ch"), ...)
+ARIMA(data, formula, stepwise = TRUE, greedy = TRUE,
+  approximation = FALSE, ...)
 }
 \arguments{
-\item{data}{A data frame}
+\item{data}{A tsibble}
 
 \item{formula}{Model specification.}
 
-\item{period}{Time series frequency for seasonal component.}
+\item{stepwise}{Should stepwise be used?}
 
-\item{ic}{The information criterion used to choose the best model
-for auto.arima}
+\item{greedy}{Should the stepwise search move to the next best option immediately?}
 
-\item{test}{The unit root test used for selecting non-seasonal differences}
+\item{approximation}{Should CSS be used during model selection?}
 
-\item{seasonal.test}{The seasonal unit root test for selecting seasonal differences}
-
-\item{...}{Further arguments for Arima or auto.arima}
-}
-\value{
-See the \code{\link[stats]{arima}} function in the stats package.
-The additional objects returned are \item{x}{The time series data}
-\item{xreg}{The regressors used in fitting (when relevant).}
+\item{...}{Further arguments for arima}
 }
 \description{
-Largely a wrapper for the \code{\link[stats]{arima}} function in the stats
-package. The main difference is that this function allows a drift term. It
-is also possible to take an ARIMA model from a previous call to \code{Arima}
-and re-apply it to the data \code{y}.
-}
-\details{
-See the \code{\link[stats]{arima}} function in the stats package.
+Estimate an ARIMA model
 }
 \examples{
 # Manual ARIMA specification
 USAccDeaths \%>\% as_tsibble \%>\% ARIMA(log(value) ~ pdq(0,1,1) + PDQ(0,1,1))
 
 # Automatic ARIMA specification
-tsibbledata::UKLungDeaths \%>\% ARIMA(mdeaths ~ fdeaths)
+tsibbledata::UKLungDeaths \%>\%
+  ARIMA(log(mdeaths) ~ pdq(0,1,1) + PDQ(0,0,1) + fdeaths + fourier(K=4))
 
-}
-\seealso{
-\code{\link{auto.arima}}, \code{\link{forecast.Arima}}.
 }
