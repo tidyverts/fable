@@ -12,8 +12,9 @@
 #' @param formula Model specification.
 #' @param restrict If TRUE (default), the models with infinite variance will not
 #' be allowed.
+#' @param ... Other arguments
 #' 
-#' @return A mable.
+#' @return A `mable` containing fitted ETS models.
 #'
 #' The generic accessor functions \code{fitted} and \code{residuals}
 #' extract useful features of the value returned by \code{ETS} and associated

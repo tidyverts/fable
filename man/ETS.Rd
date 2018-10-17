@@ -13,9 +13,11 @@ ETS(data, formula, restrict = TRUE, ...)
 
 \item{restrict}{If TRUE (default), the models with infinite variance will not
 be allowed.}
+
+\item{...}{Other arguments}
 }
 \value{
-A mable.
+A \code{mable} containing fitted ETS models.
 
 The generic accessor functions \code{fitted} and \code{residuals}
 extract useful features of the value returned by \code{ETS} and associated
