@@ -5,6 +5,17 @@
 \alias{reexports}
 \alias{\%>\%}
 \alias{as_tsibble}
+\alias{accuracy}
+\alias{simulate}
+\alias{autoplot}
+\alias{autolayer}
+\alias{components}
+\alias{forecast}
+\alias{hilo}
+\alias{interpolate}
+\alias{refit}
+\alias{report}
+\alias{stream}
 \title{Objects exported from other packages}
 \keyword{internal}
 \description{
@@ -12,6 +23,8 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
+  \item{fablelite}{\code{\link[fablelite]{accuracy}}, \code{\link[fablelite]{simulate}}, \code{\link[fablelite]{autoplot}}, \code{\link[fablelite]{autolayer}}, \code{\link[fablelite]{components}}, \code{\link[fablelite]{forecast}}, \code{\link[fablelite]{hilo}}, \code{\link[fablelite]{interpolate}}, \code{\link[fablelite]{refit}}, \code{\link[fablelite]{report}}, \code{\link[fablelite]{stream}}}
+
   \item{tsibble}{\code{\link[tsibble]{\%>\%}}, \code{\link[tsibble]{as_tsibble}}}
 }}
 
