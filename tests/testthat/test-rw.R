@@ -1,5 +1,5 @@
 context("test-rw.R")
-
+skip("naive family to be reimplemented")
 test_that("NAIVE", {
   fable_fit <- USAccDeaths_tbl %>% NAIVE(value)
   forecast_fc <- forecast::naive(USAccDeaths, h = 12)
