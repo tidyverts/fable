@@ -33,7 +33,7 @@ test_that("ETS", {
   forecast_fc <- forecast_fit %>% forecast
   
   expect_equivalent(
-    summary(fable_fc)$mean,
+    fable_fc$mean,
     unclass(forecast_fc$mean)
   )
   
@@ -42,5 +42,5 @@ test_that("ETS", {
     simulate(USAccDeaths_tbl)
   fable_fit %>% 
     simulate(USAccDeaths_tbl %>% 
-               mutate(index = index + 72))
+               tsibble::mutate(index = index + 72))
 })
