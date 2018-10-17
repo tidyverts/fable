@@ -217,8 +217,8 @@ ARIMA <- function(data, formula, stepwise = TRUE, greedy = TRUE, approximation =
         list(
           par = tibble(term = names(coef(best)), estimate = coef(best)),
           est = mutate(est,
-                       .fitted = y - best$residuals,
-                       .resid = best$residuals
+                       .fitted = as.numeric(y - best$residuals),
+                       .resid = as.numeric(best$residuals)
           ),
           fit = tibble(method = model_sum(best), 
                        period = period,
@@ -258,6 +258,7 @@ forecast.ARIMA <- function(object, new_data = NULL, ...){
     .required_specials = c("pdq", "PDQ"),
     .vals = list(.data = new_data, origin = min(object$est[[expr_text(index(object$est))]]))
   )
+  
   vals <- parse_model_rhs(model_rhs(formula(object)), new_data, specials)
   xreg <- vals$specials[c("xreg", names(lm_specials))] %>% 
     compact() %>% 
