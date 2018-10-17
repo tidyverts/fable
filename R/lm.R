@@ -43,24 +43,47 @@ LM <- function(data, formula, ...){
   fit <- stats::lm(model_formula, data, na.action = stats::na.exclude, ...)
 
   fit$call <- cl
+  
+  fit <- structure(
+    list(
+      model = fit,
+      par = tibble(term = names(coef(fit)), estimate = coef(fit)),
+      est = data %>% 
+        transmute(!!model_lhs(model_formula),
+                  .fitted = fit$fitted.values,
+                  .resid = fit$residuals)
+    ),
+    class = "LM", origin = origin
+  )
+  
   mable(
     data,
-    model = enclass(fit, "LM", origin = origin),
+    model = fit,
     model_inputs
   )
+}
+
+#' @export
+fitted.LM <- function(object, ...){
+  select(object$est, ".fitted")
+}
+
+#' @export
+residuals.LM <- function(object, ...){
+  select(object$est, ".resid")
 }
 
 #' @importFrom stats predict
 #' @export
 forecast.LM <- function(object, new_data, ...){
   # Update bound values to special environment for re-evaluation
-  attr(object$terms, ".Environment") <- new_specials_env(
+  attr(object$model$terms, ".Environment") <- new_specials_env(
     !!!lm_specials,
     .env = caller_env(),
     .vals = list(.data = new_data, origin = object%@%"origin")
   )
   
-  fc <- predict(object, new_data, se.fit = TRUE)
+  fc <- predict(object$model, new_data, se.fit = TRUE)
   
   construct_fc(new_data, fc$fit, fc$se.fit, new_fcdist(qnorm, fc$fit, sd = fc$se.fit, abbr = "N"))
 }
@@ -68,16 +91,16 @@ forecast.LM <- function(object, new_data, ...){
 #' @importFrom fablelite simulate
 #' @export
 simulate.LM <- function(object, new_data, ...){
-  attr(object$terms, ".Environment") <- new_specials_env(
+  attr(object$model$terms, ".Environment") <- new_specials_env(
     !!!lm_specials,
     .env = caller_env(),
     .vals = list(.data = new_data, origin = object%@%"origin")
   )
   
-  pred <- predict(object, newdata = new_data)
+  pred <- predict(object$model, newdata = new_data)
   
   if(is.null(new_data[[".innov"]])){
-    vars <- stats::deviance(object)/stats::df.residual(object)
+    vars <- stats::deviance(object$model)/stats::df.residual(object$model)
     innov <- stats::rnorm(length(pred), sd = sqrt(vars))
   }
   
@@ -88,29 +111,41 @@ simulate.LM <- function(object, new_data, ...){
 interpolate.LM <- function(model, data, ...){
   resp <- response(model)
   missingVals <- is.na(data[[resp]])
-  data[[resp]][missingVals] <- predict(model, newdata = data)[missingVals]
+  data[[resp]][missingVals] <- predict(model$model, newdata = data)[missingVals]
   data
 }
 
 #' @export
 refit.LM <- function(object, new_data, reestimate = FALSE, ...){
-  attr(object$terms, ".Environment") <- new_specials_env(
+  attr(object$model$terms, ".Environment") <- new_specials_env(
     !!!lm_specials,
     .env = caller_env(),
     .vals = list(.data = new_data, origin = object%@%"origin")
   )
   
-  fit <- stats::lm(formula(object$terms), data = new_data)
-  fit$call <- object$call
+  fit <- stats::lm(formula(object$model$terms), data = new_data)
+  fit$call <- object$model$call
   if(!reestimate){
-    fit$coefficients <- object$coefficients
-    fit$fitted.values <- predict(object, new_data)
+    fit$coefficients <- object$model$coefficients
+    fit$fitted.values <- predict(object$model, new_data)
     fit$residuals <- fit$model[,fit$terms%@%"response"] - fit$fitted.values
   }
   
+  fit <- structure(
+    list(
+      model = fit,
+      par = tibble(term = names(coef(fit)), estimate = coef(fit)),
+      est = data %>% 
+        transmute(!!model_lhs(model_formula),
+                  .fitted = fit$fitted.values,
+                  .resid = fit$residuals)
+    ),
+    class = "LM", origin = object%@%"origin"
+  )
+  
   mable(
     new_data,
-    model = enclass(fit, "LM", origin = object%@%"origin"),
+    model = fit,
     object%@%"fable"
   )
 }

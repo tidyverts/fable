@@ -6,7 +6,7 @@ test_that("LM", {
   forecast_fit <- lm(USAccDeaths~1)
   
   expect_identical(
-    coef(fable_fit$model[[1]]),
+    coef(fable_fit$model[[1]]$model),
     coef(forecast_fit)
   )
   
@@ -15,7 +15,7 @@ test_that("LM", {
   forecast_fit <- forecast::tslm(USAccDeaths ~ trend + season)
   
   expect_equivalent(
-    unclass(fitted(fable_fit$model[[1]])),
+    unclass(fitted(fable_fit)[[".fitted"]]),
     unclass(fitted(forecast_fit))
   )
   
@@ -32,7 +32,7 @@ test_that("LM", {
   forecast_fit <- forecast::tslm(USAccDeaths ~ trend + forecast::fourier(USAccDeaths, K=5))
   
   expect_equivalent(
-    unclass(fitted(fable_fit$model[[1]])),
+    unclass(fitted(fable_fit)[[".fitted"]]),
     unclass(fitted(forecast_fit))
   )
   
