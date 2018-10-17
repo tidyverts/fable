@@ -23,6 +23,7 @@ ARIMA <- function(data, formula, stepwise = TRUE, greedy = TRUE, approximation =
   
   # Check data
   stopifnot(is_tsibble(data))
+  check_gaps(data)
   
   formula <- validate_model(formula, data)
   

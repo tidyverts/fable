@@ -47,6 +47,7 @@ ETS <- function(data, formula, restrict = TRUE, ...){
   
   # Check data
   stopifnot(is_tsibble(data))
+  check_gaps(data)
   
   formula <- validate_model(formula, data)
   
