@@ -42,20 +42,21 @@ test_that("ARIMA", {
 test_that("ARIMA with xregs", {
   tr <- UKLungDeaths %>% head(-12)
   ts <- UKLungDeaths %>% tail(12)
-  fable_fit <- tr %>% ARIMA(mdeaths ~ fdeaths + pdq(d=1) + PDQ(D=1))
-  forecast_fit <- forecast::auto.arima(head(mdeaths, -12), xreg = head(fdeaths, -12))
+  fable_fit <- tr %>% ARIMA(mdeaths ~ fdeaths + pdq(d=1) + PDQ(0,0,0))
+  stats_fit <- arima(head(mdeaths, -12), c(0,1,1),
+                     xreg = data.frame(fdeaths = head(fdeaths, -12)))
   
   expect_equivalent(
-    coef(fable_fit$model[[1]]),
-    coef(forecast_fit)
+    coef(fable_fit$model[[1]]$model),
+    coef(stats_fit)
   )
   
-  fable_fc <- fable_fit %>% forecast(12, xreg = ts[["fdeaths"]])
-  forecast_fc <- forecast_fit %>% forecast(xreg = tail(fdeaths, 12))
+  fable_fc <- fable_fit %>% forecast(ts)
+  stats_fc <- stats_fit %>% predict(12, newxreg = data.frame(fdeaths = tail(fdeaths, 12)))
   
   expect_equivalent(
-    summary(fable_fc)$mean,
-    unclass(forecast_fc$mean)
+    fable_fc$mean,
+    unclass(stats_fc$pred)
   )
   
   expect_identical(
