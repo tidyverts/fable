@@ -135,8 +135,8 @@ refit.LM <- function(object, new_data, reestimate = FALSE, ...){
     list(
       model = fit,
       par = tibble(term = names(coef(fit)), estimate = coef(fit)),
-      est = data %>% 
-        transmute(!!model_lhs(model_formula),
+      est = new_data %>% 
+        transmute(!!model_lhs(formula(object$model$terms)),
                   .fitted = fit$fitted.values,
                   .resid = fit$residuals)
     ),
