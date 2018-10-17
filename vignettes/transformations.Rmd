@@ -50,7 +50,7 @@ $$f(x) = \log\left(\dfrac{x-a}{b-x}\right)$$
 Inverting this transformation gives the appropriate back-transformation of:
 
 $$f^{-1}(x) = \dfrac{a + be^x}{1 + e^x} = \dfrac{(b-a)e^x}{1 + e^x} + a$$ 
-To use this transformation for modelling, we can pair the transformation with its back transformation using the `new_transformation` function, which accepts two functions: first the transformation, and second the back-transformation.
+To use this transformation for modelling, we can pair the transformation with its back transformation using the `new_transformation` function from fablelite, which accepts two functions: first the transformation, and second the back-transformation.
 ```{r scaled-logit}
 scaled_logit <- function(x, lower=0, upper=1){
   log((x-lower)/(upper-x))
@@ -58,7 +58,7 @@ scaled_logit <- function(x, lower=0, upper=1){
 inv_scaled_logit <- function(x, lower=0, upper=1){
   (upper-lower)*exp(x)/(1+exp(x)) + lower
 }
-my_scaled_logit <- new_transformation(scaled_logit, inv_scaled_logit)
+my_scaled_logit <- fablelite::new_transformation(scaled_logit, inv_scaled_logit)
 ```
 
 Once you define your transformation as above, it is ready to use anywhere you would normally use a transformation.
