@@ -11,27 +11,25 @@ ETS(data, formula, restrict = TRUE, ...)
 
 \item{formula}{Model specification.}
 
-\item{restrict}{If TRUE (default), the models with infinite variance will not be allowed.}
-
-\item{...}{Other undocumented arguments.}
+\item{restrict}{If TRUE (default), the models with infinite variance will not
+be allowed.}
 }
 \value{
-An object of class "\code{ets}".
+A mable.
 
-The generic accessor functions \code{fitted.values} and \code{residuals}
-extract useful features of the value returned by \code{ets} and associated
+The generic accessor functions \code{fitted} and \code{residuals}
+extract useful features of the value returned by \code{ETS} and associated
 functions.
 }
 \description{
-Returns ets model applied to \code{y}.
+Returns ETS model specified by the formula.
 }
 \details{
 Based on the classification of methods as described in Hyndman et al (2008).
 
-The methodology is fully automatic. The only required argument for ets is
-the time series. The model is chosen automatically if not specified. This
-methodology performed extremely well on the M3-competition data. (See
-Hyndman, et al, 2002, below.)
+The methodology is fully automatic. The model is chosen automatically if not
+specified. This methodology performed extremely well on the M3-competition
+data. (See Hyndman, et al, 2002, below.)
 }
 \examples{
 
@@ -52,6 +50,9 @@ Hyndman, R.J., Koehler, A.B., Ord, J.K., and Snyder, R.D. (2008)
 Springer-Verlag. \url{http://www.exponentialsmoothing.net}.
 }
 \seealso{
-\code{\link[stats]{HoltWinters}}, \code{\link{rwf}},
-\code{\link{Arima}}.
+\code{\link[stats]{HoltWinters}}, \code{\link{RW}},
+\code{\link{ARIMA}}.
+}
+\author{
+Rob J Hyndman & Mitchell O'Hara-Wild
 }

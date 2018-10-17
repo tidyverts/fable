@@ -1,7 +1,39 @@
-#' @inherit forecast::ets
+#' Exponential smoothing state space model
+#'
+#' Returns ETS model specified by the formula.
+#'
+#' Based on the classification of methods as described in Hyndman et al (2008).
+#'
+#' The methodology is fully automatic. The model is chosen automatically if not 
+#' specified. This methodology performed extremely well on the M3-competition
+#' data. (See Hyndman, et al, 2002, below.)
+#'
 #' @param data A data frame
 #' @param formula Model specification.
-#' @param restrict If TRUE (default), the models with infinite variance will not be allowed.
+#' @param restrict If TRUE (default), the models with infinite variance will not
+#' be allowed.
+#' 
+#' @return A mable.
+#'
+#' The generic accessor functions \code{fitted} and \code{residuals}
+#' extract useful features of the value returned by \code{ETS} and associated
+#' functions.
+#' 
+#' @author Rob J Hyndman & Mitchell O'Hara-Wild
+#' @seealso \code{\link[stats]{HoltWinters}}, \code{\link{RW}},
+#' \code{\link{ARIMA}}.
+#' @references Hyndman, R.J., Koehler, A.B., Snyder, R.D., and Grose, S. (2002)
+#' "A state space framework for automatic forecasting using exponential
+#' smoothing methods", \emph{International J. Forecasting}, \bold{18}(3),
+#' 439--454.
+#'
+#' Hyndman, R.J., Akram, Md., and Archibald, B. (2008) "The admissible
+#' parameter space for exponential smoothing models". \emph{Annals of
+#' Statistical Mathematics}, \bold{60}(2), 407--426.
+#'
+#' Hyndman, R.J., Koehler, A.B., Ord, J.K., and Snyder, R.D. (2008)
+#' \emph{Forecasting with exponential smoothing: the state space approach},
+#' Springer-Verlag. \url{http://www.exponentialsmoothing.net}.
 #' 
 #' @export
 #' 
