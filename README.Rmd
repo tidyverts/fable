@@ -38,7 +38,7 @@ library(fable)
 library(tsibbledata)
 UKLungDeaths %>%
   ETS(log(mdeaths)) %>%
-  forecast %>%
-  autoplot
+  forecast
 ```
 
+You can read more about the functionality of this package and the ideas behind it here: https://tidyverts.github.io/tidy-forecasting-principles/
