@@ -190,7 +190,7 @@ ETS <- function(data, formula, restrict = TRUE, ...){
                    logLik = best$loglik, AIC = best$aic, AICc = best$aicc, BIC = best$bic,
                    MSE = best$mse, AMSE = best$amse),
       states = tsibble(
-        !!!set_names(list(seq(idx[[1]], by = time_unit(idx), length.out = NROW(best$states))), expr_text(index(data))),
+        !!!set_names(list(seq(idx[[1]], by = time_unit(interval(data)), length.out = NROW(best$states))), expr_text(index(data))),
         !!!set_names(split(best$states, col(best$states)), colnames(best$states)),
         index = expr_text(index(data))
       ),
@@ -351,7 +351,7 @@ refit.ETS <- function(object, new_data, reestimate = FALSE, reinitialise = TRUE,
                    logLik = best$loglik, AIC = best$aic, AICc = best$aicc, BIC = best$bic,
                    MSE = best$mse, AMSE = best$amse),
       states = tsibble(
-        !!!set_names(list(seq(idx[[1]], by = time_unit(idx), length.out = NROW(best$states))), expr_text(index(new_data))),
+        !!!set_names(list(seq(idx[[1]], by = time_unit(interval(data)), length.out = NROW(best$states))), expr_text(index(new_data))),
         !!!set_names(split(best$states, col(best$states)), colnames(best$states)),
         index = expr_text(index(new_data))
       ),

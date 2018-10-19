@@ -27,11 +27,6 @@ rm_class <- function(x, class){
   `class<-`(x, setdiff(class(x), class))
 } 
 
-#' @importFrom utils tail
-fc_idx <- function(idx, h){
-  seq(tail(idx, 1), length.out = h + 1, by = time_unit(idx)) %>% tail(-1)
-}
-
 #' Is an object constant?
 #'
 #' Returns true if the object's numerical values do not vary.
