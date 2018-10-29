@@ -9,6 +9,11 @@
 #' @examples 
 #' 
 #' USAccDeaths %>% as_tsibble %>% LM(log(value) ~ trend() + season())
+#' 
+#' library(tsibbledata)
+#' olympic_running %>% 
+#'   LM(Time ~ trend()) %>% 
+#'   interpolate(olympic_running)
 LM <- function(data, formula, ...){
   # Capture user call
   cl <- call_standardise(match.call())
@@ -50,8 +55,8 @@ LM <- function(data, formula, ...){
       par = tibble(term = names(coef(fit)), estimate = coef(fit)),
       est = data %>% 
         transmute(!!model_lhs(model_formula),
-                  .fitted = fit$fitted.values,
-                  .resid = fit$residuals)
+                  .fitted = predict(fit, data),
+                  .resid = !!model_lhs(model_formula) - .fitted)
     ),
     class = "LM", origin = origin
   )
@@ -108,11 +113,11 @@ simulate.LM <- function(object, new_data, ...){
 }
 
 #' @export
-interpolate.LM <- function(model, data, ...){
+interpolate.LM <- function(model, new_data, ...){
   resp <- response(model)
-  missingVals <- is.na(data[[resp]])
-  data[[resp]][missingVals] <- predict(model$model, newdata = data)[missingVals]
-  data
+  missingVals <- is.na(new_data[[resp]])
+  new_data[[resp]][missingVals] <- fitted(model)$.fitted[missingVals]
+  new_data
 }
 
 #' @export
