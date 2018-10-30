@@ -88,6 +88,11 @@ glance.LM <- function(x, ...){
   glance(x$model)
 }
 
+#' @export
+tidy.LM <- function(x, ...){
+  x$par
+}
+
 #' @importFrom stats predict
 #' @export
 forecast.LM <- function(object, new_data, ...){

@@ -253,6 +253,11 @@ glance.ARIMA <- function(x, ...){
   x$fit
 }
 
+#' @export
+tidy.ARIMA <- function(x, ...){
+  x$par
+}
+
 #' @importFrom stats formula residuals
 #' @export
 forecast.ARIMA <- function(object, new_data = NULL, ...){
