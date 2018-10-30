@@ -19,4 +19,9 @@ Fit a linear model with time series components
 \examples{
 
 USAccDeaths \%>\% as_tsibble \%>\% LM(log(value) ~ trend() + season())
+
+library(tsibbledata)
+olympic_running \%>\% 
+  LM(Time ~ trend()) \%>\% 
+  interpolate(olympic_running)
 }
