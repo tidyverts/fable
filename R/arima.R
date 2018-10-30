@@ -248,6 +248,11 @@ augment.ARIMA <- function(x, ...){
   x$est
 }
 
+#' @export
+glance.ARIMA <- function(x, ...){
+  x$fit
+}
+
 #' @importFrom stats formula residuals
 #' @export
 forecast.ARIMA <- function(object, new_data = NULL, ...){

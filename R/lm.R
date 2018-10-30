@@ -83,6 +83,11 @@ augment.LM <- function(x, ...){
   x$est
 }
 
+#' @export
+glance.LM <- function(x, ...){
+  glance(x$model)
+}
+
 #' @importFrom stats predict
 #' @export
 forecast.LM <- function(object, new_data, ...){
