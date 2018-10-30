@@ -243,6 +243,11 @@ residuals.ARIMA <- function(object, ...){
   select(object$est, ".resid")
 }
 
+#' @export
+augment.ARIMA <- function(x, ...){
+  x$est
+}
+
 #' @importFrom stats formula residuals
 #' @export
 forecast.ARIMA <- function(object, new_data = NULL, ...){

@@ -78,6 +78,11 @@ residuals.LM <- function(object, ...){
   select(object$est, ".resid")
 }
 
+#' @export
+augment.LM <- function(x, ...){
+  x$est
+}
+
 #' @importFrom stats predict
 #' @export
 forecast.LM <- function(object, new_data, ...){

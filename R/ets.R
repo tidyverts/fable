@@ -379,6 +379,11 @@ residuals.ETS <- function(object, ...){
 }
 
 #' @export
+augment.ETS <- function(x, ...){
+  x$est
+}
+
+#' @export
 components.ETS <- function(object, ...){
   cmp <- match(c(expr_text(index(object$states)), "l", "b", "s1"), colnames(object$states))
   out <- object$states[,stats::na.exclude(cmp)]
