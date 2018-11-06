@@ -12,7 +12,7 @@ test_that("NAIVE", {
   fable_fc <- fable_fit %>% forecast(12)
   
   expect_equivalent(
-    summary(fable_fc)$mean,
+    summary(fable_fc)$value,
     unclass(forecast_fc$mean)
   )
   expect_identical(
@@ -33,7 +33,7 @@ test_that("RW w/ drift", {
   fable_fc <- fable_fit %>% forecast(12)
   
   expect_equivalent(
-    summary(fable_fc)$mean,
+    summary(fable_fc)$value,
     unclass(forecast_fc$mean)
   )
   
@@ -73,7 +73,7 @@ test_that("SNAIVE", {
   fable_fc <- fable_fit %>% forecast(12)
   
   expect_equivalent(
-    summary(fable_fc)$mean,
+    summary(fable_fc)$value,
     unclass(forecast_fc$mean)
   )
   

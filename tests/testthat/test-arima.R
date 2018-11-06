@@ -33,7 +33,7 @@ test_that("ARIMA", {
   stats_fc <- stats_fit %>% predict(24)
   
   expect_equivalent(
-    fable_fc$mean,
+    fable_fc$value,
     unclass(stats_fc$pred)
   )
 })
@@ -55,7 +55,7 @@ test_that("ARIMA with xregs", {
   stats_fc <- stats_fit %>% predict(12, newxreg = data.frame(fdeaths = tail(fdeaths, 12)))
   
   expect_equivalent(
-    fable_fc$mean,
+    fable_fc$mdeaths,
     unclass(stats_fc$pred)
   )
   

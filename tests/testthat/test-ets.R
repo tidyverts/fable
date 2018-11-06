@@ -33,7 +33,7 @@ test_that("ETS", {
   forecast_fc <- forecast_fit %>% forecast
   
   expect_equivalent(
-    fable_fc$mean,
+    fable_fc$value,
     unclass(forecast_fc$mean)
   )
   

@@ -105,7 +105,9 @@ forecast.LM <- function(object, new_data, ...){
   
   fc <- predict(object$model, new_data, se.fit = TRUE)
   
-  construct_fc(new_data, fc$fit, fc$se.fit, new_fcdist(qnorm, fc$fit, sd = fc$se.fit, abbr = "N"))
+  construct_fc(new_data, fc$fit, fc$se.fit, 
+               new_fcdist(qnorm, fc$fit, sd = fc$se.fit, abbr = "N"),
+               expr_text(response(object)))
 }
 
 #' @importFrom fablelite simulate

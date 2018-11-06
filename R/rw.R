@@ -187,7 +187,9 @@ forecast.RW <- function(object, new_data = NULL, ...){
     fc$se <- sqrt(fc$se^2 + (seq_along(fc$se) * sqrt(object$var.coef["drift", "drift"]))^2)
   }
   
-  construct_fc(new_data, fc$pred, fc$se, new_fcdist(qnorm, fc$pred, sd = fc$se, abbr = "N"))
+  construct_fc(new_data, fc$pred, fc$se,
+               new_fcdist(qnorm, fc$pred, sd = fc$se, abbr = "N"),
+               expr_text(response(object)))
 }
 
 #' @importFrom stats coef

@@ -244,14 +244,17 @@ forecast.ETS <- function(object, new_data = NULL, simulate = FALSE, bootstrap = 
       PACKAGE = "fable"
     )[[7]]
 
-    construct_fc(new_data, pred, map_dbl(sim, stats::sd), sample_quantile(sim))
+    construct_fc(new_data, pred, map_dbl(sim, stats::sd), sample_quantile(sim),
+                 expr_text(response(object)))
   }
   else{
     fc <- fc_class(h = NROW(new_data),
                    last.state = laststate,
                    trendtype, seasontype, damped, object$fit$period, object$fit$sigma^2, 
                    set_names(object$par$estimate, object$par$term))
-    construct_fc(new_data, fc$mu, sqrt(fc$var), new_fcdist(qnorm, fc$mu, sd = sqrt(fc$var), abbr = "N"))
+    construct_fc(new_data, fc$mu, sqrt(fc$var),
+                 new_fcdist(qnorm, fc$mu, sd = sqrt(fc$var), abbr = "N"),
+                 expr_text(response(object)))
   }
 }
 

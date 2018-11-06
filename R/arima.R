@@ -290,7 +290,9 @@ forecast.ARIMA <- function(object, new_data = NULL, ...){
   object$call$xreg <- NULL
   
   # Output forecasts
-  construct_fc(new_data, fc$pred, fc$se, new_fcdist(qnorm, fc$pred, sd = fc$se, abbr = "N"))
+  construct_fc(new_data, fc$pred, fc$se,
+               new_fcdist(qnorm, fc$pred, sd = fc$se, abbr = "N"),
+               expr_text(response(object)))
 }
 
 #' @export

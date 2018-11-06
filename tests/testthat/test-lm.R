@@ -23,7 +23,7 @@ test_that("LM", {
   fable_fc <- fable_fit %>% forecast(h = 12)
   forecast_fc <- forecast_fit %>% forecast(h = 12)
   expect_equivalent(
-    fable_fc$mean,
+    fable_fc$value,
     unclass(forecast_fc$mean)
   )
   
