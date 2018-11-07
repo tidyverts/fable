@@ -8,13 +8,13 @@
 #' 
 #' @examples 
 #' 
-#' USAccDeaths %>% as_tsibble %>% LM(log(value) ~ trend() + season())
+#' USAccDeaths %>% as_tsibble %>% TSLM(log(value) ~ trend() + season())
 #' 
 #' library(tsibbledata)
 #' olympic_running %>% 
-#'   LM(Time ~ trend()) %>% 
+#'   TSLM(Time ~ trend()) %>% 
 #'   interpolate(olympic_running)
-LM <- function(data, formula, ...){
+TSLM <- function(data, formula, ...){
   # Capture user call
   cl <- call_standardise(match.call())
   
@@ -58,7 +58,7 @@ LM <- function(data, formula, ...){
                   .fitted = predict(fit, data),
                   .resid = !!model_lhs(model_formula) - .fitted)
     ),
-    class = "LM", origin = origin
+    class = "TSLM", origin = origin
   )
   
   mable(
@@ -69,33 +69,33 @@ LM <- function(data, formula, ...){
 }
 
 #' @export
-fitted.LM <- function(object, ...){
+fitted.TSLM <- function(object, ...){
   select(object$est, ".fitted")
 }
 
 #' @export
-residuals.LM <- function(object, ...){
+residuals.TSLM <- function(object, ...){
   select(object$est, ".resid")
 }
 
 #' @export
-augment.LM <- function(x, ...){
+augment.TSLM <- function(x, ...){
   x$est
 }
 
 #' @export
-glance.LM <- function(x, ...){
+glance.TSLM <- function(x, ...){
   glance(x$model)
 }
 
 #' @export
-tidy.LM <- function(x, ...){
+tidy.TSLM <- function(x, ...){
   x$par
 }
 
 #' @importFrom stats predict
 #' @export
-forecast.LM <- function(object, new_data, ...){
+forecast.TSLM <- function(object, new_data, ...){
   # Update bound values to special environment for re-evaluation
   attr(object$model$terms, ".Environment") <- new_specials_env(
     !!!lm_specials,
@@ -112,7 +112,7 @@ forecast.LM <- function(object, new_data, ...){
 
 #' @importFrom fablelite simulate
 #' @export
-simulate.LM <- function(object, new_data, ...){
+simulate.TSLM <- function(object, new_data, ...){
   attr(object$model$terms, ".Environment") <- new_specials_env(
     !!!lm_specials,
     .env = caller_env(),
@@ -130,7 +130,7 @@ simulate.LM <- function(object, new_data, ...){
 }
 
 #' @export
-interpolate.LM <- function(model, new_data, ...){
+interpolate.TSLM <- function(model, new_data, ...){
   resp <- response(model)
   missingVals <- is.na(new_data[[resp]])
   new_data[[resp]][missingVals] <- fitted(model)$.fitted[missingVals]
@@ -138,7 +138,7 @@ interpolate.LM <- function(model, new_data, ...){
 }
 
 #' @export
-refit.LM <- function(object, new_data, reestimate = FALSE, ...){
+refit.TSLM <- function(object, new_data, reestimate = FALSE, ...){
   attr(object$model$terms, ".Environment") <- new_specials_env(
     !!!lm_specials,
     .env = caller_env(),
@@ -162,7 +162,7 @@ refit.LM <- function(object, new_data, reestimate = FALSE, ...){
                   .fitted = fit$fitted.values,
                   .resid = fit$residuals)
     ),
-    class = "LM", origin = object%@%"origin"
+    class = "TSLM", origin = object%@%"origin"
   )
   
   mable(
@@ -186,8 +186,8 @@ lm_specials <- list(
 )
 
 #' @export
-model_sum.LM <- function(x){
-  "LM"
+model_sum.TSLM <- function(x){
+  "TSLM"
 }
 
 as_model_matrix <- function(tbl){

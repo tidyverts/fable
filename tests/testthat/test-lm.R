@@ -2,7 +2,7 @@ context("test-lm.R")
 
 test_that("LM", {
   # NULL model selection
-  fable_fit <- USAccDeaths_tbl %>% LM(value)
+  fable_fit <- USAccDeaths_tbl %>% TSLM(value)
   forecast_fit <- lm(USAccDeaths~1)
   
   expect_identical(
@@ -11,7 +11,7 @@ test_that("LM", {
   )
   
   # Trend + Season
-  fable_fit <- USAccDeaths_tbl %>% LM(value ~ trend() + season())
+  fable_fit <- USAccDeaths_tbl %>% TSLM(value ~ trend() + season())
   forecast_fit <- forecast::tslm(USAccDeaths ~ trend + season)
   
   expect_equivalent(
@@ -28,7 +28,7 @@ test_that("LM", {
   )
   
   # Fourier
-  fable_fit <- USAccDeaths_tbl %>% LM(value ~ trend() + fourier(K=5))
+  fable_fit <- USAccDeaths_tbl %>% TSLM(value ~ trend() + fourier(K=5))
   forecast_fit <- forecast::tslm(USAccDeaths ~ trend + forecast::fourier(USAccDeaths, K=5))
   
   expect_equivalent(
@@ -39,6 +39,6 @@ test_that("LM", {
   # Model summary
   expect_identical(
     model_sum(fable_fit$model[[1]]),
-    "LM"
+    "TSLM"
   )
 })
