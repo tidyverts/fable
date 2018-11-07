@@ -308,6 +308,9 @@ model_sum.Arima <- function(x){
   if (m > 1 && sum(order[4:6]) > 0) {
     result <- paste(result, "(", order[4], ",", order[5], ",", order[6], ")[", m, "]", sep = "")
   }
+  if(length(x$coef) > sum(order[c(1,3,4,6)])){
+    result <- paste("LM w/", result, "errors")
+  }
   result
 }
 
