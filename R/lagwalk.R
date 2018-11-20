@@ -214,6 +214,47 @@ forecast.RW <- function(object, new_data = NULL, bootstrap = FALSE, times = 5000
                expr_text(response(object)))
 }
 
+
+#' @export
+simulate.RW <- function(object, new_data, bootstrap = FALSE, ...){
+  if(!is_regular(new_data)){
+    abort("Simulation new_data must be regularly spaced")
+  }
+  
+  lag <- object$fit$lag
+  fits <- select(rbind(object$est, object$future), !!index(object$est), !!response(object))
+  start_idx <- min(new_data[[expr_text(index(new_data))]])
+  start_pos <- match(start_idx, fits[[index(object$est)]])
+  
+  future <- fits[[expr_text(response(object))]][start_pos + seq_len(lag) - 1]
+  
+  if(any(is.na(future))){
+    abort("The first lag window for simulation must be within the model's training set.")
+  }
+  
+  if(is.null(new_data[[".innov"]])){
+    if(bootstrap){
+      new_data[[".innov"]] <- sample(stats::na.omit(object$est$.resid - mean(object$est$.resid, na.rm = TRUE)),
+                                     NROW(new_data), replace = TRUE)
+    }
+    else{
+      new_data[[".innov"]] <- stats::rnorm(NROW(new_data), sd = object$fit$sigma)
+    }
+  }
+
+  sim_rw <- function(e){
+    # Cumulate errors
+    lag_grp <- rep_len(seq_len(lag), length(e))
+    e <- split(e, lag_grp)
+    cumulative_e <- unsplit(lapply(e, cumsum), lag_grp)
+    future + cumulative_e 
+  }
+  
+  new_data %>% 
+    group_by_key() %>% 
+    transmute(".sim" := sim_rw(!!sym(".innov")))
+}
+
 #' @export
 fitted.RW <- function(object, ...){
   select(object$est, ".fitted")
