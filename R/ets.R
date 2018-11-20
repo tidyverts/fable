@@ -400,7 +400,7 @@ tidy.ETS <- function(x, ...){
 components.ETS <- function(object, ...){
   cmp <- match(c(expr_text(index(object$states)), "l", "b", "s1"), colnames(object$states))
   out <- object$states[,stats::na.exclude(cmp)]
-  `colnames<-`(out, c(expr_text(index(object$states)), "level", "slope", "season")[na.omit(cmp)])
+  `colnames<-`(out, c(expr_text(index(object$states)), "level", "slope", "season")[stats::na.omit(cmp)])
 }
 
 #' @export

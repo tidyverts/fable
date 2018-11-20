@@ -138,9 +138,9 @@ estimate_RW <- function(data, formula, specials, cl){
     method <- "RW"
   }
   
-  fitted <- c(rep(NA, lag), head(fits, -lag))
+  fitted <- c(rep(NA, lag), utils::head(fits, -lag))
   if(drift){
-    fit <- summary(lm(y-fitted ~ 1, na.action=na.exclude))
+    fit <- summary(stats::lm(y-fitted ~ 1, na.action=stats::na.exclude))
     b <- fit$coefficients[1,1]
     b.se <- fit$coefficients[1,2]
     sigma <- fit$sigma
@@ -149,7 +149,7 @@ estimate_RW <- function(data, formula, specials, cl){
   }
   else{
     b <- b.se <- 0
-    sigma <- sd(y-fitted, na.rm=TRUE)
+    sigma <- stats::sd(y-fitted, na.rm=TRUE)
   }
   res <- y - fitted
   
@@ -167,7 +167,7 @@ estimate_RW <- function(data, formula, specials, cl){
                    drift = drift,
                    sigma = sigma),
       future = mutate(new_data(data, lag), 
-                      !!expr_text(model_lhs(model_inputs$model)) := tail(fits, lag))
+                      !!expr_text(model_lhs(model_inputs$model)) := utils::tail(fits, lag))
     ),
     class = "RW"
   )

@@ -56,7 +56,7 @@ TSLM <- function(data, formula, ...){
       est = data %>% 
         transmute(!!model_lhs(model_formula),
                   .fitted = predict(fit, data),
-                  .resid = !!model_lhs(model_formula) - .fitted)
+                  .resid = !!model_lhs(model_formula) - !!sym(".fitted"))
     ),
     class = "TSLM", origin = origin
   )
@@ -133,7 +133,7 @@ simulate.TSLM <- function(object, new_data, ...){
 interpolate.TSLM <- function(model, new_data, ...){
   resp <- response(model)
   missingVals <- is.na(new_data[[resp]])
-  new_data[[resp]][missingVals] <- fitted(model)$.fitted[missingVals]
+  new_data[[resp]][missingVals] <- model$est$.fitted[missingVals]
   new_data
 }
 
