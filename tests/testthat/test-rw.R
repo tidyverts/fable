@@ -1,18 +1,17 @@
 context("test-rw.R")
-skip("naive family to be reimplemented")
 test_that("NAIVE", {
   fable_fit <- USAccDeaths_tbl %>% NAIVE(value)
   forecast_fc <- forecast::naive(USAccDeaths, h = 12)
   
   expect_equivalent(
-    fitted(fable_fit)[["fitted"]],
+    fitted(fable_fit)[[".fitted"]],
     unclass(fitted(forecast_fc))
   )
   
-  fable_fc <- fable_fit %>% forecast(12)
+  fable_fc <- fable_fit %>% forecast(h = 12)
   
   expect_equivalent(
-    summary(fable_fc)$value,
+    fable_fc$value,
     unclass(forecast_fc$mean)
   )
   expect_identical(
@@ -26,14 +25,14 @@ test_that("RW w/ drift", {
   forecast_fc <- forecast::rwf(USAccDeaths, drift = TRUE, h = 12)
   
   expect_equivalent(
-    fitted(fable_fit)[["fitted"]],
+    fitted(fable_fit)[[".fitted"]],
     unclass(fitted(forecast_fc))
   )
   
-  fable_fc <- fable_fit %>% forecast(12)
+  fable_fc <- fable_fit %>% forecast(h = 12)
   
   expect_equivalent(
-    summary(fable_fc)$value,
+    fable_fc$value,
     unclass(forecast_fc$mean)
   )
   
@@ -48,32 +47,19 @@ test_that("RW w/ drift", {
   )
 })
 
-# test_that("RW w/ xreg", {
-#   tr <- UKLungDeaths %>% head(-12)
-#   ts <- UKLungDeaths %>% tail(12)
-#   fable_fit <- tr %>% RW(mdeaths ~ fdeaths + drift())
-#   
-#   fable_fc <- fable_fit %>% forecast(newdata = ts)
-#   
-#   expect_identical(
-#     model_sum(fable_fit$model[[1]]),
-#     "lm w/ RW e"
-#   )
-# })
-
 test_that("SNAIVE", {
   fable_fit <- USAccDeaths_tbl %>% SNAIVE(value)
   forecast_fc <- forecast::snaive(USAccDeaths, h = 12)
   
   expect_equivalent(
-    fitted(fable_fit)[["fitted"]],
+    fitted(fable_fit)[[".fitted"]],
     unclass(fitted(forecast_fc))
   )
   
-  fable_fc <- fable_fit %>% forecast(12)
+  fable_fc <- fable_fit %>% forecast(h = 12)
   
   expect_equivalent(
-    summary(fable_fc)$value,
+    fable_fc$value,
     unclass(forecast_fc$mean)
   )
   
