@@ -128,6 +128,16 @@ estimate_RW <- function(data, formula, specials, cl){
     }
   }
   
+  if(lag == 1 & !drift){
+    method <- "NAIVE"
+  }
+  else if(lag != 1){
+    method <- "SNAIVE"
+  }
+  else{
+    method <- "RW"
+  }
+  
   fitted <- c(rep(NA, lag), head(fits, -lag))
   if(drift){
     fit <- summary(lm(y-fitted ~ 1, na.action=na.exclude))
@@ -135,12 +145,11 @@ estimate_RW <- function(data, formula, specials, cl){
     b.se <- fit$coefficients[1,2]
     sigma <- fit$sigma
     fitted <- fitted + b
-    method <- "Lag walk with drift"
+    method <- paste(method, "w/ drift")
   }
   else{
     b <- b.se <- 0
     sigma <- sd(y-fitted, na.rm=TRUE)
-    method <- "Lag walk"
   }
   res <- y - fitted
   
@@ -282,23 +291,5 @@ tidy.RW <- function(x, ...){
 #' @importFrom stats coef
 #' @export
 model_sum.RW <- function(x){
-  order <- x$arma[c(1, 6, 2, 3, 7, 4, 5)]
-  xreg <- length(coef(x) > 0)
-  result <- if(order[2] == 1 && !xreg){
-    "NAIVE"
-  }
-  else if(order[5] == 1){
-    "SNAIVE"
-  }
-  else{
-    "RW"
-  }
-  if(xreg){
-    if (length(coef(x)) == 1 && "drift" == names(x$coef)) {
-      result <- paste(result, "w/ drift")
-    } else {
-      result <- paste("lm w/", result, "e")
-    }
-  }
-  result
+  x$fit$method
 }
