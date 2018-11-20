@@ -192,14 +192,13 @@ forecast.RW <- function(object, new_data = NULL, bootstrap = FALSE, times = 5000
   
   # Intervals
   if (bootstrap){ # Compute prediction intervals using simulations
-    abort("Bootstrap intervals are not yet supported for lag walks.")
-    # sim <- map(seq_len(times), function(x){
-    #   simulate(object, new_data, times = times, bootstrap = TRUE)[[".sim"]]
-    # }) %>% 
-    #   transpose %>% 
-    #   map(as.numeric)
-    # se <- map_dbl(sim, stats::sd)
-    # dist <- sample_quantile(sim)
+    sim <- map(seq_len(times), function(x){
+      simulate(object, new_data, bootstrap = TRUE)[[".sim"]]
+    }) %>%
+      transpose %>%
+      map(as.numeric)
+    se <- map_dbl(sim, stats::sd)
+    dist <- sample_quantile(sim)
   }  else {
     mse <- mean(object$est$.resid^2, na.rm=TRUE)
     se  <- sqrt(mse*steps + (steps*object$par$std.error[1])^2)
