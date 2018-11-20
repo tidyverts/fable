@@ -61,6 +61,6 @@ test_that("ARIMA with xregs", {
   
   expect_identical(
     model_sum(fable_fit$model[[1]]),
-    "ARIMA(0,1,1)"
+    "LM w/ ARIMA(0,1,1) errors"
   )
 })
