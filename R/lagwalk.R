@@ -42,15 +42,10 @@ RW <- function(data, formula = ~ lag(1)){
   origin <- min(data[[expr_text(index(data))]])
   specials <- new_specials_env(
     lag = function(lag = 1){
-      lag <- get_frequencies(lag, .data)
-      if(lag == 1){
-        list(order = c(0L, 1L, 0L), seasonal = list(order = c(0L, 0L, 0L), period = 1))
-      } else {
-        list(order = c(0L, 0L, 0L), seasonal = list(order = c(0L, 1L, 0L), period = lag))
-      }
+      get_frequencies(lag, .data)
     },
     drift = function(drift = TRUE){
-      as.matrix(`colnames<-`(trend(.data, origin = origin), "drift"))
+      drift
     },
     xreg = no_xreg,
     .env = caller_env(),
@@ -98,12 +93,11 @@ SNAIVE <- function(data, formula = ~ lag("smallest")){
       lag <- get_frequencies(lag, .data)
       if(lag == 1){
         abort("Non-seasonal model specification provided, use RW() or provide a different lag specification.")
-      } else {
-        list(order = c(0L, 0L, 0L), seasonal = list(order = c(0L, 1L, 0L), period = lag))
       }
+      lag
     },
     drift = function(drift = TRUE){
-      as.matrix(`colnames<-`(trend(.data, origin = origin), "drift"))
+      drift
     },
     xreg = no_xreg,
     
@@ -122,33 +116,57 @@ estimate_RW <- function(data, formula, specials, cl){
   
   y <- eval_tidy(model_lhs(model_inputs$model), data = data)
   
-  args <- model_inputs$specials
-  xreg <- cbind(args$drift[[1]], args$xreg[[1]])
-  fit <- arima(
-    y,
-    order = args$lag[[1]]$order,
-    seasonal = args$lag[[1]]$seasonal,
-    xreg = xreg
+  drift <- model_inputs$specials$drift[[1]] %||% FALSE
+  lag <- model_inputs$specials$lag[[1]]
+  
+  y_na <- which(is.na(y))
+  y_na <- y_na[y_na>lag]
+  fits <- stats::lag(y, -lag)
+  for(i in y_na){
+    if(is.na(fits)[i]){
+      fits[i] <- fits[i-lag]
+    }
+  }
+  
+  fitted <- c(rep(NA, lag), head(fits, -lag))
+  if(drift){
+    fit <- summary(lm(y-fitted ~ 1, na.action=na.exclude))
+    b <- fit$coefficients[1,1]
+    b.se <- fit$coefficients[1,2]
+    sigma <- fit$sigma
+    fitted <- fitted + b
+    method <- "Lag walk with drift"
+  }
+  else{
+    b <- b.se <- 0
+    sigma <- sd(y-fitted, na.rm=TRUE)
+    method <- "Lag walk"
+  }
+  res <- y - fitted
+  
+  fit <- structure(
+    list(
+      par = tibble(term = "b", estimate = b, std.error = b.se),
+      est = data %>% 
+        transmute(
+          !!model_lhs(model_inputs$model),
+          .fitted = fitted,
+          .resid = res
+        ),
+      fit = tibble(method = method,
+                   lag = lag,
+                   drift = drift,
+                   sigma = sigma),
+      future = mutate(new_data(data, lag), 
+                      !!expr_text(model_lhs(model_inputs$model)) := tail(fits, lag))
+    ),
+    class = "RW"
   )
-  
-  missing <- is.na(fit$residuals)
-  firstnonmiss <- which(!missing)[1]
-  lastnonmiss <- tail(which(!missing),1)
-  n <- lastnonmiss - firstnonmiss + 1
-  nstar <- n - fit$arma[6] - fit$arma[7] * fit$arma[5]
-  
-  npar <- length(fit$coef) + 1
-  fit$sigma2 <- sum(fit$residuals ^ 2, na.rm = TRUE) / (nstar - npar + 1)
-  
-  fit$residuals[seq_len(args$lag[[1]]$seasonal$period)] <- NA
-  fit$fitted <- y - fit$residuals
-  
-  fit$call <- cl
   
   # Output model
   mable(
     data,
-    model = enclass(fit, "RW", origin = min(data[[expr_text(index(data))]])),
+    model = fit,
     model_inputs
   )
 }
@@ -158,38 +176,67 @@ estimate_RW <- function(data, formula, specials, cl){
 #' @importFrom stats qnorm time
 #' @importFrom utils tail
 #' @export
-forecast.RW <- function(object, new_data = NULL, ...){
+forecast.RW <- function(object, new_data = NULL, bootstrap = FALSE, times = 5000, ...){
   if(!is_regular(new_data)){
     abort("Forecasts must be regularly spaced")
   }
   
-  if("drift" %in% names(coef(object))){
-    drift <- as.matrix(`colnames<-`(trend(new_data, origin = object%@%"origin"), "drift"))
+  h <- NROW(new_data)
+  lag <- object$fit$lag
+  fullperiods <- (h-1)/lag+1
+  steps <- rep(1:fullperiods, rep(lag,fullperiods))[1:h]
+  
+  # Point forecasts
+  fc <- rep(object$future[[measured_vars(object$future)[1]]], fullperiods)[1:h] +
+    steps*object$par$estimate[1]
+  
+  # Intervals
+  if (bootstrap){ # Compute prediction intervals using simulations
+    abort("Bootstrap intervals are not yet supported for lag walks.")
+    # sim <- map(seq_len(times), function(x){
+    #   simulate(object, new_data, times = times, bootstrap = TRUE)[[".sim"]]
+    # }) %>% 
+    #   transpose %>% 
+    #   map(as.numeric)
+    # se <- map_dbl(sim, stats::sd)
+    # dist <- sample_quantile(sim)
+  }  else {
+    mse <- mean(object$est$.resid^2, na.rm=TRUE)
+    se  <- sqrt(mse*steps + (steps*object$par$std.error[1])^2)
+    # Adjust prediction intervals to allow for drift coefficient standard error
+    if (object$fit$drift) {
+      se <- sqrt(se^2 + (seq(h) * object$par$std.error[1])^2)
+    }
+    dist <- new_fcdist(qnorm, fc, sd = se, abbr = "N")
   }
-  else{
-    drift <- NULL
-  }
   
-  # xreg <- names(coef(object))[-match("drift", names(coef(object)))]
-  # if(length(xreg) > 0){
-  #   xreg <- as_model_matrix(eval_tidy(expr(tibble(!!!parse_exprs(xreg))), data = new_data))
-  # }
-  # else{
-  #   xreg <- NULL
-  # }
-  # xreg <- cbind(drift, xreg)
-  
-  object$call$xreg <- drift # Bypass predict.Arima NCOL check
-  fc <- predict(object, n.ahead = NROW(new_data), newxreg = drift, ...)
-  object$call$xreg <- NULL
-  
-  if("drift" %in% names(coef(object))){
-    fc$se <- sqrt(fc$se^2 + (seq_along(fc$se) * sqrt(object$var.coef["drift", "drift"]))^2)
-  }
-  
-  construct_fc(new_data, fc$pred, fc$se,
-               new_fcdist(qnorm, fc$pred, sd = fc$se, abbr = "N"),
+  construct_fc(new_data, fc, se, dist,
                expr_text(response(object)))
+}
+
+#' @export
+fitted.RW <- function(object, ...){
+  select(object$est, ".fitted")
+}
+
+#' @export
+residuals.RW <- function(object, ...){
+  select(object$est, ".resid")
+}
+
+#' @export
+augment.RW <- function(x, ...){
+  x$est
+}
+
+#' @export
+glance.RW <- function(x, ...){
+  x$fit
+}
+
+#' @export
+tidy.RW <- function(x, ...){
+  x$par
 }
 
 #' @importFrom stats coef
