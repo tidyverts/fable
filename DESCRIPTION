@@ -1,5 +1,5 @@
 Package: fable
-Version: 0.0.0.9000
+Version: 0.0.0.9100
 Title: Forecasting tidy time series
 Description: The R package *fable* provides methods and tools for displaying and analysing time series forecasts. Data, model and forecast objects are all stored in a tidy format.
 Authors@R: c(
