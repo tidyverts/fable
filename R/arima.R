@@ -291,7 +291,7 @@ forecast.ARIMA <- function(object, new_data = NULL, ...){
   
   # Output forecasts
   construct_fc(new_data, fc$pred, fc$se,
-               new_fcdist(qnorm, fc$pred, sd = fc$se, abbr = "N"),
+               dist_normal(fc$pred, fc$se),
                expr_text(response(object)))
 }
 

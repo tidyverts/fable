@@ -215,7 +215,7 @@ forecast.RW <- function(object, new_data = NULL, bootstrap = FALSE, times = 5000
     if (object$fit$drift) {
       se <- sqrt(se^2 + (seq(h) * object$par$std.error[1])^2)
     }
-    dist <- new_fcdist(qnorm, fc, sd = se, abbr = "N")
+    dist <- dist_normal(fc, se)
   }
   
   construct_fc(new_data, fc, se, dist,

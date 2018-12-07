@@ -253,7 +253,7 @@ forecast.ETS <- function(object, new_data = NULL, simulate = FALSE, bootstrap = 
                    trendtype, seasontype, damped, object$fit$period, object$fit$sigma^2, 
                    set_names(object$par$estimate, object$par$term))
     construct_fc(new_data, fc$mu, sqrt(fc$var),
-                 new_fcdist(qnorm, fc$mu, sd = sqrt(fc$var), abbr = "N"),
+                 dist_normal(fc$mu, sqrt(fc$var)),
                  expr_text(response(object)))
   }
 }
