@@ -244,7 +244,7 @@ forecast.ETS <- function(object, new_data = NULL, simulate = FALSE, bootstrap = 
       PACKAGE = "fable"
     )[[7]]
 
-    construct_fc(new_data, pred, map_dbl(sim, stats::sd), sample_quantile(sim),
+    construct_fc(new_data, pred, map_dbl(sim, stats::sd), dist_sim(sim),
                  expr_text(response(object)))
   }
   else{

@@ -207,7 +207,7 @@ forecast.RW <- function(object, new_data = NULL, bootstrap = FALSE, times = 5000
       transpose %>%
       map(as.numeric)
     se <- map_dbl(sim, stats::sd)
-    dist <- sample_quantile(sim)
+    dist <- dist_sim(sim)
   }  else {
     mse <- mean(object$est$.resid^2, na.rm=TRUE)
     se  <- sqrt(mse*steps + (steps*object$par$std.error[1])^2)
