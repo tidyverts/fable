@@ -64,6 +64,7 @@ train_ets <- function(.data, formula, specials, restrict = TRUE, ...){
           .resid = best$residuals
         ),
       fit = tibble(method = with(best_spec, paste("ETS(", errortype, ",", trendtype, ifelse(damped, "d", ""), ",", seasontype, ")", sep = "")),
+                   formula = list(formula),
                    period = ets_spec$season$period,
                    sigma = sqrt(sum(best$residuals^2, na.rm = TRUE) / (length(y) - length(best$par))),
                    logLik = best$loglik, AIC = best$aic, AICc = best$aicc, BIC = best$bic,
@@ -310,7 +311,7 @@ refit.ETS <- function(object, new_data, reestimate = FALSE, reinitialise = TRUE,
   
   y <- new_data %>% 
     transmute(
-      !!model_lhs(formula(object))
+      !!model_lhs(object[["fit"]][["formula"]][[1]])
     )
   idx <- y[[expr_text(index(y))]]
   
@@ -323,11 +324,12 @@ refit.ETS <- function(object, new_data, reestimate = FALSE, reinitialise = TRUE,
     gammarange = c(1e-04, 0.9999), phirange = c(0.8, 0.98),
     opt.crit = "lik", nmse = 3, bounds = "both")
   
-  fit <- structure(
+  structure(
     list(
       par = tibble(term = names(best$par), estimate = best$par),
       est = mutate(y, .fitted = best$fitted, .resid = best$residuals),
       fit = tibble(method = object$fit$method,
+                   formula = object$fit$formula,
                    period = object$fit$period,
                    sigma = sqrt(sum(best$residuals^2, na.rm = TRUE) / (NROW(y) - length(best$par))),
                    logLik = best$loglik, AIC = best$aic, AICc = best$aicc, BIC = best$bic,
@@ -340,13 +342,6 @@ refit.ETS <- function(object, new_data, reestimate = FALSE, reinitialise = TRUE,
       spec = object$spec
     ),
     class = "ETS"
-  )
-  
-  # Output model
-  mable(
-    new_data,
-    fit,
-    object%@%"fable"
   )
 }
 
