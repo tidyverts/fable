@@ -106,7 +106,7 @@ forecast.TSLM <- function(object, new_data, ...){
   fc <- predict(object$model, new_data, se.fit = TRUE)
   
   construct_fc(new_data, fc$fit, fc$se.fit, 
-               new_fcdist(qnorm, fc$fit, sd = fc$se.fit, abbr = "N"),
+               dist_normal(fc$fit, fc$se.fit),
                expr_text(response(object)))
 }
 
