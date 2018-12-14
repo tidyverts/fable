@@ -213,7 +213,7 @@ simulate.RW <- function(object, new_data, bootstrap = FALSE, ...){
     lag_grp <- rep_len(seq_len(lag), length(e))
     e <- split(e, lag_grp)
     cumulative_e <- unsplit(lapply(e, cumsum), lag_grp)
-    future + cumulative_e 
+    rep_len(future, length(e)) + cumulative_e
   }
   
   new_data %>% 
