@@ -1,3 +1,146 @@
+train_ets <- function(.data, formula, specials, restrict = TRUE, ...){
+  if(length(measured_vars(.data)) > 1){
+    abort("Only univariate responses are supported by ETS.")
+  }
+  
+  # Check data
+  check_gaps(.data)
+  
+  # Rebuild `ets` arguments
+  ets_spec <- specials[c("error", "trend", "season")]
+  ets_spec %>% map(function(.x){if(length(.x) > 1) {abort("Only one special of each type is allowed for ETS.")}})
+  ets_spec <- unlist(ets_spec, recursive = FALSE)
+  
+  # Get response
+  y <- .data[[measured_vars(.data)]]
+  idx <- .data[[expr_text(index(.data))]]
+  
+  # Build possible models
+  model_opts <- expand.grid(errortype = ets_spec$error$method,
+                            trendtype = ets_spec$trend$method,
+                            seasontype = ets_spec$season$method,
+                            stringsAsFactors = FALSE)
+  model_opts$damped <- nchar(model_opts$trendtype) > 1
+  model_opts$trendtype <- substr(model_opts$trendtype, 1, 1)
+  
+  # Remove bad models
+  if(min(y) < 0){
+    model_opts <- model_opts[model_opts$errortype != "M",]
+  }
+  if(restrict){
+    restricted <- with(model_opts, 
+                       (errortype == "A" & (trendtype == "M" | seasontype == "M")) | # AMM, AAM, AMA
+                         (errortype == "M" & trendtype == "M" & seasontype == "A"))    # MMA
+    model_opts <- model_opts[!restricted,]
+  }
+  
+  # Find best model
+  best <- NULL
+  compare_ets <- function(errortype, trendtype, seasontype, damped){
+    new <- possibly(quietly(etsmodel), NULL)(
+      y, m = ets_spec$season$period,
+      errortype = errortype, trendtype = trendtype, seasontype = seasontype, damped = damped,
+      alpha = ets_spec$trend$alpha, alpharange = ets_spec$trend$alpharange,
+      beta = ets_spec$trend$beta, betarange = ets_spec$trend$betarange,
+      phi = ets_spec$trend$phi, phirange = ets_spec$trend$phirange,
+      gamma = ets_spec$season$gamma, gammarange = ets_spec$season$gammarange,
+      opt.crit = "lik", nmse = 3, bounds = "both", ...)
+    
+    if((new$aicc%||%Inf) < (best$aicc%||%Inf)){
+      best <<- new
+    }
+    (new$aicc%||%Inf)
+  }
+  ic <- pmap_dbl(model_opts, compare_ets)
+  
+  best_spec <- model_opts[which.min(ic),]
+  
+  structure(
+    list(
+      par = tibble(term = names(best$par), estimate = best$par),
+      est = .data %>% 
+        mutate(
+          .fitted = best$fitted,
+          .resid = best$residuals
+        ),
+      fit = tibble(method = with(best_spec, paste("ETS(", errortype, ",", trendtype, ifelse(damped, "d", ""), ",", seasontype, ")", sep = "")),
+                   period = ets_spec$season$period,
+                   sigma = sqrt(sum(best$residuals^2, na.rm = TRUE) / (length(y) - length(best$par))),
+                   logLik = best$loglik, AIC = best$aic, AICc = best$aicc, BIC = best$bic,
+                   MSE = best$mse, AMSE = best$amse),
+      states = tsibble(
+        !!!set_names(list(seq(idx[[1]], by = time_unit(interval(.data)), length.out = NROW(best$states))), expr_text(index(.data))),
+        !!!set_names(split(best$states, col(best$states)), colnames(best$states)),
+        index = !!index(.data)
+      ),
+      spec = as_tibble(best_spec)
+    ),
+    class = "ETS"
+  )
+}
+
+specials_ets <- new_specials_env(
+  error = function(method = c("A", "M")){
+    if (!all(is.element(method, c("A", "M")))) {
+      stop("Invalid error type")
+    }
+    list(method = method)
+  },
+  trend = function(method = c("N", "A", "Ad"),
+                   alpha = NULL, alpharange = c(1e-04, 0.9999),
+                   beta = NULL, betarange = c(1e-04, 0.9999),
+                   phi = NULL, phirange = c(0.8, 0.98)){
+    if (!all(is.element(method, c("N", "A", "Ad", "M", "Md")))) {
+      stop("Invalid trend type")
+    }
+    if(alpharange[1]>alpharange[2]){
+      abort("Lower alpha limits must be less than upper limits")
+    }
+    if(betarange[1]>betarange[2]){
+      abort("Lower beta limits must be less than upper limits")
+    }
+    if(phirange[1]>phirange[2]){
+      abort("Lower phi limits must be less than upper limits")
+    }
+    list(method = method,
+         alpha = alpha, alpharange = alpharange,
+         beta = beta, betarange = betarange,
+         phi = phi, phirange = phirange)
+  },
+  season = function(method = c("N", "A", "M"),
+                    gamma = NULL, gammarange = c(1e-04, 0.9999),
+                    period = "smallest"){
+    if (!all(is.element(method, c("N", "A", "M")))) {
+      abort("Invalid season type")
+    }
+    if(gammarange[1]>gammarange[2]){
+      abort("Lower gamma limits must be less than upper limits")
+    }
+    
+    m <- get_frequencies(period, .data)
+    if (m < 1 || NROW(.data) <= m) {
+      method <- "N"
+    }
+    if (m == 1) {
+      if (!is.element("N", method)) {
+        abort("Nonseasonal data")
+      }
+      method <- "N"
+    }
+    if (m > 24) {
+      if (!is.element("N", method)) {
+        abort("Frequency too high for seasonal period")
+      } else if (length(method) > 1) {
+        warn("I can't handle data with frequency greater than 24. Seasonality will be ignored.")
+        method <- "N"
+      }
+    }
+    list(method = method, gamma = gamma, gammarange = gammarange, period = m)
+  },
+  xreg = no_xreg,
+  .required_specials = c("error", "trend", "season")
+)
+
 #' Exponential smoothing state space model
 #'
 #' Returns ETS model specified by the formula.
@@ -41,171 +184,10 @@
 #' @examples 
 #' 
 #' USAccDeaths %>% as_tsibble %>% ETS(log(value) ~ season("A"))
-ETS <- function(data, formula, restrict = TRUE, ...){
-  # Capture user call
-  cl <- call_standardise(match.call())
-  
-  # Check data
-  stopifnot(is_tsibble(data))
-  check_gaps(data)
-  
-  formula <- validate_model(formula, data)
-  
-  # Handle multivariate inputs
-  if(n_keys(data) > 1){
-    return(multi_univariate(data, cl))
-  }
-  
-  # Define specials
-  specials <- new_specials_env(
-    error = function(method = c("A", "M")){
-      if (!all(is.element(method, c("A", "M")))) {
-        stop("Invalid error type")
-      }
-      list(method = method)
-    },
-    trend = function(method = c("N", "A", "Ad"),
-                     alpha = NULL, alpharange = c(1e-04, 0.9999),
-                     beta = NULL, betarange = c(1e-04, 0.9999),
-                     phi = NULL, phirange = c(0.8, 0.98)){
-      if (!all(is.element(method, c("N", "A", "Ad", "M", "Md")))) {
-        stop("Invalid trend type")
-      }
-      if(alpharange[1]>alpharange[2]){
-        abort("Lower alpha limits must be less than upper limits")
-      }
-      if(betarange[1]>betarange[2]){
-        abort("Lower beta limits must be less than upper limits")
-      }
-      if(phirange[1]>phirange[2]){
-        abort("Lower phi limits must be less than upper limits")
-      }
-      list(method = method,
-           alpha = alpha, alpharange = alpharange,
-           beta = beta, betarange = betarange,
-           phi = phi, phirange = phirange)
-    },
-    season = function(method = c("N", "A", "M"),
-                      gamma = NULL, gammarange = c(1e-04, 0.9999),
-                      period = "smallest"){
-      if (!all(is.element(method, c("N", "A", "M")))) {
-        abort("Invalid season type")
-      }
-      if(gammarange[1]>gammarange[2]){
-        abort("Lower gamma limits must be less than upper limits")
-      }
-      
-      m <- get_frequencies(period, .data)
-      if (m < 1 || NROW(.data) <= m) {
-        method <- "N"
-      }
-      if (m == 1) {
-        if (!is.element("N", method)) {
-          abort("Nonseasonal data")
-        }
-        method <- "N"
-      }
-      if (m > 24) {
-        if (!is.element("N", method)) {
-          abort("Frequency too high for seasonal period")
-        } else if (length(method) > 1) {
-          warn("I can't handle data with frequency greater than 24. Seasonality will be ignored.")
-          method <- "N"
-        }
-      }
-      list(method = method, gamma = gamma, gammarange = gammarange, period = m)
-    },
-    xreg = no_xreg,
-    
-    .env = caller_env(),
-    .required_specials = c("error", "trend", "season"),
-    .vals = list(.data = data)
-  )
-  
-  # Parse model
-  model_inputs <- parse_model(data, formula, specials = specials)
-  
-  # Rebuild `ets` arguments
-  parsed_args <- model_inputs$specials
-  ets_spec <- parsed_args[c("error", "trend", "season")]
-  ets_spec %>% map(function(.x){if(length(.x) > 1) {abort("Only one special of each type is allowed for ETS.")}})
-  ets_spec <- unlist(ets_spec, recursive = FALSE)
-  
-  # Get response
-  y <- eval_tidy(model_lhs(model_inputs$model), data = data)
-  idx <- data[[expr_text(index(data))]]
-  
-  # Build possible models
-  model_opts <- expand.grid(errortype = ets_spec$error$method,
-                            trendtype = ets_spec$trend$method,
-                            seasontype = ets_spec$season$method,
-                            stringsAsFactors = FALSE)
-  model_opts$damped <- nchar(model_opts$trendtype) > 1
-  model_opts$trendtype <- substr(model_opts$trendtype, 1, 1)
-  
-  # Remove bad models
-  if(min(y) < 0){
-    model_opts <- model_opts[model_opts$errortype != "M",]
-  }
-  if(restrict){
-    restricted <- with(model_opts, 
-                       (errortype == "A" & (trendtype == "M" | seasontype == "M")) | # AMM, AAM, AMA
-                       (errortype == "M" & trendtype == "M" & seasontype == "A"))    # MMA
-    model_opts <- model_opts[!restricted,]
-  }
-  
-  # Find best model
-  best <- NULL
-  compare_ets <- function(errortype, trendtype, seasontype, damped){
-    new <- possibly(quietly(etsmodel), NULL)(
-      y, m = ets_spec$season$period,
-      errortype = errortype, trendtype = trendtype, seasontype = seasontype, damped = damped,
-      alpha = ets_spec$trend$alpha, alpharange = ets_spec$trend$alpharange,
-      beta = ets_spec$trend$beta, betarange = ets_spec$trend$betarange,
-      phi = ets_spec$trend$phi, phirange = ets_spec$trend$phirange,
-      gamma = ets_spec$season$gamma, gammarange = ets_spec$season$gammarange,
-      opt.crit = "lik", nmse = 3, bounds = "both", ...)
-    
-    if((new$aicc%||%Inf) < (best$aicc%||%Inf)){
-      best <<- new
-    }
-    (new$aicc%||%Inf)
-  }
-  ic <- pmap_dbl(model_opts, compare_ets)
-  
-  best_spec <- model_opts[which.min(ic),]
-
-  fit <- structure(
-    list(
-      par = tibble(term = names(best$par), estimate = best$par),
-      est = data %>% 
-        transmute(
-          !!model_lhs(model_inputs$model),
-          .fitted = best$fitted,
-          .resid = best$residuals
-        ),
-      fit = tibble(method = with(best_spec, paste("ETS(", errortype, ",", trendtype, ifelse(damped, "d", ""), ",", seasontype, ")", sep = "")),
-                   period = ets_spec$season$period,
-                   sigma = sqrt(sum(best$residuals^2, na.rm = TRUE) / (length(y) - length(best$par))),
-                   logLik = best$loglik, AIC = best$aic, AICc = best$aicc, BIC = best$bic,
-                   MSE = best$mse, AMSE = best$amse),
-      states = tsibble(
-        !!!set_names(list(seq(idx[[1]], by = time_unit(interval(data)), length.out = NROW(best$states))), expr_text(index(data))),
-        !!!set_names(split(best$states, col(best$states)), colnames(best$states)),
-        index = expr_text(index(data))
-      ),
-      spec = as_tibble(best_spec)
-    ),
-    class = "ETS"
-  )
-  
-  # Output model
-  mable(
-    data,
-    model = fit,
-    model_inputs
-  )
-}
+ETS <- fablelite::define_model(
+  train = train_ets,
+  specials = specials_ets
+)
 
 #' @export
 forecast.ETS <- function(object, new_data = NULL, simulate = FALSE, bootstrap = FALSE, times = 5000, ...){
@@ -244,17 +226,14 @@ forecast.ETS <- function(object, new_data = NULL, simulate = FALSE, bootstrap = 
       PACKAGE = "fable"
     )[[7]]
 
-    construct_fc(new_data, pred, map_dbl(sim, stats::sd), sample_quantile(sim),
-                 expr_text(response(object)))
+    construct_fc(pred, map_dbl(sim, stats::sd), dist_sim(sim))
   }
   else{
     fc <- fc_class(h = NROW(new_data),
                    last.state = laststate,
                    trendtype, seasontype, damped, object$fit$period, object$fit$sigma^2, 
                    set_names(object$par$estimate, object$par$term))
-    construct_fc(new_data, fc$mu, sqrt(fc$var),
-                 new_fcdist(qnorm, fc$mu, sd = sqrt(fc$var), abbr = "N"),
-                 expr_text(response(object)))
+    construct_fc(fc$mu, sqrt(fc$var), dist_normal(fc$mu, sqrt(fc$var)))
   }
 }
 
