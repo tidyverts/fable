@@ -1,3 +1,48 @@
+train_tslm <- function(.data, formula, specials, ...){
+  # Extract raw original data
+  est <- .data
+  .data <- specials[["xreg"]][[1]]
+  
+  origin <- .data[[expr_text(index(.data))]][[1]]
+  specials <- new_specials_env(
+    !!!specials_tslm,
+    .env = caller_env(),
+    .vals = list(.data = .data, origin = origin)
+  )
+  
+  if(is_formula(formula)){
+    model_formula <- set_env(formula, new_env = specials)
+  }
+  else{
+    model_formula <- new_formula(formula, 1, specials)
+  }
+  fit <- stats::lm(model_formula, .data, na.action = stats::na.exclude, ...)
+  fitted <- predict(fit, .data)
+  
+  structure(
+    list(
+      model = fit,
+      par = tibble(term = names(coef(fit)), estimate = coef(fit)),
+      est = est %>% 
+        mutate(.fitted = fitted,
+               .resid = !!residuals(fit))
+    ),
+    class = "TSLM", origin = origin
+  )
+}
+
+specials_tslm <- list(
+  trend = function(knots = NULL){
+    trend(.data, knots, origin) %>% as.matrix
+  },
+  season = function(period = "smallest"){
+    season(.data, period) %>% as_model_matrix
+  },
+  fourier = function(period = "smallest", K){
+    fourier(.data, period, K, origin) %>% as.matrix
+  }
+)
+
 #' Fit a linear model with time series components
 #' 
 #' @param data A data frame
@@ -8,65 +53,22 @@
 #' 
 #' @examples 
 #' 
-#' USAccDeaths %>% as_tsibble %>% TSLM(log(value) ~ trend() + season())
+#' USAccDeaths %>% as_tsibble %>% model(TSLM(log(value) ~ trend() + season()))
 #' 
 #' library(tsibbledata)
 #' olympic_running %>% 
-#'   TSLM(Time ~ trend()) %>% 
+#'   model(TSLM(Time ~ trend())) %>% 
 #'   interpolate(olympic_running)
-TSLM <- function(data, formula, ...){
-  # Capture user call
-  cl <- call_standardise(match.call())
-  
-  # Check data
-  stopifnot(is_tsibble(data))
-  
-  formula <- validate_model(formula, data)
-  
-  # Handle multivariate inputs
-  if(n_keys(data) > 1){
-    return(multi_univariate(data, cl))
-  }
-  
-  # Define specials
-  origin <- min(data[[expr_text(tsibble::index(data))]])
-  specials <- new_specials_env(
-    !!!lm_specials,
+TSLM <- fablelite::define_model(
+  train = train_tslm,
+  specials = new_specials_env(
+    xreg = function(...){
+      .data
+    },
     .env = caller_env(),
-    .vals = list(.data = data, origin = origin)
-  )
-  
-  # Parse model
-  model_inputs <- parse_model(data, formula)
-  
-  if(is_formula(model_inputs$model)){
-    model_formula <- set_env(model_inputs$model, new_env = specials)
-  }
-  else{
-    model_formula <- new_formula(model_inputs$model, 1, specials)
-  }
-  fit <- stats::lm(model_formula, data, na.action = stats::na.exclude, ...)
-
-  fit$call <- cl
-  
-  fit <- structure(
-    list(
-      model = fit,
-      par = tibble(term = names(coef(fit)), estimate = coef(fit)),
-      est = data %>% 
-        transmute(!!model_lhs(model_formula),
-                  .fitted = predict(fit, data),
-                  .resid = !!model_lhs(model_formula) - !!sym(".fitted"))
-    ),
-    class = "TSLM", origin = origin
-  )
-  
-  mable(
-    data,
-    model = fit,
-    model_inputs
-  )
-}
+    .required_specials = "xreg"
+  ) # Just keep the raw data for handling by lm()
+)
 
 #' @export
 fitted.TSLM <- function(object, ...){
@@ -98,23 +100,22 @@ tidy.TSLM <- function(x, ...){
 forecast.TSLM <- function(object, new_data, ...){
   # Update bound values to special environment for re-evaluation
   attr(object$model$terms, ".Environment") <- new_specials_env(
-    !!!lm_specials,
+    !!!specials_tslm,
     .env = caller_env(),
     .vals = list(.data = new_data, origin = object%@%"origin")
   )
   
   fc <- predict(object$model, new_data, se.fit = TRUE)
   
-  construct_fc(new_data, fc$fit, fc$se.fit, 
-               dist_normal(fc$fit, fc$se.fit),
-               expr_text(response(object)))
+  construct_fc(fc$fit, fc$se.fit, 
+               dist_normal(fc$fit, fc$se.fit))
 }
 
 #' @importFrom fablelite simulate
 #' @export
 simulate.TSLM <- function(object, new_data, ...){
   attr(object$model$terms, ".Environment") <- new_specials_env(
-    !!!lm_specials,
+    !!!specials_tslm,
     .env = caller_env(),
     .vals = list(.data = new_data, origin = object%@%"origin")
   )
@@ -131,7 +132,7 @@ simulate.TSLM <- function(object, new_data, ...){
 
 #' @export
 interpolate.TSLM <- function(model, new_data, ...){
-  resp <- response(model)
+  resp <- measured_vars(model$est)[1]
   missingVals <- is.na(new_data[[resp]])
   new_data[[resp]][missingVals] <- model$est$.fitted[missingVals]
   new_data
@@ -140,7 +141,7 @@ interpolate.TSLM <- function(model, new_data, ...){
 #' @export
 refit.TSLM <- function(object, new_data, reestimate = FALSE, ...){
   attr(object$model$terms, ".Environment") <- new_specials_env(
-    !!!lm_specials,
+    !!!specials_tslm,
     .env = caller_env(),
     .vals = list(.data = new_data, origin = object%@%"origin")
   )
@@ -153,7 +154,7 @@ refit.TSLM <- function(object, new_data, reestimate = FALSE, ...){
     fit$residuals <- fit$model[,fit$terms%@%"response"] - fit$fitted.values
   }
   
-  fit <- structure(
+  structure(
     list(
       model = fit,
       par = tibble(term = names(coef(fit)), estimate = coef(fit)),
@@ -164,26 +165,7 @@ refit.TSLM <- function(object, new_data, reestimate = FALSE, ...){
     ),
     class = "TSLM", origin = object%@%"origin"
   )
-  
-  mable(
-    new_data,
-    model = fit,
-    object%@%"fable"
-  )
 }
-
-#xreg is handled by lm
-lm_specials <- list(
-  trend = function(knots = NULL){
-    trend(.data, knots, origin) %>% as.matrix
-  },
-  season = function(period = "smallest"){
-    season(.data, period) %>% as_model_matrix
-  },
-  fourier = function(period = "smallest", K){
-    fourier(.data, period, K, origin) %>% as.matrix
-  }
-)
 
 #' @export
 model_sum.TSLM <- function(x){
