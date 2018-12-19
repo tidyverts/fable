@@ -23,6 +23,10 @@ train_ets <- function(.data, formula, specials, restrict = TRUE, ...){
   model_opts$damped <- nchar(model_opts$trendtype) > 1
   model_opts$trendtype <- substr(model_opts$trendtype, 1, 1)
   
+  if(any(is.na(y))){
+    abort("ETS does not support missing values.")
+  }
+  
   # Remove bad models
   if(min(y) < 0){
     model_opts <- model_opts[model_opts$errortype != "M",]
