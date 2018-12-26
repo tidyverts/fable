@@ -84,7 +84,7 @@ train_ets <- function(.data, formula, specials, restrict = TRUE, ...){
   )
 }
 
-specials_ets <- new_specials_env(
+specials_ets <- new_specials(
   error = function(method = c("A", "M")){
     if (!all(is.element(method, c("A", "M")))) {
       stop("Invalid error type")
@@ -122,8 +122,8 @@ specials_ets <- new_specials_env(
       abort("Lower gamma limits must be less than upper limits")
     }
     
-    m <- get_frequencies(period, .data)
-    if (m < 1 || NROW(.data) <= m) {
+    m <- get_frequencies(period, self$data)
+    if (m < 1 || NROW(self$data) <= m) {
       method <- "N"
     }
     if (m == 1) {
@@ -144,6 +144,15 @@ specials_ets <- new_specials_env(
   },
   xreg = no_xreg,
   .required_specials = c("error", "trend", "season")
+)
+
+ets_model <- R6::R6Class("ets",
+                         inherit = fablelite::model_definition,
+                         public = list(
+                           model = "ETS",
+                           train = train_ets,
+                           specials = specials_ets
+                         )
 )
 
 #' Exponential smoothing state space model
@@ -188,11 +197,8 @@ specials_ets <- new_specials_env(
 #' 
 #' @examples 
 #' 
-#' USAccDeaths %>% as_tsibble %>% ETS(log(value) ~ season("A"))
-ETS <- fablelite::define_model(
-  train = train_ets,
-  specials = specials_ets
-)
+#' USAccDeaths %>% as_tsibble %>% model(ETS(log(value) ~ season("A")))
+ETS <- ets_model$new
 
 #' @export
 forecast.ETS <- function(object, new_data = NULL, simulate = FALSE, bootstrap = FALSE, times = 5000, ...){
