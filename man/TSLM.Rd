@@ -4,24 +4,24 @@
 \alias{TSLM}
 \title{Fit a linear model with time series components}
 \usage{
-TSLM(data, formula, ...)
+TSLM(...)
 }
 \arguments{
+\item{...}{Additional arguments passed to lm}
+
 \item{data}{A data frame}
 
 \item{formula}{Model specification.}
-
-\item{...}{Additional arguments passed to lm}
 }
 \description{
 Fit a linear model with time series components
 }
 \examples{
 
-USAccDeaths \%>\% as_tsibble \%>\% TSLM(log(value) ~ trend() + season())
+USAccDeaths \%>\% as_tsibble \%>\% model(TSLM(log(value) ~ trend() + season()))
 
 library(tsibbledata)
 olympic_running \%>\% 
-  TSLM(Time ~ trend()) \%>\% 
+  model(TSLM(Time ~ trend())) \%>\% 
   interpolate(olympic_running)
 }

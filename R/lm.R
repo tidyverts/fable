@@ -1,20 +1,13 @@
 train_tslm <- function(.data, formula, specials, ...){
   # Extract raw original data
   est <- .data
-  .data <- specials[["xreg"]][[1]]
-  
-  origin <- .data[[expr_text(index(.data))]][[1]]
-  specials <- new_specials_env(
-    !!!specials_tslm,
-    .env = caller_env(),
-    .vals = list(.data = .data, origin = origin)
-  )
+  .data <- self$data
   
   if(is_formula(formula)){
-    model_formula <- set_env(formula, new_env = specials)
+    model_formula <- set_env(formula, new_env = self$specials)
   }
   else{
-    model_formula <- new_formula(formula, 1, specials)
+    model_formula <- new_formula(formula, 1, self$specials)
   }
   fit <- stats::lm(model_formula, .data, na.action = stats::na.exclude, ...)
   fitted <- predict(fit, .data)
@@ -31,16 +24,27 @@ train_tslm <- function(.data, formula, specials, ...){
   )
 }
 
-specials_tslm <- list(
+specials_tslm <- new_specials(
   trend = function(knots = NULL){
-    trend(.data, knots, origin) %>% as.matrix
+    origin <- self$data[[expr_text(index(self$data))]][[1]]
+    trend(self$data, knots, origin) %>% as.matrix
   },
   season = function(period = "smallest"){
-    season(.data, period) %>% as_model_matrix
+    season(self$data, period) %>% as_model_matrix
   },
   fourier = function(period = "smallest", K){
-    fourier(.data, period, K, origin) %>% as.matrix
+    origin <- self$data[[expr_text(index(self$data))]][[1]]
+    fourier(self$data, period, K, origin) %>% as.matrix
   }
+)
+
+tslm_model <- R6::R6Class("tslm",
+                          inherit = fablelite::model_definition,
+                          public = list(
+                            model = "TSLM",
+                            train = train_tslm,
+                            specials = specials_tslm
+                          )
 )
 
 #' Fit a linear model with time series components
@@ -59,16 +63,7 @@ specials_tslm <- list(
 #' olympic_running %>% 
 #'   model(TSLM(Time ~ trend())) %>% 
 #'   interpolate(olympic_running)
-TSLM <- fablelite::define_model(
-  train = train_tslm,
-  specials = new_specials_env(
-    xreg = function(...){
-      .data
-    },
-    .env = caller_env(),
-    .required_specials = "xreg"
-  ) # Just keep the raw data for handling by lm()
-)
+TSLM <- tslm_model$new
 
 #' @export
 fitted.TSLM <- function(object, ...){
@@ -98,12 +93,9 @@ tidy.TSLM <- function(x, ...){
 #' @importFrom stats predict
 #' @export
 forecast.TSLM <- function(object, new_data, ...){
-  # Update bound values to special environment for re-evaluation
-  attr(object$model$terms, ".Environment") <- new_specials_env(
-    !!!specials_tslm,
-    .env = caller_env(),
-    .vals = list(.data = new_data, origin = object%@%"origin")
-  )
+  # Update data for re-evaluation
+  mdl <- environment(attr(object$model$terms, ".Environment")$fourier)$self
+  mdl$data <- new_data
   
   fc <- predict(object$model, new_data, se.fit = TRUE)
   
@@ -114,11 +106,9 @@ forecast.TSLM <- function(object, new_data, ...){
 #' @importFrom fablelite simulate
 #' @export
 simulate.TSLM <- function(object, new_data, ...){
-  attr(object$model$terms, ".Environment") <- new_specials_env(
-    !!!specials_tslm,
-    .env = caller_env(),
-    .vals = list(.data = new_data, origin = object%@%"origin")
-  )
+  # Update data for re-evaluation
+  mdl <- environment(attr(object$model$terms, ".Environment")$fourier)$self
+  mdl$data <- new_data
   
   pred <- predict(object$model, newdata = new_data)
   
@@ -140,11 +130,9 @@ interpolate.TSLM <- function(model, new_data, ...){
 
 #' @export
 refit.TSLM <- function(object, new_data, reestimate = FALSE, ...){
-  attr(object$model$terms, ".Environment") <- new_specials_env(
-    !!!specials_tslm,
-    .env = caller_env(),
-    .vals = list(.data = new_data, origin = object%@%"origin")
-  )
+  # Update data for re-evaluation
+  mdl <- environment(attr(object$model$terms, ".Environment")$fourier)$self
+  mdl$data <- new_data
   
   fit <- stats::lm(formula(object$model$terms), data = new_data)
   fit$call <- object$model$call
