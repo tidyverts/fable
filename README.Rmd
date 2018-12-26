@@ -37,7 +37,7 @@ devtools::install_github("tidyverts/fable")
 library(fable)
 library(tsibbledata)
 UKLungDeaths %>%
-  ETS(log(mdeaths)) %>%
+  model(ets = ETS(log(mdeaths))) %>%
   forecast
 ```
 
