@@ -25,17 +25,7 @@ train_tslm <- function(.data, formula, specials, ...){
 }
 
 specials_tslm <- new_specials(
-  trend = function(knots = NULL){
-    origin <- self$data[[expr_text(index(self$data))]][[1]]
-    trend(self$data, knots, origin) %>% as.matrix
-  },
-  season = function(period = "smallest"){
-    season(self$data, period) %>% as_model_matrix
-  },
-  fourier = function(period = "smallest", K){
-    origin <- self$data[[expr_text(index(self$data))]][[1]]
-    fourier(self$data, period, K, origin) %>% as.matrix
-  }
+  common_xregs
 )
 
 tslm_model <- R6::R6Class("tslm",
