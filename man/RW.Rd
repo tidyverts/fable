@@ -6,11 +6,11 @@
 \alias{SNAIVE}
 \title{Random walk models}
 \usage{
-RW(data, formula = ~lag(1))
+RW(...)
 
-NAIVE(data, formula = ~lag(1))
+NAIVE(...)
 
-SNAIVE(data, formula = ~lag("smallest"))
+SNAIVE(...)
 }
 \arguments{
 \item{data}{A data frame}
@@ -37,12 +37,13 @@ where \eqn{Z_t}{Z[t]} is a normal iid error.
 }
 \examples{
 library(tsibbledata)
-elecdemand \%>\% RW(Demand ~ drift())
+elecdemand \%>\% 
+  model(rw = RW(Demand ~ drift()))
 
 
-Nile \%>\% as_tsibble \%>\% NAIVE
+Nile \%>\% as_tsibble \%>\% model(NAIVE())
 
 library(tsibbledata)
-elecdemand \%>\% SNAIVE(Temperature ~ lag("day"))
+elecdemand \%>\% model(snaive = SNAIVE(Temperature ~ lag("day")))
 
 }

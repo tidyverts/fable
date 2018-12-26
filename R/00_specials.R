@@ -12,7 +12,7 @@ model_xreg <- function(...){
     lhs = NULL,
     rhs = reduce(enexprs(...), function(.x, .y) call2("+", .x, .y))
   )
-  model.frame(model_formula, data = .data)
+  model.frame(model_formula, data = self$data)
 }
 
 no_xreg <- function(...){

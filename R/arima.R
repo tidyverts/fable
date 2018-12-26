@@ -1,60 +1,17 @@
-#' Estimate an ARIMA model
-#' @param data A tsibble
-#' @param formula Model specification.
-#' @param stepwise Should stepwise be used?
-#' @param greedy Should the stepwise search move to the next best option immediately?
-#' @param approximation Should CSS be used during model selection?
-#' @param ... Further arguments for arima
-#' 
-#' @export
-#' 
-#' @examples 
-#' # Manual ARIMA specification
-#' USAccDeaths %>% as_tsibble %>% ARIMA(log(value) ~ pdq(0,1,1) + PDQ(0,1,1))
-#' 
-#' # Automatic ARIMA specification
-#' tsibbledata::UKLungDeaths %>%
-#'   ARIMA(log(mdeaths) ~ pdq(0,1,1) + PDQ(0,0,1) + fdeaths + fourier(K=4))
-#' 
-#' @importFrom stats model.matrix
-ARIMA <- function(data, formula, stepwise = TRUE, greedy = TRUE, approximation = FALSE, ...){
-  # Capture user call
-  cl <- call_standardise(match.call())
-  
+train_arima <- function(.data, formula, specials, stepwise = TRUE, 
+                        greedy = TRUE, approximation = FALSE, ...){
   # Check data
-  stopifnot(is_tsibble(data))
-  check_gaps(data)
-  
-  formula <- validate_model(formula, data)
-  
-  # Handle multivariate inputs
-  if(n_keys(data) > 1){
-    return(multi_univariate(data, cl))
-  }
-  
-  # Define specials
-  specials <- new_specials_env(
-    !!!arima_specials,
-    !!!lm_specials,
-    xreg = model_xreg,
-    .env = caller_env(),
-    .required_specials = c("pdq", "PDQ"),
-    .vals = list(.data = data, origin = min(data[[expr_text(index(data))]]))
-  )
-  
-  # Parse model
-  model_inputs <- parse_model(data, formula, specials = specials)
+  check_gaps(.data)
   
   # Get response
-  est <- transmute(data, !!model_lhs(model_inputs$model))
-  y <- est[[measured_vars(est)]]
+  y <- .data[[measured_vars(.data)]]
   
   # Get args
   p <- d <- q <- P <- D <- Q <- period <- start.p <- start.d <- start.q <- start.P <- start.D <- start.Q <- NULL 
-  assignSpecials(model_inputs$specials[c("pdq", "PDQ")])
+  assignSpecials(specials[c("pdq", "PDQ")])
   
   # Check xreg
-  xreg <- model_inputs$specials[c("xreg", names(lm_specials))] %>% 
+  xreg <- specials[c("xreg", names(common_xregs))] %>% 
     compact() %>% 
     map(function(.x){invoke("cbind", .x)}) %>% 
     invoke("cbind", .)
@@ -207,31 +164,90 @@ ARIMA <- function(data, formula, stepwise = TRUE, greedy = TRUE, approximation =
     stop("Could not find an appropriate ARIMA model.")
   }
   
-  # Fix model call
-  best$call <- cl
-  
   # Output model
-  mable(
-    data,
-    model = 
-      structure(
-        list(
-          par = tibble(term = names(coef(best)), estimate = coef(best)),
-          est = mutate(est,
-                       .fitted = as.numeric(y - best$residuals),
-                       .resid = as.numeric(best$residuals)
-          ),
-          fit = tibble(method = model_sum(best), 
-                       period = period,
-                       sigma = sqrt(best$sigma2),
-                       logLik = best$loglik,
-                       AIC = best$aic),
-          model = best
-        ),
-        class = "ARIMA"),
-    model_inputs
+  structure(
+    list(
+      par = tibble(term = names(coef(best)), estimate = coef(best)),
+      est = mutate(.data,
+                   .fitted = as.numeric(y - best$residuals),
+                   .resid = as.numeric(best$residuals)
+      ),
+      fit = tibble(method = model_sum(best), 
+                   period = period,
+                   sigma = sqrt(best$sigma2),
+                   logLik = best$loglik,
+                   AIC = best$aic),
+      model = best,
+      definition = self
+    ),
+    class = "ARIMA"
   )
 }
+
+specials_arima <- new_specials(
+  pdq = function(p = 0:5, d = 0:2, q = 0:5,
+                 start.p = 2, start.d = 0, start.q = 2){
+    p <- p[p <= floor(NROW(self$data) / 3)]
+    q <- q[q <= floor(NROW(self$data) / 3)]
+    start.p <- p[which.min(abs(p - start.p))]
+    start.d <- d[which.min(abs(d - start.d))]
+    start.q <- q[which.min(abs(q - start.q))]
+    as.list(environment())
+  },
+  PDQ = function(P = 0:2, D = 0:1, Q = 0:2, period = "smallest",
+                 start.P = 1, start.D = 0, start.Q = 1){
+    period <- get_frequencies(period, self$data)
+    if(period == 1){
+      # Not seasonal
+      P <- 0
+      D <- 0
+      Q <- 0
+    }
+    else{
+      P <- P[P <= floor(NROW(self$data) / 3 / period)]
+      Q <- Q[Q <= floor(NROW(self$data) / 3 / period)]
+    }
+    start.P <- P[which.min(abs(P - start.P))]
+    start.D <- D[which.min(abs(D - start.D))]
+    start.Q <- Q[which.min(abs(Q - start.Q))]
+    as.list(environment())
+  },
+  common_xregs,
+  xreg = model_xreg,
+  .required_specials = c("pdq", "PDQ")
+)
+
+arima_model <- R6::R6Class("arima",
+                           inherit = fablelite::model_definition,
+                           public = list(
+                             model = "ARIMA",
+                             train = train_arima,
+                             specials = specials_arima
+                           )
+)
+
+#' Estimate an ARIMA model
+#' @param data A tsibble
+#' @param formula Model specification.
+#' @param stepwise Should stepwise be used?
+#' @param greedy Should the stepwise search move to the next best option immediately?
+#' @param approximation Should CSS be used during model selection?
+#' @param ... Further arguments for arima
+#' 
+#' @export
+#' 
+#' @examples 
+#' # Manual ARIMA specification
+#' USAccDeaths %>% as_tsibble %>% 
+#'   model(arima = ARIMA(log(value) ~ pdq(0,1,1) + PDQ(0,1,1)))
+#' 
+#' # Automatic ARIMA specification
+#' tsibbledata::UKLungDeaths %>%
+#'   model(arima = ARIMA(log(mdeaths) ~ pdq(0,1,1) + PDQ(0,0,1) + 
+#'                       fdeaths + fourier(K=4)))
+#' 
+#' @importFrom stats model.matrix
+ARIMA <- arima_model$new
 
 #' @export
 fitted.ARIMA <- function(object, ...){
@@ -265,34 +281,26 @@ forecast.ARIMA <- function(object, new_data = NULL, ...){
     abort("Forecasts must be regularly spaced")
   }
   
-  # Evaluate xreg from new_data
-  specials <- new_specials_env(
-    !!!arima_specials,
-    !!!lm_specials,
-    xreg = model_xreg,
-    .env = caller_env(),
-    .required_specials = c("pdq", "PDQ"),
-    .vals = list(.data = new_data, origin = min(object$est[[expr_text(index(object$est))]]))
-  )
-  
-  vals <- parse_model_rhs(model_rhs(formula(object)), new_data, specials)
-  xreg <- vals$specials[c("xreg", names(lm_specials))] %>% 
+  object$definition$data <- new_data
+  vals <- parse_model_rhs(object$definition)
+  xreg <- vals$specials[c("xreg", names(common_xregs))] %>% 
     compact() %>% 
     map(function(.x){invoke("cbind", .x)}) %>% 
     invoke("cbind", .)
   
   # Produce predictions
   # Remove unnecessary warning for xreg
-  if(!is.null(xreg)){
-    object$model$call$xreg <- expr(matrix(nrow = !!NROW(object$est), ncol = !!NCOL(xreg)))
+  object$model$call$xreg <- if(!is.null(xreg)){
+    expr(matrix(nrow = !!NROW(object$est), ncol = !!NCOL(xreg)))
+  }
+  else{
+    NULL
   }
   fc <- predict(object$model, n.ahead = NROW(new_data), newxreg = xreg, ...)
   object$call$xreg <- NULL
   
   # Output forecasts
-  construct_fc(new_data, fc$pred, fc$se,
-               dist_normal(fc$pred, fc$se),
-               expr_text(response(object)))
+  construct_fc(fc$pred, fc$se, dist_normal(fc$pred, fc$se))
 }
 
 #' @export
@@ -313,33 +321,3 @@ model_sum.Arima <- function(x){
   }
   result
 }
-
-arima_specials <- list(
-  pdq = function(p = 0:5, d = 0:2, q = 0:5,
-                 start.p = 2, start.d = 0, start.q = 2){
-    p <- p[p <= floor(NROW(.data) / 3)]
-    q <- q[q <= floor(NROW(.data) / 3)]
-    start.p <- p[which.min(abs(p - start.p))]
-    start.d <- d[which.min(abs(d - start.d))]
-    start.q <- q[which.min(abs(q - start.q))]
-    as.list(environment())
-  },
-  PDQ = function(P = 0:2, D = 0:1, Q = 0:2, period = "smallest",
-                 start.P = 1, start.D = 0, start.Q = 1){
-    period <- get_frequencies(period, .data)
-    if(period == 1){
-      # Not seasonal
-      P <- 0
-      D <- 0
-      Q <- 0
-    }
-    else{
-      P <- P[P <= floor(NROW(.data) / 3 / period)]
-      Q <- Q[Q <= floor(NROW(.data) / 3 / period)]
-    }
-    start.P <- P[which.min(abs(P - start.P))]
-    start.D <- D[which.min(abs(D - start.D))]
-    start.Q <- Q[which.min(abs(Q - start.Q))]
-    as.list(environment())
-  }
-)
