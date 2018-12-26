@@ -56,11 +56,58 @@ train_lagwalk <- function(.data, formula, specials, restrict = TRUE, ...){
                    drift = drift,
                    sigma = sigma),
       future = mutate(new_data(.data, lag), 
-                      !!expr_text(model_lhs(formula)) := utils::tail(fits, lag))
+                      !!expr_text(model_lhs(self)) := utils::tail(fits, lag))
     ),
     class = "RW"
   )
 }
+
+lagwalk_model <- R6::R6Class("lagwalk",
+                             inherit = fablelite::model_definition,
+                             public = list(
+                               model = "lagwalk",
+                               train = train_lagwalk,
+                               specials = NULL
+                             )
+)
+
+rw_model <- R6::R6Class("rw",
+                             inherit = lagwalk_model,
+                             public = list(
+                               model = "RW",
+                               specials = new_specials(
+                                 lag = function(lag = 1){
+                                   get_frequencies(lag, self$data)
+                                 },
+                                 drift = function(drift = TRUE){
+                                   drift
+                                 },
+                                 xreg = no_xreg,
+                                 .required_specials = c("lag")
+                               )
+                             )
+)
+
+snaive_model <- R6::R6Class("rw",
+                             inherit = lagwalk_model,
+                             public = list(
+                               model = "RW",
+                               specials = new_specials(
+                                 lag = function(lag = "smallest"){
+                                   lag <- get_frequencies(lag, self$data)
+                                   if(lag == 1){
+                                     abort("Non-seasonal model specification provided, use RW() or provide a different lag specification.")
+                                   }
+                                   lag
+                                 },
+                                 drift = function(drift = TRUE){
+                                   drift
+                                 },
+                                 xreg = no_xreg,
+                                 .required_specials = c("lag")
+                               )
+                             )
+)
 
 #' Random walk models
 #' 
@@ -86,29 +133,16 @@ train_lagwalk <- function(.data, formula, specials, restrict = TRUE, ...){
 #' @examples 
 #' library(tsibbledata)
 #' elecdemand %>% 
-#'   model(RW(Demand ~ drift()))
+#'   model(rw = RW(Demand ~ drift()))
 #' 
 #' @export
-RW <- fablelite::define_model(
-  train = train_lagwalk,
-  specials = new_specials_env(
-    lag = function(lag = 1){
-      get_frequencies(lag, .data)
-    },
-    drift = function(drift = TRUE){
-      drift
-    },
-    xreg = no_xreg,
-    .env = caller_env(),
-    .required_specials = c("lag")
-  )
-)
+RW <- rw_model$new
 
 #' @rdname RW
 #'
 #' @examples
 #' 
-#' Nile %>% as_tsibble %>% NAIVE
+#' Nile %>% as_tsibble %>% model(NAIVE())
 #'
 #' @export
 NAIVE <- RW
@@ -117,28 +151,10 @@ NAIVE <- RW
 #'
 #' @examples
 #' library(tsibbledata)
-#' elecdemand %>% SNAIVE(Temperature ~ lag("day"))
+#' elecdemand %>% model(snaive = SNAIVE(Temperature ~ lag("day")))
 #'
 #' @export
-SNAIVE <- fablelite::define_model(
-  train = train_lagwalk,
-  specials = new_specials_env(
-    lag = function(lag = "smallest"){
-      lag <- get_frequencies(lag, .data)
-      if(lag == 1){
-        abort("Non-seasonal model specification provided, use RW() or provide a different lag specification.")
-      }
-      lag
-    },
-    drift = function(drift = TRUE){
-      drift
-    },
-    xreg = no_xreg,
-    
-    .env = caller_env(),
-    .required_specials = c("lag")
-  )
-)
+SNAIVE <- snaive_model$new
 
 #' @importFrom fablelite forecast
 #' @importFrom stats qnorm time
