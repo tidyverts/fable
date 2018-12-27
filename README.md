@@ -18,7 +18,7 @@ model and forecast objects are all stored in a tidy format.
 ## Installation
 
 You can install the **development** version from
-[Github](https://github.com/tidyverts/fable)
+[GitHub](https://github.com/tidyverts/fable)
 
 ``` r
 # install.packages("devtools")

@@ -24,7 +24,7 @@ The R package *fable* provides methods and tools for displaying and analysing un
 ## Installation
 
 You can install the **development** version from
-[Github](https://github.com/tidyverts/fable)
+[GitHub](https://github.com/tidyverts/fable)
 
 ```{r gh-installation, eval = FALSE}
 # install.packages("devtools")
