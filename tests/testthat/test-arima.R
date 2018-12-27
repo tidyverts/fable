@@ -2,25 +2,25 @@ context("test-arima.R")
 
 test_that("ARIMA", {
   # Automatic model selection
-  fable_fit <- USAccDeaths_tbl %>% ARIMA(value ~ pdq(d = 1) + PDQ(D = 1))
+  fable_fit <- USAccDeaths_tbl %>% model(arima = ARIMA(value ~ pdq(d = 1) + PDQ(D = 1)))
   stats_fit <- arima(USAccDeaths, c(0,1,1), list(order = c(0,1,1), 12))
   
   expect_identical(
-    coef(fable_fit$model[[1]]$model),
+    coef(fable_fit$arima[[1]]$fit$model),
     coef(stats_fit)
   )
   
   # Lack of support for automatic differencing
   expect_error(
-    USAccDeaths_tbl %>% ARIMA(value ~ pdq(q=1)),
+    USAccDeaths_tbl %>% model(ARIMA(value ~ pdq(q=1))),
     "Automatic selection of differencing is currently not implemented"
   )
   
   # Manual model selection
-  fable_fit <- USAccDeaths_tbl %>% ARIMA(value ~ pdq(0,1,1) + PDQ(0,1,1))
-  
+  fable_fit <- USAccDeaths_tbl %>% model(model = ARIMA(value ~ pdq(0,1,1) + PDQ(0,1,1)))
+
   expect_identical(
-    coef(fable_fit$model[[1]]$model),
+    coef(fable_fit$model[[1]]$fit$model),
     coef(stats_fit)
   )
   
@@ -42,12 +42,12 @@ test_that("ARIMA", {
 test_that("ARIMA with xregs", {
   tr <- UKLungDeaths %>% head(-12)
   ts <- UKLungDeaths %>% tail(12)
-  fable_fit <- tr %>% ARIMA(mdeaths ~ fdeaths + pdq(d=1) + PDQ(0,0,0))
+  fable_fit <- tr %>% model(model = ARIMA(mdeaths ~ fdeaths + pdq(d=1) + PDQ(0,0,0)))
   stats_fit <- arima(head(mdeaths, -12), c(0,1,1),
                      xreg = data.frame(fdeaths = head(fdeaths, -12)))
   
   expect_equivalent(
-    coef(fable_fit$model[[1]]$model),
+    coef(fable_fit$model[[1]]$fit$model),
     coef(stats_fit)
   )
   

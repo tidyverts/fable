@@ -1,6 +1,6 @@
 context("test-rw.R")
 test_that("NAIVE", {
-  fable_fit <- USAccDeaths_tbl %>% NAIVE(value)
+  fable_fit <- USAccDeaths_tbl %>% model(naive = NAIVE(value))
   forecast_fc <- forecast::naive(USAccDeaths, h = 12)
   
   expect_equivalent(
@@ -15,13 +15,13 @@ test_that("NAIVE", {
     unclass(forecast_fc$mean)
   )
   expect_identical(
-    model_sum(fable_fit$model[[1]]),
+    model_sum(fable_fit$naive[[1]]),
     "NAIVE"
   )
 })
 
 test_that("RW w/ drift", {
-  fable_fit <- USAccDeaths_tbl %>% RW(value ~ drift())
+  fable_fit <- USAccDeaths_tbl %>% model(rw = RW(value ~ drift()))
   forecast_fc <- forecast::rwf(USAccDeaths, drift = TRUE, h = 12)
   
   expect_equivalent(
@@ -42,13 +42,13 @@ test_that("RW w/ drift", {
   )
   
   expect_identical(
-    model_sum(fable_fit$model[[1]]),
+    model_sum(fable_fit$rw[[1]]),
     "RW w/ drift"
   )
 })
 
 test_that("SNAIVE", {
-  fable_fit <- USAccDeaths_tbl %>% SNAIVE(value)
+  fable_fit <- USAccDeaths_tbl %>% model(snaive = SNAIVE(value))
   forecast_fc <- forecast::snaive(USAccDeaths, h = 12)
   
   expect_equivalent(
@@ -64,7 +64,7 @@ test_that("SNAIVE", {
   )
   
   expect_identical(
-    model_sum(fable_fit$model[[1]]),
+    model_sum(fable_fit$snaive[[1]]),
     "SNAIVE"
   )
 })
