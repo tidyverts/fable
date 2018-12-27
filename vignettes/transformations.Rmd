@@ -25,7 +25,7 @@ The transformation used for the model is defined on the left of the tilde (`~`) 
 library(tsibble)
 tourism %>%
   filter(Region == "Melbourne") %>% 
-  ETS(sqrt(Trips))
+  model(ETS(sqrt(Trips)))
 ```
 
 ## Combining transformations
@@ -36,7 +36,7 @@ Simple combined transformations and backtransformations can be constructed autom
 library(tsibble)
 tourism %>%
   filter(Region == "Melbourne") %>% 
-  ETS(log(Trips + 1))
+  model(ETS(log(Trips + 1)))
 ```
 
 
@@ -64,7 +64,8 @@ my_scaled_logit <- fablelite::new_transformation(scaled_logit, inv_scaled_logit)
 Once you define your transformation as above, it is ready to use anywhere you would normally use a transformation.
 ```{r custom-transformation}
 tsibbledata::UKLungDeaths %>%
-  ETS(my_scaled_logit(mdeaths, 750, 3000) ~ error("A") + trend("N") + season("A")) %>%
+  model(ETS(my_scaled_logit(mdeaths, 750, 3000) ~
+              error("A") + trend("N") + season("A"))) %>%
   summary
 ```
 
