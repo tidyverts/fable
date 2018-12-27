@@ -4,14 +4,12 @@
 \alias{TSLM}
 \title{Fit a linear model with time series components}
 \usage{
-TSLM(...)
+TSLM(formula, ...)
 }
 \arguments{
-\item{...}{Additional arguments passed to lm}
-
-\item{data}{A data frame}
-
 \item{formula}{Model specification.}
+
+\item{...}{Additional arguments passed to lm}
 }
 \description{
 Fit a linear model with time series components

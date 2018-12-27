@@ -4,13 +4,10 @@
 \alias{ARIMA}
 \title{Estimate an ARIMA model}
 \usage{
-ARIMA(...)
+ARIMA(formula, stepwise = TRUE, greedy = TRUE, approximation = FALSE,
+  ...)
 }
 \arguments{
-\item{...}{Further arguments for arima}
-
-\item{data}{A tsibble}
-
 \item{formula}{Model specification.}
 
 \item{stepwise}{Should stepwise be used?}
@@ -18,16 +15,20 @@ ARIMA(...)
 \item{greedy}{Should the stepwise search move to the next best option immediately?}
 
 \item{approximation}{Should CSS be used during model selection?}
+
+\item{...}{Further arguments for arima}
 }
 \description{
 Estimate an ARIMA model
 }
 \examples{
 # Manual ARIMA specification
-USAccDeaths \%>\% as_tsibble \%>\% ARIMA(log(value) ~ pdq(0,1,1) + PDQ(0,1,1))
+USAccDeaths \%>\% as_tsibble \%>\% 
+  model(arima = ARIMA(log(value) ~ pdq(0,1,1) + PDQ(0,1,1)))
 
 # Automatic ARIMA specification
 tsibbledata::UKLungDeaths \%>\%
-  ARIMA(log(mdeaths) ~ pdq(0,1,1) + PDQ(0,0,1) + fdeaths + fourier(K=4))
+  model(arima = ARIMA(log(mdeaths) ~ pdq(0,1,1) + PDQ(0,0,1) + 
+                      fdeaths + fourier(K=4)))
 
 }

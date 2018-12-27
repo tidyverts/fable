@@ -6,15 +6,13 @@
 \alias{SNAIVE}
 \title{Random walk models}
 \usage{
-RW(...)
+RW(formula)
 
-NAIVE(...)
+NAIVE(formula)
 
-SNAIVE(...)
+SNAIVE(formula)
 }
 \arguments{
-\item{data}{A data frame}
-
 \item{formula}{Model specification.}
 }
 \description{

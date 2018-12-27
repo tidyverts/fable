@@ -40,7 +40,6 @@ tslm_model <- R6::R6Class("tslm",
 
 #' Fit a linear model with time series components
 #' 
-#' @param data A data frame
 #' @param formula Model specification.
 #' @param ... Additional arguments passed to lm
 #' 
@@ -54,7 +53,9 @@ tslm_model <- R6::R6Class("tslm",
 #' olympic_running %>% 
 #'   model(TSLM(Time ~ trend())) %>% 
 #'   interpolate(olympic_running)
-TSLM <- tslm_model$new
+TSLM <- function(formula, ...){
+  tslm_model$new(!!enquo(formula), ...)
+}
 
 #' @export
 fitted.TSLM <- function(object, ...){

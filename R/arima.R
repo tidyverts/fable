@@ -228,7 +228,7 @@ arima_model <- R6::R6Class("arima",
 )
 
 #' Estimate an ARIMA model
-#' @param data A tsibble
+#' 
 #' @param formula Model specification.
 #' @param stepwise Should stepwise be used?
 #' @param greedy Should the stepwise search move to the next best option immediately?
@@ -248,7 +248,11 @@ arima_model <- R6::R6Class("arima",
 #'                       fdeaths + fourier(K=4)))
 #' 
 #' @importFrom stats model.matrix
-ARIMA <- arima_model$new
+ARIMA <- function(formula, stepwise = TRUE, greedy = TRUE, 
+                  approximation = FALSE, ...){
+  arima_model$new(!!enquo(formula), stepwise = stepwise, greedy = greedy, 
+                  approximation = approximation, ...)
+}
 
 #' @export
 fitted.ARIMA <- function(object, ...){

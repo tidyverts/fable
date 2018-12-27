@@ -4,17 +4,15 @@
 \alias{ETS}
 \title{Exponential smoothing state space model}
 \usage{
-ETS(...)
+ETS(formula, restrict = TRUE, ...)
 }
 \arguments{
-\item{...}{Other arguments}
-
-\item{data}{A data frame}
-
 \item{formula}{Model specification.}
 
 \item{restrict}{If TRUE (default), the models with infinite variance will not
 be allowed.}
+
+\item{...}{Other arguments}
 }
 \value{
 A \code{mable} containing fitted ETS models.

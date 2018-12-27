@@ -165,7 +165,6 @@ ets_model <- R6::R6Class("ets",
 #' specified. This methodology performed extremely well on the M3-competition
 #' data. (See Hyndman, et al, 2002, below.)
 #'
-#' @param data A data frame
 #' @param formula Model specification.
 #' @param restrict If TRUE (default), the models with infinite variance will not
 #' be allowed.
@@ -198,7 +197,9 @@ ets_model <- R6::R6Class("ets",
 #' @examples 
 #' 
 #' USAccDeaths %>% as_tsibble %>% model(ETS(log(value) ~ season("A")))
-ETS <- ets_model$new
+ETS <- function(formula, restrict = TRUE, ...){
+  ets_model$new(!!enquo(formula), restrict = restrict, ...)
+}
 
 #' @export
 forecast.ETS <- function(object, new_data = NULL, simulate = FALSE, bootstrap = FALSE, times = 5000, ...){

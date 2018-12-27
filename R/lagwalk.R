@@ -1,4 +1,4 @@
-train_lagwalk <- function(.data, formula, specials, restrict = TRUE, ...){
+train_lagwalk <- function(.data, formula, specials, ...){
   if(length(measured_vars(.data)) > 1){
     abort("Only univariate responses are supported by lagwalks.")
   }
@@ -127,7 +127,6 @@ snaive_model <- R6::R6Class("rw",
 #' The seasonal naive model is \deqn{Y_t= Y_{t-m} + Z_t}{Y[t]=Y[t-m] + Z[t]}
 #' where \eqn{Z_t}{Z[t]} is a normal iid error.
 #' 
-#' @param data A data frame
 #' @param formula Model specification.
 #' 
 #' @examples 
@@ -136,7 +135,9 @@ snaive_model <- R6::R6Class("rw",
 #'   model(rw = RW(Demand ~ drift()))
 #' 
 #' @export
-RW <- rw_model$new
+RW <- function(formula){
+  rw_model$new(!!enquo(formula))
+}
 
 #' @rdname RW
 #'
@@ -154,7 +155,9 @@ NAIVE <- RW
 #' elecdemand %>% model(snaive = SNAIVE(Temperature ~ lag("day")))
 #'
 #' @export
-SNAIVE <- snaive_model$new
+SNAIVE <- function(formula){
+  snaive_model$new(!!enquo(formula))
+}
 
 #' @importFrom fablelite forecast
 #' @importFrom stats qnorm time
