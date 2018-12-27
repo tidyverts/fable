@@ -1,3 +1,5 @@
+globalVariables("self")
+
 tbl_xreg <- function(...){
   tibble(...)
 }

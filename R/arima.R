@@ -50,7 +50,7 @@ train_arima <- function(.data, formula, specials, stepwise = TRUE,
   # Find best model
   best <- NULL
   compare_arima <- function(p, d, q, P, D, Q){
-    new <- possibly(quietly(arima), NULL)(
+    new <- possibly(quietly(stats::arima), NULL)(
       y, order = c(p, d, q),
       seasonal = list(order = c(P, D, Q), period = period),
       xreg = xreg, method = method, ...)
