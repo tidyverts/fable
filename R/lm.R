@@ -33,7 +33,8 @@ tslm_model <- R6::R6Class("tslm",
                           public = list(
                             model = "TSLM",
                             train = train_tslm,
-                            specials = specials_tslm
+                            specials = specials_tslm,
+                            origin = NULL
                           )
 )
 

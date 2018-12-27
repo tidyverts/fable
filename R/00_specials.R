@@ -115,15 +115,25 @@ fourier.numeric <- function(x, period, K, origin = NULL){
 }
 
 common_xregs <- list(
-  trend = function(knots = NULL){
-    origin <- self$data[[expr_text(index(self$data))]][[1]]
+  trend = function(knots = NULL, origin = NULL){
+    if(is.null(origin)){
+      if(is.null(self$origin)){
+        self$origin <- self$data[[expr_text(index(self$data))]][[1]]
+      }
+      origin <- self$origin
+    }
     trend(self$data, knots, origin) %>% as.matrix
   },
   season = function(period = "smallest"){
     season(self$data, period) %>% as_model_matrix
   },
-  fourier = function(period = "smallest", K){
-    origin <- self$data[[expr_text(index(self$data))]][[1]]
+  fourier = function(period = "smallest", K, origin = NULL){
+    if(is.null(origin)){
+      if(is.null(self$origin)){
+        self$origin <- self$data[[expr_text(index(self$data))]][[1]]
+      }
+      origin <- self$origin
+    }
     fourier(self$data, period, K, origin) %>% as.matrix
   }
 )

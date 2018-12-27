@@ -222,7 +222,8 @@ arima_model <- R6::R6Class("arima",
                            public = list(
                              model = "ARIMA",
                              train = train_arima,
-                             specials = specials_arima
+                             specials = specials_arima,
+                             origin = NULL
                            )
 )
 
