@@ -25,7 +25,8 @@ train_tslm <- function(.data, formula, specials, ...){
 }
 
 specials_tslm <- new_specials(
-  common_xregs
+  common_xregs,
+  xreg = model_xreg
 )
 
 tslm_model <- R6::R6Class("tslm",
