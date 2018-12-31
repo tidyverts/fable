@@ -139,7 +139,7 @@ refit.TSLM <- function(object, new_data, reestimate = FALSE, ...){
       model = fit,
       par = tibble(term = names(coef(fit)), estimate = coef(fit)),
       est = new_data %>% 
-        transmute(!!model_lhs(formula(object$model$terms)),
+        transmute(!!model_lhs(list(formula = formula(object$model$terms))),
                   .fitted = fit$fitted.values,
                   .resid = fit$residuals)
     ),

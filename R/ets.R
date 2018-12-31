@@ -322,7 +322,7 @@ refit.ETS <- function(object, new_data, reestimate = FALSE, reinitialise = TRUE,
   
   y <- new_data %>% 
     transmute(
-      !!model_lhs(object[["fit"]][["formula"]][[1]])
+      !!model_lhs(list(formula = object[["fit"]][["formula"]][[1]]))
     )
   idx <- y[[expr_text(index(y))]]
   
