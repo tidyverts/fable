@@ -122,7 +122,7 @@ interpolate.TSLM <- function(model, new_data, ...){
 }
 
 #' @export
-refit.TSLM <- function(object, new_data, reestimate = FALSE, ...){
+refit.TSLM <- function(object, new_data, specials = NULL, reestimate = FALSE, ...){
   # Update data for re-evaluation
   mdl <- environment(attr(object$model$terms, ".Environment")$fourier)$self
   mdl$data <- new_data

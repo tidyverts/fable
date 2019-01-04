@@ -307,7 +307,7 @@ simulate.ETS <- function(object, new_data, bootstrap = FALSE, ...){
 }
 
 #' @export
-refit.ETS <- function(object, new_data, reestimate = FALSE, reinitialise = TRUE, ...){
+refit.ETS <- function(object, new_data, specials = NULL, reestimate = FALSE, reinitialise = TRUE, ...){
   est_par <- function(par){
     if(any(pos <- object$par$term==par) && !reestimate){
       object$par$estimate[pos]
