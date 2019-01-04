@@ -30,7 +30,7 @@ test_that("ETS", {
   )
   
   fable_fc <- fable_fit %>% forecast
-  forecast_fc <- forecast_fit %>% forecast
+  forecast_fc <- forecast_fit %>% forecast::forecast()
   
   expect_equivalent(
     fable_fc$value,
