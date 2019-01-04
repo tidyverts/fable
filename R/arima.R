@@ -23,14 +23,19 @@ train_arima <- function(.data, formula, specials, stepwise = TRUE,
     # Check that xreg is not rank deficient
     # First check if any columns are constant
     constant_columns <- apply(xreg, 2, is.constant)
-    if (any(constant_columns)) { # Remove first one
-      xreg <- xreg[, -which(constant_columns)[1]]
+    if(all(constant_columns)){
+      xreg <- NULL
     }
-    
-    # Now check if it is rank deficient
-    sv <- svd(stats::na.omit(cbind(rep(1, NROW(xreg)), xreg)))$d
-    if (min(sv) / sum(sv) < .Machine$double.eps) {
-      stop("xreg is rank deficient")
+    else{
+      if (any(constant_columns)) {
+        xreg <- xreg[, -which(constant_columns)]
+      }
+      
+      # Now check if it is rank deficient
+      sv <- svd(stats::na.omit(cbind(rep(1, NROW(xreg)), xreg)))$d
+      if (min(sv) / sum(sv) < .Machine$double.eps) {
+        stop("xreg is rank deficient")
+      }
     }
   }
   else{
