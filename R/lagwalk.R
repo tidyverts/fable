@@ -17,16 +17,6 @@ train_lagwalk <- function(.data, formula, specials, ...){
     }
   }
   
-  if(lag == 1 & !drift){
-    method <- "NAIVE"
-  }
-  else if(lag != 1){
-    method <- "SNAIVE"
-  }
-  else{
-    method <- "RW"
-  }
-  
   fitted <- c(rep(NA, lag), utils::head(fits, -lag))
   if(drift){
     fit <- summary(stats::lm(y-fitted ~ 1, na.action=stats::na.exclude))
@@ -34,7 +24,6 @@ train_lagwalk <- function(.data, formula, specials, ...){
     b.se <- fit$coefficients[1,2]
     sigma <- fit$sigma
     fitted <- fitted + b
-    method <- paste(method, "w/ drift")
   }
   else{
     b <- b.se <- 0
@@ -50,11 +39,8 @@ train_lagwalk <- function(.data, formula, specials, ...){
           .fitted = fitted,
           .resid = res
         ),
-      fit = tibble(method = method,
-                   formula = list(formula),
-                   lag = lag,
-                   drift = drift,
-                   sigma = sigma),
+      fit = tibble(sigma = sigma),
+      spec = tibble(lag = lag, drift = drift),
       future = mutate(new_data(.data, lag), 
                       !!expr_text(model_lhs(self)) := utils::tail(fits, lag))
     ),
@@ -268,5 +254,17 @@ tidy.RW <- function(x, ...){
 #' @importFrom stats coef
 #' @export
 model_sum.RW <- function(x){
-  x$fit$method
+  if(x$spec$lag == 1 & !x$spec$drift){
+    method <- "NAIVE"
+  }
+  else if(x$spec$lag != 1){
+    method <- "SNAIVE"
+  }
+  else{
+    method <- "RW"
+  }
+  if(x$spec$drift){
+    method <- paste(method, "w/ drift")
+  }
+  method
 }
