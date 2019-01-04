@@ -322,7 +322,7 @@ refit.ETS <- function(object, new_data, specials = NULL, reestimate = FALSE, rei
   
   y <- new_data %>% 
     transmute(
-      !!model_lhs(list(formula = object[["fit"]][["formula"]][[1]]))
+      !!parse_expr(measured_vars(object$est)[1])
     )
   idx <- y[[expr_text(index(y))]]
   
@@ -340,7 +340,6 @@ refit.ETS <- function(object, new_data, specials = NULL, reestimate = FALSE, rei
       par = tibble(term = names(best$par), estimate = best$par),
       est = mutate(y, .fitted = best$fitted, .resid = best$residuals),
       fit = tibble(method = object$fit$method,
-                   formula = object$fit$formula,
                    period = object$fit$period,
                    sigma = sqrt(sum(best$residuals^2, na.rm = TRUE) / (NROW(y) - length(best$par))),
                    logLik = best$loglik, AIC = best$aic, AICc = best$aicc, BIC = best$bic,
