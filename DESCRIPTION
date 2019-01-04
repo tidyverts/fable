@@ -21,11 +21,13 @@ Suggests:
     rmarkdown,
     testthat,
     spelling,
-    covr
+    covr,
+    forecast
 Remotes:
     tidyverts/tsibble,
     tidyverts/tsibbledata,
-    tidyverts/fablelite
+    tidyverts/fablelite,
+    robjhyndman/forecast
 LinkingTo:
   Rcpp (>= 0.11.0),
   RcppArmadillo (>= 0.2.35)
