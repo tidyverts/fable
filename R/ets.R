@@ -58,6 +58,7 @@ train_ets <- function(.data, formula, specials, restrict = TRUE, ...){
   ic <- pmap_dbl(model_opts, compare_ets)
   
   best_spec <- model_opts[which.min(ic),]
+  best_spec$period <- ets_spec$season$period
   
   structure(
     list(
@@ -67,10 +68,7 @@ train_ets <- function(.data, formula, specials, restrict = TRUE, ...){
           .fitted = best$fitted,
           .resid = best$residuals
         ),
-      fit = tibble(method = with(best_spec, paste("ETS(", errortype, ",", trendtype, ifelse(damped, "d", ""), ",", seasontype, ")", sep = "")),
-                   formula = list(formula),
-                   period = ets_spec$season$period,
-                   sigma = sqrt(sum(best$residuals^2, na.rm = TRUE) / (length(y) - length(best$par))),
+      fit = tibble(sigma = sqrt(sum(best$residuals^2, na.rm = TRUE) / (length(y) - length(best$par))),
                    logLik = best$loglik, AIC = best$aic, AICc = best$aicc, BIC = best$bic,
                    MSE = best$mse, AMSE = best$amse),
       states = tsibble(
@@ -229,7 +227,7 @@ forecast.ETS <- function(object, new_data, specials = NULL, simulate = FALSE, bo
     pred <- .C(
       "etsforecast",
       as.double(laststate),
-      as.integer(object$fit$period),
+      as.integer(object$spec$period),
       as.integer(switch(trendtype, "N" = 0, "A" = 1, "M" = 2)),
       as.integer(switch(seasontype, "N" = 0, "A" = 1, "M" = 2)),
       as.double(ifelse(damped, object$par[["estimate"]][[object$term == "phi"]], 1)),
@@ -243,7 +241,7 @@ forecast.ETS <- function(object, new_data, specials = NULL, simulate = FALSE, bo
   else{
     fc <- fc_class(h = NROW(new_data),
                    last.state = laststate,
-                   trendtype, seasontype, damped, object$fit$period, object$fit$sigma^2, 
+                   trendtype, seasontype, damped, object$spec$period, object$fit$sigma^2, 
                    set_names(object$par$estimate, object$par$term))
     construct_fc(fc$mu, sqrt(fc$var), dist_normal(fc$mu, sqrt(fc$var)))
   }
@@ -339,9 +337,7 @@ refit.ETS <- function(object, new_data, specials = NULL, reestimate = FALSE, rei
     list(
       par = tibble(term = names(best$par), estimate = best$par),
       est = mutate(y, .fitted = best$fitted, .resid = best$residuals),
-      fit = tibble(method = object$fit$method,
-                   period = object$fit$period,
-                   sigma = sqrt(sum(best$residuals^2, na.rm = TRUE) / (NROW(y) - length(best$par))),
+      fit = tibble(sigma = sqrt(sum(best$residuals^2, na.rm = TRUE) / (NROW(y) - length(best$par))),
                    logLik = best$loglik, AIC = best$aic, AICc = best$aicc, BIC = best$bic,
                    MSE = best$mse, AMSE = best$amse),
       states = tsibble(
@@ -389,7 +385,7 @@ components.ETS <- function(object, ...){
 
 #' @export
 model_sum.ETS <- function(x){
-  x$fit$method
+  with(x$spec, paste("ETS(", errortype, ",", trendtype, ifelse(damped, "d", ""), ",", seasontype, ")", sep = ""))
 }
 
 #' @export
