@@ -42,9 +42,16 @@ train_arima <- function(.data, formula, specials, stepwise = TRUE,
     xreg <- NULL
   }
   
-  # Select differencing (currently done by AIC)
+  # Select differencing
   if(length(d) > 1 | length(D) > 1){
     abort("Automatic selection of differencing is currently not implemented. Please specify `d` and `D` as a single value.")
+  }
+  
+  # Check number of differences selected
+  if (D >= 2) {
+    warn("Having more than one seasonal differences is not recommended. Please consider using only one seasonal difference.")
+  } else if (D + d > 2) {
+    warn("Having 3 or more differencing operations is not recommended. Please consider reducing the total number of differences.")
   }
   
   if (approximation) {
