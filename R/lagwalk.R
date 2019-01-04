@@ -155,7 +155,7 @@ forecast.RW <- function(object, new_data, specials = NULL, bootstrap = FALSE, ti
   }
   
   h <- NROW(new_data)
-  lag <- object$fit$lag
+  lag <- object$spec$lag
   fullperiods <- (h-1)/lag+1
   steps <- rep(1:fullperiods, rep(lag,fullperiods))[1:h]
   
@@ -176,7 +176,7 @@ forecast.RW <- function(object, new_data, specials = NULL, bootstrap = FALSE, ti
     mse <- mean(object$est$.resid^2, na.rm=TRUE)
     se  <- sqrt(mse*steps + (steps*object$par$std.error[1])^2)
     # Adjust prediction intervals to allow for drift coefficient standard error
-    if (object$fit$drift) {
+    if (object$spec$drift) {
       se <- sqrt(se^2 + (seq(h) * object$par$std.error[1])^2)
     }
     dist <- dist_normal(fc, se)

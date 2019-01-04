@@ -283,7 +283,7 @@ simulate.ETS <- function(object, new_data, bootstrap = FALSE, ...){
     transmute(".sim" := .C(
       "etssimulate",
       as.double(initstate),
-      as.integer(object$fit$period),
+      as.integer(object$spec$period),
       as.integer(switch(object$spec$errortype, "A" = 1, "M" = 2)),
       as.integer(switch(object$spec$trendtype, "N" = 0, "A" = 1, "M" = 2)),
       as.integer(switch(object$spec$seasontype, "N" = 0, "A" = 1, "M" = 2)),
