@@ -175,13 +175,11 @@ train_arima <- function(.data, formula, specials, stepwise = TRUE,
                    .fitted = as.numeric(y - best$residuals),
                    .resid = as.numeric(best$residuals)
       ),
-      fit = tibble(method = model_sum(best), 
-                   period = period,
-                   sigma = sqrt(best$sigma2),
+      fit = tibble(sigma = sqrt(best$sigma2),
                    logLik = best$loglik,
                    AIC = best$aic),
-      model = best,
-      definition = self
+      spec = tibble(period = period),
+      model = best
     ),
     class = "ARIMA"
   )
@@ -311,7 +309,7 @@ forecast.ARIMA <- function(object, new_data = NULL, specials = NULL, ...){
 
 #' @export
 model_sum.ARIMA <- function(x){
-  x$fit$method
+  model_sum(x$model)
 }
 
 #' @export
