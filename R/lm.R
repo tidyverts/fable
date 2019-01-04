@@ -85,7 +85,7 @@ tidy.TSLM <- function(x, ...){
 
 #' @importFrom stats predict
 #' @export
-forecast.TSLM <- function(object, new_data, ...){
+forecast.TSLM <- function(object, new_data, specials = NULL, ...){
   # Update data for re-evaluation
   mdl <- environment(attr(object$model$terms, ".Environment")$fourier)$self
   mdl$data <- new_data

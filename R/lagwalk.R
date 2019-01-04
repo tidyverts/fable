@@ -163,7 +163,7 @@ SNAIVE <- function(formula){
 #' @importFrom stats qnorm time
 #' @importFrom utils tail
 #' @export
-forecast.RW <- function(object, new_data = NULL, bootstrap = FALSE, times = 5000, ...){
+forecast.RW <- function(object, new_data, specials = NULL, bootstrap = FALSE, times = 5000, ...){
   if(!is_regular(new_data)){
     abort("Forecasts must be regularly spaced")
   }

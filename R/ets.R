@@ -202,7 +202,7 @@ ETS <- function(formula, restrict = TRUE, ...){
 }
 
 #' @export
-forecast.ETS <- function(object, new_data = NULL, simulate = FALSE, bootstrap = FALSE, times = 5000, ...){
+forecast.ETS <- function(object, new_data, specials = NULL, simulate = FALSE, bootstrap = FALSE, times = 5000, ...){
   if(!is_regular(new_data)){
     abort("Forecasts must be regularly spaced")
   }

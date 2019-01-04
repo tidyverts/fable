@@ -2,6 +2,9 @@ train_arima <- function(.data, formula, specials, stepwise = TRUE,
                         greedy = TRUE, approximation = FALSE, ...){
   # Check data
   check_gaps(.data)
+  if(length(measured_vars(.data)) > 1){
+    abort("Only univariate responses are supported by ARIMA.")
+  }
   
   # Get response
   y <- .data[[measured_vars(.data)]]
@@ -281,14 +284,12 @@ tidy.ARIMA <- function(x, ...){
 
 #' @importFrom stats formula residuals
 #' @export
-forecast.ARIMA <- function(object, new_data = NULL, ...){
+forecast.ARIMA <- function(object, new_data = NULL, specials = NULL, ...){
   if(!is_regular(new_data)){
     abort("Forecasts must be regularly spaced")
   }
   
-  object$definition$data <- new_data
-  vals <- parse_model_rhs(object$definition)
-  xreg <- vals$specials[c("xreg", names(common_xregs))] %>% 
+  xreg <- specials[c("xreg", names(common_xregs))] %>% 
     compact() %>% 
     map(function(.x){invoke("cbind", .x)}) %>% 
     invoke("cbind", .)
