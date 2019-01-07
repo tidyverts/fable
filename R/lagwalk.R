@@ -26,14 +26,15 @@ train_lagwalk <- function(.data, formula, specials, ...){
     fitted <- fitted + b
   }
   else{
-    b <- b.se <- 0
+    b <- b.se <- NULL
     sigma <- stats::sd(y-fitted, na.rm=TRUE)
   }
   res <- y - fitted
   
   structure(
     list(
-      par = tibble(term = "b", estimate = b, std.error = b.se),
+      par = tibble(term = if(drift) "b" else chr(),
+                   estimate = b%||%dbl(), std.error = b.se%||%dbl()),
       est = .data %>% 
         mutate(
           .fitted = fitted,

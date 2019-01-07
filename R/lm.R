@@ -15,7 +15,7 @@ train_tslm <- function(.data, formula, specials, ...){
   structure(
     list(
       model = fit,
-      par = tibble(term = names(coef(fit)), estimate = coef(fit)),
+      par = tibble(term = names(coef(fit))%||%chr(), estimate = coef(fit)%||%dbl()),
       est = est %>% 
         mutate(.fitted = fitted,
                .resid = !!residuals(fit))

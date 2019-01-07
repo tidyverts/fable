@@ -182,7 +182,7 @@ train_arima <- function(.data, formula, specials, stepwise = TRUE,
   # Output model
   structure(
     list(
-      par = tibble(term = names(coef(best)), estimate = coef(best)),
+      par = tibble(term = names(coef(best))%||%chr(), estimate = coef(best)%||%dbl()),
       est = mutate(.data,
                    .fitted = as.numeric(y - best$residuals),
                    .resid = as.numeric(best$residuals)
