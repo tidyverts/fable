@@ -325,7 +325,7 @@ refit.ETS <- function(object, new_data, specials = NULL, reestimate = FALSE, rei
   idx <- y[[expr_text(index(y))]]
   
   best <- etsmodel(
-    y[[measured_vars(y)]], m = object$fit$period,
+    y[[measured_vars(y)]], m = object$spec$period,
     errortype = object$spec$errortype, trendtype = object$spec$trendtype,
     seasontype = object$spec$seasontype, damped = object$spec$damped,
     alpha = est_par("alpha"), beta = est_par("beta"), phi = est_par("phi"), gamma = est_par("gamma"),
