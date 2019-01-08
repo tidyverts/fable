@@ -181,7 +181,7 @@ forecast.RW <- function(object, new_data, specials = NULL, bootstrap = FALSE, ti
     dist <- dist_sim(sim)
   }  else {
     mse <- mean(object$est$.resid^2, na.rm=TRUE)
-    se  <- sqrt(mse*steps + (steps*b.se^2))
+    se  <- sqrt(mse*steps + (steps*b.se)^2)
     # Adjust prediction intervals to allow for drift coefficient standard error
     if (object$spec$drift) {
       se <- sqrt(se^2 + (seq(h) * b.se)^2)
