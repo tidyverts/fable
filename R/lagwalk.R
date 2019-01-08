@@ -160,9 +160,15 @@ forecast.RW <- function(object, new_data, specials = NULL, bootstrap = FALSE, ti
   fullperiods <- (h-1)/lag+1
   steps <- rep(1:fullperiods, rep(lag,fullperiods))[1:h]
   
+  b <- object$par$estimate
+  b.se <- object$par$std.error
+  if(!object$spec$drift){
+    b <- b.se <- 0
+  }
+  
   # Point forecasts
   fc <- rep(object$future[[measured_vars(object$future)[1]]], fullperiods)[1:h] +
-    steps*object$par$estimate[1]
+    steps*b
   
   # Intervals
   if (bootstrap){ # Compute prediction intervals using simulations
@@ -175,10 +181,10 @@ forecast.RW <- function(object, new_data, specials = NULL, bootstrap = FALSE, ti
     dist <- dist_sim(sim)
   }  else {
     mse <- mean(object$est$.resid^2, na.rm=TRUE)
-    se  <- sqrt(mse*steps + (steps*object$par$std.error[1])^2)
+    se  <- sqrt(mse*steps + (steps*b.se^2))
     # Adjust prediction intervals to allow for drift coefficient standard error
     if (object$spec$drift) {
-      se <- sqrt(se^2 + (seq(h) * object$par$std.error[1])^2)
+      se <- sqrt(se^2 + (seq(h) * b.se)^2)
     }
     dist <- dist_normal(fc, se)
   }
