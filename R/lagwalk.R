@@ -58,7 +58,7 @@ lagwalk_model <- R6::R6Class("lagwalk",
                              )
 )
 
-rw_model <- R6::R6Class("rw",
+rw_model <- R6::R6Class(NULL,
                              inherit = lagwalk_model,
                              public = list(
                                model = "RW",
@@ -75,7 +75,7 @@ rw_model <- R6::R6Class("rw",
                              )
 )
 
-snaive_model <- R6::R6Class("rw",
+snaive_model <- R6::R6Class(NULL,
                              inherit = lagwalk_model,
                              public = list(
                                model = "RW",

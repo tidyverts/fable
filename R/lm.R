@@ -29,7 +29,7 @@ specials_tslm <- new_specials(
   xreg = model_xreg
 )
 
-tslm_model <- R6::R6Class("tslm",
+tslm_model <- R6::R6Class(NULL,
                           inherit = fablelite::model_definition,
                           public = list(
                             model = "TSLM",

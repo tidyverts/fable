@@ -144,7 +144,7 @@ specials_ets <- new_specials(
   .required_specials = c("error", "trend", "season")
 )
 
-ets_model <- R6::R6Class("ets",
+ets_model <- R6::R6Class(NULL,
                          inherit = fablelite::model_definition,
                          public = list(
                            model = "ETS",
