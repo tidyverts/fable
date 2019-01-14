@@ -1,7 +1,5 @@
 train_arima <- function(.data, formula, specials, stepwise = TRUE, 
                         greedy = TRUE, approximation = FALSE, ...){
-  # Check data
-  check_gaps(.data)
   if(length(measured_vars(.data)) > 1){
     abort("Only univariate responses are supported by ARIMA.")
   }
@@ -236,7 +234,10 @@ arima_model <- R6::R6Class(NULL,
                              model = "ARIMA",
                              train = train_arima,
                              specials = specials_arima,
-                             origin = NULL
+                             origin = NULL,
+                             check = function(.data){
+                               check_gaps(.data)
+                             }
                            )
 )
 

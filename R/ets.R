@@ -3,9 +3,6 @@ train_ets <- function(.data, formula, specials, restrict = TRUE, ...){
     abort("Only univariate responses are supported by ETS.")
   }
   
-  # Check data
-  check_gaps(.data)
-  
   # Rebuild `ets` arguments
   ets_spec <- specials[c("error", "trend", "season")]
   ets_spec %>% map(function(.x){if(length(.x) > 1) {abort("Only one special of each type is allowed for ETS.")}})
@@ -149,7 +146,10 @@ ets_model <- R6::R6Class(NULL,
                          public = list(
                            model = "ETS",
                            train = train_ets,
-                           specials = specials_ets
+                           specials = specials_ets,
+                           check = function(.data){
+                             check_gaps(.data)
+                           }
                          )
 )
 
