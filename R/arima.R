@@ -1,3 +1,4 @@
+#' @importFrom stats approx lm ts
 train_arima <- function(.data, formula, specials, stepwise = TRUE, 
                         greedy = TRUE, approximation = FALSE, ...){
   if(length(measured_vars(.data)) > 1){
@@ -397,6 +398,7 @@ model_sum.Arima <- function(x){
 }
 
 # Adjusted from robjhyndman/tsfeatures
+#' @importFrom stats stl var
 seas_heuristic <- function(x, period){
   stlfit <- stl(x, s.window = 13)
   remainder <- stlfit$time.series[,"remainder"]
@@ -406,6 +408,7 @@ seas_heuristic <- function(x, period){
 }
 
 # Adjusted from urca
+#' @importFrom stats lm na.omit
 kpss_test <- function(y, type = c("mu", "tau"), 
                        lags = c("short", "long", "nil"), use.lag = NULL){
   y <- na.omit(as.vector(y))
