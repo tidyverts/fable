@@ -249,7 +249,8 @@ train_arima <- function(.data, formula, specials, stepwise = TRUE,
                    logLik = best$loglik,
                    AIC = best$aic),
       spec = tibble(period = period),
-      model = best
+      model = best,
+      xreg = xreg
     ),
     class = "ARIMA"
   )
@@ -332,8 +333,30 @@ fitted.ARIMA <- function(object, ...){
 }
 
 #' @export
-residuals.ARIMA <- function(object, ...){
-  object$est[[".resid"]]
+residuals.ARIMA <- function(object, type = "innovation", ...){
+  if(type == "innovation"){
+    object$est[[".resid"]]
+  }
+  else if(type == "regression"){
+    x <- object$est[[measured_vars(object$est)[1]]]
+    xreg <- object$xreg
+    # Remove intercept
+    if (is.element("intercept", names(object$model$coef))) {
+      xreg <- cbind(rep(1, length(x)), xreg)
+    }
+    # Return errors
+    if (is.null(xreg)) {
+      return(x)
+    } else {
+      norder <- sum(object$model$arma[1:4])
+      return(
+        x - xreg %*% as.matrix(object$model$coef[(norder + 1):length(object$model$coef)])
+      )
+    }
+  }
+  else{
+    abort(sprintf('Residuals of `type = "%s"` are not supported by ARIMA models', type))
+  }
 }
 
 #' @export
