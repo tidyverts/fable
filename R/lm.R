@@ -60,12 +60,12 @@ TSLM <- function(formula, ...){
 
 #' @export
 fitted.TSLM <- function(object, ...){
-  select(object$est, ".fitted")
+  object$est[[".fitted"]]
 }
 
 #' @export
 residuals.TSLM <- function(object, ...){
-  select(object$est, ".resid")
+  object$est[[".resid"]]
 }
 
 #' @export

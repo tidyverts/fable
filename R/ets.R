@@ -353,12 +353,12 @@ refit.ETS <- function(object, new_data, specials = NULL, reestimate = FALSE, rei
 
 #' @export
 fitted.ETS <- function(object, ...){
-  select(object$est, ".fitted")
+  object$est[[".fitted"]]
 }
 
 #' @export
 residuals.ETS <- function(object, ...){
-  select(object$est, ".resid")
+  object$est[[".resid"]]
 }
 
 #' @export

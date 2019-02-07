@@ -235,12 +235,12 @@ simulate.RW <- function(object, new_data, bootstrap = FALSE, ...){
 
 #' @export
 fitted.RW <- function(object, ...){
-  select(object$est, !!index(object$est), ".fitted")
+  object$est[[".fitted"]]
 }
 
 #' @export
 residuals.RW <- function(object, ...){
-  select(object$est, !!index(object$est), ".resid")
+  object$est[[".resid"]]
 }
 
 #' @export

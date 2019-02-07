@@ -327,12 +327,12 @@ ARIMA <- function(formula, stepwise = TRUE, greedy = TRUE,
 
 #' @export
 fitted.ARIMA <- function(object, ...){
-  select(object$est, ".fitted")
+  object$est[[".fitted"]]
 }
 
 #' @export
 residuals.ARIMA <- function(object, ...){
-  select(object$est, ".resid")
+  object$est[[".resid"]]
 }
 
 #' @export
