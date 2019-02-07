@@ -4,12 +4,12 @@ train_arima <- function(.data, formula, specials, stepwise = TRUE,
     abort("Only univariate responses are supported by ARIMA.")
   }
   
-  # Get response
-  y <- .data[[measured_vars(.data)]]
-  
   # Get args
-  p <- d <- q <- P <- D <- Q <- period <- start.p <- start.d <- start.q <- start.P <- start.D <- start.Q <- NULL 
+  p <- d <- q <- P <- D <- Q <- period <- start.p <- start.q <- start.P <- start.Q <- NULL 
   assignSpecials(specials[c("pdq", "PDQ")])
+
+  # Get response
+  y <- x <- ts(.data[[measured_vars(.data)]], frequency = period)
   
   # Check xreg
   xreg <- specials[c("xreg", names(common_xregs))] %>% 
@@ -18,6 +18,7 @@ train_arima <- function(.data, formula, specials, stepwise = TRUE,
     invoke("cbind", .)
   
   if(!is_empty(xreg)){
+    xreg <- as.matrix(xreg)
     # Check that xreg is not rank deficient
     # First check if any columns are constant
     constant_columns <- apply(xreg, 2, is.constant)
@@ -34,18 +35,76 @@ train_arima <- function(.data, formula, specials, stepwise = TRUE,
       if (min(sv) / sum(sv) < .Machine$double.eps) {
         stop("xreg is rank deficient")
       }
+      
+      # Finally find residuals from regression in order
+      # to estimate appropriate level of differencing
+      j <- !is.na(x) & !is.na(rowSums(xreg))
+      x[j] <- residuals(lm(x ~ xreg))
     }
   }
   else{
     xreg <- NULL
   }
   
-  # Select differencing
-  if(length(d) > 1 | length(D) > 1){
-    abort("Automatic selection of differencing is currently not implemented. Please specify `d` and `D` as a single value.")
+  diff <- function(x, differences, ...){
+    if(differences == 0) return(x)
+    base::diff(x, differences = differences, ...)
+  }
+  
+  # Choose seasonal differencing
+  if(length(D) > 1)
+  {
+    # Valid xregs
+    if(!is.null(xreg)){
+      keep <- map_lgl(D, function(.x){
+        diff_xreg <- diff(xreg, lag = period, differences = .x)
+        !any(apply(diff_xreg, 2, is.constant))
+      })
+      D <- D[keep]
+    }
+    # Non-missing y
+    keep <- map_lgl(D, function(.x){
+      dx <- diff(x, lag = period, differences = .x)
+      !all(is.na(dx))
+    })
+    D <- D[keep]
+    
+    # Estimate the test
+    keep <- map_lgl(D[-1]-1, function(.x) {
+      seas_heuristic(diff(x, lag = period, differences = .x)) > 0.64
+    })
+    D <- max(D[c(TRUE, keep)], na.rm = TRUE)
+  }
+  x <- diff(x, lag = period, differences = D)
+  diff_xreg <- diff(xreg, lag = period, differences = D)
+  
+  if (length(d) > 1) {
+    # Valid xregs
+    if(!is.null(xreg)){
+      keep <- map_lgl(d, function(.x){
+        diff_xreg <- diff(diff_xreg, differences = .x)
+        !any(apply(diff_xreg, 2, is.constant))
+      })
+      d <- d[keep]
+    }
+    # Non-missing y
+    keep <- map_lgl(d, function(.x){
+      dx <- diff(x, differences = .x)
+      !all(is.na(dx))
+    })
+    d <- d[keep]
+    
+    # Estimate the test
+    keep <- map_lgl(d[-1]-1, function(.x) {
+      test <- kpss_test(diff(x, differences = .x))
+      approx(test$cval[1,], as.numeric(sub("pct", "", colnames(test$cval)))/100, xout=test$teststat[1], rule=2)$y < 0.05
+    })
+    d <- max(d[c(TRUE, keep)], na.rm = TRUE)
   }
   
   # Check number of differences selected
+  if (length(D) != 1) abort("Could not find appropriate number of seasonal differences.")
+  if (length(d) != 1) abort("Could not find appropriate number of non-seasonal differences.")
   if (D >= 2) {
     warn("Having more than one seasonal differences is not recommended. Please consider using only one seasonal difference.")
   } else if (D + d > 2) {
@@ -115,10 +174,10 @@ train_arima <- function(.data, formula, specials, stepwise = TRUE,
     best_ic <- Inf
     
     # Initial 4 models
-    initial_opts <- list(start = c(start.p, start.d, start.q, start.P, start.D, start.Q),
-                         null = c(0, start.d, 0, 0, start.D, 0),
-                         ar = c(1, start.d, 0, 1, start.D, 0),
-                         ma = c(0, start.d, 1, 0, start.D, 1))
+    initial_opts <- list(start = c(start.p, d, start.q, start.P, D, start.Q),
+                         null = c(0, d, 0, 0, D, 0),
+                         ar = c(1, d, 0, 1, D, 0),
+                         ma = c(0, d, 1, 0, D, 1))
     step_order <- stats::na.omit(match(initial_opts, lapply(split(model_opts, seq_len(NROW(model_opts))), as.numeric)))
     initial <- TRUE
     
@@ -197,16 +256,15 @@ train_arima <- function(.data, formula, specials, stepwise = TRUE,
 
 specials_arima <- new_specials(
   pdq = function(p = 0:5, d = 0:2, q = 0:5,
-                 start.p = 2, start.d = 0, start.q = 2){
+                 start.p = 2, start.q = 2){
     p <- p[p <= floor(NROW(self$data) / 3)]
     q <- q[q <= floor(NROW(self$data) / 3)]
     start.p <- p[which.min(abs(p - start.p))]
-    start.d <- d[which.min(abs(d - start.d))]
     start.q <- q[which.min(abs(q - start.q))]
     as.list(environment())
   },
   PDQ = function(P = 0:2, D = 0:1, Q = 0:2, period = "smallest",
-                 start.P = 1, start.D = 0, start.Q = 1){
+                 start.P = 1, start.Q = 1){
     period <- get_frequencies(period, self$data)
     if(period == 1){
       # Not seasonal
@@ -219,7 +277,6 @@ specials_arima <- new_specials(
       Q <- Q[Q <= floor(NROW(self$data) / 3 / period)]
     }
     start.P <- P[which.min(abs(P - start.P))]
-    start.D <- D[which.min(abs(D - start.D))]
     start.Q <- Q[which.min(abs(Q - start.Q))]
     as.list(environment())
   },
@@ -337,4 +394,67 @@ model_sum.Arima <- function(x){
     result <- paste("LM w/", result, "errors")
   }
   result
+}
+
+# Adjusted from robjhyndman/tsfeatures
+seas_heuristic <- function(x, period){
+  stlfit <- stl(x, s.window = 13)
+  remainder <- stlfit$time.series[,"remainder"]
+  seasonal <- stlfit$time.series[, "seasonal"]
+  vare <- var(remainder, na.rm = TRUE)
+  max(0, min(1, 1 - vare/var(remainder + seasonal, na.rm = TRUE)))
+}
+
+# Adjusted from urca
+kpss_test <- function(y, type = c("mu", "tau"), 
+                       lags = c("short", "long", "nil"), use.lag = NULL){
+  y <- na.omit(as.vector(y))
+  n <- length(y)
+  type <- match.arg(type)
+  lags <- match.arg(lags)
+  if (!(is.null(use.lag))) {
+    lmax <- as.integer(use.lag)
+    if (lmax < 0) {
+      warning("\nuse.lag has to be positive and integer; lags='short' used.")
+      lmax <- trunc(4 * (n/100)^0.25)
+    }
+  }
+  else if (lags == "short") {
+    lmax <- trunc(4 * (n/100)^0.25)
+  }
+  else if (lags == "long") {
+    lmax <- trunc(12 * (n/100)^0.25)
+  }
+  else if (lags == "nil") {
+    lmax <- 0
+  }
+  if (type == "mu") {
+    cval <- as.matrix(t(c(0.347, 0.463, 0.574, 0.739)))
+    colnames(cval) <- c("10pct", "5pct", "2.5pct", "1pct")
+    rownames(cval) <- "critical values"
+    res <- y - mean(y)
+  }
+  else if (type == "tau") {
+    cval <- as.matrix(t(c(0.119, 0.146, 0.176, 0.216)))
+    colnames(cval) <- c("10pct", "5pct", "2.5pct", "1pct")
+    rownames(cval) <- "critical values"
+    trend <- 1:n
+    res <- residuals(lm(y ~ trend))
+  }
+  S <- cumsum(res)
+  nominator <- sum(S^2)/n^2
+  s2 <- sum(res^2)/n
+  if (lmax == 0) {
+    denominator <- s2
+  }
+  else {
+    index <- 1:lmax
+    x.cov <- sapply(index, function(x) t(res[-c(1:x)]) %*% 
+                      res[-c((n - x + 1):n)])
+    bartlett <- 1 - index/(lmax + 1)
+    denominator <- s2 + 2/n * t(bartlett) %*% x.cov
+  }
+  teststat <- nominator/denominator
+  list(y = y, type = type, lag = as.integer(lmax), 
+      teststat = as.numeric(teststat), cval = cval)
 }

@@ -10,10 +10,11 @@ test_that("ARIMA", {
     coef(stats_fit)
   )
   
-  # Lack of support for automatic differencing
-  expect_error(
-    USAccDeaths_tbl %>% model(ARIMA(value ~ pdq(q=1))),
-    "Automatic selection of differencing is currently not implemented"
+  # Automatic d/D selection
+  fit <- USAccDeaths_tbl %>% model(ARIMA(value ~ pdq(q=1)))
+  expect_identical(
+    model_sum(fit[[1]][[1]]),
+    "ARIMA(0,1,1)(0,1,1)[12]"
   )
   
   # Manual model selection
