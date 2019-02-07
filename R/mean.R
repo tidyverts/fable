@@ -1,3 +1,4 @@
+#' @importFrom stats sd
 train_mean <- function(.data, formula, specials, ...){
   y <- .data[[measured_vars(.data)]]
   n <- length(y)
@@ -97,7 +98,7 @@ simulate.model_mean <- function(object, new_data, bootstrap = FALSE, ...){
   
   new_data %>% 
     group_by_key() %>% 
-    transmute(".sim" := f + .innov)
+    transmute(".sim" := f + !!sym(".innov"))
 }
 
 
