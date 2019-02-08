@@ -22,7 +22,8 @@ Suggests:
     testthat,
     spelling,
     covr,
-    forecast
+    forecast,
+    nnet
 Remotes:
     tidyverts/tsibble,
     tidyverts/tsibbledata,
