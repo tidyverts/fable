@@ -96,9 +96,9 @@ forecast.TSLM <- function(object, new_data, specials = NULL, ...){
                dist_normal(fc$fit, fc$se.fit))
 }
 
-#' @importFrom fablelite simulate
+#' @importFrom fablelite imitate
 #' @export
-simulate.TSLM <- function(object, new_data, ...){
+imitate.TSLM <- function(object, new_data, ...){
   # Update data for re-evaluation
   mdl <- environment(attr(object$model$terms, ".Environment")$fourier)$self
   mdl$data <- new_data

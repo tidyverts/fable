@@ -221,7 +221,7 @@ forecast.ETS <- function(object, new_data, specials = NULL, simulate = FALSE, bo
     simulate <- TRUE
   }
   if(simulate || bootstrap){
-    sim <- map(seq_len(times), function(x) simulate(object, new_data, times = times, bootstrap = bootstrap)[[".sim"]]) %>% 
+    sim <- map(seq_len(times), function(x) imitate(object, new_data, times = times, bootstrap = bootstrap)[[".sim"]]) %>% 
       transpose %>% 
       map(as.numeric)
     pred <- .C(
@@ -248,7 +248,7 @@ forecast.ETS <- function(object, new_data, specials = NULL, simulate = FALSE, bo
 }
 
 #' @export
-simulate.ETS <- function(object, new_data, bootstrap = FALSE, ...){
+imitate.ETS <- function(object, new_data, bootstrap = FALSE, ...){
   if(!is_regular(new_data)){
     abort("Simulation new_data must be regularly spaced")
   }
