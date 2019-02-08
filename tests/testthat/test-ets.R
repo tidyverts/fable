@@ -39,8 +39,8 @@ test_that("ETS", {
   
   # Test simulation
   fable_fit %>% 
-    simulate(USAccDeaths_tbl)
+    imitate(USAccDeaths_tbl)
   fable_fit %>% 
-    simulate(USAccDeaths_tbl %>% 
-               tsibble::mutate(index = index + 72))
+    imitate(USAccDeaths_tbl %>% 
+              tsibble::mutate(index = index + 72))
 })
