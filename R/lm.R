@@ -91,9 +91,8 @@ forecast.TSLM <- function(object, new_data, specials = NULL, ...){
   mdl$data <- new_data
   
   fc <- predict(object$model, new_data, se.fit = TRUE)
-  
-  construct_fc(fc$fit, fc$se.fit, 
-               dist_normal(fc$fit, fc$se.fit))
+  construct_fc(fc$fit, sqrt(fc$se.fit^2 + fc$residual.scale^2), 
+               dist_normal(fc$fit, sqrt(fc$se.fit^2 + fc$residual.scale^2)))
 }
 
 #' @importFrom fablelite imitate
