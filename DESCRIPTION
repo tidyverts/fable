@@ -12,7 +12,7 @@ Depends:
     fablelite
 Imports:
     rlang (>= 0.2.0),
-    tsibble (>= 0.6.2),
+    tsibble (>= 0.7.0),
     Rcpp (>= 0.11.0),
     stats
 Suggests:
