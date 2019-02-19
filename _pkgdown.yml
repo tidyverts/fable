@@ -1,0 +1,24 @@
+url: https://fable.tidyverts.org
+
+template:
+  params:
+    bootswatch: cosmo
+
+authors:
+  Rob Hyndman:
+    href: http://robjhyndman.com
+  Mitchell O'Hara-Wild:
+    href: https://mitchelloharawild.com
+  Earo Wang:
+    href: https://earo.me
+
+navbar:
+  type: default
+  left:
+  - text: Reference
+    href: reference/index.html
+  - text: News
+    href: news/index.html
+  right:
+  - icon: fa-github fa-lg
+    href: https://github.com/tidyverts/fable
