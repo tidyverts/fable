@@ -258,6 +258,17 @@ tidy.RW <- function(x, ...){
   x$par
 }
 
+#' @export
+report.RW <- function(x, ...){
+  cat("\n")
+  if (x$spec$drift) {
+    row <- x$par$term == "b"
+    cat(paste("Drift: ", round(x$par$estimate[row], 4), 
+              " (se: ", round(x$par$std.error[row], 4), ")\n", sep = ""))
+  }
+  cat(paste("Residual sd:", round(x$fit$sigma, 4), "\n"))
+}
+
 #' @importFrom stats coef
 #' @export
 model_sum.RW <- function(x){
