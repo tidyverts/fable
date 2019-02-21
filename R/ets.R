@@ -316,7 +316,7 @@ imitate.ETS <- function(object, new_data, bootstrap = FALSE, ...){
   }
   
   start_idx <- min(new_data[[expr_text(index(new_data))]])
-  start_pos <- match(start_idx, object$states[[index(object$states)]])
+  start_pos <- match(start_idx - time_unit(interval(new_data)), object$states[[index(object$states)]])
   
   if(is.na(start_pos)){
     abort("The first observation index of simulation data must be within the model's training set.")
