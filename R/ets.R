@@ -165,7 +165,7 @@ ets_model <- R6::R6Class(NULL,
 #' specified. This methodology performed extremely well on the M3-competition
 #' data. (See Hyndman, et al, 2002, below.)
 #'
-#' @param formula Model specification.
+#' @param formula Model specification (see "Specials" section).
 #' @param opt_crit The optimization criterion. Defaults to the log-likelihood
 #' `"lik"`, but can also be set to `"mse"` (Mean Square Error), `"amse"`
 #' (Average MSE over first `nmse` forecast horizons), `"sigma"` (Standard 
@@ -225,7 +225,7 @@ ets_model <- R6::R6Class(NULL,
 #'   `method`     \tab The form of the seasonal term: either none ("N"), additive ("A") or multiplicative ("M").\cr
 #'   `period`     \tab The periodic nature of the seasonality. This can be either a number indicating the number of observations in each seasonal period, or text to indicate the duration of the seasonal window (for example, annual seasonality would be "1 year").  \cr
 #'   `gamma`      \tab The value of the smoothing parameter for the seasonal pattern. If `gamma = 0`, the seasonal pattern will not change over time. Conversely, if `gamma = 1` the seasonality will have no memory of past seasonal periods. \cr
-#'   `gammarange` \tab If `gamma=NULL`, `gammarange` provides bounds for the optimised value of `gamma`.\cr
+#'   `gammarange` \tab If `gamma=NULL`, `gammarange` provides bounds for the optimised value of `gamma`.
 #' }
 #' }
 #'

@@ -9,7 +9,7 @@ ETS(formula, opt_crit = c("lik", "amse", "mse", "sigma", "mae"),
   "aic", "bic"), restrict = TRUE, ...)
 }
 \arguments{
-\item{formula}{Model specification.}
+\item{formula}{Model specification (see "Specials" section).}
 
 \item{opt_crit}{The optimization criterion. Defaults to the log-likelihood
 \code{"lik"}, but can also be set to \code{"mse"} (Mean Square Error), \code{"amse"}
@@ -86,7 +86,7 @@ season(method = c("N", "A", "M"), period = "smallest",
 \code{method}     \tab The form of the seasonal term: either none ("N"), additive ("A") or multiplicative ("M").\cr
 \code{period}     \tab The periodic nature of the seasonality. This can be either a number indicating the number of observations in each seasonal period, or text to indicate the duration of the seasonal window (for example, annual seasonality would be "1 year").  \cr
 \code{gamma}      \tab The value of the smoothing parameter for the seasonal pattern. If \code{gamma = 0}, the seasonal pattern will not change over time. Conversely, if \code{gamma = 1} the seasonality will have no memory of past seasonal periods. \cr
-\code{gammarange} \tab If \code{gamma=NULL}, \code{gammarange} provides bounds for the optimised value of \code{gamma}.\cr
+\code{gammarange} \tab If \code{gamma=NULL}, \code{gammarange} provides bounds for the optimised value of \code{gamma}.
 }
 }
 }
