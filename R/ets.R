@@ -108,9 +108,8 @@ specials_ets <- new_specials(
          beta = beta, betarange = betarange,
          phi = phi, phirange = phirange)
   },
-  season = function(method = c("N", "A", "M"),
-                    gamma = NULL, gammarange = c(1e-04, 0.9999),
-                    period = "smallest"){
+  season = function(method = c("N", "A", "M"), period = "smallest",
+                    gamma = NULL, gammarange = c(1e-04, 0.9999)){
     if (!all(is.element(method, c("N", "A", "M")))) {
       abort("Invalid season type")
     }
