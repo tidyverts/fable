@@ -4,22 +4,32 @@
 \alias{ETS}
 \title{Exponential smoothing state space model}
 \usage{
-ETS(formula, restrict = TRUE, ...)
+ETS(formula, opt_crit = c("lik", "amse", "mse", "sigma", "mae"),
+  nmse = 3, bounds = c("both", "usual", "admissible"), ic = c("aicc",
+  "aic", "bic"), restrict = TRUE, ...)
 }
 \arguments{
 \item{formula}{Model specification.}
+
+\item{opt_crit}{The optimization criterion. Defaults to the log-likelihood
+\code{"lik"}, but can also be set to \code{"mse"} (Mean Square Error), \code{"amse"}
+(Average MSE over first \code{nmse} forecast horizons), \code{"sigma"} (Standard
+deviation of residuals), or \code{"mae"} (Mean Absolute Error).}
+
+\item{nmse}{If \code{opt_crit == "amse"}, \code{nmse} provides the number of steps for
+average multistep MSE (\code{1<=nmse<=30}).}
+
+\item{bounds}{Type of parameter space to impose: \code{"usual"} indicates
+all parameters must lie between specified lower and upper bounds;
+\code{"admissible"} indicates parameters must lie in the admissible space;
+\code{"both"} (default) takes the intersection of these regions.}
+
+\item{ic}{The information criterion used in selecting the model.}
 
 \item{restrict}{If TRUE (default), the models with infinite variance will not
 be allowed.}
 
 \item{...}{Other arguments}
-}
-\value{
-A \code{mable} containing fitted ETS models.
-
-The generic accessor functions \code{fitted} and \code{residuals}
-extract useful features of the value returned by \code{ETS} and associated
-functions.
 }
 \description{
 Returns ETS model specified by the formula.

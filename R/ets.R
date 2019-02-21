@@ -1,4 +1,5 @@
-train_ets <- function(.data, formula, specials, restrict = TRUE, ...){
+train_ets <- function(.data, formula, specials, opt_crit,
+                      nmse, bounds, ic, restrict = TRUE, ...){
   if(length(measured_vars(.data)) > 1){
     abort("Only univariate responses are supported by ETS.")
   }
@@ -45,12 +46,12 @@ train_ets <- function(.data, formula, specials, restrict = TRUE, ...){
       beta = ets_spec$trend$beta, betarange = ets_spec$trend$betarange,
       phi = ets_spec$trend$phi, phirange = ets_spec$trend$phirange,
       gamma = ets_spec$season$gamma, gammarange = ets_spec$season$gammarange,
-      opt.crit = "lik", nmse = 3, bounds = "both", ...)
+      opt.crit = opt_crit, nmse = nmse, bounds = bounds, ...)
     
-    if((new$aicc%||%Inf) < (best$aicc%||%Inf)){
+    if((new[[ic]]%||%Inf) < (best[[ic]]%||%Inf)){
       best <<- new
     }
-    (new$aicc%||%Inf)
+    new[[ic]]%||%Inf
   }
   ic <- pmap_dbl(model_opts, compare_ets)
   
@@ -164,15 +165,20 @@ ets_model <- R6::R6Class(NULL,
 #' data. (See Hyndman, et al, 2002, below.)
 #'
 #' @param formula Model specification.
+#' @param opt_crit The optimization criterion. Defaults to the log-likelihood
+#' `"lik"`, but can also be set to `"mse"` (Mean Square Error), `"amse"`
+#' (Average MSE over first `nmse` forecast horizons), `"sigma"` (Standard 
+#' deviation of residuals), or `"mae"` (Mean Absolute Error).
+#' @param nmse If `opt_crit == "amse"`, `nmse` provides the number of steps for
+#' average multistep MSE (`1<=nmse<=30`).
+#' @param bounds Type of parameter space to impose: `"usual"` indicates
+#' all parameters must lie between specified lower and upper bounds;
+#' `"admissible"` indicates parameters must lie in the admissible space;
+#' `"both"` (default) takes the intersection of these regions.
+#' @param ic The information criterion used in selecting the model.
 #' @param restrict If TRUE (default), the models with infinite variance will not
 #' be allowed.
 #' @param ... Other arguments
-#' 
-#' @return A `mable` containing fitted ETS models.
-#'
-#' The generic accessor functions \code{fitted} and \code{residuals}
-#' extract useful features of the value returned by \code{ETS} and associated
-#' functions.
 #' 
 #' @author Rob J Hyndman & Mitchell O'Hara-Wild
 #' @seealso \code{\link[stats]{HoltWinters}}, \code{\link{RW}},
@@ -195,8 +201,14 @@ ets_model <- R6::R6Class(NULL,
 #' @examples 
 #' 
 #' USAccDeaths %>% as_tsibble %>% model(ETS(log(value) ~ season("A")))
-ETS <- function(formula, restrict = TRUE, ...){
-  ets_model$new(!!enquo(formula), restrict = restrict, ...)
+ETS <- function(formula, opt_crit = c("lik", "amse", "mse", "sigma", "mae"),
+                nmse = 3, bounds = c("both", "usual", "admissible"),
+                ic = c("aicc", "aic", "bic"), restrict = TRUE, ...){
+  opt_crit <- match.arg(opt_crit)
+  bounds <- match.arg(bounds)
+  ic <- match.arg(ic)
+  ets_model$new(!!enquo(formula), opt_crit = opt_crit, nmse = nmse,
+                bounds = bounds, ic = ic, restrict = restrict, ...)
 }
 
 #' @export
