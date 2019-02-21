@@ -84,6 +84,11 @@ tidy.TSLM <- function(x, ...){
   x$par
 }
 
+#' @export
+report.TSLM <- function(x, ...){
+  cat(capture.output(summary(x[["model"]]))[-1:-3], sep = "\n")
+}
+
 #' @importFrom stats predict
 #' @export
 forecast.TSLM <- function(object, new_data, specials = NULL, ...){
