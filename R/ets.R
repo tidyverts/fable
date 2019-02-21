@@ -179,6 +179,55 @@ ets_model <- R6::R6Class(NULL,
 #' be allowed.
 #' @param ... Other arguments
 #' 
+#' @section Specials:
+#'
+#' \subsection{error}{
+#' The `error` special is used to specify the form of the error term.
+#' \preformatted{
+#' error(method = c("A", "M"))
+#' }
+#'
+#' \tabular{ll}{
+#'   `method`     \tab The form of the error term: either additive ("A") or multiplicative ("M").
+#' }
+#' }
+#' 
+#' \subsection{trend}{
+#' The `trend` special is used to specify the form of the trend term and associated parameters.
+#' \preformatted{
+#' trend(method = c("N", "A", "Ad"),
+#'       alpha = NULL, alpharange = c(1e-04, 0.9999),
+#'       beta = NULL, betarange = c(1e-04, 0.9999),
+#'       phi = NULL, phirange = c(0.8, 0.98))
+#' }
+#'
+#' \tabular{ll}{
+#'   `method`     \tab The form of the trend term: either none ("N"), additive ("A"), multiplicative ("M") or damped variants ("Ad", "Md").\cr
+#'   `alpha`      \tab The value of the smoothing parameter for the level. If `alpha = 0`, the level will not change over time. Conversely, if `alpha = 1` the level will update similarly to a random walk process. \cr
+#'   `alpharange` \tab If `alpha=NULL`, `alpharange` provides bounds for the optimised value of `alpha`.\cr
+#'   `beta`       \tab The value of the smoothing parameter for the slope. If `beta = 0`, the slope will not change over time. Conversely, if `beta = 1` the level will slope will have no memory of past slopes. \cr
+#'   `betarange`  \tab If `beta=NULL`, `betarange` provides bounds for the optimised value of `beta`.\cr
+#'   `phi`        \tab The value of the dampening parameter for the slope. If `phi = 0`, the slope will be dampened immediately (no slope). Conversely, if `phi = 1` the slope will not be dampened. \cr
+#'   `phirange`   \tab If `phi=NULL`, `phirange` provides bounds for the optimised value of `phi`.
+#' }
+#' }
+#' 
+#' \subsection{season}{
+#' The `season` special is used to specify the form of the seasonal term and associated parameters.
+#' \preformatted{
+#' season(method = c("N", "A", "M"), period = "smallest",
+#'        gamma = NULL, gammarange = c(1e-04, 0.9999))
+#' }
+#'
+#' \tabular{ll}{
+#'   `method`     \tab The form of the seasonal term: either none ("N"), additive ("A") or multiplicative ("M").\cr
+#'   `period`     \tab The periodic nature of the seasonality. This can be either a number indicating the number of observations in each seasonal period, or text to indicate the duration of the seasonal window (for example, annual seasonality would be "1 year").  \cr
+#'   `gamma`      \tab The value of the smoothing parameter for the seasonal pattern. If `gamma = 0`, the seasonal pattern will not change over time. Conversely, if `gamma = 1` the seasonality will have no memory of past seasonal periods. \cr
+#'   `gammarange` \tab If `gamma=NULL`, `gammarange` provides bounds for the optimised value of `gamma`.\cr
+#' }
+#' }
+#'
+#' 
 #' @author Rob J Hyndman & Mitchell O'Hara-Wild
 #' @seealso \code{\link[stats]{HoltWinters}}, \code{\link{RW}},
 #' \code{\link{ARIMA}}.
