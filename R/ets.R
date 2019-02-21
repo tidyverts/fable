@@ -449,7 +449,7 @@ components.ETS <- function(object, ...){
   
   cmp <- match(c(expr_text(idx), "l", "b", "s1"), colnames(object$states))
   out <- object$states[,stats::na.exclude(cmp)]
-  colnames(out) <- c(expr_text(index(object$states)), "level", "slope", "season")[stats::na.omit(cmp)]
+  colnames(out) <- c(expr_text(index(object$states)), "level", "slope", "season")[!is.na(cmp)]
   if(spec$seasontype != "N"){
     seasonal_init <- tsibble(
       !!expr_text(idx) := object$states[[index(object$states)]][[1]] - rev(seq_len(m-1))*time_unit(interval(object$states)),
