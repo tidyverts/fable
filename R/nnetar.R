@@ -352,6 +352,17 @@ tidy.NNETAR <- function(x, ...){
   x$par
 }
 
+#' @export
+report.NNETAR <- function(x, ...){
+  cat(paste("\nAverage of", length(x$model), "networks, each of which is\n"))
+  print(x$model[[1]])
+  cat(
+    "\nsigma^2 estimated as ", format(mean(residuals(x) ^ 2, na.rm = TRUE), digits = 4),
+    "\n", sep = ""
+  )
+  invisible(x)
+}
+
 #' @importFrom stats coef
 #' @export
 model_sum.NNETAR <- function(x){
