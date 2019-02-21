@@ -1,5 +1,5 @@
 #' @importFrom stats approx lm ts
-train_arima <- function(.data, formula, specials, stepwise = TRUE, 
+train_arima <- function(.data, formula, specials, ic, stepwise = TRUE, 
                         greedy = TRUE, approximation = FALSE, ...){
   if(length(measured_vars(.data)) > 1){
     abort("Only univariate responses are supported by ARIMA.")
@@ -131,10 +131,16 @@ train_arima <- function(.data, formula, specials, stepwise = TRUE,
     if(!is.null(new)){
       nstar <- length(y) - d - D * period
       npar <- length(new$coef) + 1
-      if (approximation) {
+      if (method == "CSS") {
         new$aic <- offset + nstar * log(new$sigma2) + 2 * npar
       }
-      
+      if (!is.na(new$aic)) {
+        new$bic <- new$aic + npar * (log(nstar) - 2)
+        new$aicc <- new$aic + 2 * npar * (npar + 1) / (nstar - npar - 1)
+      }
+      else {
+        new$aic <- new$bic <- new$aicc <- new$ic <- Inf
+      }
       # Adjust residual variance to be unbiased
       new$sigma2 <- sum(new$residuals ^ 2, na.rm = TRUE) / (nstar - npar + 1)
       
@@ -161,17 +167,16 @@ train_arima <- function(.data, formula, specials, stepwise = TRUE,
         } # Don't like this model
       }
     }
-    
-    if((new$aic%||%Inf) < (best$aic%||%Inf)){
+    if((new[[ic]]%||%Inf) < (best[[ic]]%||%Inf)){
       best <<- new
     }
-    (new$aic%||%Inf)
+    (new[[ic]]%||%Inf)
   }
   
   model_opts <- expand.grid(p = p, d = d, q = q, P = P, D = D, Q = Q)
   if(stepwise){
     # Prepare model comparison vector
-    ic <- rep(NA_integer_, NROW(model_opts))
+    est_ic <- rep(NA_integer_, NROW(model_opts))
     best_ic <- Inf
     
     # Initial 4 models
@@ -188,19 +193,19 @@ train_arima <- function(.data, formula, specials, stepwise = TRUE,
       k <- k + 1
       
       # Evaluate model
-      ic[step_order[1]] <- do.call(compare_arima, model_opts[step_order[1],])
+      est_ic[step_order[1]] <- do.call(compare_arima, model_opts[step_order[1],])
       
       if(greedy && !initial){
-        if(update_step <- ic[step_order[1]] < best_ic){
+        if(update_step <- est_ic[step_order[1]] < best_ic){
           # Update best model and score
-          best_ic <- ic[step_order[1]]
+          best_ic <- est_ic[step_order[1]]
           current <- as.numeric(model_opts[step_order[1],])
         }
       }
       else{
         if(update_step <- length(step_order) == 1){
-          best_ic <- min(ic, na.rm = TRUE)
-          current <- as.numeric(model_opts[which.min(ic),])
+          best_ic <- min(est_ic, na.rm = TRUE)
+          current <- as.numeric(model_opts[which.min(est_ic),])
         }
       }
       
@@ -209,7 +214,7 @@ train_arima <- function(.data, formula, specials, stepwise = TRUE,
         # Calculate new possible steps
         dist <- apply(model_opts, 1, function(x) sum((x-current)^2))
         step_order <- order(dist, model_opts$P, model_opts$Q, model_opts$p, model_opts$q)[seq_len(sum(dist <= 2))]
-        step_order <- step_order[is.na(ic[step_order])]
+        step_order <- step_order[is.na(est_ic[step_order])]
       }
       else{
         # Move to next possible step
@@ -218,16 +223,16 @@ train_arima <- function(.data, formula, specials, stepwise = TRUE,
     }
   }
   else{
-    ic <- pmap_dbl(model_opts, compare_arima)
+    est_ic <- pmap_dbl(model_opts, compare_arima)
   }
   if (approximation && !is.null(best$arma)) {
     method <- "CSS-ML"
     best <- NULL
-    step_order <- order(ic)[seq_len(sum(!is.na(ic)))]
+    step_order <- order(est_ic)[seq_len(sum(!is.na(est_ic)))]
     for (mod_spec in step_order)
     {
-      ic <- do.call(compare_arima, model_opts[mod_spec,])
-      if (isTRUE(is.finite(ic))) {
+      est_ic <- do.call(compare_arima, model_opts[mod_spec,])
+      if (isTRUE(is.finite(est_ic))) {
         break
       }
     }
@@ -303,6 +308,7 @@ arima_model <- R6::R6Class(NULL,
 #' Estimate an ARIMA model
 #' 
 #' @param formula Model specification (see "Specials" section).
+#' @param ic The information criterion used in selecting the model.
 #' @param stepwise Should stepwise be used?
 #' @param greedy Should the stepwise search move to the next best option immediately?
 #' @param approximation Should CSS be used during model selection?
@@ -366,9 +372,10 @@ arima_model <- R6::R6Class(NULL,
 #' 
 #' @importFrom stats model.matrix
 #' @export
-ARIMA <- function(formula, stepwise = TRUE, greedy = TRUE, 
+ARIMA <- function(formula, ic = c("aicc", "aic", "bic"), stepwise = TRUE, greedy = TRUE, 
                   approximation = FALSE, ...){
-  arima_model$new(!!enquo(formula), stepwise = stepwise, greedy = greedy, 
+  ic <- match.arg(ic)
+  arima_model$new(!!enquo(formula), ic = ic, stepwise = stepwise, greedy = greedy, 
                   approximation = approximation, ...)
 }
 

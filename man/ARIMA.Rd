@@ -4,11 +4,13 @@
 \alias{ARIMA}
 \title{Estimate an ARIMA model}
 \usage{
-ARIMA(formula, stepwise = TRUE, greedy = TRUE, approximation = FALSE,
-  ...)
+ARIMA(formula, ic = c("aicc", "aic", "bic"), stepwise = TRUE,
+  greedy = TRUE, approximation = FALSE, ...)
 }
 \arguments{
 \item{formula}{Model specification (see "Specials" section).}
+
+\item{ic}{The information criterion used in selecting the model.}
 
 \item{stepwise}{Should stepwise be used?}
 
