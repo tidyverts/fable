@@ -426,6 +426,53 @@ tidy.ARIMA <- function(x, ...){
   x$par
 }
 
+#' @export
+report.ARIMA <- function(x, ...){
+  if (length(x$model$coef) > 0) {
+    cat("\nCoefficients:\n")
+    coef <- round(x$model$coef, digits = 4)
+    if (NROW(x$model$var.coef)) {
+      ses <- rep.int(0, length(coef))
+      ses[x$model$mask] <- round(sqrt(diag(x$model$var.coef)), digits = 4)
+      coef <- matrix(coef, 1L, dimnames = list(NULL, names(coef)))
+      coef <- rbind(coef, s.e. = ses)
+    }
+    # Change intercept to mean if no regression variables
+    j <- match("intercept", colnames(coef))
+    if (is.null(x$model$xreg) & !is.na(j)) {
+      colnames(coef)[j] <- "mean"
+    }
+    print.default(coef, print.gap = 2)
+  }
+  cm <- x$model$call$method
+  if (is.null(cm) || cm != "CSS") {
+    cat(
+      "\nsigma^2 estimated as ", format(x$model$sigma2, digits = 4),
+      ":  log likelihood=", format(round(x$model$loglik, 2L)), "\n", sep = ""
+    )
+    # npar <- length(x$coef) + 1
+    npar <- length(x$model$coef[x$model$mask]) + 1
+    missing <- is.na(x$model$residuals)
+    firstnonmiss <- head(which(!missing),1)
+    lastnonmiss <- tail(which(!missing),1)
+    n <- lastnonmiss - firstnonmiss + 1
+    nstar <- n - x$model$arma[6] - x$model$arma[7] * x$model$arma[5]
+    bic <- x$model$aic + npar * (log(nstar) - 2)
+    aicc <- x$model$aic + 2 * npar * (nstar / (nstar - npar - 1) - 1)
+    cat("AIC=", format(round(x$model$aic, 2L)), sep = "")
+    cat("   AICc=", format(round(aicc, 2L)), sep = "")
+    cat("   BIC=", format(round(bic, 2L)), "\n", sep = "")
+  }
+  else {
+    cat(
+      "\nsigma^2 estimated as ", format(x$model$sigma2, digits = 4),
+      ":  part log likelihood=", format(round(x$model$loglik, 2)),
+      "\n", sep = ""
+    )
+  }
+  invisible(x$model)
+}
+
 #' @importFrom stats formula residuals
 #' @export
 forecast.ARIMA <- function(object, new_data = NULL, specials = NULL, ...){
