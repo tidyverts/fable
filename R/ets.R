@@ -511,32 +511,32 @@ model_sum.ETS <- function(x){
 }
 
 #' @export
-report.ETS <- function(x, ...) {
-  cat(paste(model_sum(x), "\n\n"))
-  ncoef <- length(measured_vars(x$states))
+report.ETS <- function(object, ...) {
+  cat(paste(model_sum(object), "\n\n"))
+  ncoef <- length(measured_vars(object$states))
   
-  get_par <- function(par){x$par$estimate[x$par$term==par]}
+  get_par <- function(par){object$par$estimate[object$par$term==par]}
   
   cat("  Smoothing parameters:\n")
   cat(paste("    alpha =", format(get_par("alpha")), "\n"))
-  if (x$spec$trendtype != "N") {
+  if (object$spec$trendtype != "N") {
     cat(paste("    beta  =", format(get_par("beta")), "\n"))
   }
-  if (x$spec$seasontype != "N") {
+  if (object$spec$seasontype != "N") {
     cat(paste("    gamma =", format(get_par("gamma")), "\n"))
   }
-  if (x$spec$damped) {
+  if (object$spec$damped) {
     cat(paste("    phi   =", format(get_par("phi")), "\n"))
   }
   
   cat("\n  Initial states:\n")
-  print.data.frame(x$states[1,measured_vars(x$states)], row.names = FALSE)
+  print.data.frame(object$states[1,measured_vars(object$states)], row.names = FALSE)
   cat("\n")
   
   cat("\n  sigma:  ")
-  cat(round(x$fit$sigma, 4))
-  if (!is.null(x$fit$AIC)) {
-    stats <- c(AIC = x$fit$AIC, AICc = x$fit$AICc, BIC = x$fit$BIC)
+  cat(round(object$fit$sigma, 4))
+  if (!is.null(object$fit$AIC)) {
+    stats <- c(AIC = object$fit$AIC, AICc = object$fit$AICc, BIC = object$fit$BIC)
     cat("\n\n")
     print(stats)
   }
