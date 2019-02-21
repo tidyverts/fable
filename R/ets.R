@@ -442,9 +442,67 @@ tidy.ETS <- function(x, ...){
 
 #' @export
 components.ETS <- function(object, ...){
-  cmp <- match(c(expr_text(index(object$states)), "l", "b", "s1"), colnames(object$states))
+  spec <- object$spec
+  m <- spec$period
+  idx <- index(object$states)
+  response <- measured_vars(object$est)[[1]]
+  
+  cmp <- match(c(expr_text(idx), "l", "b", "s1"), colnames(object$states))
   out <- object$states[,stats::na.exclude(cmp)]
-  `colnames<-`(out, c(expr_text(index(object$states)), "level", "slope", "season")[stats::na.omit(cmp)])
+  colnames(out) <- c(expr_text(index(object$states)), "level", "slope", "season")[stats::na.omit(cmp)]
+  if(spec$seasontype != "N"){
+    seasonal_init <- tsibble(
+      !!expr_text(idx) := object$states[[index(object$states)]][[1]] - rev(seq_len(m-1))*time_unit(interval(object$states)),
+      season = rev(as.numeric(object$states[1,paste0("s", seq_len(m-1) + 1)])),
+      index = !!idx
+    )
+    out <- rbind(seasonal_init, out)
+    seasonalities <- list(season = list(period = m, base = NA_real_))
+  }
+  else{
+    seasonalities <- list()
+  }
+  
+  est_vars <- object$est %>% 
+    transmute(
+      !!sym(response),
+      remainder = !!sym(".resid")
+    )
+  
+  out <- left_join(out, est_vars, by = expr_text(index(object$states)))
+  out <- select(out, intersect(c(expr_text(idx), response, "level", "slope", "season", "remainder"), colnames(out)))
+  
+  eqn <- expr(lag(!!sym("level"), 1))
+  if(spec$trendtype == "A"){
+    if(spec$damped){
+      phi <- object$par$estimate[object$par$term=="phi"]
+      eqn <- expr(!!eqn + !!phi * lag(!!sym("slope"), 1))
+    }
+    else{
+      eqn <- expr(!!eqn + lag(!!sym("slope"), 1))
+    }
+  } else if(spec$trendtype == "M"){
+    if(spec$damped){
+      phi <- object$par$estimate[object$par$term=="phi"]
+      eqn <- expr(!!eqn * lag(!!sym("slope"), 1)^!!phi)
+    }
+    else{
+      eqn <- expr(!!eqn * lag(!!sym("slope"), 1))
+    }
+  }
+  if(spec$seasontype == "A"){
+    eqn <- expr(!!eqn + lag(!!sym("season"), !!m))
+  } else if(spec$seasontype == "M"){
+    eqn <- expr((!!eqn) * lag(!!sym("season"), !!m))
+  }
+  if(spec$errortype == "A"){
+    eqn <- expr(!!eqn + !!sym("remainder"))
+  } else {
+    eqn <- expr((!!eqn)*(1 + !!sym("remainder")))
+  }
+  
+  fablelite::as_dable(out, resp = !!sym(response), method = model_sum(object),
+                      seasons = seasonalities, aliases = list2(!!response := eqn))
 }
 
 #' @export
