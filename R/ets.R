@@ -511,8 +511,8 @@ model_sum.ETS <- function(x){
 }
 
 #' @export
-print.ETS <- function(x, ...) {
-  cat(paste(x$fit$method, "\n\n"))
+report.ETS <- function(x, ...) {
+  cat(paste(model_sum(x), "\n\n"))
   ncoef <- length(measured_vars(x$states))
   
   get_par <- function(par){x$par$estimate[x$par$term==par]}
