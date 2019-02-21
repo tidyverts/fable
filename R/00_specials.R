@@ -116,6 +116,52 @@ fourier.numeric <- function(x, period, K, origin = NULL){
   tibble(!!!fourier_exprs)
 }
 
+#' Common exogenous regressors
+#' 
+#' These special functions provide interfaces to more complicated functions within
+#' the model formulae interface.
+#' 
+#' @section Specials:
+#' 
+#' \subsection{trend}{
+#' The `trend` special includes common linear trend regressors in the model. It also supports piecewise linear trend via the `knots` argument.
+#' \preformatted{
+#' trend(knots = NULL, origin = NULL)
+#' }
+#'
+#' \tabular{ll}{
+#'   `knots`    \tab A vector of times (same class as the data's time index) identifying the position of knots for a piecewise linear trend.\cr
+#'   `origin`   \tab An optional time value to act as the starting time for the trend.
+#' }
+#' }
+#' 
+#' \subsection{season}{
+#' The `season` special includes seasonal dummy variables in the model.
+#' \preformatted{
+#' season(period = "smallest")
+#' }
+#'
+#' \tabular{ll}{
+#'   `period`   \tab The periodic nature of the seasonality. This can be either a number indicating the number of observations in each seasonal period, or text to indicate the duration of the seasonal window (for example, annual seasonality would be "1 year"). 
+#' }
+#' }
+#' 
+#' \subsection{fourier}{
+#' The `fourier` special includes seasonal fourier terms in the model. The maximum order of the fourier terms must be specified using `K`.
+#' \preformatted{
+#' fourier(period = "smallest", K, origin = NULL)
+#' }
+#'
+#' \tabular{ll}{
+#'   `period`   \tab The periodic nature of the seasonality. This can be either a number indicating the number of observations in each seasonal period, or text to indicate the duration of the seasonal window (for example, annual seasonality would be "1 year"). \cr
+#'   `K`        \tab The maximum order of the fourier terms.\cr
+#'   `origin`   \tab An optional time value to act as the starting time for the fourier series.
+#' }
+#' }
+#' 
+#' @format NULL
+#' 
+#' @rdname common_xregs
 common_xregs <- list(
   trend = function(knots = NULL, origin = NULL){
     if(is.null(origin)){

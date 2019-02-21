@@ -64,7 +64,7 @@ xreg(...)
 }
 
 \tabular{ll}{
-\code{...}      \tab Bare expressions for the exogenous regressors (such as \code{log(x)}) \cr
+\code{...}      \tab Bare expressions for the exogenous regressors (such as \code{log(x}) \cr
 }
 }
 }
