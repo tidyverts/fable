@@ -8,7 +8,7 @@ ARIMA(formula, stepwise = TRUE, greedy = TRUE, approximation = FALSE,
   ...)
 }
 \arguments{
-\item{formula}{Model specification.}
+\item{formula}{Model specification (see "Specials" section).}
 
 \item{stepwise}{Should stepwise be used?}
 
@@ -21,6 +21,54 @@ ARIMA(formula, stepwise = TRUE, greedy = TRUE, approximation = FALSE,
 \description{
 Estimate an ARIMA model
 }
+\section{Specials}{
+
+
+\subsection{pdq}{
+The \code{pdq} special is used to specify non-seasonal components of the model.
+\preformatted{
+pdq(p = 0:5, d = 0:2, q = 0:5,
+    start.p = 2, start.q = 2)
+}
+
+\tabular{ll}{
+\code{p}        \tab The order of the non-seasonal auto-regressive (AR) terms. If multiple values are provided, the one which minimises \code{ic} will be chosen. \cr
+\code{d}        \tab The order of integration for non-seasonal differencing. If multiple values are provided, one of the values will be selected via repeated KPSS tests. \cr
+\code{q}        \tab The order of the non-seasonal moving average (MA) terms. If multiple values are provided, the one which minimises \code{ic} will be chosen. \cr
+\code{start.p}  \tab If \code{stepwise = TRUE}, \code{start.p} provides the initial value for \code{p} for the stepwise search procedure. \cr
+\code{start.q}  \tab If \code{stepwise = TRUE}, \code{start.q} provides the initial value for \code{q} for the stepwise search procedure.
+}
+}
+
+\subsection{PDQ}{
+The \code{PDQ} special is used to specify seasonal components of the model.
+\preformatted{
+PDQ(P = 0:2, D = 0:1, Q = 0:2, period = "smallest",
+    start.P = 1, start.Q = 1)
+}
+
+\tabular{ll}{
+\code{P}        \tab The order of the seasonal auto-regressive (SAR) terms. If multiple values are provided, the one which minimises \code{ic} will be chosen. \cr
+\code{D}        \tab The order of integration for seasonal differencing. If multiple values are provided, one of the values will be selected via repeated heuristic tests (based on strength of seasonality from an STL decomposition). \cr
+\code{Q}        \tab The order of the seasonal moving average (SMA) terms. If multiple values are provided, the one which minimises \code{ic} will be chosen. \cr
+\code{period}   \tab The periodic nature of the seasonality. This can be either a number indicating the number of observations in each seasonal period, or text to indicate the duration of the seasonal window (for example, annual seasonality would be "1 year").  \cr
+\code{start.P}  \tab If \code{stepwise = TRUE}, \code{start.P} provides the initial value for \code{P} for the stepwise search procedure. \cr
+\code{start.Q}  \tab If \code{stepwise = TRUE}, \code{start.Q} provides the initial value for \code{Q} for the stepwise search procedure.
+}
+}
+
+\subsection{xreg}{
+Exogenous regressors can be included in an ARIMA model without explicitly using the \code{xreg()} special. Common exogenous regressor specials as specified in \code{\link{common_xregs}} can also be used. These regressors are handled using \code{\link[stats:model.frame]{stats::model.frame()}}, and so interactions and other functionality behaves similarly to \code{\link[stats:lm]{stats::lm()}}.
+\preformatted{
+xreg(...)
+}
+
+\tabular{ll}{
+\code{...}      \tab Bare expressions for the exogenous regressors (such as \code{log(x)}) \cr
+}
+}
+}
+
 \examples{
 # Manual ARIMA specification
 USAccDeaths \%>\% as_tsibble \%>\% 

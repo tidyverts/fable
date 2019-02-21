@@ -302,13 +302,57 @@ arima_model <- R6::R6Class(NULL,
 
 #' Estimate an ARIMA model
 #' 
-#' @param formula Model specification.
+#' @param formula Model specification (see "Specials" section).
 #' @param stepwise Should stepwise be used?
 #' @param greedy Should the stepwise search move to the next best option immediately?
 #' @param approximation Should CSS be used during model selection?
 #' @param ... Further arguments for arima
 #' 
-#' @export
+#' @section Specials:
+#' 
+#' \subsection{pdq}{
+#' The `pdq` special is used to specify non-seasonal components of the model.
+#' \preformatted{
+#' pdq(p = 0:5, d = 0:2, q = 0:5,
+#'     start.p = 2, start.q = 2)
+#' }
+#'
+#' \tabular{ll}{
+#'   `p`        \tab The order of the non-seasonal auto-regressive (AR) terms. If multiple values are provided, the one which minimises `ic` will be chosen. \cr
+#'   `d`        \tab The order of integration for non-seasonal differencing. If multiple values are provided, one of the values will be selected via repeated KPSS tests. \cr
+#'   `q`        \tab The order of the non-seasonal moving average (MA) terms. If multiple values are provided, the one which minimises `ic` will be chosen. \cr
+#'   `start.p`  \tab If `stepwise = TRUE`, `start.p` provides the initial value for `p` for the stepwise search procedure. \cr
+#'   `start.q`  \tab If `stepwise = TRUE`, `start.q` provides the initial value for `q` for the stepwise search procedure.
+#' }
+#' }
+#' 
+#' \subsection{PDQ}{
+#' The `PDQ` special is used to specify seasonal components of the model.
+#' \preformatted{
+#' PDQ(P = 0:2, D = 0:1, Q = 0:2, period = "smallest",
+#'     start.P = 1, start.Q = 1)
+#' }
+#'
+#' \tabular{ll}{
+#'   `P`        \tab The order of the seasonal auto-regressive (SAR) terms. If multiple values are provided, the one which minimises `ic` will be chosen. \cr
+#'   `D`        \tab The order of integration for seasonal differencing. If multiple values are provided, one of the values will be selected via repeated heuristic tests (based on strength of seasonality from an STL decomposition). \cr
+#'   `Q`        \tab The order of the seasonal moving average (SMA) terms. If multiple values are provided, the one which minimises `ic` will be chosen. \cr
+#'   `period`   \tab The periodic nature of the seasonality. This can be either a number indicating the number of observations in each seasonal period, or text to indicate the duration of the seasonal window (for example, annual seasonality would be "1 year").  \cr
+#'   `start.P`  \tab If `stepwise = TRUE`, `start.P` provides the initial value for `P` for the stepwise search procedure. \cr
+#'   `start.Q`  \tab If `stepwise = TRUE`, `start.Q` provides the initial value for `Q` for the stepwise search procedure.
+#' }
+#' }
+#' 
+#' \subsection{xreg}{
+#' Exogenous regressors can be included in an ARIMA model without explicitly using the `xreg()` special. Common exogenous regressor specials as specified in [`common_xregs`] can also be used. These regressors are handled using [stats::model.frame()], and so interactions and other functionality behaves similarly to [stats::lm()].
+#' \preformatted{
+#' xreg(...)
+#' }
+#' 
+#' \tabular{ll}{
+#'   `...`      \tab Bare expressions for the exogenous regressors (such as `log(x`) \cr
+#' }
+#' }
 #' 
 #' @examples 
 #' # Manual ARIMA specification
@@ -321,6 +365,7 @@ arima_model <- R6::R6Class(NULL,
 #'                       fdeaths + fourier(K=4)))
 #' 
 #' @importFrom stats model.matrix
+#' @export
 ARIMA <- function(formula, stepwise = TRUE, greedy = TRUE, 
                   approximation = FALSE, ...){
   arima_model$new(!!enquo(formula), stepwise = stepwise, greedy = greedy, 
