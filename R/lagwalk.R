@@ -259,14 +259,14 @@ tidy.RW <- function(x, ...){
 }
 
 #' @export
-report.RW <- function(x, ...){
+report.RW <- function(object, ...){
   cat("\n")
-  if (x$spec$drift) {
-    row <- x$par$term == "b"
-    cat(paste("Drift: ", round(x$par$estimate[row], 4), 
-              " (se: ", round(x$par$std.error[row], 4), ")\n", sep = ""))
+  if (object$spec$drift) {
+    row <- object$par$term == "b"
+    cat(paste("Drift: ", round(object$par$estimate[row], 4), 
+              " (se: ", round(object$par$std.error[row], 4), ")\n", sep = ""))
   }
-  cat(paste("Residual sd:", round(x$fit$sigma, 4), "\n"))
+  cat(paste("Residual sd:", round(object$fit$sigma, 4), "\n"))
 }
 
 #' @importFrom stats coef

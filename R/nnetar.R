@@ -353,14 +353,15 @@ tidy.NNETAR <- function(x, ...){
 }
 
 #' @export
-report.NNETAR <- function(x, ...){
-  cat(paste("\nAverage of", length(x$model), "networks, each of which is\n"))
-  print(x$model[[1]])
+report.NNETAR <- function(object, ...){
+  cat(paste("\nAverage of", length(object$model), "networks, each of which is\n"))
+  print(object$model[[1]])
   cat(
-    "\nsigma^2 estimated as ", format(mean(residuals(x) ^ 2, na.rm = TRUE), digits = 4),
+    "\nsigma^2 estimated as ", 
+    format(mean(residuals(object) ^ 2, na.rm = TRUE), digits = 4),
     "\n", sep = ""
   )
-  invisible(x)
+  invisible(object)
 }
 
 #' @importFrom stats coef

@@ -85,8 +85,8 @@ tidy.TSLM <- function(x, ...){
 }
 
 #' @export
-report.TSLM <- function(x, ...){
-  cat(utils::capture.output(summary(x[["model"]]))[-1:-3], sep = "\n")
+report.TSLM <- function(object, ...){
+  cat(utils::capture.output(summary(object[["model"]]))[-1:-3], sep = "\n")
 }
 
 #' @importFrom stats predict
