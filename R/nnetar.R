@@ -218,6 +218,18 @@ nnetar_model <- R6::R6Class(NULL,
 #'   `period`   \tab The periodic nature of the seasonality. This can be either a number indicating the number of observations in each seasonal period, or text to indicate the duration of the seasonal window (for example, annual seasonality would be "1 year").  \cr
 #' }
 #' }
+#'  
+#' \subsection{xreg}{
+#' Exogenous regressors can be included in an NNETAR model without explicitly using the `xreg()` special. Common exogenous regressor specials as specified in [`common_xregs`] can also be used. These regressors are handled using [stats::model.frame()], and so interactions and other functionality behaves similarly to [stats::lm()].
+#' \preformatted{
+#' xreg(...)
+#' }
+#' 
+#' \tabular{ll}{
+#'   `...`      \tab Bare expressions for the exogenous regressors (such as `log(x`) \cr
+#' }
+#' }
+#' 
 #' @author Gabriel Caceres, Mitchell O'Hara-Wild & Rob J Hyndman
 #' 
 #' @export

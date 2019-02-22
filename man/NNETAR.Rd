@@ -61,6 +61,17 @@ AR(p = NULL, P = 1, period = "smallest")
 \code{period}   \tab The periodic nature of the seasonality. This can be either a number indicating the number of observations in each seasonal period, or text to indicate the duration of the seasonal window (for example, annual seasonality would be "1 year").  \cr
 }
 }
+
+\subsection{xreg}{
+Exogenous regressors can be included in an NNETAR model without explicitly using the \code{xreg()} special. Common exogenous regressor specials as specified in \code{\link{common_xregs}} can also be used. These regressors are handled using \code{\link[stats:model.frame]{stats::model.frame()}}, and so interactions and other functionality behaves similarly to \code{\link[stats:lm]{stats::lm()}}.
+\preformatted{
+xreg(...)
+}
+
+\tabular{ll}{
+\code{...}      \tab Bare expressions for the exogenous regressors (such as \code{log(x}) \cr
+}
+}
 }
 
 \author{
