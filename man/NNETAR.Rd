@@ -56,9 +56,9 @@ AR(p = NULL, P = 1, period = "smallest")
 }
 
 \tabular{ll}{
-\code{p}        \tab The order of the non-seasonal auto-regressive (AR) terms. If \code{p = NULL}, an optimal number of lags will be selected for a linear AR(p) model via AIC. For seasonal time series, this will be computed on the seasonally adjusted data (via STL decomposition).
-\code{P}        \tab The order of the seasonal auto-regressive (SAR) terms.
-\code{period}   \tab The periodic nature of the seasonality. This can be either a number indicating the number of observations in each seasonal period, or text to indicate the duration of the seasonal window (for example, annual seasonality would be "1 year").  \cr
+\code{p}        \tab The order of the non-seasonal auto-regressive (AR) terms. If \code{p = NULL}, an optimal number of lags will be selected for a linear AR(p) model via AIC. For seasonal time series, this will be computed on the seasonally adjusted data (via STL decomposition). \cr
+\code{P}        \tab The order of the seasonal auto-regressive (SAR) terms. \cr
+\code{period}   \tab The periodic nature of the seasonality. This can be either a number indicating the number of observations in each seasonal period, or text to indicate the duration of the seasonal window (for example, annual seasonality would be "1 year").
 }
 }
 
@@ -69,7 +69,7 @@ xreg(...)
 }
 
 \tabular{ll}{
-\code{...}      \tab Bare expressions for the exogenous regressors (such as \code{log(x}) \cr
+\code{...}      \tab Bare expressions for the exogenous regressors (such as \code{log(x)})
 }
 }
 }

@@ -213,9 +213,9 @@ nnetar_model <- R6::R6Class(NULL,
 #' }
 #'
 #' \tabular{ll}{
-#'   `p`        \tab The order of the non-seasonal auto-regressive (AR) terms. If `p = NULL`, an optimal number of lags will be selected for a linear AR(p) model via AIC. For seasonal time series, this will be computed on the seasonally adjusted data (via STL decomposition).
-#'   `P`        \tab The order of the seasonal auto-regressive (SAR) terms.
-#'   `period`   \tab The periodic nature of the seasonality. This can be either a number indicating the number of observations in each seasonal period, or text to indicate the duration of the seasonal window (for example, annual seasonality would be "1 year").  \cr
+#'   `p`        \tab The order of the non-seasonal auto-regressive (AR) terms. If `p = NULL`, an optimal number of lags will be selected for a linear AR(p) model via AIC. For seasonal time series, this will be computed on the seasonally adjusted data (via STL decomposition). \cr
+#'   `P`        \tab The order of the seasonal auto-regressive (SAR) terms. \cr
+#'   `period`   \tab The periodic nature of the seasonality. This can be either a number indicating the number of observations in each seasonal period, or text to indicate the duration of the seasonal window (for example, annual seasonality would be "1 year").
 #' }
 #' }
 #'  
@@ -226,7 +226,7 @@ nnetar_model <- R6::R6Class(NULL,
 #' }
 #' 
 #' \tabular{ll}{
-#'   `...`      \tab Bare expressions for the exogenous regressors (such as `log(x`) \cr
+#'   `...`      \tab Bare expressions for the exogenous regressors (such as `log(x)`)
 #' }
 #' }
 #' 

@@ -356,7 +356,7 @@ arima_model <- R6::R6Class(NULL,
 #' }
 #' 
 #' \tabular{ll}{
-#'   `...`      \tab Bare expressions for the exogenous regressors (such as `log(x`) \cr
+#'   `...`      \tab Bare expressions for the exogenous regressors (such as `log(x)`)
 #' }
 #' }
 #' 
