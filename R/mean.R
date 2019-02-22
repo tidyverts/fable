@@ -128,6 +128,13 @@ tidy.model_mean <- function(x, ...){
 }
 
 #' @export
+report.model_mean <- function(x, ...){
+  cat("\n")
+  cat(paste("Mean:", round(x$par$estimate, 4), "\n"))
+  cat(paste("Residual sd:", round(x$fit$sigma, 4), "\n"))
+}
+
+#' @export
 model_sum.model_mean <- function(x){
   paste0("MEAN, ", intToUtf8(0x3BC), "=", format(x$par$estimate))
 }
