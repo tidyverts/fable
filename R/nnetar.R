@@ -192,7 +192,7 @@ nnetar_model <- R6::R6Class(NULL,
 #' an NNAR(p,P,k)\[m\] model, which is analogous to an ARIMA(p,0,0)(P,0,0)\[m\]
 #' model but with non-linear functions.
 #'
-#' @inheritParams MEAN
+#' @param formula Model specification (see "Specials" section).
 #' @param size Number of nodes in the hidden layer. Default is half of the
 #' number of input nodes (including external regressors, if given) plus 1.
 #' @param repeats Number of networks to fit with different random starting
@@ -202,6 +202,22 @@ nnetar_model <- R6::R6Class(NULL,
 #' applied after transformations.
 #' @param ... Other arguments passed to `\link[nnet]{nnet}`.
 #'
+#' @section Specials:
+#' 
+#' \subsection{AR}{
+#' The `AR` special is used to specify auto-regressive components in each of the
+#' nodes of the neural network.
+#' 
+#' \preformatted{
+#' AR(p = NULL, P = 1, period = "smallest")
+#' }
+#'
+#' \tabular{ll}{
+#'   `p`        \tab The order of the non-seasonal auto-regressive (AR) terms. If `p = NULL`, an optimal number of lags will be selected for a linear AR(p) model via AIC. For seasonal time series, this will be computed on the seasonally adjusted data (via STL decomposition).
+#'   `P`        \tab The order of the seasonal auto-regressive (SAR) terms.
+#'   `period`   \tab The periodic nature of the seasonality. This can be either a number indicating the number of observations in each seasonal period, or text to indicate the duration of the seasonal window (for example, annual seasonality would be "1 year").  \cr
+#' }
+#' }
 #' @author Gabriel Caceres, Mitchell O'Hara-Wild & Rob J Hyndman
 #' 
 #' @export

@@ -7,7 +7,7 @@
 NNETAR(formula, size = NULL, repeats = 20, scale_inputs = TRUE, ...)
 }
 \arguments{
-\item{formula}{Model specification.}
+\item{formula}{Model specification (see "Specials" section).}
 
 \item{size}{Number of nodes in the hidden layer. Default is half of the
 number of input nodes (including external regressors, if given) plus 1.}
@@ -44,6 +44,25 @@ but with non-linear functions. For seasonal data, the fitted model is called
 an NNAR(p,P,k)[m] model, which is analogous to an ARIMA(p,0,0)(P,0,0)[m]
 model but with non-linear functions.
 }
+\section{Specials}{
+
+
+\subsection{AR}{
+The \code{AR} special is used to specify auto-regressive components in each of the
+nodes of the neural network.
+
+\preformatted{
+AR(p = NULL, P = 1, period = "smallest")
+}
+
+\tabular{ll}{
+\code{p}        \tab The order of the non-seasonal auto-regressive (AR) terms. If \code{p = NULL}, an optimal number of lags will be selected for a linear AR(p) model via AIC. For seasonal time series, this will be computed on the seasonally adjusted data (via STL decomposition).
+\code{P}        \tab The order of the seasonal auto-regressive (SAR) terms.
+\code{period}   \tab The periodic nature of the seasonality. This can be either a number indicating the number of observations in each seasonal period, or text to indicate the duration of the seasonal window (for example, annual seasonality would be "1 year").  \cr
+}
+}
+}
+
 \author{
 Gabriel Caceres, Mitchell O'Hara-Wild & Rob J Hyndman
 }
