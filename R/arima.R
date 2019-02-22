@@ -453,8 +453,8 @@ report.ARIMA <- function(x, ...){
     # npar <- length(x$coef) + 1
     npar <- length(x$model$coef[x$model$mask]) + 1
     missing <- is.na(x$model$residuals)
-    firstnonmiss <- head(which(!missing),1)
-    lastnonmiss <- tail(which(!missing),1)
+    firstnonmiss <- stats::head(which(!missing),1)
+    lastnonmiss <- stats::tail(which(!missing),1)
     n <- lastnonmiss - firstnonmiss + 1
     nstar <- n - x$model$arma[6] - x$model$arma[7] * x$model$arma[5]
     bic <- x$model$aic + npar * (log(nstar) - 2)
