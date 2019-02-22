@@ -114,7 +114,36 @@ snaive_model <- R6::R6Class(NULL,
 #' The seasonal naive model is \deqn{Y_t= Y_{t-m} + Z_t}{Y[t]=Y[t-m] + Z[t]}
 #' where \eqn{Z_t}{Z[t]} is a normal iid error.
 #' 
-#' @param formula Model specification.
+#' @param formula Model specification (see "Specials" section).
+#' @param ... Not used.
+#' 
+#' 
+#' @section Specials:
+#' 
+#' \subsection{lag}{
+#' The `lag` special is used to specify the lag order for the random walk process. 
+#' If left out, this special will automatically be included.
+#' 
+#' \preformatted{
+#' lag(lag = 1)
+#' }
+#'
+#' \tabular{ll}{
+#'   `lag`        \tab The lag order for the random walk process. If `lag = m`, forecasts will return the observation from `m` time periods ago. This can also be provided as text indicating the duration of the lag window (for example, annual seasonal lags would be "1 year").
+#' }
+#' }
+#'  
+#' \subsection{drift}{
+#' The `drift` special can be used to include a drift/trend component into the model. By default, drift is not included unless `drift()` is included in the formula.
+#' 
+#' \preformatted{
+#' drift(drift = TRUE)
+#' }
+#' 
+#' \tabular{ll}{
+#'   `drift`      \tab If `drift = TRUE`, a drift term will be included in the model.
+#' }
+#' }
 #' 
 #' @examples 
 #' library(tsibbledata)
@@ -122,8 +151,8 @@ snaive_model <- R6::R6Class(NULL,
 #'   model(rw = RW(Demand ~ drift()))
 #' 
 #' @export
-RW <- function(formula){
-  rw_model$new(!!enquo(formula))
+RW <- function(formula, ...){
+  rw_model$new(!!enquo(formula), ...)
 }
 
 #' @rdname RW
@@ -142,8 +171,8 @@ NAIVE <- RW
 #' elecdemand %>% model(snaive = SNAIVE(Temperature ~ lag("day")))
 #'
 #' @export
-SNAIVE <- function(formula){
-  snaive_model$new(!!enquo(formula))
+SNAIVE <- function(formula, ...){
+  snaive_model$new(!!enquo(formula), ...)
 }
 
 #' @importFrom fablelite forecast

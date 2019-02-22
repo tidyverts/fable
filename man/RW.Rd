@@ -6,14 +6,16 @@
 \alias{SNAIVE}
 \title{Random walk models}
 \usage{
-RW(formula)
+RW(formula, ...)
 
-NAIVE(formula)
+NAIVE(formula, ...)
 
-SNAIVE(formula)
+SNAIVE(formula, ...)
 }
 \arguments{
-\item{formula}{Model specification.}
+\item{formula}{Model specification (see "Specials" section).}
+
+\item{...}{Not used.}
 }
 \description{
 \code{RW()} returns a random walk model, which is equivalent to an ARIMA(0,1,0)
@@ -33,6 +35,35 @@ forecasts obtained by fitting an ARIMA model directly).
 The seasonal naive model is \deqn{Y_t= Y_{t-m} + Z_t}{Y[t]=Y[t-m] + Z[t]}
 where \eqn{Z_t}{Z[t]} is a normal iid error.
 }
+\section{Specials}{
+
+
+\subsection{lag}{
+The \code{lag} special is used to specify the lag order for the random walk process.
+If left out, this special will automatically be included.
+
+\preformatted{
+lag(lag = 1)
+}
+
+\tabular{ll}{
+\code{lag}        \tab The lag order for the random walk process. If \code{lag = m}, forecasts will return the observation from \code{m} time periods ago. This can also be provided as text indicating the duration of the lag window (for example, annual seasonal lags would be "1 year").
+}
+}
+
+\subsection{drift}{
+The \code{drift} special can be used to include a drift/trend component into the model. By default, drift is not included unless \code{drift()} is included in the formula.
+
+\preformatted{
+drift(drift = TRUE)
+}
+
+\tabular{ll}{
+\code{drift}      \tab If \code{drift = TRUE}, a drift term will be included in the model.
+}
+}
+}
+
 \examples{
 library(tsibbledata)
 elecdemand \%>\% 
