@@ -39,6 +39,11 @@ mean_model <- R6::R6Class(NULL,
 #' right-hand-side will be ignored.
 #' 
 #' @param formula Model specification.
+#' @param ... Not used.
+#' 
+#' @section Specials:
+#' 
+#' This model does not support usage of any specials. It only computes the mean!
 #' 
 #' @examples 
 #' library(tsibbledata)
@@ -46,8 +51,8 @@ mean_model <- R6::R6Class(NULL,
 #'   model(rw = MEAN(Demand))
 #' 
 #' @export
-MEAN <- function(formula){
-  mean_model$new(!!enquo(formula))
+MEAN <- function(formula, ...){
+  mean_model$new(!!enquo(formula), ...)
 }
 
 #' @importFrom fablelite forecast

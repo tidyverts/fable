@@ -4,10 +4,12 @@
 \alias{MEAN}
 \title{Mean models}
 \usage{
-MEAN(formula)
+MEAN(formula, ...)
 }
 \arguments{
 \item{formula}{Model specification.}
+
+\item{...}{Not used.}
 }
 \description{
 \code{MEAN()} returns an iid model applied to the formula's response variable.
@@ -16,6 +18,12 @@ MEAN(formula)
 The model does not use any specials, and so everything on the formula's
 right-hand-side will be ignored.
 }
+\section{Specials}{
+
+
+This model does not support usage of any specials. It only computes the mean!
+}
+
 \examples{
 library(tsibbledata)
 elecdemand \%>\% 
