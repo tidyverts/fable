@@ -37,13 +37,12 @@ pdq(p = 0:5, d = 0:2, q = 0:5,
     start.p = 2, start.q = 2)
 }
 
-\emph{Arguments}
-\itemize{
-\item \code{p}: The order of the non-seasonal auto-regressive (AR) terms. If multiple values are provided, the one which minimises \code{ic} will be chosen.
-\item \code{d}: The order of integration for non-seasonal differencing. If multiple values are provided, one of the values will be selected via repeated KPSS tests.
-\item \code{q}: The order of the non-seasonal moving average (MA) terms. If multiple values are provided, the one which minimises \code{ic} will be chosen.
-\item \code{start.p}: If \code{stepwise = TRUE}, \code{start.p} provides the initial value for \code{p} for the stepwise search procedure.
-\item \code{start.q}: If \code{stepwise = TRUE}, \code{start.q} provides the initial value for \code{q} for the stepwise search procedure.
+\tabular{ll}{
+\code{p}        \tab The order of the non-seasonal auto-regressive (AR) terms. If multiple values are provided, the one which minimises \code{ic} will be chosen. \cr
+\code{d}        \tab The order of integration for non-seasonal differencing. If multiple values are provided, one of the values will be selected via repeated KPSS tests. \cr
+\code{q}        \tab The order of the non-seasonal moving average (MA) terms. If multiple values are provided, the one which minimises \code{ic} will be chosen. \cr
+\code{start.p}  \tab If \code{stepwise = TRUE}, \code{start.p} provides the initial value for \code{p} for the stepwise search procedure. \cr
+\code{start.q}  \tab If \code{stepwise = TRUE}, \code{start.q} provides the initial value for \code{q} for the stepwise search procedure.
 }
 }
 

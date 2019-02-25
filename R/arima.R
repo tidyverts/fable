@@ -145,8 +145,6 @@ train_arima <- function(.data, formula, specials, ic, stepwise = TRUE,
       # Adjust residual variance to be unbiased
       new$sigma2 <- sum(new$residuals ^ 2, na.rm = TRUE) / (nstar - npar + 1)
       
-      # cat(sprintf("%s: \t %s\n", model_sum(new), new$aicc))
-      
       # If automatically selecting a model
       if(NROW(model_opts) > 1){
         # Check for unit roots
@@ -333,12 +331,13 @@ arima_model <- R6::R6Class(NULL,
 #'     start.p = 2, start.q = 2)
 #' }
 #'
-#' *Arguments*
-#' - `p`: The order of the non-seasonal auto-regressive (AR) terms. If multiple values are provided, the one which minimises `ic` will be chosen.
-#' - `d`: The order of integration for non-seasonal differencing. If multiple values are provided, one of the values will be selected via repeated KPSS tests.
-#' - `q`: The order of the non-seasonal moving average (MA) terms. If multiple values are provided, the one which minimises `ic` will be chosen.
-#' - `start.p`: If `stepwise = TRUE`, `start.p` provides the initial value for `p` for the stepwise search procedure.
-#' - `start.q`: If `stepwise = TRUE`, `start.q` provides the initial value for `q` for the stepwise search procedure.
+#' \tabular{ll}{
+#'   `p`        \tab The order of the non-seasonal auto-regressive (AR) terms. If multiple values are provided, the one which minimises `ic` will be chosen. \cr
+#'   `d`        \tab The order of integration for non-seasonal differencing. If multiple values are provided, one of the values will be selected via repeated KPSS tests. \cr
+#'   `q`        \tab The order of the non-seasonal moving average (MA) terms. If multiple values are provided, the one which minimises `ic` will be chosen. \cr
+#'   `start.p`  \tab If `stepwise = TRUE`, `start.p` provides the initial value for `p` for the stepwise search procedure. \cr
+#'   `start.q`  \tab If `stepwise = TRUE`, `start.q` provides the initial value for `q` for the stepwise search procedure.
+#' }
 #' }
 #' 
 #' \subsection{PDQ}{
