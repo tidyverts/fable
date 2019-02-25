@@ -17,7 +17,7 @@ GPL3\cr LazyLoad: \tab yes\cr }
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/tidyverts/fable}
+  \item \url{https://fable.tidyverts.org}
   \item Report bugs at \url{https://github.com/tidyverts/fable/issues}
 }
 
