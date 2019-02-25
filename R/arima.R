@@ -174,8 +174,10 @@ train_arima <- function(.data, formula, specials, ic, stepwise = TRUE,
     (new[[ic]]%||%Inf)
   }
   
-  model_opts <- expand.grid(p = p, d = d, q = q, P = P, D = D, Q = Q) %>% 
-    filter(!!enexpr(order_constraint))
+  model_opts <- expand.grid(p = p, d = d, q = q, P = P, D = D, Q = Q)
+  if(NROW(model_opts) > 1){
+    model_opts <- filter(model_opts, !!enexpr(order_constraint))
+  }
   if(stepwise){
     # Prepare model comparison vector
     est_ic <- rep(NA_integer_, NROW(model_opts))
