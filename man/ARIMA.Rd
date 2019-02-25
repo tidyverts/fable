@@ -5,7 +5,8 @@
 \title{Estimate an ARIMA model}
 \usage{
 ARIMA(formula, ic = c("aicc", "aic", "bic"), stepwise = TRUE,
-  greedy = TRUE, approximation = FALSE, ...)
+  greedy = TRUE, approximation = FALSE, order_constraint = p + q + P
+  + Q <= 5, ...)
 }
 \arguments{
 \item{formula}{Model specification (see "Specials" section).}
@@ -17,6 +18,9 @@ ARIMA(formula, ic = c("aicc", "aic", "bic"), stepwise = TRUE,
 \item{greedy}{Should the stepwise search move to the next best option immediately?}
 
 \item{approximation}{Should CSS be used during model selection?}
+
+\item{order_constraint}{A logical predicate on the orders of \code{p}, \code{d}, \code{q},
+\code{P}, \code{D} and \code{Q} to consider in the search.}
 
 \item{...}{Further arguments for arima}
 }

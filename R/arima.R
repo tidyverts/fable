@@ -1,6 +1,7 @@
 #' @importFrom stats approx lm ts
 train_arima <- function(.data, formula, specials, ic, stepwise = TRUE, 
-                        greedy = TRUE, approximation = FALSE, ...){
+                        greedy = TRUE, approximation = FALSE, 
+                        order_constraint, ...){
   if(length(measured_vars(.data)) > 1){
     abort("Only univariate responses are supported by ARIMA.")
   }
@@ -173,7 +174,8 @@ train_arima <- function(.data, formula, specials, ic, stepwise = TRUE,
     (new[[ic]]%||%Inf)
   }
   
-  model_opts <- expand.grid(p = p, d = d, q = q, P = P, D = D, Q = Q)
+  model_opts <- expand.grid(p = p, d = d, q = q, P = P, D = D, Q = Q) %>% 
+    filter(!!enexpr(order_constraint))
   if(stepwise){
     # Prepare model comparison vector
     est_ic <- rep(NA_integer_, NROW(model_opts))
@@ -312,6 +314,8 @@ arima_model <- R6::R6Class(NULL,
 #' @param stepwise Should stepwise be used?
 #' @param greedy Should the stepwise search move to the next best option immediately?
 #' @param approximation Should CSS be used during model selection?
+#' @param order_constraint A logical predicate on the orders of `p`, `d`, `q`, 
+#' `P`, `D` and `Q` to consider in the search.
 #' @param ... Further arguments for arima
 #' 
 #' @section Specials:
@@ -373,10 +377,11 @@ arima_model <- R6::R6Class(NULL,
 #' @importFrom stats model.matrix
 #' @export
 ARIMA <- function(formula, ic = c("aicc", "aic", "bic"), stepwise = TRUE, greedy = TRUE, 
-                  approximation = FALSE, ...){
+                  approximation = FALSE, order_constraint = p + q + P + Q <= 5, ...){
   ic <- match.arg(ic)
   arima_model$new(!!enquo(formula), ic = ic, stepwise = stepwise, greedy = greedy, 
-                  approximation = approximation, ...)
+                  approximation = approximation,
+                  order_constraint = enexpr(order_constraint), ...)
 }
 
 #' @export
