@@ -512,7 +512,6 @@ model_sum.ETS <- function(x){
 
 #' @export
 report.ETS <- function(object, ...) {
-  cat(paste(model_sum(object), "\n\n"))
   ncoef <- length(measured_vars(object$states))
   
   get_par <- function(par){object$par$estimate[object$par$term==par]}
