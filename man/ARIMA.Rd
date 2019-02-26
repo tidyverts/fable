@@ -49,7 +49,7 @@ pdq(p = 0:5, d = 0:2, q = 0:5,
 \subsection{PDQ}{
 The \code{PDQ} special is used to specify seasonal components of the model.
 \preformatted{
-PDQ(P = 0:2, D = 0:1, Q = 0:2, period = "smallest",
+PDQ(P = 0:2, D = 0:1, Q = 0:2, period = NULL,
     start.P = 1, start.Q = 1)
 }
 

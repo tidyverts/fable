@@ -63,8 +63,11 @@ rw_model <- R6::R6Class(NULL,
                              public = list(
                                model = "RW",
                                specials = new_specials(
-                                 lag = function(lag = 1){
-                                   get_frequencies(lag, self$data)
+                                 lag = function(lag = NULL){
+                                   if(is.null(lag)){
+                                     lag <- 1
+                                   }
+                                   get_frequencies(lag, self$data, .auto = "smallest")
                                  },
                                  drift = function(drift = TRUE){
                                    drift
@@ -80,8 +83,8 @@ snaive_model <- R6::R6Class(NULL,
                              public = list(
                                model = "RW",
                                specials = new_specials(
-                                 lag = function(lag = "smallest"){
-                                   lag <- get_frequencies(lag, self$data)
+                                 lag = function(lag = NULL){
+                                   lag <- get_frequencies(lag, self$data, .auto = "smallest")
                                    if(lag == 1){
                                      abort("Non-seasonal model specification provided, use RW() or provide a different lag specification.")
                                    }
@@ -125,7 +128,7 @@ snaive_model <- R6::R6Class(NULL,
 #' If left out, this special will automatically be included.
 #' 
 #' \preformatted{
-#' lag(lag = 1)
+#' lag(lag = NULL)
 #' }
 #'
 #' \tabular{ll}{

@@ -78,7 +78,7 @@ trend(method = c("N", "A", "Ad"),
 \subsection{season}{
 The \code{season} special is used to specify the form of the seasonal term and associated parameters.
 \preformatted{
-season(method = c("N", "A", "M"), period = "smallest",
+season(method = c("N", "A", "M"), period = NULL,
        gamma = NULL, gammarange = c(1e-04, 0.9999))
 }
 

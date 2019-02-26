@@ -43,7 +43,7 @@ The \code{lag} special is used to specify the lag order for the random walk proc
 If left out, this special will automatically be included.
 
 \preformatted{
-lag(lag = 1)
+lag(lag = NULL)
 }
 
 \tabular{ll}{

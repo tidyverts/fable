@@ -276,9 +276,9 @@ specials_arima <- new_specials(
     start.q <- q[which.min(abs(q - start.q))]
     as.list(environment())
   },
-  PDQ = function(P = 0:2, D = 0:1, Q = 0:2, period = "smallest",
+  PDQ = function(P = 0:2, D = 0:1, Q = 0:2, period = NULL,
                  start.P = 1, start.Q = 1){
-    period <- get_frequencies(period, self$data)
+    period <- get_frequencies(period, self$data, .auto = "smallest")
     if(period == 1){
       # Not seasonal
       P <- 0
@@ -343,7 +343,7 @@ arima_model <- R6::R6Class(NULL,
 #' \subsection{PDQ}{
 #' The `PDQ` special is used to specify seasonal components of the model.
 #' \preformatted{
-#' PDQ(P = 0:2, D = 0:1, Q = 0:2, period = "smallest",
+#' PDQ(P = 0:2, D = 0:1, Q = 0:2, period = NULL,
 #'     start.P = 1, start.Q = 1)
 #' }
 #'

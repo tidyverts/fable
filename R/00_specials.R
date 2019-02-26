@@ -60,7 +60,7 @@ season.tbl_ts <- function(x, period){
   idx_num <- x[[expr_text(tsibble::index(x))]] %>% units_since
   index_interval <- interval(x) %>% time_unit()
   idx_num <- idx_num/index_interval
-  period <- get_frequencies(period, x)
+  period <- get_frequencies(period, x, .auto = "smallest")
   
   season(idx_num, period)
 }
@@ -83,7 +83,7 @@ fourier.tbl_ts <- function(x, period, K, origin = NULL){
   if(!is.null(origin)){
     origin <- units_since(origin)/ index_interval
   }
-  period <- get_frequencies(period, x)
+  period <- get_frequencies(period, x, .auto = "smallest")
   
   fourier(idx_num, period, K, origin)
 }
@@ -138,7 +138,7 @@ fourier.numeric <- function(x, period, K, origin = NULL){
 #' \subsection{season}{
 #' The `season` special includes seasonal dummy variables in the model.
 #' \preformatted{
-#' season(period = "smallest")
+#' season(period = NULL)
 #' }
 #'
 #' \tabular{ll}{
@@ -149,7 +149,7 @@ fourier.numeric <- function(x, period, K, origin = NULL){
 #' \subsection{fourier}{
 #' The `fourier` special includes seasonal fourier terms in the model. The maximum order of the fourier terms must be specified using `K`.
 #' \preformatted{
-#' fourier(period = "smallest", K, origin = NULL)
+#' fourier(period = NULL, K, origin = NULL)
 #' }
 #'
 #' \tabular{ll}{
@@ -172,10 +172,10 @@ common_xregs <- list(
     }
     trend(self$data, knots, origin) %>% as.matrix
   },
-  season = function(period = "smallest"){
+  season = function(period = NULL){
     season(self$data, period) %>% as_model_matrix
   },
-  fourier = function(period = "smallest", K, origin = NULL){
+  fourier = function(period = NULL, K, origin = NULL){
     if(is.null(origin)){
       if(is.null(self$origin)){
         self$origin <- self$data[[expr_text(index(self$data))]][[1]]

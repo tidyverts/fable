@@ -29,7 +29,7 @@ trend(knots = NULL, origin = NULL)
 \subsection{season}{
 The \code{season} special includes seasonal dummy variables in the model.
 \preformatted{
-season(period = "smallest")
+season(period = NULL)
 }
 
 \tabular{ll}{
@@ -40,7 +40,7 @@ season(period = "smallest")
 \subsection{fourier}{
 The \code{fourier} special includes seasonal fourier terms in the model. The maximum order of the fourier terms must be specified using \code{K}.
 \preformatted{
-fourier(period = "smallest", K, origin = NULL)
+fourier(period = NULL, K, origin = NULL)
 }
 
 \tabular{ll}{

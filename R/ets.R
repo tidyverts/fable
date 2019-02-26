@@ -110,7 +110,7 @@ specials_ets <- new_specials(
          beta = beta, betarange = betarange,
          phi = phi, phirange = phirange)
   },
-  season = function(method = c("N", "A", "M"), period = "smallest",
+  season = function(method = c("N", "A", "M"), period = NULL,
                     gamma = NULL, gammarange = c(1e-04, 0.9999)){
     if (!all(is.element(method, c("N", "A", "M")))) {
       abort("Invalid season type")
@@ -119,7 +119,7 @@ specials_ets <- new_specials(
       abort("Lower gamma limits must be less than upper limits")
     }
     
-    m <- get_frequencies(period, self$data)
+    m <- get_frequencies(period, self$data, .auto = "smallest")
     if (m < 1 || NROW(self$data) <= m) {
       method <- "N"
     }
@@ -217,7 +217,7 @@ ets_model <- R6::R6Class(NULL,
 #' \subsection{season}{
 #' The `season` special is used to specify the form of the seasonal term and associated parameters.
 #' \preformatted{
-#' season(method = c("N", "A", "M"), period = "smallest",
+#' season(method = c("N", "A", "M"), period = NULL,
 #'        gamma = NULL, gammarange = c(1e-04, 0.9999))
 #' }
 #'

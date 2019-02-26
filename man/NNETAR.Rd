@@ -52,7 +52,7 @@ The \code{AR} special is used to specify auto-regressive components in each of t
 nodes of the neural network.
 
 \preformatted{
-AR(p = NULL, P = 1, period = "smallest")
+AR(p = NULL, P = 1, period = NULL)
 }
 
 \tabular{ll}{

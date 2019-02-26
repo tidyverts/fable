@@ -140,8 +140,8 @@ wrap_nnet <- function(x, y, repeats, linout = TRUE, trace = FALSE, ...) {
 }
 
 specials_nnetar <- new_specials(
-  AR = function(p = NULL, P = 1, period = "smallest"){
-    period <- get_frequencies(period, self$data)
+  AR = function(p = NULL, P = 1, period = NULL){
+    period <- get_frequencies(period, self$data, .auto = "smallest")
     if (period == 1) {
       if(!missing(P) && P > 0){
         warn("Non-seasonal data, ignoring seasonal lags")
@@ -209,7 +209,7 @@ nnetar_model <- R6::R6Class(NULL,
 #' nodes of the neural network.
 #' 
 #' \preformatted{
-#' AR(p = NULL, P = 1, period = "smallest")
+#' AR(p = NULL, P = 1, period = NULL)
 #' }
 #'
 #' \tabular{ll}{
