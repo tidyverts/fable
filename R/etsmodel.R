@@ -56,7 +56,7 @@ etsmodel <- function(y, m, errortype, trendtype, seasontype, damped,
   
   np <- length(par)
   if (np >= length(y) - 1) { # Not enough data to continue
-    return(list(aic = Inf, bic = Inf, aicc = Inf, mse = Inf, amse = Inf, fit = NULL, par = par, states = init.state))
+    return(list(aic = Inf, bic = Inf, aicc = Inf, mse = Inf, amse = Inf, mae = Inf, fit = NULL, par = par, states = init.state))
   }
   
   env <- etsTargetFunctionInit(
@@ -103,6 +103,7 @@ etsmodel <- function(y, m, errortype, trendtype, seasontype, damped,
   
   mse <- e$amse[1]
   amse <- mean(e$amse)
+  mae <- mean(abs(e$e))
   
   states <- e$states
   
@@ -123,7 +124,8 @@ etsmodel <- function(y, m, errortype, trendtype, seasontype, damped,
   }
   
   return(list(
-    loglik = -0.5 * e$lik, aic = aic, bic = bic, aicc = aicc, mse = mse, amse = amse,
+    loglik = -0.5 * e$lik, aic = aic, bic = bic, aicc = aicc, 
+    mse = mse, amse = amse, mae = mae,
     fit = fred, residuals = e$e, fitted = fits,
     states = states, par = fit.par
   ))

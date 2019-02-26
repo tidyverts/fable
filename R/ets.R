@@ -68,7 +68,7 @@ train_ets <- function(.data, formula, specials, opt_crit,
         ),
       fit = tibble(sigma = sqrt(sum(best$residuals^2, na.rm = TRUE) / (length(y) - length(best$par))),
                    logLik = best$loglik, AIC = best$aic, AICc = best$aicc, BIC = best$bic,
-                   MSE = best$mse, AMSE = best$amse),
+                   MSE = best$mse, AMSE = best$amse, MAE = best$mae),
       states = tsibble(
         !!!set_names(list(seq(idx[[1]] - time_unit(interval(.data)),
                               by = time_unit(interval(.data)),
@@ -401,7 +401,7 @@ refit.ETS <- function(object, new_data, specials = NULL, reestimate = FALSE, rei
       est = mutate(y, .fitted = best$fitted, .resid = best$residuals),
       fit = tibble(sigma = sqrt(sum(best$residuals^2, na.rm = TRUE) / (NROW(y) - length(best$par))),
                    logLik = best$loglik, AIC = best$aic, AICc = best$aicc, BIC = best$bic,
-                   MSE = best$mse, AMSE = best$amse),
+                   MSE = best$mse, AMSE = best$amse, MAE = best$mae),
       states = tsibble(
         !!!set_names(list(seq(idx[[1]] - time_unit(interval(new_data)),
                               by = time_unit(interval(new_data)),
