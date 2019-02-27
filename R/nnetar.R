@@ -159,16 +159,6 @@ specials_nnetar <- new_specials(
   .required_specials = c("AR")
 )
 
-nnetar_model <- R6::R6Class(NULL,
-                        inherit = fablelite::model_definition,
-                        public = list(
-                          model = "NNETAR",
-                          train = train_nnetar,
-                          specials = specials_nnetar,
-                          origin = NULL
-                        )
-)
-
 #' Neural Network Time Series Forecasts
 #'
 #' Feed-forward neural networks with a single hidden layer and lagged inputs
@@ -234,8 +224,10 @@ nnetar_model <- R6::R6Class(NULL,
 #' 
 #' @export
 NNETAR <- function(formula, size = NULL, repeats = 20, scale_inputs = TRUE, ...){
-  nnetar_model$new(!!enquo(formula), size = size, repeats = repeats,
-                   scale_inputs = scale_inputs, ...)
+  nnetar_model <- new_model_class("NNETAR", train_nnetar, specials_nnetar, 
+                                  origin = NULL)
+  new_model_definition(nnetar_model, !!enquo(formula), size = size,
+                       repeats = repeats, scale_inputs = scale_inputs, ...)
 }
 
 #' @export

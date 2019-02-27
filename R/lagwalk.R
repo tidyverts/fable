@@ -49,56 +49,6 @@ train_lagwalk <- function(.data, formula, specials, ...){
   )
 }
 
-lagwalk_model <- R6::R6Class("lagwalk",
-                             inherit = fablelite::model_definition,
-                             public = list(
-                               model = "lagwalk",
-                               train = train_lagwalk,
-                               specials = NULL
-                             )
-)
-
-rw_model <- R6::R6Class(NULL,
-                             inherit = lagwalk_model,
-                             public = list(
-                               model = "RW",
-                               specials = new_specials(
-                                 lag = function(lag = NULL){
-                                   if(is.null(lag)){
-                                     lag <- 1
-                                   }
-                                   get_frequencies(lag, self$data, .auto = "smallest")
-                                 },
-                                 drift = function(drift = TRUE){
-                                   drift
-                                 },
-                                 xreg = no_xreg,
-                                 .required_specials = c("lag")
-                               )
-                             )
-)
-
-snaive_model <- R6::R6Class(NULL,
-                             inherit = lagwalk_model,
-                             public = list(
-                               model = "RW",
-                               specials = new_specials(
-                                 lag = function(lag = NULL){
-                                   lag <- get_frequencies(lag, self$data, .auto = "smallest")
-                                   if(lag == 1){
-                                     abort("Non-seasonal model specification provided, use RW() or provide a different lag specification.")
-                                   }
-                                   lag
-                                 },
-                                 drift = function(drift = TRUE){
-                                   drift
-                                 },
-                                 xreg = no_xreg,
-                                 .required_specials = c("lag")
-                               )
-                             )
-)
-
 #' Random walk models
 #' 
 #' \code{RW()} returns a random walk model, which is equivalent to an ARIMA(0,1,0)
@@ -155,7 +105,21 @@ snaive_model <- R6::R6Class(NULL,
 #' 
 #' @export
 RW <- function(formula, ...){
-  rw_model$new(!!enquo(formula), ...)
+  rw_model <- new_model_class("RW", train = train_lagwalk,
+                              specials = new_specials(
+                                lag = function(lag = NULL){
+                                  if(is.null(lag)){
+                                    lag <- 1
+                                  }
+                                  get_frequencies(lag, self$data, .auto = "smallest")
+                                },
+                                drift = function(drift = TRUE){
+                                  drift
+                                },
+                                xreg = no_xreg,
+                                .required_specials = c("lag")
+                              ))
+  new_model_definition(rw_model, !!enquo(formula), ...)
 }
 
 #' @rdname RW
@@ -175,7 +139,22 @@ NAIVE <- RW
 #'
 #' @export
 SNAIVE <- function(formula, ...){
-  snaive_model$new(!!enquo(formula), ...)
+  snaive_model <- new_model_class("RW", train = train_lagwalk,
+                              specials = new_specials(
+                                lag = function(lag = NULL){
+                                  lag <- get_frequencies(lag, self$data, .auto = "smallest")
+                                  if(lag == 1){
+                                    abort("Non-seasonal model specification provided, use RW() or provide a different lag specification.")
+                                  }
+                                  lag
+                                },
+                                drift = function(drift = TRUE){
+                                  drift
+                                },
+                                xreg = no_xreg,
+                                .required_specials = c("lag")
+                              ))
+  new_model_definition(snaive_model, !!enquo(formula), ...)
 }
 
 #' @importFrom fablelite forecast

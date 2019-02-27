@@ -298,19 +298,6 @@ specials_arima <- new_specials(
   .required_specials = c("pdq", "PDQ")
 )
 
-arima_model <- R6::R6Class(NULL,
-                           inherit = fablelite::model_definition,
-                           public = list(
-                             model = "ARIMA",
-                             train = train_arima,
-                             specials = specials_arima,
-                             origin = NULL,
-                             check = function(.data){
-                               check_gaps(.data)
-                             }
-                           )
-)
-
 #' Estimate an ARIMA model
 #' 
 #' @param formula Model specification (see "Specials" section).
@@ -383,10 +370,15 @@ arima_model <- R6::R6Class(NULL,
 ARIMA <- function(formula, ic = c("aicc", "aic", "bic"), stepwise = TRUE, greedy = TRUE, 
                   approximation = FALSE, order_constraint = p + q + P + Q <= 5, ...){
   ic <- match.arg(ic)
-  arima_model$new(!!enquo(formula), ic = ic, stepwise = stepwise, greedy = greedy, 
-                  approximation = approximation,
-                  order_constraint = enexpr(order_constraint), ...)
+  arima_model <- new_model_class("ARIMA", train = train_arima, 
+                                 specials = specials_arima, origin = NULL,
+                                 check = function(.data) check_gaps(.data))
+  new_model_definition(arima_model, !!enquo(formula), ic = ic,
+                       stepwise = stepwise, greedy = greedy, 
+                       approximation = approximation,
+                       order_constraint = enexpr(order_constraint), ...)
 }
+
 
 #' @export
 fitted.ARIMA <- function(object, ...){

@@ -22,15 +22,6 @@ train_mean <- function(.data, formula, specials, ...){
   )
 }
 
-mean_model <- R6::R6Class(NULL,
-                          inherit = fablelite::model_definition,
-                          public = list(
-                            model = "mean",
-                            train = train_mean,
-                            specials = NULL
-                          )
-)
-
 #' Mean models
 #' 
 #' \code{MEAN()} returns an iid model applied to the formula's response variable.
@@ -52,7 +43,8 @@ mean_model <- R6::R6Class(NULL,
 #' 
 #' @export
 MEAN <- function(formula, ...){
-  mean_model$new(!!enquo(formula), ...)
+  mean_model <- new_model_class("mean", train = train_mean, specials = NULL)
+  new_model_definition(mean_model, !!enquo(formula), ...)
 }
 
 #' @importFrom fablelite forecast

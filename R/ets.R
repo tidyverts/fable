@@ -143,18 +143,6 @@ specials_ets <- new_specials(
   .required_specials = c("error", "trend", "season")
 )
 
-ets_model <- R6::R6Class(NULL,
-                         inherit = fablelite::model_definition,
-                         public = list(
-                           model = "ETS",
-                           train = train_ets,
-                           specials = specials_ets,
-                           check = function(.data){
-                             check_gaps(.data)
-                           }
-                         )
-)
-
 #' Exponential smoothing state space model
 #'
 #' Returns ETS model specified by the formula.
@@ -257,8 +245,12 @@ ETS <- function(formula, opt_crit = c("lik", "amse", "mse", "sigma", "mae"),
   opt_crit <- match.arg(opt_crit)
   bounds <- match.arg(bounds)
   ic <- match.arg(ic)
-  ets_model$new(!!enquo(formula), opt_crit = opt_crit, nmse = nmse,
-                bounds = bounds, ic = ic, restrict = restrict, ...)
+  
+  ets_model <- new_model_class("ETS", train = train_ets, specials = specials_ets,
+                               check = function(.data) check_gaps(.data))
+  new_model_definition(ets_model, !!enquo(formula), opt_crit = opt_crit, nmse = nmse,
+                       bounds = bounds, ic = ic, restrict = restrict, ...
+  )
 }
 
 #' @export

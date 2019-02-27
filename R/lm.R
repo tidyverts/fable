@@ -30,16 +30,6 @@ specials_tslm <- new_specials(
   xreg = model_xreg
 )
 
-tslm_model <- R6::R6Class(NULL,
-                          inherit = fablelite::model_definition,
-                          public = list(
-                            model = "TSLM",
-                            train = train_tslm,
-                            specials = specials_tslm,
-                            origin = NULL
-                          )
-)
-
 #' Fit a linear model with time series components
 #' 
 #' @param formula Model specification.
@@ -56,7 +46,9 @@ tslm_model <- R6::R6Class(NULL,
 #'   model(TSLM(Time ~ trend())) %>% 
 #'   interpolate(olympic_running)
 TSLM <- function(formula, ...){
-  tslm_model$new(!!enquo(formula), ...)
+  tslm_model <- new_model_class("TSLM", train = train_tslm,
+                                specials = specials_tslm, origin = NULL)
+  new_model_definition(tslm_model, !!enquo(formula), ...)
 }
 
 #' @export
