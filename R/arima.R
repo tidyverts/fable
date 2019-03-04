@@ -476,9 +476,13 @@ report.ARIMA <- function(object, ...){
 
 #' @importFrom stats formula residuals
 #' @export
-forecast.ARIMA <- function(object, new_data = NULL, specials = NULL, ...){
+forecast.ARIMA <- function(object, new_data = NULL, specials = NULL, 
+                           bootstrap = FALSE, times = 5000, ...){
   if(!is_regular(new_data)){
-    abort("Forecasts must be regularly spaced")
+    abort("Forecasts must be regularly spaced.")
+  }
+  if(bootstrap){
+    abort("Bootstrapped forecasts for ARIMA are not yet implemented.")
   }
   
   xreg <- specials[c("xreg", names(common_xregs))] %>% 
