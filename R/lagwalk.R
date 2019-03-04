@@ -210,7 +210,7 @@ imitate.RW <- function(object, new_data, bootstrap = FALSE, ...){
     abort("Simulation new_data must be regularly spaced")
   }
   
-  lag <- object$fit$lag
+  lag <- object$spec$lag
   fits <- select(rbind(object$est, object$future), !!index(object$est), !!measured_vars(object$future))
   start_idx <- min(new_data[[expr_text(index(new_data))]])
   start_pos <- match(start_idx, fits[[index(object$est)]])
