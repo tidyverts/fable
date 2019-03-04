@@ -211,6 +211,11 @@ imitate.RW <- function(object, new_data, bootstrap = FALSE, ...){
   }
   
   lag <- object$spec$lag
+  if(object$spec$drift){
+    b <- object$par$estimate
+  } else {
+    b <- 0
+  }
   fits <- select(rbind(object$est, object$future), !!index(object$est), !!measured_vars(object$future))
   start_idx <- min(new_data[[expr_text(index(new_data))]])
   start_pos <- match(start_idx, fits[[index(object$est)]])
@@ -233,10 +238,11 @@ imitate.RW <- function(object, new_data, bootstrap = FALSE, ...){
 
   sim_rw <- function(e){
     # Cumulate errors
-    lag_grp <- rep_len(seq_len(lag), length(e))
-    e <- split(e, lag_grp)
-    cumulative_e <- unsplit(lapply(e, cumsum), lag_grp)
-    rep_len(future, length(e)) + cumulative_e
+    dx <- e + b
+    lag_grp <- rep_len(seq_len(lag), length(dx))
+    dx <- split(dx, lag_grp)
+    cumulative_e <- unsplit(lapply(dx, cumsum), lag_grp)
+    rep_len(future, length(dx)) + cumulative_e
   }
   
   new_data %>% 
