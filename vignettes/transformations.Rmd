@@ -63,10 +63,11 @@ my_scaled_logit <- fablelite::new_transformation(scaled_logit, inv_scaled_logit)
 
 Once you define your transformation as above, it is ready to use anywhere you would normally use a transformation.
 ```{r custom-transformation}
-tsibbledata::UKLungDeaths %>%
+cbind(mdeaths, fdeaths) %>%
+  as_tsibble(gather = FALSE) %>% 
   model(ETS(my_scaled_logit(mdeaths, 750, 3000) ~
               error("A") + trend("N") + season("A"))) %>%
-  summary
+  report()
 ```
 
 ## Forecast means and medians
