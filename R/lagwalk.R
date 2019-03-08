@@ -100,8 +100,8 @@ train_lagwalk <- function(.data, formula, specials, ...){
 #' 
 #' @examples 
 #' library(tsibbledata)
-#' elecdemand %>% 
-#'   model(rw = RW(Demand ~ drift()))
+#' aus_production %>% 
+#'   model(rw = RW(Beer ~ drift()))
 #' 
 #' @export
 RW <- function(formula, ...){
@@ -135,7 +135,8 @@ NAIVE <- RW
 #'
 #' @examples
 #' library(tsibbledata)
-#' elecdemand %>% model(snaive = SNAIVE(Temperature ~ lag("day")))
+#' aus_production %>% 
+#'   model(snaive = SNAIVE(Beer ~ lag("year")))
 #'
 #' @export
 SNAIVE <- function(formula, ...){

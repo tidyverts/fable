@@ -66,13 +66,14 @@ drift(drift = TRUE)
 
 \examples{
 library(tsibbledata)
-elecdemand \%>\% 
-  model(rw = RW(Demand ~ drift()))
+aus_production \%>\% 
+  model(rw = RW(Beer ~ drift()))
 
 
 Nile \%>\% as_tsibble \%>\% model(NAIVE())
 
 library(tsibbledata)
-elecdemand \%>\% model(snaive = SNAIVE(Temperature ~ lag("day")))
+aus_production \%>\% 
+  model(snaive = SNAIVE(Beer ~ lag("year")))
 
 }
