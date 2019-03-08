@@ -38,7 +38,7 @@ train_mean <- function(.data, formula, specials, ...){
 #' 
 #' @examples 
 #' library(tsibbledata)
-#' elecdemand %>% 
+#' aus_elec %>% 
 #'   model(rw = MEAN(Demand))
 #' 
 #' @export

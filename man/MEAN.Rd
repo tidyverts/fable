@@ -26,7 +26,7 @@ This model does not support usage of any specials. It only computes the mean!
 
 \examples{
 library(tsibbledata)
-elecdemand \%>\% 
+aus_elec \%>\% 
   model(rw = MEAN(Demand))
 
 }

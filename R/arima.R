@@ -1,3 +1,5 @@
+globalVariables(c("p", "P", "q", "Q"))
+
 #' @importFrom stats approx lm ts
 train_arima <- function(.data, formula, specials, ic, stepwise = TRUE, 
                         greedy = TRUE, approximation = FALSE, 
