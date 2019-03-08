@@ -81,7 +81,8 @@ USAccDeaths \%>\% as_tsibble \%>\%
   model(arima = ARIMA(log(value) ~ pdq(0,1,1) + PDQ(0,1,1)))
 
 # Automatic ARIMA specification
-tsibbledata::global_economy \%>\% 
+library(tsibbledata)
+global_economy \%>\% 
   filter(Country == "Australia") \%>\%
   model(ARIMA(log(GDP) ~ Population))
 
