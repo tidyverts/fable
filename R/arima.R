@@ -361,9 +361,9 @@ specials_arima <- new_specials(
 #'   model(arima = ARIMA(log(value) ~ pdq(0,1,1) + PDQ(0,1,1)))
 #' 
 #' # Automatic ARIMA specification
-#' tsibbledata::UKLungDeaths %>%
-#'   model(arima = ARIMA(log(mdeaths) ~ pdq(0,1,1) + PDQ(0,0,1) + 
-#'                       fdeaths + fourier(K=4)))
+#' tsibbledata::global_economy %>% 
+#'   filter(Country == "Australia") %>%
+#'   model(ARIMA(log(GDP) ~ Population))
 #' 
 #' @importFrom stats model.matrix
 #' @export
