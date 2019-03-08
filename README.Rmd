@@ -32,14 +32,26 @@ You can install the **development** version from
 devtools::install_github("tidyverts/fable")
 ```
 
+Installing this software requires a compiler
+
 ## Example
 
 ```{r example, message=FALSE}
 library(fable)
 library(tsibbledata)
-UKLungDeaths %>%
-  model(ets = ETS(log(mdeaths))) %>%
-  forecast
+library(lubridate)
+aus_retail %>%
+  filter(
+    State %in% c("New South Wales", "Victoria"),
+    Industry == "Department stores"
+  ) %>% 
+  model(
+    ets = ETS(BoxCox(Turnover, 0.3)),
+    arima = ARIMA(log(Turnover)),
+    snaive = SNAIVE(Turnover)
+  ) %>%
+  forecast %>% 
+  autoplot(filter(aus_retail, year(Month) > 2010), level = NULL)
 ```
 
 You can read more about the functionality of this package and the ideas behind it here: https://tidyverts.github.io/tidy-forecasting-principles/

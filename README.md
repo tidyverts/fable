@@ -27,30 +27,29 @@ You can install the **development** version from
 devtools::install_github("tidyverts/fable")
 ```
 
+Installing this software requires a compiler
+
 ## Example
 
 ``` r
 library(fable)
 library(tsibbledata)
-UKLungDeaths %>%
-  model(ets = ETS(log(mdeaths))) %>%
-  forecast
-#> # A fable: 24 x 4 [1M]
-#> # Key:     .model [1]
-#>    .model    index mdeaths .distribution    
-#>    <chr>     <mth>   <dbl> <dist>           
-#>  1 ets    1980 Jan   1832. t(N(7.5, 0.0095))
-#>  2 ets    1980 Feb   1854. t(N(7.5, 0.0095))
-#>  3 ets    1980 Mar   1732. t(N(7.5, 0.0094))
-#>  4 ets    1980 Apr   1444. t(N(7.3, 0.0089))
-#>  5 ets    1980 May   1155. t(N(7.0, 0.0084))
-#>  6 ets    1980 Jun   1050. t(N(7.0, 0.0082))
-#>  7 ets    1980 Jul   1000. t(N(6.9, 0.0080))
-#>  8 ets    1980 Aug    915. t(N(6.8, 0.0078))
-#>  9 ets    1980 Sep    915. t(N(6.8, 0.0078))
-#> 10 ets    1980 Oct   1081. t(N(7.0, 0.0082))
-#> # … with 14 more rows
+library(lubridate)
+aus_retail %>%
+  filter(
+    State %in% c("New South Wales", "Victoria"),
+    Industry == "Department stores"
+  ) %>% 
+  model(
+    ets = ETS(BoxCox(Turnover, 0.3)),
+    arima = ARIMA(log(Turnover)),
+    snaive = SNAIVE(Turnover)
+  ) %>%
+  forecast %>% 
+  autoplot(filter(aus_retail, year(Month) > 2010), level = NULL)
 ```
+
+<img src="man/figures/README-example-1.png" width="100%" />
 
 You can read more about the functionality of this package and the ideas
 behind it here:
