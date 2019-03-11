@@ -225,7 +225,7 @@ specials_nnetar <- new_specials(
 #' @export
 NNETAR <- function(formula, size = NULL, repeats = 20, scale_inputs = TRUE, ...){
   nnetar_model <- new_model_class("NNETAR", train_nnetar, specials_nnetar, 
-                                  origin = NULL)
+                                  origin = NULL, check = all_tsbl_checks)
   new_model_definition(nnetar_model, !!enquo(formula), size = size,
                        repeats = repeats, scale_inputs = scale_inputs, ...)
 }

@@ -375,7 +375,7 @@ ARIMA <- function(formula, ic = c("aicc", "aic", "bic"), stepwise = TRUE, greedy
   ic <- match.arg(ic)
   arima_model <- new_model_class("ARIMA", train = train_arima, 
                                  specials = specials_arima, origin = NULL,
-                                 check = function(.data) check_gaps(.data))
+                                 check = all_tsbl_checks)
   new_model_definition(arima_model, !!enquo(formula), ic = ic,
                        stepwise = stepwise, greedy = greedy, 
                        approximation = approximation,

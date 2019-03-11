@@ -247,7 +247,7 @@ ETS <- function(formula, opt_crit = c("lik", "amse", "mse", "sigma", "mae"),
   ic <- match.arg(ic)
   
   ets_model <- new_model_class("ETS", train = train_ets, specials = specials_ets,
-                               check = function(.data) check_gaps(.data))
+                               check = all_tsbl_checks)
   new_model_definition(ets_model, !!enquo(formula), opt_crit = opt_crit, nmse = nmse,
                        bounds = bounds, ic = ic, restrict = restrict, ...
   )

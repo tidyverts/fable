@@ -118,7 +118,8 @@ RW <- function(formula, ...){
                                 },
                                 xreg = no_xreg,
                                 .required_specials = c("lag")
-                              ))
+                              ),
+                              check = all_tsbl_checks)
   new_model_definition(rw_model, !!enquo(formula), ...)
 }
 
@@ -154,7 +155,8 @@ SNAIVE <- function(formula, ...){
                                 },
                                 xreg = no_xreg,
                                 .required_specials = c("lag")
-                              ))
+                              ),
+                              check = all_tsbl_checks)
   new_model_definition(snaive_model, !!enquo(formula), ...)
 }
 
