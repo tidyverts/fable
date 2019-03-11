@@ -14,7 +14,7 @@ model_xreg <- function(...){
     lhs = NULL,
     rhs = reduce(enexprs(...), function(.x, .y) call2("+", .x, .y))
   )
-  model.frame(model_formula, data = self$data)
+  model.frame(model_formula, data = self$data, na.action = stats::na.pass)
 }
 
 no_xreg <- function(...){
