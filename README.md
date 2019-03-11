@@ -41,7 +41,7 @@ aus_retail %>%
     Industry == "Department stores"
   ) %>% 
   model(
-    ets = ETS(BoxCox(Turnover, 0.3)),
+    ets = ETS(box_cox(Turnover, 0.3)),
     arima = ARIMA(log(Turnover)),
     snaive = SNAIVE(Turnover)
   ) %>%
