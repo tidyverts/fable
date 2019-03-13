@@ -33,6 +33,7 @@ Installing this software requires a compiler
 
 ``` r
 library(fable)
+library(tsibble)
 library(tsibbledata)
 library(lubridate)
 aus_retail %>%
