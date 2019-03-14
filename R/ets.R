@@ -399,7 +399,7 @@ refit.ETS <- function(object, new_data, specials = NULL, reestimate = FALSE, rei
                               by = time_unit(interval(new_data)),
                               length.out = NROW(best$states))), expr_text(index(new_data))),
         !!!set_names(split(best$states, col(best$states)), colnames(best$states)),
-        index = expr_text(index(new_data))
+        index = !!index(new_data)
       ),
       spec = object$spec
     ),
