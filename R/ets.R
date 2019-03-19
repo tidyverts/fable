@@ -38,8 +38,9 @@ train_ets <- function(.data, formula, specials, opt_crit,
   
   # Find best model
   best <- NULL
+  last_error <- NULL
   compare_ets <- function(errortype, trendtype, seasontype, damped){
-    new <- possibly(quietly(etsmodel), NULL)(
+    new <- safely(quietly(etsmodel))(
       y, m = ets_spec$season$period,
       errortype = errortype, trendtype = trendtype, seasontype = seasontype, damped = damped,
       alpha = ets_spec$trend$alpha, alpharange = ets_spec$trend$alpharange,
@@ -48,12 +49,21 @@ train_ets <- function(.data, formula, specials, opt_crit,
       gamma = ets_spec$season$gamma, gammarange = ets_spec$season$gammarange,
       opt.crit = opt_crit, nmse = nmse, bounds = bounds, ...)
     
-    if((new[[ic]]%||%Inf) < (best[[ic]]%||%Inf)){
+    if(!is.null(new$error)){
+      last_error <<- new$error
+    }
+    new <- new$result
+    
+    if((new[[ic]]%||%Inf) < (best[[ic]]%||%Inf) || is.null(best)){
       best <<- new
     }
     new[[ic]]%||%Inf
   }
   ic <- pmap_dbl(model_opts, compare_ets)
+  
+  if(is.null(best)){
+    abort(last_error$message)
+  }
   
   best_spec <- model_opts[which.min(ic),]
   best_spec$period <- ets_spec$season$period

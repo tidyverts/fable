@@ -56,7 +56,7 @@ etsmodel <- function(y, m, errortype, trendtype, seasontype, damped,
   
   np <- length(par)
   if (np >= length(y) - 1) { # Not enough data to continue
-    return(list(aic = Inf, bic = Inf, aicc = Inf, mse = Inf, amse = Inf, mae = Inf, fit = NULL, par = par, states = init.state))
+    abort("Not enough data to estimate this ETS model.")
   }
   
   env <- etsTargetFunctionInit(
