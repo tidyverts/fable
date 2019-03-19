@@ -21,4 +21,7 @@ all_tsbl_checks <- function(.data){
   check_gaps(.data)
   check_regular(.data)
   check_ordered(.data)
+  if(NROW(.data) == 0){
+    abort("There is no data to model. Please provide a dataset with at least one observation.")
+  }
 }
