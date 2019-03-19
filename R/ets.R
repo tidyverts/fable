@@ -13,6 +13,10 @@ train_ets <- function(.data, formula, specials, opt_crit,
   y <- .data[[measured_vars(.data)]]
   idx <- .data[[expr_text(index(.data))]]
   
+  if(any(is.na(y))){
+    abort("ETS does not support missing values.")
+  }
+  
   # Build possible models
   model_opts <- expand.grid(errortype = ets_spec$error$method,
                             trendtype = ets_spec$trend$method,
@@ -20,10 +24,6 @@ train_ets <- function(.data, formula, specials, opt_crit,
                             stringsAsFactors = FALSE)
   model_opts$damped <- nchar(model_opts$trendtype) > 1
   model_opts$trendtype <- substr(model_opts$trendtype, 1, 1)
-  
-  if(any(is.na(y))){
-    abort("ETS does not support missing values.")
-  }
   
   # Remove bad models
   if(min(y) < 0){

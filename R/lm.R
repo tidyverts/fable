@@ -9,6 +9,11 @@ train_tslm <- function(.data, formula, specials, ...){
   else{
     model_formula <- new_formula(formula, 1, self$specials)
   }
+
+  if(all(is.na(est[[measured_vars(est)]]))){
+    abort("All observations are missing, a model cannot be estimated without data.")
+  }
+  
   fit <- stats::lm(model_formula, .data, na.action = stats::na.exclude, ...)
   fitted <- predict(fit, .data)
   

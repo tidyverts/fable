@@ -5,6 +5,10 @@ train_lagwalk <- function(.data, formula, specials, ...){
   
   y <- .data[[measured_vars(.data)]]
   
+  if(all(is.na(y))){
+    abort("All observations are missing, a model cannot be estimated without data.")
+  }
+  
   drift <- specials$drift[[1]] %||% FALSE
   lag <- specials$lag[[1]]
   

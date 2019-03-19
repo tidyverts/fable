@@ -3,6 +3,11 @@ train_nnetar <- function(.data, formula, specials, size, repeats, scale_inputs, 
   require_package("nnet")
   
   y <- x <- .data[[measured_vars(.data)]]
+  
+  if(all(is.na(y))){
+    abort("All observations are missing, a model cannot be estimated without data.")
+  }
+  
   n <- length(x)
   
   if (n < 3) {

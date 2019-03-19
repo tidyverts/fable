@@ -15,6 +15,10 @@ train_arima <- function(.data, formula, specials, ic, stepwise = TRUE,
   # Get response
   y <- x <- ts(.data[[measured_vars(.data)]], frequency = period)
   
+  if(all(is.na(y))){
+    abort("All observations are missing, a model cannot be estimated without data.")
+  }
+  
   # Check xreg
   xreg <- specials[c("xreg", names(common_xregs))] %>% 
     compact() %>% 
