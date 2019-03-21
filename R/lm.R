@@ -20,7 +20,7 @@ train_tslm <- function(.data, formula, specials, ...){
   structure(
     list(
       model = fit,
-      par = tibble(term = names(coef(fit))%||%chr(),
+      par = tibble(term = names(coef(fit))[!is.na(coef(fit))]%||%chr(),
                    !!!as_tibble(`colnames<-`(coef(summary(fit)), c("estimate", "std.error", "statistic", "p.value")))),
       est = est %>% 
         mutate(.fitted = fitted,
