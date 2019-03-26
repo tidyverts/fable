@@ -138,5 +138,5 @@ report.model_mean <- function(object, ...){
 
 #' @export
 model_sum.model_mean <- function(x){
-  paste0("MEAN, ", intToUtf8(0x3BC), "=", format(x$par$estimate))
+  paste0("MEAN")#, ", intToUtf8(0x3BC), "=", format(x$par$estimate))
 }
