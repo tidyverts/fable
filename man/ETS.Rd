@@ -59,19 +59,19 @@ error(method = c("A", "M"))
 The \code{trend} special is used to specify the form of the trend term and associated parameters.
 \preformatted{
 trend(method = c("N", "A", "Ad"),
-      alpha = NULL, alpharange = c(1e-04, 0.9999),
-      beta = NULL, betarange = c(1e-04, 0.9999),
-      phi = NULL, phirange = c(0.8, 0.98))
+      alpha = NULL, alpha_range = c(1e-04, 0.9999),
+      beta = NULL, beta_range = c(1e-04, 0.9999),
+      phi = NULL, phi_range = c(0.8, 0.98))
 }
 
 \tabular{ll}{
 \code{method}     \tab The form of the trend term: either none ("N"), additive ("A"), multiplicative ("M") or damped variants ("Ad", "Md").\cr
 \code{alpha}      \tab The value of the smoothing parameter for the level. If \code{alpha = 0}, the level will not change over time. Conversely, if \code{alpha = 1} the level will update similarly to a random walk process. \cr
-\code{alpharange} \tab If \code{alpha=NULL}, \code{alpharange} provides bounds for the optimised value of \code{alpha}.\cr
+\code{alpha_range} \tab If \code{alpha=NULL}, \code{alpha_range} provides bounds for the optimised value of \code{alpha}.\cr
 \code{beta}       \tab The value of the smoothing parameter for the slope. If \code{beta = 0}, the slope will not change over time. Conversely, if \code{beta = 1} the level will slope will have no memory of past slopes. \cr
-\code{betarange}  \tab If \code{beta=NULL}, \code{betarange} provides bounds for the optimised value of \code{beta}.\cr
+\code{beta_range}  \tab If \code{beta=NULL}, \code{beta_range} provides bounds for the optimised value of \code{beta}.\cr
 \code{phi}        \tab The value of the dampening parameter for the slope. If \code{phi = 0}, the slope will be dampened immediately (no slope). Conversely, if \code{phi = 1} the slope will not be dampened. \cr
-\code{phirange}   \tab If \code{phi=NULL}, \code{phirange} provides bounds for the optimised value of \code{phi}.
+\code{phi_range}   \tab If \code{phi=NULL}, \code{phi_range} provides bounds for the optimised value of \code{phi}.
 }
 }
 
@@ -79,14 +79,14 @@ trend(method = c("N", "A", "Ad"),
 The \code{season} special is used to specify the form of the seasonal term and associated parameters.
 \preformatted{
 season(method = c("N", "A", "M"), period = NULL,
-       gamma = NULL, gammarange = c(1e-04, 0.9999))
+       gamma = NULL, gamma_range = c(1e-04, 0.9999))
 }
 
 \tabular{ll}{
 \code{method}     \tab The form of the seasonal term: either none ("N"), additive ("A") or multiplicative ("M").\cr
 \code{period}     \tab The periodic nature of the seasonality. This can be either a number indicating the number of observations in each seasonal period, or text to indicate the duration of the seasonal window (for example, annual seasonality would be "1 year").  \cr
 \code{gamma}      \tab The value of the smoothing parameter for the seasonal pattern. If \code{gamma = 0}, the seasonal pattern will not change over time. Conversely, if \code{gamma = 1} the seasonality will have no memory of past seasonal periods. \cr
-\code{gammarange} \tab If \code{gamma=NULL}, \code{gammarange} provides bounds for the optimised value of \code{gamma}.
+\code{gamma_range} \tab If \code{gamma=NULL}, \code{gamma_range} provides bounds for the optimised value of \code{gamma}.
 }
 }
 }

@@ -43,10 +43,10 @@ train_ets <- function(.data, formula, specials, opt_crit,
     new <- safely(quietly(etsmodel))(
       y, m = ets_spec$season$period,
       errortype = errortype, trendtype = trendtype, seasontype = seasontype, damped = damped,
-      alpha = ets_spec$trend$alpha, alpharange = ets_spec$trend$alpharange,
-      beta = ets_spec$trend$beta, betarange = ets_spec$trend$betarange,
-      phi = ets_spec$trend$phi, phirange = ets_spec$trend$phirange,
-      gamma = ets_spec$season$gamma, gammarange = ets_spec$season$gammarange,
+      alpha = ets_spec$trend$alpha, alpharange = ets_spec$trend$alpha_range,
+      beta = ets_spec$trend$beta, betarange = ets_spec$trend$beta_range,
+      phi = ets_spec$trend$phi, phirange = ets_spec$trend$phi_range,
+      gamma = ets_spec$season$gamma, gammarange = ets_spec$season$gamma_range,
       opt.crit = opt_crit, nmse = nmse, bounds = bounds, ...)
     
     if(!is.null(new$error)){
@@ -100,32 +100,32 @@ specials_ets <- new_specials(
     list(method = method)
   },
   trend = function(method = c("N", "A", "Ad"),
-                   alpha = NULL, alpharange = c(1e-04, 0.9999),
-                   beta = NULL, betarange = c(1e-04, 0.9999),
-                   phi = NULL, phirange = c(0.8, 0.98)){
+                   alpha = NULL, alpha_range = c(1e-04, 0.9999),
+                   beta = NULL, beta_range = c(1e-04, 0.9999),
+                   phi = NULL, phi_range = c(0.8, 0.98)){
     if (!all(is.element(method, c("N", "A", "Ad", "M", "Md")))) {
       stop("Invalid trend type")
     }
-    if(alpharange[1]>alpharange[2]){
+    if(alpha_range[1]>alpha_range[2]){
       abort("Lower alpha limits must be less than upper limits")
     }
-    if(betarange[1]>betarange[2]){
+    if(beta_range[1]>beta_range[2]){
       abort("Lower beta limits must be less than upper limits")
     }
-    if(phirange[1]>phirange[2]){
+    if(phi_range[1]>phi_range[2]){
       abort("Lower phi limits must be less than upper limits")
     }
     list(method = method,
-         alpha = alpha, alpharange = alpharange,
-         beta = beta, betarange = betarange,
-         phi = phi, phirange = phirange)
+         alpha = alpha, alpha_range = alpha_range,
+         beta = beta, beta_range = beta_range,
+         phi = phi, phi_range = phi_range)
   },
   season = function(method = c("N", "A", "M"), period = NULL,
-                    gamma = NULL, gammarange = c(1e-04, 0.9999)){
+                    gamma = NULL, gamma_range = c(1e-04, 0.9999)){
     if (!all(is.element(method, c("N", "A", "M")))) {
       abort("Invalid season type")
     }
-    if(gammarange[1]>gammarange[2]){
+    if(gamma_range[1]>gamma_range[2]){
       abort("Lower gamma limits must be less than upper limits")
     }
     
@@ -147,7 +147,7 @@ specials_ets <- new_specials(
         method <- "N"
       }
     }
-    list(method = method, gamma = gamma, gammarange = gammarange, period = m)
+    list(method = method, gamma = gamma, gamma_range = gamma_range, period = m)
   },
   xreg = no_xreg,
   .required_specials = c("error", "trend", "season")
@@ -196,19 +196,19 @@ specials_ets <- new_specials(
 #' The `trend` special is used to specify the form of the trend term and associated parameters.
 #' \preformatted{
 #' trend(method = c("N", "A", "Ad"),
-#'       alpha = NULL, alpharange = c(1e-04, 0.9999),
-#'       beta = NULL, betarange = c(1e-04, 0.9999),
-#'       phi = NULL, phirange = c(0.8, 0.98))
+#'       alpha = NULL, alpha_range = c(1e-04, 0.9999),
+#'       beta = NULL, beta_range = c(1e-04, 0.9999),
+#'       phi = NULL, phi_range = c(0.8, 0.98))
 #' }
 #'
 #' \tabular{ll}{
 #'   `method`     \tab The form of the trend term: either none ("N"), additive ("A"), multiplicative ("M") or damped variants ("Ad", "Md").\cr
 #'   `alpha`      \tab The value of the smoothing parameter for the level. If `alpha = 0`, the level will not change over time. Conversely, if `alpha = 1` the level will update similarly to a random walk process. \cr
-#'   `alpharange` \tab If `alpha=NULL`, `alpharange` provides bounds for the optimised value of `alpha`.\cr
+#'   `alpha_range` \tab If `alpha=NULL`, `alpha_range` provides bounds for the optimised value of `alpha`.\cr
 #'   `beta`       \tab The value of the smoothing parameter for the slope. If `beta = 0`, the slope will not change over time. Conversely, if `beta = 1` the level will slope will have no memory of past slopes. \cr
-#'   `betarange`  \tab If `beta=NULL`, `betarange` provides bounds for the optimised value of `beta`.\cr
+#'   `beta_range`  \tab If `beta=NULL`, `beta_range` provides bounds for the optimised value of `beta`.\cr
 #'   `phi`        \tab The value of the dampening parameter for the slope. If `phi = 0`, the slope will be dampened immediately (no slope). Conversely, if `phi = 1` the slope will not be dampened. \cr
-#'   `phirange`   \tab If `phi=NULL`, `phirange` provides bounds for the optimised value of `phi`.
+#'   `phi_range`   \tab If `phi=NULL`, `phi_range` provides bounds for the optimised value of `phi`.
 #' }
 #' }
 #' 
@@ -216,14 +216,14 @@ specials_ets <- new_specials(
 #' The `season` special is used to specify the form of the seasonal term and associated parameters.
 #' \preformatted{
 #' season(method = c("N", "A", "M"), period = NULL,
-#'        gamma = NULL, gammarange = c(1e-04, 0.9999))
+#'        gamma = NULL, gamma_range = c(1e-04, 0.9999))
 #' }
 #'
 #' \tabular{ll}{
 #'   `method`     \tab The form of the seasonal term: either none ("N"), additive ("A") or multiplicative ("M").\cr
 #'   `period`     \tab The periodic nature of the seasonality. This can be either a number indicating the number of observations in each seasonal period, or text to indicate the duration of the seasonal window (for example, annual seasonality would be "1 year").  \cr
 #'   `gamma`      \tab The value of the smoothing parameter for the seasonal pattern. If `gamma = 0`, the seasonal pattern will not change over time. Conversely, if `gamma = 1` the seasonality will have no memory of past seasonal periods. \cr
-#'   `gammarange` \tab If `gamma=NULL`, `gammarange` provides bounds for the optimised value of `gamma`.
+#'   `gamma_range` \tab If `gamma=NULL`, `gamma_range` provides bounds for the optimised value of `gamma`.
 #' }
 #' }
 #'
