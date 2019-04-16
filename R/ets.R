@@ -16,7 +16,6 @@ train_ets <- function(.data, formula, specials, opt_crit,
   if(any(is.na(y))){
     abort("ETS does not support missing values.")
   }
-  
   # Build possible models
   model_opts <- expand.grid(errortype = ets_spec$error$method,
                             trendtype = ets_spec$trend$method,
@@ -26,14 +25,20 @@ train_ets <- function(.data, formula, specials, opt_crit,
   model_opts$trendtype <- substr(model_opts$trendtype, 1, 1)
   
   # Remove bad models
-  if(min(y) < 0){
-    model_opts <- model_opts[model_opts$errortype != "M",]
+  if(NROW(model_opts) > 1){
+    if(min(y) < 0){
+      model_opts <- model_opts[model_opts$errortype != "M",]
+    }
+    if(restrict){
+      restricted <- with(model_opts, 
+                         (errortype == "A" & (trendtype == "M" | seasontype == "M")) | # AMM, AAM, AMA
+                           (errortype == "M" & trendtype == "M" & seasontype == "A"))    # MMA
+      model_opts <- model_opts[!restricted,]
+    }
   }
-  if(restrict){
-    restricted <- with(model_opts, 
-                       (errortype == "A" & (trendtype == "M" | seasontype == "M")) | # AMM, AAM, AMA
-                         (errortype == "M" & trendtype == "M" & seasontype == "A"))    # MMA
-    model_opts <- model_opts[!restricted,]
+  
+  if(NROW(model_opts) == 0){
+    abort("No valid ETS models have been allowed. Consider allowing different (more stable) models, or enabling the restricted models with `restrict = FALSE`.")
   }
   
   # Find best model
@@ -48,7 +53,6 @@ train_ets <- function(.data, formula, specials, opt_crit,
       phi = ets_spec$trend$phi, phirange = ets_spec$trend$phi_range,
       gamma = ets_spec$season$gamma, gammarange = ets_spec$season$gamma_range,
       opt.crit = opt_crit, nmse = nmse, bounds = bounds, ...)
-    
     if(!is.null(new$error)){
       last_error <<- new$error
     }
