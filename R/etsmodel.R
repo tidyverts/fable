@@ -320,7 +320,7 @@ initstate <- function(y, m, trendtype, seasontype) {
       stop("You've got to be joking (not enough data).")
     } else if (n < 3 * m) # Fit simple Fourier model.
     {
-      fouriery <- fourier(seq_along(y), m, 1)
+      fouriery <- as.matrix(fourier(seq_along(y), m, 1))
       trendy <- seq_along(y)
       fit <- stats::lm(y ~ trendy + fouriery)
       if (seasontype == "A") {
