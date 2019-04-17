@@ -368,6 +368,7 @@ specials_arima <- new_specials(
 #' 
 #' # Automatic ARIMA specification
 #' library(tsibble)
+#' library(dplyr)
 #' tsibbledata::global_economy %>% 
 #'   filter(Country == "Australia") %>%
 #'   model(ARIMA(log(GDP) ~ Population))

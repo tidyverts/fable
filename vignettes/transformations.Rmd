@@ -23,6 +23,7 @@ The transformation used for the model is defined on the left of the tilde (`~`) 
 
 ```{r sqrt}
 library(tsibble)
+library(dplyr)
 tourism %>%
   filter(Region == "Melbourne") %>% 
   model(ETS(sqrt(Trips)))

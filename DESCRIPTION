@@ -25,6 +25,7 @@ Imports:
     Rcpp (>= 0.11.0),
     rlang (>= 0.2.0),
     stats,
+    dplyr (>= 0.8.0),
     tsibble (>= 0.7.0)
 Suggests:
     covr,

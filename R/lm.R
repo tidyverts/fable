@@ -19,7 +19,7 @@ train_tslm <- function(.data, formula, specials, ...){
   
   # Set up fit measures
   n <- length(fit$residuals)
-  aic <- extractAIC(fit)
+  aic <- stats::extractAIC(fit)
   k <- aic[1] - 1
   smmry <- summary(fit)
   
@@ -33,13 +33,14 @@ train_tslm <- function(.data, formula, specials, ...){
                .resid = !!residuals(fit)),
       fit = tibble(r.squared = smmry$r.squared, adj.r.squared = smmry$adj.r.squared, 
                    sigma = smmry$sigma, statistic = smmry$fstatistic[1]%||%NA,
-                   p.value = possibly(pf, NA)(smmry$fstatistic[1], smmry$fstatistic[2], smmry$fstatistic[3], lower.tail = FALSE),
+                   p.value = possibly(stats::pf, NA)(smmry$fstatistic[1], 
+                     smmry$fstatistic[2], smmry$fstatistic[3], lower.tail = FALSE),
                    df = smmry$df[1],
                    logLik = as.numeric(possibly(stats::logLik, NA)(fit)),
                    AIC = aic[2] + 2,
-                   AICc = AIC + 2 * (k + 2) * (k + 3) / (n - k - 3),
-                   BIC = AIC + (k + 2) * (log(n) - 2),
-                   CV = mean((residuals(fit)/(1-hatvalues(fit)))^2, na.rm = TRUE),
+                   AICc = !!sym("AIC") + 2 * (k + 2) * (k + 3) / (n - k - 3),
+                   BIC = !!sym("AIC") + (k + 2) * (log(n) - 2),
+                   CV = mean((residuals(fit)/(1-stats::hatvalues(fit)))^2, na.rm = TRUE),
                    deviance = as.numeric(possibly(stats::deviance, NA)(fit)),
                    df.residual = as.numeric(possibly(stats::df.residual, NA)(fit))
       )

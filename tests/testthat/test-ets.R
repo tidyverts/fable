@@ -42,5 +42,5 @@ test_that("ETS", {
     imitate(USAccDeaths_tbl)
   fable_fit %>% 
     imitate(USAccDeaths_tbl %>% 
-              tsibble::mutate(index = index + 72))
+              dplyr::mutate(index = index + 72))
 })
