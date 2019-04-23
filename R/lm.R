@@ -129,7 +129,8 @@ imitate.TSLM <- function(object, new_data, ...){
 
 #' @export
 interpolate.TSLM <- function(object, new_data, ...){
-  resp <- measured_vars(object$est)[1]
+  tm <- terms(object$model)
+  resp <- expr_text((tm%@%"variables")[[tm%@%"response" + 1]])
   missingVals <- is.na(new_data[[resp]])
   new_data[[resp]][missingVals] <- object$est$.fitted[missingVals]
   new_data
