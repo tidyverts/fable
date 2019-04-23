@@ -36,6 +36,7 @@ library(fable)
 library(tsibble)
 library(tsibbledata)
 library(lubridate)
+library(dplyr)
 aus_retail %>%
   filter(
     State %in% c("New South Wales", "Victoria"),
