@@ -4,6 +4,7 @@ train_lagwalk <- function(.data, formula, specials, ...){
   }
   
   y <- .data[[measured_vars(.data)]]
+  n <- length(y)
   
   if(all(is.na(y))){
     abort("All observations are missing, a model cannot be estimated without data.")
@@ -21,7 +22,7 @@ train_lagwalk <- function(.data, formula, specials, ...){
     }
   }
   
-  fitted <- c(rep(NA, lag), utils::head(fits, -lag))
+  fitted <- c(rep(NA, min(lag, n)), utils::head(fits, -lag))
   if(drift){
     fit <- summary(stats::lm(y-fitted ~ 1, na.action=stats::na.exclude))
     b <- fit$coefficients[1,1]
@@ -46,7 +47,8 @@ train_lagwalk <- function(.data, formula, specials, ...){
       fit = tibble(sigma = sigma),
       spec = tibble(lag = lag, drift = drift),
       future = mutate(new_data(.data, lag), 
-                      !!expr_text(model_lhs(self)) := utils::tail(fits, lag))
+                      !!expr_text(model_lhs(self)) := y[c(rep(NA, max(0, lag - n)), y[seq_len(min(n, lag)) + n - min(n, lag)])]
+      )
     ),
     class = "RW"
   )
@@ -198,6 +200,7 @@ forecast.RW <- function(object, new_data, specials = NULL, bootstrap = FALSE, ti
     dist <- dist_sim(sim)
   }  else {
     mse <- mean(object$est$.resid^2, na.rm=TRUE)
+    if(is.nan(mse)) mse <- NA
     se  <- sqrt(mse*steps + (steps*b.se)^2)
     # Adjust prediction intervals to allow for drift coefficient standard error
     if (object$spec$drift) {
