@@ -47,7 +47,7 @@ train_lagwalk <- function(.data, formula, specials, ...){
       fit = tibble(sigma = sigma),
       spec = tibble(lag = lag, drift = drift),
       future = mutate(new_data(.data, lag), 
-                      !!expr_text(model_lhs(self)) := y[c(rep(NA, max(0, lag - n)), y[seq_len(min(n, lag)) + n - min(n, lag)])]
+                      !!expr_text(model_lhs(self)) := y[c(rep(NA, max(0, lag - n)), seq_len(min(n, lag)) + n - min(n, lag))]
       )
     ),
     class = "RW"
