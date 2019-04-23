@@ -28,9 +28,7 @@ train_tslm <- function(.data, formula, specials, ...){
       model = fit,
       par = tibble(term = names(coef(fit))[!is.na(coef(fit))]%||%chr(),
                    !!!as_tibble(`colnames<-`(coef(smmry), c("estimate", "std.error", "statistic", "p.value")))),
-      est = est %>% 
-        mutate(.fitted = fitted,
-               .resid = !!residuals(fit)),
+      est = tibble(.fitted = fitted, .resid = !!residuals(fit)),
       fit = tibble(r.squared = smmry$r.squared, adj.r.squared = smmry$adj.r.squared, 
                    sigma = smmry$sigma, statistic = smmry$fstatistic[1]%||%NA,
                    p.value = possibly(stats::pf, NA)(smmry$fstatistic[1], 
@@ -83,11 +81,6 @@ fitted.TSLM <- function(object, ...){
 #' @export
 residuals.TSLM <- function(object, ...){
   object$est[[".resid"]]
-}
-
-#' @export
-augment.TSLM <- function(x, ...){
-  x$est
 }
 
 #' @export

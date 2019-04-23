@@ -404,7 +404,7 @@ refit.ETS <- function(object, new_data, specials = NULL, reestimate = FALSE, rei
   structure(
     list(
       par = tibble(term = names(best$par), estimate = best$par),
-      est = mutate(y, .fitted = best$fitted, .resid = best$residuals),
+      est = tibble(.fitted = best$fitted, .resid = best$residuals),
       fit = tibble(sigma = sqrt(sum(best$residuals^2, na.rm = TRUE) / (NROW(y) - length(best$par))),
                    logLik = best$loglik, AIC = best$aic, AICc = best$aicc, BIC = best$bic,
                    MSE = best$mse, AMSE = best$amse, MAE = best$mae),
@@ -429,11 +429,6 @@ fitted.ETS <- function(object, ...){
 #' @export
 residuals.ETS <- function(object, ...){
   object$est[[".resid"]]
-}
-
-#' @export
-augment.ETS <- function(x, ...){
-  x$est
 }
 
 #' @export

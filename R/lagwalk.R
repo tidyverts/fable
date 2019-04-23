@@ -39,8 +39,7 @@ train_lagwalk <- function(.data, formula, specials, ...){
     list(
       par = tibble(term = if(drift) "b" else chr(),
                    estimate = b%||%dbl(), std.error = b.se%||%dbl()),
-      est = .data %>% 
-        mutate(
+      est = tibble(
           .fitted = fitted,
           .resid = res
         ),
@@ -265,11 +264,6 @@ fitted.RW <- function(object, ...){
 #' @export
 residuals.RW <- function(object, ...){
   object$est[[".resid"]]
-}
-
-#' @export
-augment.RW <- function(x, ...){
-  x$est
 }
 
 #' @export

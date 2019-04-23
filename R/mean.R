@@ -15,11 +15,7 @@ train_mean <- function(.data, formula, specials, ...){
   structure(
     list(
       par = tibble(term = "mean", estimate = y_mean, std.error = sigma / sqrt(n)),
-      est = .data %>% 
-        mutate(
-          .fitted = fits,
-          .resid = res
-        ),
+      est = tibble(.fitted = fits, .resid = res),
       fit = tibble(sigma = sigma),
       spec = tibble()
     ),
@@ -112,11 +108,6 @@ fitted.model_mean <- function(object, ...){
 #' @export
 residuals.model_mean <- function(object, ...){
   object$est[[".resid"]]
-}
-
-#' @export
-augment.model_mean <- function(x, ...){
-  x$est
 }
 
 #' @export

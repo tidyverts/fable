@@ -124,11 +124,7 @@ train_nnetar <- function(.data, formula, specials, size, repeats, scale_inputs, 
     list(
       model = nn_models,
       par = tibble(),
-      est = .data %>% 
-        mutate(
-          .fitted = fits,
-          .resid = res
-        ),
+      est = tibble(.fitted = fits, .resid = res),
       fit = tibble(sigma = sd(res, na.rm = TRUE)),
       spec = tibble(period = period, p = p, P = P, size = size, lags = list(lags)),
       scales = list(y = y_scale, xreg = xreg_scale),
@@ -360,11 +356,6 @@ fitted.NNETAR <- function(object, ...){
 #' @export
 residuals.NNETAR <- function(object, ...){
   object$est[[".resid"]]
-}
-
-#' @export
-augment.NNETAR <- function(x, ...){
-  x$est
 }
 
 #' @export

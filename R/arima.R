@@ -256,9 +256,9 @@ train_arima <- function(.data, formula, specials, ic, stepwise = TRUE,
   structure(
     list(
       par = tibble(term = names(coef(best))%||%chr(), estimate = coef(best)%||%dbl()),
-      est = mutate(.data,
-                   .fitted = as.numeric(y - best$residuals),
-                   .resid = as.numeric(best$residuals)
+      est = tibble(
+        .fitted = as.numeric(y - best$residuals), 
+        .resid = as.numeric(best$residuals)
       ),
       fit = tibble(sigma = sqrt(best$sigma2),
                    logLik = best$loglik,
@@ -418,11 +418,6 @@ residuals.ARIMA <- function(object, type = "innovation", ...){
   else{
     abort(sprintf('Residuals of `type = "%s"` are not supported by ARIMA models', type))
   }
-}
-
-#' @export
-augment.ARIMA <- function(x, ...){
-  x$est
 }
 
 #' @export
