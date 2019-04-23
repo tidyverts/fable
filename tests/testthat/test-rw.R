@@ -68,3 +68,15 @@ test_that("SNAIVE", {
     "SNAIVE"
   )
 })
+
+test_that("RW short", {
+  library(tsibble)
+  expect_warning(
+    fc <- tsibble(year = 2010:2012, y = 1:3, index = year) %>% 
+      model(SNAIVE(y ~ lag(4))) %>% 
+      forecast(h = 4),
+    "series is too short"
+  )
+  
+  expect_equal(fc$y, c(NA, 1, 2, 3))
+})
