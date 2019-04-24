@@ -2,12 +2,12 @@ Package: fable
 Title: Forecasting tidy time series
 Version: 0.0.0.9100
 Authors@R: 
-    c(person(given = "Rob",
-             family = "Hyndman",
-             role = c("aut", "cre", "cph"),
-             email = "Rob.Hyndman@monash.edu"),
-      person(given = "Mitchell",
+    c(person(given = "Mitchell",
              family = "O'Hara-Wild",
+             email = "mail@mitchelloharawild.com",
+             role = c("aut", "cre")),
+      person(given = "Rob",
+             family = "Hyndman",
              role = "aut"),
       person(given = "Earo",
              family = "Wang",
