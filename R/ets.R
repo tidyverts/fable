@@ -75,10 +75,11 @@ train_ets <- function(.data, formula, specials, opt_crit,
   structure(
     list(
       par = tibble(term = names(best$par), estimate = best$par),
-      est = tibble(
-        .fitted = best$fitted,
-        .resid = best$residuals
-      ),
+      est = .data %>% 
+        mutate(
+          .fitted = best$fitted,
+          .resid = best$residuals
+        ),
       fit = tibble(sigma = sqrt(sum(best$residuals^2, na.rm = TRUE) / (length(y) - length(best$par))),
                    logLik = best$loglik, AIC = best$aic, AICc = best$aicc, BIC = best$bic,
                    MSE = best$mse, AMSE = best$amse, MAE = best$mae),
