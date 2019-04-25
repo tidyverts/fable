@@ -40,7 +40,7 @@ train_lagwalk <- function(.data, formula, specials, ...){
     list(
       par = tibble(term = if(drift) "b" else chr(),
                    estimate = b%||%dbl(), std.error = b.se%||%dbl()),
-      est = tibble(
+      est = .data %>% transmute(
           .fitted = fitted,
           .resid = res
         ),
@@ -184,7 +184,6 @@ forecast.RW <- function(object, new_data, specials = NULL, bootstrap = FALSE, ti
   if(!object$spec$drift){
     b <- b.se <- 0
   }
-  
   # Point forecasts
   fc <- rep(object$future[[measured_vars(object$future)[1]]], fullperiods)[1:h] +
     steps*b
