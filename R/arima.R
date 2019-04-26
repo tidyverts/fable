@@ -252,6 +252,12 @@ train_arima <- function(.data, formula, specials, ic, stepwise = TRUE,
     stop("Could not find an appropriate ARIMA model.")
   }
   
+  # Compute ARMA roots
+  ar <- best$model$phi
+  ma <- best$model$theta
+  arroot <- if(is_empty(ar) || !any(ar > 0)) cpl() else polyroot(c(1, -ar[seq_len(max(which(abs(ar) > 1e-8)))]))
+  maroot <- if(is_empty(ma) || !any(ma > 0)) cpl() else polyroot(c(1, ma[seq_len(max(which(abs(ma) > 1e-8)))]))
+  
   # Output model
   structure(
     list(
@@ -262,9 +268,8 @@ train_arima <- function(.data, formula, specials, ic, stepwise = TRUE,
       ),
       fit = tibble(sigma = sqrt(best$sigma2),
                    logLik = best$loglik,
-                   AIC = best$aic,
-                   AICc = best$aicc,
-                   BIC = best$bic),
+                   AIC = best$aic, AICc = best$aicc, BIC = best$bic,
+                   ar_roots = list(arroot), ma_roots = list(maroot)),
       spec = tibble(period = period),
       model = best,
       xreg = xreg
