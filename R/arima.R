@@ -255,8 +255,8 @@ train_arima <- function(.data, formula, specials, ic, stepwise = TRUE,
   # Compute ARMA roots
   ar <- best$model$phi
   ma <- best$model$theta
-  arroot <- if(is_empty(ar) || !any(ar > 0)) cpl() else polyroot(c(1, -ar[seq_len(max(which(abs(ar) > 1e-8)))]))
-  maroot <- if(is_empty(ma) || !any(ma > 0)) cpl() else polyroot(c(1, ma[seq_len(max(which(abs(ma) > 1e-8)))]))
+  arroot <- if(is_empty(ar) || !any(abs(ar) > 0)) cpl() else polyroot(c(1, -ar[seq_len(max(which(abs(ar) > 1e-8)))]))
+  maroot <- if(is_empty(ma) || !any(abs(ma) > 0)) cpl() else polyroot(c(1, ma[seq_len(max(which(abs(ma) > 1e-8)))]))
   
   # Output model
   structure(
