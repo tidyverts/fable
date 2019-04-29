@@ -561,10 +561,10 @@ model_sum.Arima <- function(x){
 arima_constant <- function(n, d, D, period){
   constant <- rep(1, n)
   if(d > 0){
-    constant <- diffinv(constant, differences = d, xi = rep(1, d))[seq_len(n)]
+    constant <- stats::diffinv(constant, differences = d, xi = rep(1, d))[seq_len(n)]
   }
   if(D > 0){
-    constant <- diffinv(constant, lag = period, differences = D, xi = rep(1, period*D))[seq_len(n)]
+    constant <- stats::diffinv(constant, lag = period, differences = D, xi = rep(1, period*D))[seq_len(n)]
   }
   constant
 }
