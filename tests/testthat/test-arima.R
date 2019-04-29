@@ -2,7 +2,7 @@ context("test-arima.R")
 
 test_that("ARIMA", {
   # Automatic model selection
-  fable_fit <- USAccDeaths_tbl %>% model(arima = ARIMA(value ~ pdq(d = 1) + PDQ(D = 1)))
+  fable_fit <- USAccDeaths_tbl %>% model(arima = ARIMA(value))
   stats_fit <- arima(USAccDeaths, c(0,1,1), list(order = c(0,1,1), 12))
   
   expect_identical(
