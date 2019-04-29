@@ -74,7 +74,7 @@ train_ets <- function(.data, formula, specials, opt_crit,
   
   structure(
     list(
-      par = tibble(term = names(best$par), estimate = best$par),
+      par = tibble(term = names(best$par) %||% chr(), estimate = best$par %||% dbl()),
       est = .data %>% 
         mutate(
           .fitted = best$fitted,
