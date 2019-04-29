@@ -29,6 +29,7 @@ Imports:
     tsibble (>= 0.7.0)
 Suggests:
     covr,
+    feasts,
     forecast,
     knitr,
     nnet,

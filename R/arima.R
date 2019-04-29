@@ -65,7 +65,9 @@ train_arima <- function(.data, formula, specials, ic, stepwise = TRUE,
   # Choose seasonal differencing
   if(length(D) > 1)
   {
+    require_package("feasts")
     # Valid xregs
+    
     if(!is.null(xreg)){
       keep <- map_lgl(D, function(.x){
         diff_xreg <- diff(xreg, lag = period, differences = .x)
@@ -73,23 +75,14 @@ train_arima <- function(.data, formula, specials, ic, stepwise = TRUE,
       })
       D <- D[keep]
     }
-    # Non-missing y
-    keep <- map_lgl(D, function(.x){
-      dx <- diff(x, lag = period, differences = .x)
-      !all(is.na(dx))
-    })
-    D <- D[keep]
     
-    # Estimate the test
-    keep <- map_lgl(D[-1]-1, function(.x) {
-      seas_heuristic(diff(x, lag = period, differences = .x)) > 0.64
-    })
-    D <- max(D[c(TRUE, keep)], na.rm = TRUE)
+    D <- unname(feasts::unitroot_nsdiffs(x, differences = D, .period = period))
   }
   x <- diff(x, lag = period, differences = D)
   diff_xreg <- diff(xreg, lag = period, differences = D)
-  
   if (length(d) > 1) {
+    require_package("feasts")
+    
     # Valid xregs
     if(!is.null(xreg)){
       keep <- map_lgl(d, function(.x){
@@ -98,19 +91,8 @@ train_arima <- function(.data, formula, specials, ic, stepwise = TRUE,
       })
       d <- d[keep]
     }
-    # Non-missing y
-    keep <- map_lgl(d, function(.x){
-      dx <- diff(x, differences = .x)
-      !all(is.na(dx))
-    })
-    d <- d[keep]
     
-    # Estimate the test
-    keep <- map_lgl(d[-1]-1, function(.x) {
-      test <- kpss_test(diff(x, differences = .x))
-      approx(test$cval[1,], as.numeric(sub("pct", "", colnames(test$cval)))/100, xout=test$teststat[1], rule=2)$y < 0.05
-    })
-    d <- max(d[c(TRUE, keep)], na.rm = TRUE)
+    d <- unname(feasts::unitroot_ndiffs(x, differences = d))
   }
   
   # Check number of differences selected
@@ -567,69 +549,4 @@ arima_constant <- function(n, d, D, period){
     constant <- stats::diffinv(constant, lag = period, differences = D, xi = rep(1, period*D))[seq_len(n)]
   }
   constant
-}
-
-# Adjusted from robjhyndman/tsfeatures
-#' @importFrom stats stl var
-seas_heuristic <- function(x, period){
-  stlfit <- stl(x, s.window = 13)
-  remainder <- stlfit$time.series[,"remainder"]
-  seasonal <- stlfit$time.series[, "seasonal"]
-  vare <- var(remainder, na.rm = TRUE)
-  max(0, min(1, 1 - vare/var(remainder + seasonal, na.rm = TRUE)))
-}
-
-# Adjusted from urca
-#' @importFrom stats lm na.omit
-kpss_test <- function(y, type = c("mu", "tau"), 
-                       lags = c("short", "long", "nil"), use.lag = NULL){
-  y <- na.omit(as.vector(y))
-  n <- length(y)
-  type <- match.arg(type)
-  lags <- match.arg(lags)
-  if (!(is.null(use.lag))) {
-    lmax <- as.integer(use.lag)
-    if (lmax < 0) {
-      warning("\nuse.lag has to be positive and integer; lags='short' used.")
-      lmax <- trunc(4 * (n/100)^0.25)
-    }
-  }
-  else if (lags == "short") {
-    lmax <- trunc(4 * (n/100)^0.25)
-  }
-  else if (lags == "long") {
-    lmax <- trunc(12 * (n/100)^0.25)
-  }
-  else if (lags == "nil") {
-    lmax <- 0
-  }
-  if (type == "mu") {
-    cval <- as.matrix(t(c(0.347, 0.463, 0.574, 0.739)))
-    colnames(cval) <- c("10pct", "5pct", "2.5pct", "1pct")
-    rownames(cval) <- "critical values"
-    res <- y - mean(y)
-  }
-  else if (type == "tau") {
-    cval <- as.matrix(t(c(0.119, 0.146, 0.176, 0.216)))
-    colnames(cval) <- c("10pct", "5pct", "2.5pct", "1pct")
-    rownames(cval) <- "critical values"
-    trend <- 1:n
-    res <- residuals(lm(y ~ trend))
-  }
-  S <- cumsum(res)
-  nominator <- sum(S^2)/n^2
-  s2 <- sum(res^2)/n
-  if (lmax == 0) {
-    denominator <- s2
-  }
-  else {
-    index <- 1:lmax
-    x.cov <- sapply(index, function(x) t(res[-c(1:x)]) %*% 
-                      res[-c((n - x + 1):n)])
-    bartlett <- 1 - index/(lmax + 1)
-    denominator <- s2 + 2/n * t(bartlett) %*% x.cov
-  }
-  teststat <- nominator/denominator
-  list(y = y, type = type, lag = as.integer(lmax), 
-      teststat = as.numeric(teststat), cval = cval)
 }
