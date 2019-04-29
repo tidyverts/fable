@@ -19,12 +19,15 @@ train_arima <- function(.data, formula, specials, ic, stepwise = TRUE,
     abort("All observations are missing, a model cannot be estimated without data.")
   }
   
-  # Check xreg
+  # Get xreg
+  constant <- specials$xreg[[1]]$constant %||% c(TRUE, FALSE)
+  specials$xreg[[1]] <- specials$xreg[[1]]$xreg
   xreg <- specials[c("xreg", names(common_xregs))] %>% 
     compact() %>% 
     map(function(.x){invoke("cbind", .x)}) %>% 
     invoke("cbind", .)
   
+  # Check xreg
   if(!is_empty(xreg)){
     xreg <- as.matrix(xreg)
     # Check that xreg is not rank deficient
@@ -129,11 +132,15 @@ train_arima <- function(.data, formula, specials, ic, stepwise = TRUE,
   
   # Find best model
   best <- NULL
-  compare_arima <- function(p, d, q, P, D, Q){
+  compare_arima <- function(p, d, q, P, D, Q, constant){
+    if(constant){
+      xreg <- cbind(xreg, constant = arima_constant(length(y), d, D, period))
+    }
+    
     new <- possibly(quietly(stats::arima), NULL)(
       y, order = c(p, d, q),
       seasonal = list(order = c(P, D, Q), period = period),
-      xreg = xreg, method = method, ...)
+      xreg = xreg, method = method, ..., include.mean = FALSE)
     
     if(!is.null(new)){
       nstar <- length(y) - d - D * period
@@ -180,20 +187,27 @@ train_arima <- function(.data, formula, specials, ic, stepwise = TRUE,
     (new[[ic]]%||%Inf)
   }
   
-  model_opts <- expand.grid(p = p, d = d, q = q, P = P, D = D, Q = Q)
+  model_opts <- expand.grid(p = p, d = d, q = q, P = P, D = D, Q = Q, constant = constant)
   if(NROW(model_opts) > 1){
-    model_opts <- filter(model_opts, !!enexpr(order_constraint))
+    model_opts <- filter(model_opts, !!enexpr(order_constraint), (d + D < 2) | !constant)
   }
+  
+  if(any((model_opts$d + model_opts$D > 1) & model_opts$constant)){
+    warn("Model specification induces a quadratic or higher order polynomial trend. 
+This is generally discouraged, consider removing the constant or reducing the number of differences.")
+  }
+  constant <- unique(model_opts$constant)
+    
   if(stepwise){
     # Prepare model comparison vector
     est_ic <- rep(NA_integer_, NROW(model_opts))
     best_ic <- Inf
     
     # Initial 4 models
-    initial_opts <- list(start = c(start.p, d, start.q, start.P, D, start.Q),
-                         null = c(0, d, 0, 0, D, 0),
-                         ar = c(1, d, 0, 1, D, 0),
-                         ma = c(0, d, 1, 0, D, 1))
+    initial_opts <- list(start = c(start.p, d, start.q, start.P, D, start.Q, constant[1]),
+                         null = c(0, d, 0, 0, D, 0, constant[1]),
+                         ar = c(1, d, 0, 1, D, 0, constant[1]),
+                         ma = c(0, d, 1, 0, D, 1, constant[1]))
     step_order <- stats::na.omit(match(initial_opts, lapply(split(model_opts, seq_len(NROW(model_opts))), as.numeric)))
     initial <- TRUE
     
@@ -270,7 +284,7 @@ train_arima <- function(.data, formula, specials, ic, stepwise = TRUE,
                    logLik = best$loglik,
                    AIC = best$aic, AICc = best$aicc, BIC = best$bic,
                    ar_roots = list(arroot), ma_roots = list(maroot)),
-      spec = tibble(period = period),
+      spec = as_tibble(model_opts[which.min(est_ic),]) %>% mutate(period = period),
       model = best,
       xreg = xreg
     ),
@@ -305,7 +319,23 @@ specials_arima <- new_specials(
     as.list(environment())
   },
   common_xregs,
-  xreg = model_xreg,
+  xreg = function(...){
+    dots <- enexprs(...)
+    
+    constants <- map_lgl(dots, inherits, "numeric") 
+    constant_given <- any(map_lgl(dots[constants], `%in%`, 0:1))
+    
+    model_formula <- new_formula(
+      lhs = NULL,
+      rhs = reduce(dots, function(.x, .y) call2("+", .x, .y))
+    )
+    xreg <- model.frame(model_formula, data = self$data, na.action = stats::na.pass)
+    
+    list(
+      constant = if(constant_given) as_logical(terms(xreg)%@%"intercept") else c(TRUE, FALSE),
+      xreg = if(NCOL(xreg) == 0) NULL else xreg
+    )
+  },
   .required_specials = c("pdq", "PDQ")
 )
 
@@ -493,10 +523,18 @@ forecast.ARIMA <- function(object, new_data = NULL, specials = NULL,
     abort("Bootstrapped forecasts for ARIMA are not yet implemented.")
   }
   
+  specials$xreg[[1]] <- specials$xreg[[1]]$xreg
   xreg <- specials[c("xreg", names(common_xregs))] %>% 
     compact() %>% 
     map(function(.x){invoke("cbind", .x)}) %>% 
     invoke("cbind", .)
+  
+  if(object$spec$constant){
+    intercept <- arima_constant(object$model$nobs + NROW(new_data),
+                                object$spec$d, object$spec$D,
+                                object$spec$period)
+    xreg <- cbind(xreg, constant = intercept[object$model$nobs + seq_len(NROW(new_data))])
+  }
   
   # Produce predictions
   # Remove unnecessary warning for xreg
@@ -530,6 +568,17 @@ model_sum.Arima <- function(x){
     result <- paste("LM w/", result, "errors")
   }
   result
+}
+
+arima_constant <- function(n, d, D, period){
+  constant <- rep(1, n)
+  if(d > 0){
+    constant <- diffinv(constant, differences = d, xi = rep(1, d))[seq_len(n)]
+  }
+  if(D > 0){
+    constant <- diffinv(constant, lag = period, differences = D, xi = rep(1, period*D))[seq_len(n)]
+  }
+  constant
 }
 
 # Adjusted from robjhyndman/tsfeatures
