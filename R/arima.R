@@ -272,10 +272,18 @@ This is generally discouraged, consider removing the constant or reducing the nu
   arroot <- if(is_empty(ar) || !any(abs(ar) > 0)) cpl() else polyroot(c(1, -ar[seq_len(max(which(abs(ar) > 1e-8)))]))
   maroot <- if(is_empty(ma) || !any(abs(ma) > 0)) cpl() else polyroot(c(1, ma[seq_len(max(which(abs(ma) > 1e-8)))]))
   
+  fit_coef <- coef(best)
+  fit_se <- sqrt(diag(best$var.coef))
+  if("constant" %in% names(fit_coef)){
+    fit_coef["constant"] <- fit_coef["constant"]*(1-sum(best$model$phi))
+    fit_se["constant"] <- fit_se["constant"]*(1-sum(best$model$phi))
+  }
+  
   # Output model
   structure(
     list(
-      par = tibble(term = names(coef(best))%||%chr(), estimate = coef(best)%||%dbl()),
+      par = tibble(term = names(fit_coef)%||%chr(), estimate = fit_coef%||%dbl(), 
+                   std.error = fit_se%||%dbl()),
       est = tibble(
         .fitted = as.numeric(y - best$residuals), 
         .resid = as.numeric(best$residuals)
@@ -467,49 +475,29 @@ tidy.ARIMA <- function(x, ...){
 
 #' @export
 report.ARIMA <- function(object, ...){
-  if (length(object$model$coef) > 0) {
+  par <- rbind(tidy(object)$estimate, s.e. = tidy(object)$std.error)
+  colnames(par) <- tidy(object)$term
+  if (NCOL(par) > 0) {
     cat("\nCoefficients:\n")
-    coef <- round(object$model$coef, digits = 4)
-    if (NROW(object$model$var.coef)) {
-      ses <- rep.int(0, length(coef))
-      ses[object$model$mask] <- round(sqrt(diag(object$model$var.coef)), digits = 4)
-      coef <- matrix(coef, 1L, dimnames = list(NULL, names(coef)))
-      coef <- rbind(coef, s.e. = ses)
-    }
-    # Change intercept to mean if no regression variables
-    j <- match("intercept", colnames(coef))
-    if (is.null(object$model$xreg) & !is.na(j)) {
-      colnames(coef)[j] <- "mean"
-    }
+    coef <- round(par, digits = 4)
     print.default(coef, print.gap = 2)
   }
-  cm <- object$model$call$method
-  if (is.null(cm) || cm != "CSS") {
-    cat(
-      "\nsigma^2 estimated as ", format(object$model$sigma2, digits = 4),
-      ":  log likelihood=", format(round(object$model$loglik, 2L)), "\n", sep = ""
-    )
-    # npar <- length(x$coef) + 1
-    npar <- length(object$model$coef[object$model$mask]) + 1
-    missing <- is.na(object$model$residuals)
-    firstnonmiss <- utils::head(which(!missing),1)
-    lastnonmiss <- utils::tail(which(!missing),1)
-    n <- lastnonmiss - firstnonmiss + 1
-    nstar <- n - object$model$arma[6] - object$model$arma[7] * object$model$arma[5]
-    bic <- object$model$aic + npar * (log(nstar) - 2)
-    aicc <- object$model$aic + 2 * npar * (nstar / (nstar - npar - 1) - 1)
-    cat("AIC=", format(round(object$model$aic, 2L)), sep = "")
-    cat("   AICc=", format(round(aicc, 2L)), sep = "")
-    cat("   BIC=", format(round(bic, 2L)), "\n", sep = "")
-  }
-  else {
-    cat(
-      "\nsigma^2 estimated as ", format(object$model$sigma2, digits = 4),
-      ":  part log likelihood=", format(round(object$model$loglik, 2)),
-      "\n", sep = ""
-    )
-  }
-  invisible(object$model)
+  cat(
+    "\nsigma^2 estimated as ", format(object$model$sigma2, digits = 4),
+    ":  log likelihood=", format(round(object$model$loglik, 2L)), "\n", sep = ""
+  )
+  # npar <- length(x$coef) + 1
+  npar <- length(par[object$model$mask]) + 1
+  missing <- is.na(object$model$residuals)
+  firstnonmiss <- utils::head(which(!missing),1)
+  lastnonmiss <- utils::tail(which(!missing),1)
+  n <- lastnonmiss - firstnonmiss + 1
+  nstar <- n - object$model$arma[6] - object$model$arma[7] * object$model$arma[5]
+  bic <- object$model$aic + npar * (log(nstar) - 2)
+  aicc <- object$model$aic + 2 * npar * (nstar / (nstar - npar - 1) - 1)
+  cat("AIC=", format(round(object$model$aic, 2L)), sep = "")
+  cat("   AICc=", format(round(aicc, 2L)), sep = "")
+  cat("   BIC=", format(round(bic, 2L)), "\n", sep = "")
 }
 
 #' @importFrom stats formula residuals
