@@ -45,6 +45,7 @@ VignetteBuilder:
 Remotes:
     robjhyndman/forecast,
     tidyverts/fablelite,
+    tidyverts/feasts,
     tidyverts/tsibble,
     tidyverts/tsibbledata
 ByteCompile: true
