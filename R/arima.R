@@ -172,6 +172,9 @@ train_arima <- function(.data, formula, specials, ic, stepwise = TRUE,
   model_opts <- expand.grid(p = p, d = d, q = q, P = P, D = D, Q = Q, constant = constant)
   if(NROW(model_opts) > 1){
     model_opts <- filter(model_opts, !!enexpr(order_constraint), (d + D < 2) | !constant)
+    if(NROW(model_opts) == 0){
+      abort("There are no ARIMA models to choose from after imposing the `order_constraint`, please consider allowing more models.")
+    }
   }
   
   if(any((model_opts$d + model_opts$D > 1) & model_opts$constant)){
