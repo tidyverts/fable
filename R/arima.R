@@ -528,7 +528,7 @@ forecast.ARIMA <- function(object, new_data = NULL, specials = NULL,
 model_sum.ARIMA <- function(x){
   out <- sprintf("ARIMA(%i,%i,%i)%s",
                  x$spec$p, x$spec$d, x$spec$q,
-                 if (x$spec$period > 1) 
+                 if (any(x$spec[c("P","D","Q")] > 0)) 
                    sprintf("(%i,%i,%i)[%i]",
                            x$spec$P, x$spec$D, x$spec$Q, x$spec$period)
                  else
