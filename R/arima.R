@@ -523,21 +523,28 @@ forecast.ARIMA <- function(object, new_data = NULL, specials = NULL,
 
 #' @export
 model_sum.ARIMA <- function(x){
-  model_sum(x$model)
-}
-
-#' @export
-model_sum.Arima <- function(x){
-  order <- x$arma[c(1, 6, 2, 3, 7, 4, 5)]
-  m <- order[7]
-  result <- paste("ARIMA(", order[1], ",", order[2], ",", order[3], ")", sep = "")
-  if (m > 1 && sum(order[4:6]) > 0) {
-    result <- paste(result, "(", order[4], ",", order[5], ",", order[6], ")[", m, "]", sep = "")
+  out <- sprintf("ARIMA(%i,%i,%i)%s",
+                 x$spec$p, x$spec$d, x$spec$q,
+                 if (x$spec$period > 1) 
+                   sprintf("(%i,%i,%i)[%i]",
+                           x$spec$P, x$spec$D, x$spec$Q, x$spec$period)
+                 else
+                   ""
+  )
+  if (NROW(x$par) > sum(x$spec[c("p","q","P","Q","constant")])){
+    out <- sprintf("LM w/ %s errors", out)
   }
-  if(length(x$coef) > sum(order[c(1,3,4,6)])){
-    result <- paste("LM w/", result, "errors")
+  else if (x$spec$constant){
+    out <- sprintf("%s w/ %s", out, 
+                   if (x$spec$d + x$spec$D == 0)
+                     "mean"
+                   else if (x$spec$d + x$spec$D == 1)
+                     "drift"
+                   else
+                     "poly"
+    )
   }
-  result
+  out
 }
 
 arima_constant <- function(n, d, D, period){
