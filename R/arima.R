@@ -341,7 +341,7 @@ specials_arima <- new_specials(
 #' @param approximation Should CSS be used during model selection?
 #' @param order_constraint A logical predicate on the orders of `p`, `d`, `q`, 
 #' `P`, `D` and `Q` to consider in the search.
-#' @param ... Further arguments for arima
+#' @param ... Further arguments for [`stats::arima()`]
 #' 
 #' @section Specials:
 #' 

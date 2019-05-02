@@ -22,7 +22,7 @@ ARIMA(formula, ic = c("aicc", "aic", "bic"), stepwise = TRUE,
 \item{order_constraint}{A logical predicate on the orders of \code{p}, \code{d}, \code{q},
 \code{P}, \code{D} and \code{Q} to consider in the search.}
 
-\item{...}{Further arguments for arima}
+\item{...}{Further arguments for \code{\link[stats:arima]{stats::arima()}}}
 }
 \description{
 Estimate an ARIMA model
