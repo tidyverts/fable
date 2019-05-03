@@ -79,6 +79,7 @@ forecast.model_mean <- function(object, new_data, specials = NULL, bootstrap = F
   construct_fc(fc, se, dist)
 }
 
+#' @importFrom stats na.omit
 #' @export
 imitate.model_mean <- function(object, new_data, bootstrap = FALSE, ...){
   res <- residuals(object)

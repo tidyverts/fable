@@ -13,7 +13,7 @@ train_var <- function(.data, formula, specials, ...){
     invoke("cbind", .)
   
   # Compute response lags
-  y_lag <- embed(y, dimension = p + 1)[, -(seq_len(NCOL(y)))]
+  y_lag <- stats::embed(y, dimension = p + 1)[, -(seq_len(NCOL(y)))]
   dm <-cbind(y_lag, xreg[-seq_len(p)]) 
   y <- y[-seq_len(p),]
   
