@@ -74,11 +74,15 @@ specials_var <- new_specials(
 #' 
 #' @examples 
 #' 
-#' \dontrun{
-#' cbind(mdeaths, fdeaths) %>%
-#'   as_tsibble(pivot_longer = FALSE) %>%
+#' lung_deaths <- cbind(mdeaths, fdeaths) %>%
+#'   as_tsibble(pivot_longer = FALSE)
+#'   
+#' fit <- lung_deaths %>%
 #'   model(VAR(vars(log(mdeaths), fdeaths) ~ AR(3)))
-#' }
+#' fit
+#'
+#' fit %>% 
+#'   forecast()
 #' 
 #' @export
 VAR <- function(formula, ...){
