@@ -143,13 +143,13 @@ train_arima <- function(.data, formula, specials, ic, stepwise = TRUE,
       # If automatically selecting a model
       if(NROW(model_opts) > 1){
         # Check for unit roots
-        minroot <- map_dbl(list(phi = new$model$phi,
+        minroot <- map_dbl(list(phi = -new$model$phi,
                                 theta = new$model$theta),
                            function(testvec){
                              k <- abs(testvec) > 1e-8
                              if (any(k)) {
                                last.nonzero <- max(which(k))
-                               testvec <- testvec[1:last.nonzero]
+                               testvec <- testvec[seq_len(last.nonzero)]
                                min(abs(polyroot(c(1, testvec))))
                              }
                              else{
