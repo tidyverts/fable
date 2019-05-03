@@ -96,7 +96,6 @@ VAR <- function(formula, ...){
 #' @export
 forecast.VAR <- function(object, new_data = NULL, specials = NULL, 
                            bootstrap = FALSE, times = 5000, ...){
-  require_package("vars")
   if(!is_regular(new_data)){
     abort("Forecasts must be regularly spaced.")
   }
