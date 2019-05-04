@@ -519,7 +519,8 @@ forecast.ARIMA <- function(object, new_data = NULL, specials = NULL,
   }
   fc <- predict(object$model, n.ahead = NROW(new_data), newxreg = xreg, ...)
   object$call$xreg <- NULL
-  
+  fc$pred <- as.numeric(fc$pred)
+  fc$se <- as.numeric(fc$se)
   # Output forecasts
   construct_fc(fc$pred, fc$se, dist_normal(fc$pred, fc$se))
 }
