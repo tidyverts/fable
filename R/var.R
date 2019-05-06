@@ -143,6 +143,7 @@ forecast.VAR <- function(object, new_data = NULL, specials = NULL,
     }
     sigma[[i]] <- adjust + sigma[[1]]
   }
+  sigma <- map(sigma, sqrt)
   
   # Compute forecasts
   fc <- matrix(NA, ncol = K, nrow = h)
