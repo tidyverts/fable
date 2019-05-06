@@ -14,11 +14,11 @@ train_var <- function(.data, formula, specials, ...){
   
   # Compute response lags
   y_lag <- stats::embed(y, dimension = p + 1)[, -(seq_len(NCOL(y)))]
-  dm <-cbind(y_lag, xreg[-seq_len(p)]) 
+  dm <-cbind(y_lag, xreg[-seq_len(p),, drop = FALSE]) 
   y <- y[-seq_len(p),]
   
-  fit <- stats::lm.fit(dm, y)
-  
+  fit <- stats::lm.fit(as.matrix(dm), y)
+
   # Output model
   structure(
     list(
@@ -39,8 +39,18 @@ specials_var <- new_specials(
     list(p=p)
   },
   common_xregs,
-  xreg = model_xreg,
-  .required_specials = c("AR")
+  xreg = function(...){
+    model_formula <- new_formula(
+      lhs = NULL,
+      rhs = reduce(enexprs(...), function(.x, .y) call2("+", .x, .y))
+    )
+    mf <- model.frame(model_formula, data = self$data, na.action = stats::na.pass)
+    if(mf%@%"terms"%@%"intercept" == 1){
+      mf <- cbind(constant = rep(1, NROW(self$data)), mf)
+    }
+    mf
+  },
+  .required_specials = c("AR", "xreg")
 )
 
 #' Estimate an VAR model
@@ -107,7 +117,8 @@ forecast.VAR <- function(object, new_data = NULL, specials = NULL,
   xreg <- specials[c("xreg", names(common_xregs))] %>% 
     compact() %>% 
     map(function(.x){invoke("cbind", .x)}) %>% 
-    invoke("cbind", .)
+    invoke("cbind", .) %>% 
+    as.matrix
   
   h <- NROW(new_data)
   p <- object$spec$p
@@ -130,7 +141,6 @@ forecast.VAR <- function(object, new_data = NULL, specials = NULL,
     }
     phi[[i]] <- tmp1 + tmp2
   }
-  
   # Compute sigma
   sigma.u <- object$fit$sigma[[1]]^2
   sigma <- rep(list(matrix(nrow = K, ncol = K)), h)
