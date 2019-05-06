@@ -23,8 +23,8 @@ train_var <- function(.data, formula, specials, ...){
   structure(
     list(
       coef = fit$coefficients,
-      fits = c(rep(NA, p), y - fit$residuals),
-      resid = c(rep(NA, p), fit$residuals),
+      fits = rbind(matrix(nrow = p, ncol = NCOL(y)), y - fit$residuals),
+      resid = rbind(matrix(nrow = p, ncol = NCOL(y)), fit$residuals),
       fit = tibble(sigma = list(sqrt(crossprod(fit$residuals)/fit$df.residual))),
       spec = tibble(p = p),
       last_obs = y[NROW(y) - seq_len(p) + 1,,drop = FALSE],
