@@ -1,8 +1,3 @@
-#' Is an object constant?
-#'
-#' Returns true if the object's numerical values do not vary.
-#'
-#' @param x object to be tested
 is.constant <- function(x) {
   x <- as.numeric(x)
   y <- rep(x[1], length(x))
