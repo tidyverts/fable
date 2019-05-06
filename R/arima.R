@@ -119,7 +119,7 @@ train_arima <- function(.data, formula, specials, ic, stepwise = TRUE,
       xreg <- cbind(xreg, constant = arima_constant(length(y), d, D, period))
     }
     
-    new <- possibly(quietly(stats::arima), NULL)(
+    new <- wrap_arima(
       y, order = c(p, d, q),
       seasonal = list(order = c(P, D, Q), period = period),
       xreg = xreg, method = method, ..., include.mean = FALSE)
@@ -175,6 +175,10 @@ train_arima <- function(.data, formula, specials, ic, stepwise = TRUE,
     if(NROW(model_opts) == 0){
       abort("There are no ARIMA models to choose from after imposing the `order_constraint`, please consider allowing more models.")
     }
+    wrap_arima <- possibly(quietly(stats::arima), NULL)
+  }
+  else{
+    wrap_arima <- stats::arima
   }
   
   if(any((model_opts$d + model_opts$D > 1) & model_opts$constant)){
