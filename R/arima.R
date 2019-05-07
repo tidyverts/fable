@@ -126,7 +126,7 @@ train_arima <- function(.data, formula, specials, ic, stepwise = TRUE,
     
     if(!is.null(new)){
       nstar <- length(y) - d - D * period
-      npar <- length(new$coef) + 1
+      npar <- length(new$coef[new$mask]) + 1
       if (method == "CSS") {
         new$aic <- offset + nstar * log(new$sigma2) + 2 * npar
       }
@@ -238,6 +238,7 @@ This is generally discouraged, consider removing the constant or reducing the nu
   else{
     est_ic <- pmap_dbl(model_opts, compare_arima)
   }
+  
   if (approximation && !is.null(best$arma)) {
     method <- "CSS-ML"
     best <- NULL
@@ -472,21 +473,13 @@ report.ARIMA <- function(object, ...){
     print.default(coef, print.gap = 2)
   }
   cat(
-    "\nsigma^2 estimated as ", format(object$model$sigma2, digits = 4),
-    ":  log likelihood=", format(round(object$model$loglik, 2L)), "\n", sep = ""
+    "\nsigma^2 estimated as ", format(object$fit$sigma^2, digits = 4),
+    ":  log likelihood=", format(round(object$fit$logLik, 2L)), "\n", sep = ""
   )
-  # npar <- length(x$coef) + 1
-  npar <- length(par[object$model$mask]) + 1
-  missing <- is.na(object$model$residuals)
-  firstnonmiss <- utils::head(which(!missing),1)
-  lastnonmiss <- utils::tail(which(!missing),1)
-  n <- lastnonmiss - firstnonmiss + 1
-  nstar <- n - object$model$arma[6] - object$model$arma[7] * object$model$arma[5]
-  bic <- object$model$aic + npar * (log(nstar) - 2)
-  aicc <- object$model$aic + 2 * npar * (nstar / (nstar - npar - 1) - 1)
-  cat("AIC=", format(round(object$model$aic, 2L)), sep = "")
-  cat("   AICc=", format(round(aicc, 2L)), sep = "")
-  cat("   BIC=", format(round(bic, 2L)), "\n", sep = "")
+  
+  cat("AIC=", format(round(object$fit$AIC, 2L)), sep = "")
+  cat("   AICc=", format(round(object$fit$AICc, 2L)), sep = "")
+  cat("   BIC=", format(round(object$fit$BIC, 2L)), "\n", sep = "")
 }
 
 #' @importFrom stats formula residuals
