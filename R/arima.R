@@ -321,7 +321,7 @@ specials_arima <- new_specials(
     dots <- enexprs(...)
     
     constants <- map_lgl(dots, inherits, "numeric") 
-    constant_given <- any(map_lgl(dots[constants], `%in%`, 0:1))
+    constant_given <- any(map_lgl(dots[constants], `%in%`, -1:1))
     
     model_formula <- new_formula(
       lhs = NULL,
