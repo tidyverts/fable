@@ -14,8 +14,11 @@ train_var <- function(.data, formula, specials, ...){
   
   # Compute response lags
   y_lag <- stats::embed(y, dimension = p + 1)[, -(seq_len(NCOL(y)))]
-  dm <-cbind(y_lag, xreg[-seq_len(p),, drop = FALSE]) 
-  y <- y[-seq_len(p),]
+  if(p > 0){
+    xreg <- xreg[-seq_len(p),, drop = FALSE]
+    y <- y[-seq_len(p),, drop = FALSE]
+  }
+  dm <- cbind(y_lag, xreg) 
   
   fit <- stats::lm.fit(as.matrix(dm), y)
 
@@ -162,7 +165,7 @@ forecast.VAR <- function(object, new_data = NULL, specials = NULL,
   for(i in seq_len(h)){
     Z <-  c(t(y_lag), xreg[i,])
     fc[i,] <- t(coef) %*% Z
-    y_lag <- rbind(fc[i,], y_lag[-p,])
+    y_lag <- rbind(fc[i,], y_lag)[seq_len(p),]
   }
   
   # Output forecasts
