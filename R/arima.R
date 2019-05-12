@@ -269,6 +269,15 @@ This is generally discouraged, consider removing the constant or reducing the nu
     fit_se["constant"] <- fit_se["constant"]*(1-sum(best$model$phi))
   }
   
+  # Compute regression residuals
+  reg_resid <- y
+  if(model_opts[which.min(est_ic),"constant"]){
+    xreg <- cbind(xreg, constant = arima_constant(length(y), d, D, period))
+  }
+  if (!is.null(xreg)) {
+    reg_resid - xreg %*% as.matrix(best$coef[(sum(best$arma[1:4]) + 1):length(best$coef)])
+  }
+  
   # Output model
   structure(
     list(
@@ -276,7 +285,8 @@ This is generally discouraged, consider removing the constant or reducing the nu
                    std.error = fit_se%||%dbl()),
       est = tibble(
         .fitted = as.numeric(y - best$residuals), 
-        .resid = as.numeric(best$residuals)
+        .resid = as.numeric(best$residuals),
+        .regression_resid = reg_resid
       ),
       fit = tibble(sigma = sqrt(best$sigma2),
                    logLik = best$loglik,
@@ -432,21 +442,7 @@ residuals.ARIMA <- function(object, type = "innovation", ...){
     object$est[[".resid"]]
   }
   else if(type == "regression"){
-    x <- object$est[[measured_vars(object$est)[1]]]
-    xreg <- object$xreg
-    # Remove intercept
-    if (is.element("intercept", names(object$model$coef))) {
-      xreg <- cbind(rep(1, length(x)), xreg)
-    }
-    # Return errors
-    if (is.null(xreg)) {
-      return(x)
-    } else {
-      norder <- sum(object$model$arma[1:4])
-      return(
-        x - xreg %*% as.matrix(object$model$coef[(norder + 1):length(object$model$coef)])
-      )
-    }
+    object$est[[".regression_resid"]]
   }
   else{
     abort(sprintf('Residuals of `type = "%s"` are not supported by ARIMA models', type))
