@@ -76,7 +76,8 @@ train_arima <- function(.data, formula, specials, ic, stepwise = TRUE,
       D <- D[keep]
     }
     
-    D <- unname(feasts::unitroot_nsdiffs(x, differences = D, .period = period))
+    D <- unname(feasts::unitroot_nsdiffs(stats::na.contiguous(x),
+                                         differences = D, .period = period))
   }
   x <- diff(x, lag = period, differences = D)
   diff_xreg <- diff(xreg, lag = period, differences = D)
@@ -92,7 +93,8 @@ train_arima <- function(.data, formula, specials, ic, stepwise = TRUE,
       d <- d[keep]
     }
     
-    d <- unname(feasts::unitroot_ndiffs(x, differences = d))
+    d <- unname(feasts::unitroot_ndiffs(stats::na.contiguous(x),
+                                        differences = d))
   }
   
   # Check number of differences selected
