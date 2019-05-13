@@ -25,6 +25,7 @@ train_arima <- function(.data, formula, specials, ic, stepwise = TRUE,
   xreg <- specials[c("xreg", names(common_xregs))] %>% 
     compact() %>% 
     map(function(.x){invoke("cbind", .x)}) %>% 
+    unname() %>% 
     invoke("cbind", .)
   
   # Check xreg
@@ -500,6 +501,7 @@ forecast.ARIMA <- function(object, new_data = NULL, specials = NULL,
   xreg <- specials[c("xreg", names(common_xregs))] %>% 
     compact() %>% 
     map(function(.x){invoke("cbind", .x)}) %>% 
+    unname() %>% 
     invoke("cbind", .)
   
   if(object$spec$constant){
