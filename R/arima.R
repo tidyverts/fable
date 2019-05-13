@@ -195,8 +195,8 @@ This is generally discouraged, consider removing the constant or reducing the nu
     # Initial 4 models
     initial_opts <- list(start = c(start.p, d, start.q, start.P, D, start.Q, constant[1]),
                          null = c(0, d, 0, 0, D, 0, constant[1]),
-                         ar = c(1, d, 0, 1, D, 0, constant[1]),
-                         ma = c(0, d, 1, 0, D, 1, constant[1]))
+                         ar = c(max(p) > 0, d, 0, max(P) > 0, D, 0, constant[1]),
+                         ma = c(0, d, max(q) > 0, 0, D, max(Q) > 0, constant[1]))
     step_order <- stats::na.omit(match(initial_opts, lapply(split(model_opts, seq_len(NROW(model_opts))), as.numeric)))
     initial <- TRUE
     
