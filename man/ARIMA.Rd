@@ -6,7 +6,7 @@
 \usage{
 ARIMA(formula, ic = c("aicc", "aic", "bic"), stepwise = TRUE,
   greedy = TRUE, approximation = FALSE, order_constraint = p + q + P
-  + Q <= 5, ...)
+  + Q <= 6, ...)
 }
 \arguments{
 \item{formula}{Model specification (see "Specials" section).}

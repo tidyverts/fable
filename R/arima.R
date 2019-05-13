@@ -426,7 +426,7 @@ specials_arima <- new_specials(
 #' @importFrom stats model.matrix
 #' @export
 ARIMA <- function(formula, ic = c("aicc", "aic", "bic"), stepwise = TRUE, greedy = TRUE, 
-                  approximation = FALSE, order_constraint = p + q + P + Q <= 5, ...){
+                  approximation = FALSE, order_constraint = p + q + P + Q <= 6, ...){
   ic <- match.arg(ic)
   arima_model <- new_model_class("ARIMA", train = train_arima, 
                                  specials = specials_arima, origin = NULL,
