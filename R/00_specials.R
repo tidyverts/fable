@@ -42,6 +42,7 @@ trend.tbl_ts <- function(x, knots = NULL, origin = NULL){
 
 trend.numeric <- function(x, knots = NULL, origin = NULL){
   if(!is.null(origin)){
+    origin <- origin - 1 # trend should count from 1
     x <- x - origin
     knots <- knots - origin
   }
