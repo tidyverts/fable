@@ -26,7 +26,7 @@ Imports:
     rlang (>= 0.2.0),
     stats,
     dplyr (>= 0.8.0),
-    tsibble (>= 0.7.0)
+    tsibble (>= 0.8.0)
 Suggests:
     covr,
     feasts,
@@ -43,10 +43,8 @@ LinkingTo:
 VignetteBuilder: 
     knitr
 Remotes:
-    robjhyndman/forecast,
     tidyverts/fablelite,
     tidyverts/feasts,
-    tidyverts/tsibble,
     tidyverts/tsibbledata
 ByteCompile: true
 Encoding: UTF-8
