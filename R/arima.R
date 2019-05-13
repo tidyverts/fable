@@ -118,7 +118,12 @@ train_arima <- function(.data, formula, specials, ic, stepwise = TRUE,
   best <- NULL
   compare_arima <- function(p, d, q, P, D, Q, constant){
     if(constant){
-      xreg <- cbind(xreg, constant = arima_constant(length(y), d, D, period))
+      xreg <- if(is.null(xreg)){
+        matrix(constant = arima_constant(length(y), d, D, period))
+      }
+      else{
+        cbind(xreg, intercept = arima_constant(length(y), d, D, period))
+      }
     }
     
     new <- wrap_arima(
@@ -266,7 +271,7 @@ This is generally discouraged, consider removing the constant or reducing the nu
   
   fit_coef <- coef(best)
   fit_se <- sqrt(diag(best$var.coef))
-  if("constant" %in% names(fit_coef)){
+  if(model_opts[which.min(est_ic),"constant"] && is.null(xreg)){
     fit_coef["constant"] <- fit_coef["constant"]*(1-sum(best$model$phi))
     fit_se["constant"] <- fit_se["constant"]*(1-sum(best$model$phi))
   }
@@ -499,9 +504,14 @@ forecast.ARIMA <- function(object, new_data = NULL, specials = NULL,
   
   if(object$spec$constant){
     intercept <- arima_constant(object$model$nobs + NROW(new_data),
-                                object$spec$d, object$spec$D,
-                                object$spec$period)
-    xreg <- cbind(xreg, constant = intercept[object$model$nobs + seq_len(NROW(new_data))])
+      object$spec$d, object$spec$D,
+      object$spec$period)[object$model$nobs + seq_len(NROW(new_data))]
+    
+    xreg <- if(is.null(xreg)){
+      matrix(constant = intercept)
+    } else {
+      xreg <- cbind(xreg, intercept = intercept)
+    }
   }
   
   # Produce predictions
