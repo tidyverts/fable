@@ -118,11 +118,11 @@ train_arima <- function(.data, formula, specials, ic, stepwise = TRUE,
   best <- NULL
   compare_arima <- function(p, d, q, P, D, Q, constant){
     if(constant){
+      intercept <- arima_constant(length(y), d, D, period)
       xreg <- if(is.null(xreg)){
-        matrix(constant = arima_constant(length(y), d, D, period))
-      }
-      else{
-        cbind(xreg, intercept = arima_constant(length(y), d, D, period))
+        matrix(intercept, dimnames = list(NULL, "constant"))
+      } else {
+        cbind(xreg, intercept = intercept)
       }
     }
     
@@ -508,7 +508,7 @@ forecast.ARIMA <- function(object, new_data = NULL, specials = NULL,
       object$spec$period)[object$model$nobs + seq_len(NROW(new_data))]
     
     xreg <- if(is.null(xreg)){
-      matrix(constant = intercept)
+      matrix(intercept, dimnames = list(NULL, "constant"))
     } else {
       xreg <- cbind(xreg, intercept = intercept)
     }
