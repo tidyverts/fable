@@ -7,10 +7,7 @@ train_var <- function(.data, formula, specials, ...){
   y <- as.matrix(.data[measured_vars(.data)])
   
   # Get xreg
-  xreg <- specials[c("xreg", names(common_xregs))] %>% 
-    compact() %>% 
-    map(function(.x){invoke("cbind", .x)}) %>% 
-    invoke("cbind", .)
+  xreg <- specials$xreg[[1]]
   
   # Compute response lags
   y_lag <- stats::embed(y, dimension = p + 1)[, -(seq_len(NCOL(y)))]
@@ -53,7 +50,8 @@ specials_var <- new_specials(
     }
     mf
   },
-  .required_specials = c("AR", "xreg")
+  .required_specials = c("AR", "xreg"),
+  .xreg_specials = names(common_xregs)
 )
 
 #' Estimate an VAR model
@@ -117,11 +115,7 @@ forecast.VAR <- function(object, new_data = NULL, specials = NULL,
   }
   
   # Get xreg
-  xreg <- specials[c("xreg", names(common_xregs))] %>% 
-    compact() %>% 
-    map(function(.x){invoke("cbind", .x)}) %>% 
-    invoke("cbind", .) %>% 
-    as.matrix
+  xreg <- specials$xreg[[1]]
   
   h <- NROW(new_data)
   p <- object$spec$p

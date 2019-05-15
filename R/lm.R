@@ -49,7 +49,8 @@ train_tslm <- function(.data, formula, specials, ...){
 
 specials_tslm <- new_specials(
   common_xregs,
-  xreg = model_xreg
+  xreg = model_xreg,
+  .xreg_specials = names(common_xregs)
 )
 
 #' Fit a linear model with time series components

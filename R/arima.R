@@ -21,12 +21,7 @@ train_arima <- function(.data, formula, specials, ic, stepwise = TRUE,
   
   # Get xreg
   constant <- specials$xreg[[1]]$constant %||% c(TRUE, FALSE)
-  specials$xreg[[1]] <- specials$xreg[[1]]$xreg
-  xreg <- specials[c("xreg", names(common_xregs))] %>% 
-    compact() %>% 
-    map(function(.x){invoke("cbind", .x)}) %>% 
-    unname() %>% 
-    invoke("cbind", .)
+  xreg <- specials$xreg[[1]]$xreg
   
   # Check xreg
   if(!is_empty(xreg)){
@@ -352,7 +347,8 @@ specials_arima <- new_specials(
       xreg = if(NCOL(xreg) == 0) NULL else xreg
     )
   },
-  .required_specials = c("pdq", "PDQ")
+  .required_specials = c("pdq", "PDQ"),
+  .xreg_specials = names(common_xregs)
 )
 
 #' Estimate an ARIMA model
@@ -497,12 +493,7 @@ forecast.ARIMA <- function(object, new_data = NULL, specials = NULL,
     abort("Bootstrapped forecasts for ARIMA are not yet implemented.")
   }
   
-  specials$xreg[[1]] <- specials$xreg[[1]]$xreg
-  xreg <- specials[c("xreg", names(common_xregs))] %>% 
-    compact() %>% 
-    map(function(.x){invoke("cbind", .x)}) %>% 
-    unname() %>% 
-    invoke("cbind", .)
+  xreg <- specials$xreg[[1]]$xreg
   
   if(object$spec$constant){
     intercept <- arima_constant(object$model$nobs + NROW(new_data),

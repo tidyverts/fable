@@ -17,10 +17,7 @@ train_nnetar <- function(.data, formula, specials, size, repeats, scale_inputs, 
   # Get args
   p <- P <- period <- NULL 
   assignSpecials(specials["AR"])
-  xreg <- specials[c("xreg", names(common_xregs))] %>% 
-    compact() %>% 
-    map(function(.x){invoke("cbind", .x)}) %>% 
-    invoke("cbind", .)
+  xreg <- specials$xreg[[1]]
   
   # Check for constant data in time series
   constant_data <- is.constant(x)
@@ -157,7 +154,8 @@ specials_nnetar <- new_specials(
   },
   common_xregs,
   xreg = model_xreg,
-  .required_specials = c("AR")
+  .required_specials = c("AR"),
+  .xreg_specials = names(common_xregs)
 )
 
 #' Neural Network Time Series Forecasts
@@ -236,10 +234,8 @@ forecast.NNETAR <- function(object, new_data, specials = NULL, bootstrap = FALSE
   require_package("nnet")
   
   # Prepare xreg
-  xreg <- specials[c("xreg", names(common_xregs))] %>% 
-    compact() %>% 
-    map(function(.x){invoke("cbind", .x)}) %>% 
-    invoke("cbind", .)
+  xreg <- specials$xreg[[1]]
+  
   if(!is.null(xreg)){
     xreg <- as.matrix(xreg)
     if(!is.null(object$scales$xreg)){
@@ -284,10 +280,8 @@ forecast.NNETAR <- function(object, new_data, specials = NULL, bootstrap = FALSE
 #' @export
 imitate.NNETAR <- function(object, new_data, specials = NULL, bootstrap = FALSE, ...){
   # Prepare xreg
-  xreg <- specials[c("xreg", names(common_xregs))] %>% 
-    compact() %>% 
-    map(function(.x){invoke("cbind", .x)}) %>% 
-    invoke("cbind", .)
+  xreg <- specials$xreg[[1]]
+  
   if(!is.null(xreg)){
     xreg <- as.matrix(xreg)
     if(!is.null(object$scales$xreg)){
