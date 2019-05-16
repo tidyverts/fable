@@ -64,7 +64,7 @@ train_nnetar <- function(.data, formula, specials, size, repeats, scale_inputs, 
   
   # Construct lagged matrix
   if(is.null(p)){
-    if(period > 1 && n >= 2 * period){
+    if(period > 1 && n > 2 * period){
       y_sa <- stats::stl(ts(x, frequency = period), s.window = 13)
       y_sa <- y_sa$time.series[,"trend"] + y_sa$time.series[,"remainder"]
     }
