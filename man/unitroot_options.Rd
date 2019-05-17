@@ -6,14 +6,15 @@
 \usage{
 unitroot_options(ndiffs_alpha = 0.05, nsdiffs_alpha = 0.05,
   ndiffs_pval = ~feasts::unitroot_kpss(.)["kpss_pval"],
-  nsdiffs_pval = ~feasts::stl_features(...)[2] < 0.64)
+  nsdiffs_pval = ~feasts::stl_features(., .period)[2] < 0.64)
 }
 \arguments{
 \item{ndiffs_alpha, nsdiffs_alpha}{The level for the test specified in the \code{pval} functions As long as \code{pval < alpha}, differences will be added.}
 
 \item{ndiffs_pval, nsdiffs_pval}{A function (or lambda expression) which returns the probability of the . As long as \code{pval < alpha}, differences will be added.
 
-Note: For the function for the seasonal p-value, the seasonal period will be provided as the \code{.period} argument to this function.}
+For the function for the seasonal p-value, the seasonal period will be provided as the \code{.period} argument to this function.
+A vector of data to test is available as \code{.} or \code{.x}.}
 }
 \description{
 Options for the unit root tests for order of integration
