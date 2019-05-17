@@ -6,7 +6,7 @@
 \usage{
 ARIMA(formula, ic = c("aicc", "aic", "bic"), stepwise = TRUE,
   greedy = TRUE, approximation = FALSE, order_constraint = p + q + P
-  + Q <= 6, ...)
+  + Q <= 6, unitroot_spec = unitroot_options(), ...)
 }
 \arguments{
 \item{formula}{Model specification (see "Specials" section).}
@@ -21,6 +21,9 @@ ARIMA(formula, ic = c("aicc", "aic", "bic"), stepwise = TRUE,
 
 \item{order_constraint}{A logical predicate on the orders of \code{p}, \code{d}, \code{q},
 \code{P}, \code{D} and \code{Q} to consider in the search.}
+
+\item{unitroot_spec}{A specification of unit root tests to use in the
+selection of \code{d} and \code{D}. See \code{\link[=unitroot_options]{unitroot_options()}} for more details.}
 
 \item{...}{Further arguments for \code{\link[stats:arima]{stats::arima()}}}
 }

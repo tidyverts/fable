@@ -2,8 +2,8 @@ globalVariables(c("p", "P", "q", "Q"))
 
 #' @importFrom stats approx lm ts
 train_arima <- function(.data, formula, specials, ic, stepwise = TRUE, 
-                        greedy = TRUE, approximation = FALSE, 
-                        order_constraint, ...){
+                        greedy = TRUE, approximation = FALSE, order_constraint, 
+                        unitroot_spec, ...){
   if(length(measured_vars(.data)) > 1){
     abort("Only univariate responses are supported by ARIMA.")
   }
@@ -71,8 +71,9 @@ train_arima <- function(.data, formula, specials, ic, stepwise = TRUE,
       })
       D <- D[keep]
     }
-    
     D <- unname(feasts::unitroot_nsdiffs(stats::na.contiguous(x),
+                                         alpha = unitroot_spec$nsdiffs_alpha,
+                                         unitroot_fn = unitroot_spec$nsdiffs_pval,
                                          differences = D, .period = period))
   }
   x <- diff(x, lag = period, differences = D)
@@ -90,6 +91,8 @@ train_arima <- function(.data, formula, specials, ic, stepwise = TRUE,
     }
     
     d <- unname(feasts::unitroot_ndiffs(stats::na.contiguous(x),
+                                        alpha = unitroot_spec$ndiffs_alpha,
+                                        unitroot_fn = unitroot_spec$ndiffs_pval,
                                         differences = d))
   }
   
@@ -360,6 +363,8 @@ specials_arima <- new_specials(
 #' @param approximation Should CSS be used during model selection?
 #' @param order_constraint A logical predicate on the orders of `p`, `d`, `q`, 
 #' `P`, `D` and `Q` to consider in the search.
+#' @param unitroot_spec A specification of unit root tests to use in the
+#' selection of `d` and `D`. See [`unitroot_options()`] for more details.
 #' @param ... Further arguments for [`stats::arima()`]
 #' 
 #' @section Specials:
@@ -423,7 +428,8 @@ specials_arima <- new_specials(
 #' @importFrom stats model.matrix
 #' @export
 ARIMA <- function(formula, ic = c("aicc", "aic", "bic"), stepwise = TRUE, greedy = TRUE, 
-                  approximation = FALSE, order_constraint = p + q + P + Q <= 6, ...){
+                  approximation = FALSE, order_constraint = p + q + P + Q <= 6, 
+                  unitroot_spec = unitroot_options(), ...){
   ic <- match.arg(ic)
   arima_model <- new_model_class("ARIMA", train = train_arima, 
                                  specials = specials_arima, origin = NULL,
@@ -431,7 +437,8 @@ ARIMA <- function(formula, ic = c("aicc", "aic", "bic"), stepwise = TRUE, greedy
   new_model_definition(arima_model, !!enquo(formula), ic = ic,
                        stepwise = stepwise, greedy = greedy, 
                        approximation = approximation,
-                       order_constraint = enexpr(order_constraint), ...)
+                       order_constraint = enexpr(order_constraint),
+                       unitroot_spec = unitroot_spec, ...)
 }
 
 
@@ -558,4 +565,22 @@ arima_constant <- function(n, d, D, period){
     constant <- stats::diffinv(constant, lag = period, differences = D, xi = rep(1, period*D))[seq_len(n)]
   }
   constant
+}
+
+#' Options for the unit root tests for order of integration
+#' 
+#' @param ndiffs_alpha,nsdiffs_alpha The level for the test specified in the `pval` functions As long as `pval < alpha`, differences will be added.
+#' @param ndiffs_pval,nsdiffs_pval A function (or lambda expression) which returns the probability of the . As long as `pval < alpha`, differences will be added.
+#' 
+#' For the function for the seasonal p-value, the seasonal period will be provided as the `.period` argument to this function.
+#' A vector of data to test is available as `.` or `.x`.
+#' 
+#' @seealso 
+#' [feasts::unitroot_ndiffs] and [feasts::unitroot_nsdiffs]
+#' 
+#' @export
+unitroot_options <- function(ndiffs_alpha = 0.05, nsdiffs_alpha = 0.05,
+                              ndiffs_pval = ~feasts::unitroot_kpss(.)["kpss_pval"],
+                              nsdiffs_pval = ~feasts::stl_features(., .period)[2] < 0.64){
+  as.list(environment())
 }
