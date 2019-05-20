@@ -251,7 +251,7 @@ forecast.NNETAR <- function(object, new_data, specials = NULL, bootstrap = FALSE
   # Compute 1-step forecasts iteratively
   h <- NROW(new_data)
   fc <- numeric(h)
-  for (i in 1:h)
+  for (i in seq_len(h))
   {
     fcdata <- c(future_lags[lags], xreg[i, ])
     if (any(is.na(fcdata))) {
@@ -268,11 +268,18 @@ forecast.NNETAR <- function(object, new_data, specials = NULL, bootstrap = FALSE
   # Compute forecast intervals
   sim <- map(seq_len(times), function(x){
     imitate(object, new_data, specials = specials, bootstrap = bootstrap)[[".sim"]]
-  }) %>%
-    transpose %>%
-    map(as.numeric)
-  se <- map_dbl(sim, stats::sd)
-  dist <- dist_sim(sim)
+  })
+  if(length(sim) > 0){
+    sim <- sim %>%
+      transpose %>%
+      map(as.numeric)
+    se <- map_dbl(sim, stats::sd)
+    dist <- dist_sim(sim)
+  }
+  else {
+    se <- rep(NA, h)
+    dist <- dist_unknown(h)
+  }
   
   construct_fc(fc, se, dist)
 }
