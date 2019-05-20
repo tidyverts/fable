@@ -14,6 +14,21 @@ TSLM(formula, ...)
 \description{
 Fit a linear model with time series components
 }
+\section{Specials}{
+
+
+\subsection{xreg}{
+Exogenous regressors can be included in an ARIMA model without explicitly using the \code{xreg()} special. Common exogenous regressor specials as specified in \code{\link{common_xregs}} can also be used. These regressors are handled using \code{\link[stats:model.frame]{stats::model.frame()}}, and so interactions and other functionality behaves similarly to \code{\link[stats:lm]{stats::lm()}}.
+\preformatted{
+xreg(...)
+}
+
+\tabular{ll}{
+\code{...}      \tab Bare expressions for the exogenous regressors (such as \code{log(x)})
+}
+}
+}
+
 \examples{
 
 USAccDeaths \%>\% as_tsibble \%>\% model(TSLM(log(value) ~ trend() + season()))

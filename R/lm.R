@@ -58,6 +58,19 @@ specials_tslm <- new_specials(
 #' @param formula Model specification.
 #' @param ... Additional arguments passed to lm
 #' 
+#' @section Specials:
+#' 
+#' \subsection{xreg}{
+#' Exogenous regressors can be included in an ARIMA model without explicitly using the `xreg()` special. Common exogenous regressor specials as specified in [`common_xregs`] can also be used. These regressors are handled using [stats::model.frame()], and so interactions and other functionality behaves similarly to [stats::lm()].
+#' \preformatted{
+#' xreg(...)
+#' }
+#' 
+#' \tabular{ll}{
+#'   `...`      \tab Bare expressions for the exogenous regressors (such as `log(x)`)
+#' }
+#' }
+#' 
 #' @export
 #' 
 #' @examples 
