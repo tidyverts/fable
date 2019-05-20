@@ -58,7 +58,7 @@ train_ets <- function(.data, formula, specials, opt_crit,
     }
     new <- new$result
     
-    if((new[[ic]]%||%Inf) < (best[[ic]]%||%Inf) || is.null(best)){
+    if((new[[ic]]%||%Inf) < (best[[ic]]%||%Inf) && is.finite(new[[ic]]) || is.null(best)){
       best <<- new
     }
     new[[ic]]%||%Inf
