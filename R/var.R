@@ -22,9 +22,9 @@ train_var <- function(.data, formula, specials, ...){
   # Output model
   structure(
     list(
-      coef = fit$coefficients,
+      coef = as.matrix(fit$coefficients),
       fits = rbind(matrix(nrow = p, ncol = NCOL(y)), y - fit$residuals),
-      resid = rbind(matrix(nrow = p, ncol = NCOL(y)), fit$residuals),
+      resid = rbind(matrix(nrow = p, ncol = NCOL(y)), as.matrix(fit$residuals)),
       fit = tibble(sigma = list(sqrt(crossprod(fit$residuals)/fit$df.residual))),
       spec = tibble(p = p),
       last_obs = y[NROW(y) - seq_len(p) + 1,,drop = FALSE],
@@ -159,14 +159,21 @@ forecast.VAR <- function(object, new_data = NULL, specials = NULL,
   for(i in seq_len(h)){
     Z <-  c(t(y_lag), xreg[i,])
     fc[i,] <- t(coef) %*% Z
-    y_lag <- rbind(fc[i,], y_lag)[seq_len(p),]
+    y_lag <- rbind(fc[i,,drop=FALSE], y_lag)[seq_len(p),,drop=FALSE]
+  }
+  
+  if(NCOL(fc) == 1){
+    dist <- dist_normal(fc, map_dbl(sigma, `[`, 1, 1))
+  }
+  else {
+    dist <- dist_mv_normal(split(fc, row(fc)), sigma)
   }
   
   # Output forecasts
   construct_fc(
     split(fc, col(fc)), 
     map(seq_len(K), function(x,y) map_dbl(y, `[[`, x), map(sigma, diag)),
-    dist_mv_normal(split(fc, row(fc)), sigma)
+    dist
   )
 }
 
