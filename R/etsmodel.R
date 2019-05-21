@@ -43,8 +43,8 @@ etsmodel <- function(y, m, errortype, trendtype, seasontype, damped,
   }
   
   if (!check.param(alpha, beta, gamma, phi, lower, upper, bounds, m)) {
-    print(paste("Model: ETS(", errortype, ",", trendtype, ifelse(damped, "d", ""), ",", seasontype, ")", sep = ""))
-    stop("Parameters out of range")
+    abort(sprintf("Parameters out of range for ETS(%s,%s%s,%s) model",
+                  errortype, trendtype, ifelse(damped, "d", ""), seasontype))
   }
   
   # Initialize state

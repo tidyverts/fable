@@ -89,6 +89,16 @@ test_that("ETS with bad inputs", {
   )
   
   expect_error(
+    USAccDeaths_tbl %>% model(ETS(value ~ trend(alpha = 1.5))),
+    "Inconsistent parameter boundaries"
+  )
+  
+  expect_error(
+    USAccDeaths_tbl %>% model(ETS(value ~ error("A") + trend("A", alpha = 0.2, beta = 0.5) + season("N"))),
+    "Parameters out of range"
+  )
+  
+  expect_error(
     UKLungDeaths %>% 
       model(ETS(vars(mdeaths, fdeaths))),
     "Only univariate responses are supported by ETS"
