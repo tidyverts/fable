@@ -122,31 +122,54 @@ report.TSLM <- function(object, ...){
 
 #' @importFrom stats predict
 #' @export
-forecast.TSLM <- function(object, new_data, specials = NULL, ...){
+forecast.TSLM <- function(object, new_data, specials = NULL, bootstrap = FALSE, 
+                          times = 5000, ...){
   # Update data for re-evaluation
   mdl <- environment(attr(object$model$terms, ".Environment")$fourier)$self
   mdl$data <- new_data
   
-  fc <- predict(object$model, new_data, se.fit = TRUE)
-  construct_fc(fc$fit, sqrt(fc$se.fit^2 + fc$residual.scale^2), 
-               dist_normal(fc$fit, sqrt(fc$se.fit^2 + fc$residual.scale^2)))
+  # Intervals
+  if (bootstrap){ # Compute prediction intervals using simulations
+    fc <- predict(object$model, new_data, se.fit = FALSE)
+    sim <- map(seq_len(times), function(x){
+      imitate(object, new_data, bootstrap = TRUE)[[".sim"]]
+    }) %>%
+      transpose %>%
+      map(as.numeric)
+    se <- map_dbl(sim, stats::sd)
+    dist <- dist_sim(sim)
+  }  else {
+    fc <- predict(object$model, new_data, se.fit = TRUE)
+    se <- sqrt(fc$se.fit^2 + fc$residual.scale^2)
+    fc <- fc$fit
+    dist <- dist_normal(fc, se)
+  }
+  
+  construct_fc(fc, se, dist)
 }
 
 #' @importFrom fablelite imitate
 #' @export
-imitate.TSLM <- function(object, new_data, ...){
+imitate.TSLM <- function(object, new_data, bootstrap = FALSE, ...){
   # Update data for re-evaluation
   mdl <- environment(attr(object$model$terms, ".Environment")$fourier)$self
   mdl$data <- new_data
   
+  res <- residuals(object$model)
   pred <- predict(object$model, newdata = new_data)
   
   if(is.null(new_data[[".innov"]])){
-    vars <- stats::deviance(object$model)/stats::df.residual(object$model)
-    innov <- stats::rnorm(length(pred), sd = sqrt(vars))
+    if(bootstrap){
+      new_data[[".innov"]] <- sample(na.omit(res) - mean(res, na.rm = TRUE),
+                                     NROW(new_data), replace = TRUE)
+    }
+    else{
+      vars <- stats::deviance(object$model)/stats::df.residual(object$model)
+      new_data[[".innov"]] <- stats::rnorm(length(pred), sd = sqrt(vars))
+    }
   }
   
-  transmute(new_data, .sim = pred + innov)
+  transmute(new_data, .sim = pred + !!sym(".innov"))
 }
 
 #' @export
