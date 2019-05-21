@@ -47,7 +47,7 @@ test_that("Manual NNETAR selection", {
   expect_warning(
     airmiles[1:5,] %>% 
       model(NNETAR(value ~ AR(10))),
-    "Reduced number of lagged inputs due to short series"
+    "Reducing number of lagged inputs due to short series"
   )
 })
 
@@ -68,7 +68,7 @@ test_that("NNETAR with bad inputs", {
   expect_warning(
     airmiles %>% 
       model(NNETAR(resp(rep_along(value, 1)))),
-    "Constant data, setting `AR(p=1, P=0)`, and `scale_inputs=FALSE` "
+    "Constant data, setting `AR\\(p=1, P=0\\)`, and `scale_inputs=FALSE`"
   )
   
   expect_warning(

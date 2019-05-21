@@ -48,7 +48,7 @@ test_that("RW w/ drift", {
   
   expect_output(
     report(fable_fit),
-    "Drift: 3.2817 (se: 87.2696)"
+    "Drift: 3\\.2817 \\(se: 87\\.2696\\)"
   )
   
   expect_equal(
