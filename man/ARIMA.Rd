@@ -5,8 +5,8 @@
 \title{Estimate an ARIMA model}
 \usage{
 ARIMA(formula, ic = c("aicc", "aic", "bic"), stepwise = TRUE,
-  greedy = TRUE, approximation = FALSE, order_constraint = p + q + P
-  + Q <= 6, unitroot_spec = unitroot_options(), ...)
+  greedy = TRUE, approximation = NULL, order_constraint = p + q + P +
+  Q <= 6, unitroot_spec = unitroot_options(), ...)
 }
 \arguments{
 \item{formula}{Model specification (see "Specials" section).}
@@ -17,7 +17,7 @@ ARIMA(formula, ic = c("aicc", "aic", "bic"), stepwise = TRUE,
 
 \item{greedy}{Should the stepwise search move to the next best option immediately?}
 
-\item{approximation}{Should CSS be used during model selection?}
+\item{approximation}{Should CSS (conditional sum of squares) be used during model selection? The default (\code{NULL}) will use the approximation if there are more than 150 observations or if the seasonal period is greater than 12.}
 
 \item{order_constraint}{A logical predicate on the orders of \code{p}, \code{d}, \code{q},
 \code{P}, \code{D} and \code{Q} to consider in the search.}

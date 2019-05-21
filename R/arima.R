@@ -2,7 +2,7 @@ globalVariables(c("p", "P", "q", "Q"))
 
 #' @importFrom stats approx lm ts
 train_arima <- function(.data, formula, specials, ic, stepwise = TRUE, 
-                        greedy = TRUE, approximation = FALSE, order_constraint, 
+                        greedy = TRUE, approximation = NULL, order_constraint, 
                         unitroot_spec, ...){
   if(length(measured_vars(.data)) > 1){
     abort("Only univariate responses are supported by ARIMA.")
@@ -12,11 +12,16 @@ train_arima <- function(.data, formula, specials, ic, stepwise = TRUE,
   p <- d <- q <- P <- D <- Q <- period <- start.p <- start.q <- start.P <- start.Q <- NULL 
   assignSpecials(specials[c("pdq", "PDQ")])
 
+  
   # Get response
   y <- x <- ts(.data[[measured_vars(.data)]], frequency = period)
   
   if(all(is.na(y))){
     abort("All observations are missing, a model cannot be estimated without data.")
+  }
+  
+  if(is.null(approximation)){
+    approximation <- (length(x) > 150) || (period > 12)
   }
   
   # Get xreg
@@ -360,7 +365,7 @@ specials_arima <- new_specials(
 #' @param ic The information criterion used in selecting the model.
 #' @param stepwise Should stepwise be used?
 #' @param greedy Should the stepwise search move to the next best option immediately?
-#' @param approximation Should CSS be used during model selection?
+#' @param approximation Should CSS (conditional sum of squares) be used during model selection? The default (`NULL`) will use the approximation if there are more than 150 observations or if the seasonal period is greater than 12.
 #' @param order_constraint A logical predicate on the orders of `p`, `d`, `q`, 
 #' `P`, `D` and `Q` to consider in the search.
 #' @param unitroot_spec A specification of unit root tests to use in the
@@ -428,7 +433,7 @@ specials_arima <- new_specials(
 #' @importFrom stats model.matrix
 #' @export
 ARIMA <- function(formula, ic = c("aicc", "aic", "bic"), stepwise = TRUE, greedy = TRUE, 
-                  approximation = FALSE, order_constraint = p + q + P + Q <= 6, 
+                  approximation = NULL, order_constraint = p + q + P + Q <= 6, 
                   unitroot_spec = unitroot_options(), ...){
   ic <- match.arg(ic)
   arima_model <- new_model_class("ARIMA", train = train_arima, 
