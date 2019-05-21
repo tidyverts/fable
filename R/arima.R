@@ -254,10 +254,11 @@ This is generally discouraged, consider removing the constant or reducing the nu
     method <- "CSS-ML"
     best <- NULL
     step_order <- order(est_ic)[seq_len(sum(!is.na(est_ic)))]
+    est_ic <- est_ic*Inf # Ignore all approximate models until re-estimated
     for (mod_spec in step_order)
     {
-      est_ic <- do.call(compare_arima, model_opts[mod_spec,])
-      if (isTRUE(is.finite(est_ic))) {
+      est_ic[mod_spec] <- do.call(compare_arima, model_opts[mod_spec,])
+      if (isTRUE(is.finite(est_ic[mod_spec]))) {
         break
       }
     }
