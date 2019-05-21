@@ -22,8 +22,8 @@ train_nnetar <- function(.data, formula, specials, size, repeats, scale_inputs, 
   # Check for constant data in time series
   constant_data <- is.constant(x)
   if (constant_data){
-    warn("Constant data, setting p=1, P=0, scale.inputs=FALSE")
-    scale.inputs <- FALSE
+    warn("Constant data, setting `AR(p=1, P=0)`, and `scale_inputs=FALSE`")
+    scale_inputs <- FALSE
     p <- 1
     P <- 0
   }
@@ -31,7 +31,7 @@ train_nnetar <- function(.data, formula, specials, size, repeats, scale_inputs, 
   if (!is.null(xreg)){
     xreg <- as.matrix(xreg)
     if (any(apply(xreg, 2, is.constant))){
-      warning("Constant xreg column, setting scale_inputs=FALSE")
+      warn("Constant xreg column, setting `scale_inputs=FALSE`")
       scale_inputs <- FALSE
     }
   }
