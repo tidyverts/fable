@@ -1,4 +1,4 @@
-globalVariables("self", "origin")
+globalVariables(c("self", "origin"))
 
 #' @importFrom stats model.frame
 model_xreg <- function(...){
