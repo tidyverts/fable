@@ -45,6 +45,27 @@ test_that("RW w/ drift", {
     model_sum(fable_fit$rw[[1]]),
     "RW w/ drift"
   )
+  
+  expect_output(
+    report(fable_fit),
+    "Drift: 3.2817 (se: 87.2696)"
+  )
+  
+  expect_equal(
+    tidy(fable_fit)$estimate,
+    forecast_fc$model$par$drift
+  )
+  
+  expect_equal(
+    glance(fable_fit)$sigma^2,
+    forecast_fc$model$sigma2
+  )
+  
+  expect_equivalent(
+    residuals(fable_fit)[[".resid"]],
+    unclass(residuals(forecast_fc))
+  )
+  
 })
 
 test_that("SNAIVE", {
