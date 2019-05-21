@@ -16,6 +16,7 @@ train_ets <- function(.data, formula, specials, opt_crit,
   if(any(is.na(y))){
     abort("ETS does not support missing values.")
   }
+  
   # Build possible models
   model_opts <- expand.grid(errortype = ets_spec$error$method,
                             trendtype = ets_spec$trend$method,
@@ -269,10 +270,6 @@ ETS <- function(formula, opt_crit = c("lik", "amse", "mse", "sigma", "mae"),
 
 #' @export
 forecast.ETS <- function(object, new_data, specials = NULL, simulate = FALSE, bootstrap = FALSE, times = 5000, ...){
-  if(!is_regular(new_data)){
-    abort("Forecasts must be regularly spaced")
-  }
-  
   errortype <- object$spec$errortype
   trendtype <- object$spec$trendtype
   seasontype <- object$spec$seasontype
@@ -303,7 +300,7 @@ forecast.ETS <- function(object, new_data, specials = NULL, simulate = FALSE, bo
       as.double(numeric(NROW(new_data))),
       PACKAGE = "fable"
     )[[7]]
-
+    
     construct_fc(pred, map_dbl(sim, stats::sd), dist_sim(sim))
   }
   else{
@@ -382,30 +379,43 @@ refit.ETS <- function(object, new_data, specials = NULL, reestimate = FALSE, rei
     }
   }
   
-  if(!reinitialise){
-    abort("Using initial paramaters is currently not implemented.")
-  }
-  
   y <- new_data %>% 
     transmute(
       !!parse_expr(measured_vars(object$est)[1])
     )
   idx <- y[[expr_text(index(y))]]
+  y <- y[[measured_vars(y)]]
   
-  best <- etsmodel(
-    y[[measured_vars(y)]], m = object$spec$period,
-    errortype = object$spec$errortype, trendtype = object$spec$trendtype,
-    seasontype = object$spec$seasontype, damped = object$spec$damped,
-    alpha = est_par("alpha"), beta = est_par("beta"), phi = est_par("phi"), gamma = est_par("gamma"),
-    alpharange = c(1e-04, 0.9999), betarange = c(1e-04, 0.9999),
-    gammarange = c(1e-04, 0.9999), phirange = c(0.8, 0.98),
-    opt.crit = "lik", nmse = 3, bounds = "both")
+  best <- if(reinitialise){
+    etsmodel(
+      y, m = object$spec$period,
+      errortype = object$spec$errortype, trendtype = object$spec$trendtype,
+      seasontype = object$spec$seasontype, damped = object$spec$damped,
+      alpha = est_par("alpha"), beta = est_par("beta"), phi = est_par("phi"), gamma = est_par("gamma"),
+      alpharange = c(1e-04, 0.9999), betarange = c(1e-04, 0.9999),
+      gammarange = c(1e-04, 0.9999), phirange = c(0.8, 0.98),
+      opt.crit = "lik", nmse = 3, bounds = "both")
+  }
+  else {
+    init.par <- set_names(object$par$estimate, object$par$term)
+    estimate_ets(
+      y, m = object$spec$period, 
+      init.state = init.par[setdiff(names(init.par), c("alpha", "beta", "gamma", "phi"))],
+      errortype = object$spec$errortype, trendtype = object$spec$trendtype,
+      seasontype = object$spec$seasontype, damped = object$spec$damped,
+      alpha = est_par("alpha"), beta = est_par("beta"), phi = est_par("phi"), gamma = est_par("gamma"),
+      nmse = 3, np = NROW(object$par))
+  }
   
   structure(
     list(
-      par = tibble(term = names(best$par), estimate = best$par),
-      est = tibble(.fitted = best$fitted, .resid = best$residuals),
-      fit = tibble(sigma = sqrt(sum(best$residuals^2, na.rm = TRUE) / (NROW(y) - length(best$par))),
+      par = tibble(term = names(best$par) %||% chr(), estimate = best$par %||% dbl()),
+      est = new_data %>% 
+        mutate(
+          .fitted = best$fitted,
+          .resid = best$residuals
+        ),
+      fit = tibble(sigma = sqrt(sum(best$residuals^2, na.rm = TRUE) / (length(y) - length(best$par))),
                    logLik = best$loglik, AIC = best$aic, AICc = best$aicc, BIC = best$bic,
                    MSE = best$mse, AMSE = best$amse, MAE = best$mae),
       states = tsibble(

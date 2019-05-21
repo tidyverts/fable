@@ -75,10 +75,6 @@ etsmodel <- function(y, m, errortype, trendtype, seasontype, damped,
   names(fit.par) <- names(par)
   
   init.state <- fit.par[(np - nstate + 1):np]
-  # Add extra state
-  if (seasontype != "N") {
-    init.state <- c(init.state, m * (seasontype == "M") - sum(init.state[(2 + (trendtype != "N")):nstate]))
-  }
   
   if (!is.na(fit.par["alpha"])) {
     alpha <- fit.par["alpha"]
@@ -93,8 +89,19 @@ etsmodel <- function(y, m, errortype, trendtype, seasontype, damped,
     phi <- fit.par["phi"]
   }
   
-  e <- pegelsresid.C(y, m, init.state, errortype, trendtype, seasontype, damped, alpha, beta, gamma, phi, nmse)
+  estimate_ets(y, m, init.state, errortype, trendtype, seasontype,
+               damped, alpha, beta, gamma, phi, nmse, np)
+}
+
+estimate_ets <- function(y, m, init.state, errortype, trendtype, seasontype,
+                         damped, alpha, beta, gamma, phi, nmse, np){
+  # Add extra state
+  if (seasontype != "N") {
+    init.state <- c(init.state, m * (seasontype == "M") - sum(init.state[(2 + (trendtype != "N")):length(init.state)]))
+  }
   
+  e <- pegelsresid.C(y, m, init.state, errortype, trendtype, seasontype,
+                     damped, alpha, beta, gamma, phi, nmse)
   np <- np + 1
   ny <- length(y)
   aic <- e$lik + 2 * np
@@ -116,7 +123,11 @@ etsmodel <- function(y, m, errortype, trendtype, seasontype, damped,
   }
   colnames(states) <- states_cn
   
-  fit.par <- c(fit.par, par.noopt)
+  if (seasontype != "N") {
+    init.state <- init.state[-length(init.state)]
+  }
+  
+  fit.par <- c(alpha, beta, gamma, phi, init.state)
   if (errortype == "A") {
     fits <- y - e$e
   } else {
@@ -126,7 +137,7 @@ etsmodel <- function(y, m, errortype, trendtype, seasontype, damped,
   return(list(
     loglik = -0.5 * e$lik, aic = aic, bic = bic, aicc = aicc, 
     mse = mse, amse = amse, mae = mae,
-    fit = fred, residuals = e$e, fitted = fits,
+    residuals = e$e, fitted = fits,
     states = states, par = fit.par
   ))
 }
