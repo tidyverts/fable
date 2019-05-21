@@ -499,19 +499,15 @@ report.ARIMA <- function(object, ...){
 #' @export
 forecast.ARIMA <- function(object, new_data = NULL, specials = NULL, 
                            bootstrap = FALSE, times = 5000, ...){
-  if(!is_regular(new_data)){
-    abort("Forecasts must be regularly spaced.")
-  }
   if(bootstrap){
     abort("Bootstrapped forecasts for ARIMA are not yet implemented.")
   }
-  
   xreg <- specials$xreg[[1]]$xreg
   
   if(object$spec$constant){
-    intercept <- arima_constant(object$model$nobs + NROW(new_data),
+    intercept <- arima_constant(NROW(object$est) + NROW(new_data),
       object$spec$d, object$spec$D,
-      object$spec$period)[object$model$nobs + seq_len(NROW(new_data))]
+      object$spec$period)[NROW(object$est) + seq_len(NROW(new_data))]
     
     xreg <- if(is.null(xreg)){
       matrix(intercept, dimnames = list(NULL, "constant"))
