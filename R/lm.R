@@ -1,3 +1,30 @@
+lm_glance_measures <- function(fit){
+  # Set up fit measures
+  n <- length(fit$residuals)
+  aic <- stats::extractAIC(fit)
+  k <- aic[1] - 1
+  smmry <- summary(fit)
+  
+  tibble(r.squared = smmry$r.squared, adj.r.squared = smmry$adj.r.squared, 
+         sigma = smmry$sigma, statistic = smmry$fstatistic[1]%||%NA,
+         p.value = possibly(stats::pf, NA)(smmry$fstatistic[1], 
+                                           smmry$fstatistic[2], smmry$fstatistic[3], lower.tail = FALSE),
+         df = smmry$df[1],
+         logLik = as.numeric(possibly(stats::logLik, NA)(fit)),
+         AIC = aic[2] + 2,
+         AICc = !!sym("AIC") + 2 * (k + 2) * (k + 3) / (n - k - 3),
+         BIC = !!sym("AIC") + (k + 2) * (log(n) - 2),
+         CV = mean((residuals(fit)/(1-stats::hatvalues(fit)))^2, na.rm = TRUE),
+         deviance = as.numeric(possibly(stats::deviance, NA)(fit)),
+         df.residual = as.numeric(possibly(stats::df.residual, NA)(fit))
+  )
+}
+
+lm_tidy_measures <- function(fit){
+  tibble(term = names(coef(fit))[!is.na(coef(fit))]%||%chr(),
+         !!!as_tibble(`colnames<-`(coef(summary(fit)), c("estimate", "std.error", "statistic", "p.value"))))
+}
+
 train_tslm <- function(.data, formula, specials, ...){
   # Extract raw original data
   est <- .data
@@ -17,33 +44,14 @@ train_tslm <- function(.data, formula, specials, ...){
   fit <- stats::lm(model_formula, .data, na.action = stats::na.exclude, ...)
   fitted <- predict(fit, .data)
   
-  # Set up fit measures
-  n <- length(fit$residuals)
-  aic <- stats::extractAIC(fit)
-  k <- aic[1] - 1
-  smmry <- summary(fit)
-  
   structure(
     list(
       model = fit,
-      par = tibble(term = names(coef(fit))[!is.na(coef(fit))]%||%chr(),
-                   !!!as_tibble(`colnames<-`(coef(smmry), c("estimate", "std.error", "statistic", "p.value")))),
+      par = lm_tidy_measures(fit),
       est = tibble(.fitted = fitted, .resid = !!residuals(fit)),
-      fit = tibble(r.squared = smmry$r.squared, adj.r.squared = smmry$adj.r.squared, 
-                   sigma = smmry$sigma, statistic = smmry$fstatistic[1]%||%NA,
-                   p.value = possibly(stats::pf, NA)(smmry$fstatistic[1], 
-                     smmry$fstatistic[2], smmry$fstatistic[3], lower.tail = FALSE),
-                   df = smmry$df[1],
-                   logLik = as.numeric(possibly(stats::logLik, NA)(fit)),
-                   AIC = aic[2] + 2,
-                   AICc = !!sym("AIC") + 2 * (k + 2) * (k + 3) / (n - k - 3),
-                   BIC = !!sym("AIC") + (k + 2) * (log(n) - 2),
-                   CV = mean((residuals(fit)/(1-stats::hatvalues(fit)))^2, na.rm = TRUE),
-                   deviance = as.numeric(possibly(stats::deviance, NA)(fit)),
-                   df.residual = as.numeric(possibly(stats::df.residual, NA)(fit))
-      )
+      fit = lm_glance_measures(fit)
     ),
-    class = "TSLM", origin = origin
+    class = "TSLM"
   )
 }
 
@@ -167,13 +175,11 @@ refit.TSLM <- function(object, new_data, specials = NULL, reestimate = FALSE, ..
   structure(
     list(
       model = fit,
-      par = tibble(term = names(coef(fit)), estimate = coef(fit)),
-      est = new_data %>% 
-        transmute(!!model_lhs(list(formula = formula(object$model$terms))),
-                  .fitted = fit$fitted.values,
-                  .resid = fit$residuals)
+      par = lm_tidy_measures(fit),
+      est = tibble(.fitted = fitted(fit), .resid = residuals(fit)),
+      fit = lm_glance_measures(fit)
     ),
-    class = "TSLM", origin = object%@%"origin"
+    class = "TSLM"
   )
 }
 
