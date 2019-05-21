@@ -1,12 +1,4 @@
-globalVariables("self")
-
-tbl_xreg <- function(...){
-  tibble(...)
-}
-
-exprs_xreg <- function(...){
-  exprs(...)
-}
+globalVariables("self", "origin")
 
 #' @importFrom stats model.frame
 model_xreg <- function(...){
@@ -20,8 +12,6 @@ model_xreg <- function(...){
 no_xreg <- function(...){
   abort("Exogenous regressors are not supported for this model type.")
 }
-
-origin <- NULL
 
 trend <- function(x, knots = NULL, origin = NULL){
   UseMethod("trend")
