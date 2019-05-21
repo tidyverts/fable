@@ -67,6 +67,13 @@ test_that("SNAIVE", {
     model_sum(fable_fit$snaive[[1]]),
     "SNAIVE"
   )
+  
+  fable_fc_sim <- fable_fit %>%
+    forecast(h = 12, bootstrap = TRUE, times = 5)
+  expect_equal(
+    fable_fc$value,
+    fable_fc_sim$value
+  )
 })
 
 test_that("RW short", {
@@ -79,4 +86,24 @@ test_that("RW short", {
   )
   
   expect_equal(fc$y, c(NA, 1, 2, 3))
+})
+
+test_that("lagwalk with bad inputs", {
+  expect_error(
+    UKLungDeaths %>%
+      model(SNAIVE(vars(mdeaths, fdeaths))),
+    "Only univariate responses are supported by lagwalks"
+  )
+  
+  expect_error(
+    UKLungDeaths %>%
+      model(SNAIVE(resp(rep_along(mdeaths, NA)))),
+    "All observations are missing"
+  )
+  
+  expect_error(
+    UKLungDeaths %>%
+      model(SNAIVE(mdeaths ~ lag(1))),
+    "Non-seasonal model specification provided"
+  )
 })
