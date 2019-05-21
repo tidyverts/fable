@@ -551,13 +551,3 @@ report.ETS <- function(object, ...) {
     print(stats)
   }
 }
-
-#' @export
-summary.ETS <- function(object, ...) {
-  print(object)
-}
-
-#' @export
-coef.ETS <- function(object, ...) {
-  set_names(object$par$estimate, object$par$term)
-}
