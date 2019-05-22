@@ -7,19 +7,25 @@ train_var <- function(.data, formula, specials, ic, ...){
   y <- as.matrix(.data[measured_vars(.data)])
   
   # Get xreg
-  xreg <- specials$xreg[[1]]
+  constant <- specials$xreg[[1]]$constant
+  xreg <- specials$xreg[[1]]$xreg
   
   # Choose best model
-  reduce(p, function(best, p){
-    new <- estimate_var(y, p, xreg)
-    if((new$fit[[ic]] %||% Inf) < (best$fit[[ic]] %||% Inf)){
-      best <- new
-    }
-    best
-  }, .init = NULL)
+  reduce(transpose(expand.grid(p = p, constant = constant)),
+         function(best, args){
+           new <- estimate_var(y, args$p, xreg, args$constant)
+           if((new$fit[[ic]] %||% Inf) < (best$fit[[ic]] %||% Inf)){
+             best <- new
+           }
+           best
+         }, .init = NULL)
 }
 
-estimate_var <- function(y, p, xreg){
+estimate_var <- function(y, p, xreg, constant){
+  if(constant){
+    xreg <- cbind(constant = rep(1, NROW(y)), xreg)
+  }
+  
   y_lag <- stats::embed(y, dimension = p + 1)[, -(seq_len(NCOL(y)))]
   colnames(y_lag) <- pmap_chr(expand.grid(colnames(y), seq_len(p)), 
                               sprintf, fmt = "lag(%s,%i)")
@@ -52,7 +58,7 @@ estimate_var <- function(y, p, xreg){
       resid = rbind(matrix(nrow = p, ncol = NCOL(y)), resid),
       fit = tibble(sigma2 = list(sig/fit$df.residual), logLik = loglik,
                    aic = aic, aicc = aicc, bic = bic),
-      spec = tibble(p = p),
+      spec = tibble(p = p, constant = constant),
       last_obs = y[NROW(y) - seq_len(p) + 1,,drop = FALSE],
       model = fit
     ),
@@ -66,15 +72,21 @@ specials_var <- new_specials(
   },
   common_xregs,
   xreg = function(...){
+    dots <- enexprs(...)
+    
+    constants <- map_lgl(dots, inherits, "numeric") 
+    constant_given <- any(map_lgl(dots[constants], `%in%`, -1:1))
+    
     model_formula <- new_formula(
       lhs = NULL,
-      rhs = reduce(enexprs(...), function(.x, .y) call2("+", .x, .y))
+      rhs = reduce(dots, function(.x, .y) call2("+", .x, .y))
     )
-    mf <- model.frame(model_formula, data = self$data, na.action = stats::na.pass)
-    if(mf%@%"terms"%@%"intercept" == 1){
-      mf <- cbind(constant = rep(1, NROW(self$data)), mf)
-    }
-    mf
+    xreg <- model.frame(model_formula, data = self$data, na.action = stats::na.pass)
+    
+    list(
+      constant = if(constant_given) as_logical(terms(xreg)%@%"intercept") else c(TRUE, FALSE),
+      xreg = if(NCOL(xreg) == 0) NULL else xreg
+    )
   },
   .required_specials = c("AR", "xreg"),
   .xreg_specials = names(common_xregs)
@@ -102,7 +114,7 @@ specials_var <- new_specials(
 #' \subsection{xreg}{
 #' Exogenous regressors can be included in an ARIMA model without explicitly using the `xreg()` special. Common exogenous regressor specials as specified in [`common_xregs`] can also be used. These regressors are handled using [stats::model.frame()], and so interactions and other functionality behaves similarly to [stats::lm()].
 #' 
-#' The inclusion of a constant in the model follows the same rules as [`stats::lm()`], where including `1` will add a constant and `0` or `-1` will remove the constant (by default, a constant is included).
+#' The inclusion of a constant in the model follows the similar rules to [`stats::lm()`], where including `1` will add a constant and `0` or `-1` will remove the constant. If left out, the inclusion of a constant will be determined by minimising `ic`.
 #' 
 #' \preformatted{
 #' xreg(...)
@@ -147,13 +159,16 @@ forecast.VAR <- function(object, new_data = NULL, specials = NULL,
     abort("Bootstrapped forecasts for VARs are not yet implemented.")
   }
   
-  # Get xreg
-  xreg <- specials$xreg[[1]]
-  
   h <- NROW(new_data)
   p <- object$spec$p
   coef <- object$coef
   K <- NCOL(coef)
+  
+  # Get xreg
+  xreg <- specials$xreg[[1]]$xreg
+  if(object$spec$constant){
+    xreg <- cbind(constant = rep(1, NROW(xreg)), xreg)
+  }
   
   # Compute phi
   As <- rep(list(matrix(0, nrow = K, ncol = K)), max(h, p))
@@ -222,7 +237,7 @@ residuals.VAR <- function(object, ...){
 
 #' @export
 model_sum.VAR <- function(x){
-  sprintf("VAR(%s)", x$spec$p)
+  sprintf("VAR(%s)%s", x$spec$p, ifelse(x$spec$constant, " w/ mean", ""))
 }
 
 #' @export
