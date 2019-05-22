@@ -156,9 +156,6 @@ VAR <- function(formula, ic = c("aicc", "aic", "bic"), ...){
 #' @export
 forecast.VAR <- function(object, new_data = NULL, specials = NULL, 
                            bootstrap = FALSE, times = 5000, ...){
-  if(!is_regular(new_data)){
-    abort("Forecasts must be regularly spaced.")
-  }
   if(bootstrap){
     abort("Bootstrapped forecasts for VARs are not yet implemented.")
   }
@@ -167,11 +164,10 @@ forecast.VAR <- function(object, new_data = NULL, specials = NULL,
   p <- object$spec$p
   coef <- object$coef
   K <- NCOL(coef)
-  
   # Get xreg
   xreg <- specials$xreg[[1]]$xreg
   if(object$spec$constant){
-    xreg <- cbind(constant = rep(1, NROW(xreg)), xreg)
+    xreg <- cbind(constant = rep(1, h), xreg)
   }
   
   # Compute phi
@@ -209,7 +205,7 @@ forecast.VAR <- function(object, new_data = NULL, specials = NULL,
   
   y_lag <- object$last_obs
   for(i in seq_len(h)){
-    Z <-  c(t(y_lag), xreg[i,])
+    Z <-  c(t(y_lag), t(xreg[i,]))
     fc[i,] <- t(coef) %*% Z
     y_lag <- rbind(fc[i,,drop=FALSE], y_lag)[seq_len(p),,drop=FALSE]
   }
