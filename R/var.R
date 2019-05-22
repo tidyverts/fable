@@ -53,7 +53,7 @@ estimate_var <- function(y, p, xreg, constant){
   # Output model
   structure(
     list(
-      coef = as.matrix(fit$coefficients),
+      coef = `colnames<-`(as.matrix(fit$coefficients), colnames(y)),
       fits = rbind(matrix(nrow = p, ncol = NCOL(y)), y - resid),
       resid = rbind(matrix(nrow = p, ncol = NCOL(y)), resid),
       fit = tibble(sigma2 = list(sig/fit$df.residual), logLik = loglik,
