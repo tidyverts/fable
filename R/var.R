@@ -26,7 +26,7 @@ estimate_var <- function(y, p, xreg, constant){
     xreg <- cbind(constant = rep(1, NROW(y)), xreg)
   }
   
-  y_lag <- stats::embed(y, dimension = p + 1)[, -(seq_len(NCOL(y)))]
+  y_lag <- stats::embed(y, dimension = p + 1)[, -(seq_len(NCOL(y))), drop = FALSE]
   colnames(y_lag) <- pmap_chr(expand.grid(colnames(y), seq_len(p)), 
                               sprintf, fmt = "lag(%s,%i)")
   if(p > 0){
