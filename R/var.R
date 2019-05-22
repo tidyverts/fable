@@ -19,14 +19,29 @@ train_var <- function(.data, formula, specials, ...){
   }
   dm <- cbind(y_lag, xreg)
   fit <- stats::lm.fit(as.matrix(dm), y)
-
+  
+  resid <- as.matrix(fit$residuals)
+  
+  nr <- NROW(y)
+  nc <- NCOL(y)
+  sig <- crossprod(fit$residuals)
+  sig_det <- det(sig/nr)
+  loglik <- -(nr * nc/2) * log(2 * pi) - (nr/2) * log(sig_det) - 
+    (1/2) * sum(diag(resid %*% solve(sig/nr) %*% t(resid)))
+  
+  aic <- log(sig_det) + (2/nr) * (p * nc^2 + nc * NCOL(xreg))
+  hq <- log(sig_det) + (2 * log(log(nr))/nr) * (p * nc^2 + nc * NCOL(xreg))
+  sc <- log(sig_det) + (log(nr)/nr) * (p * nc^2 + nc * NCOL(xreg))
+  fpe <- ((nr + NCOL(dm))/(nr - NCOL(dm)))^nc * sig_det
+  
   # Output model
   structure(
     list(
       coef = as.matrix(fit$coefficients),
-      fits = rbind(matrix(nrow = p, ncol = NCOL(y)), y - fit$residuals),
-      resid = rbind(matrix(nrow = p, ncol = NCOL(y)), as.matrix(fit$residuals)),
-      fit = tibble(sigma = list(sqrt(crossprod(fit$residuals)/fit$df.residual))),
+      fits = rbind(matrix(nrow = p, ncol = NCOL(y)), y - resid),
+      resid = rbind(matrix(nrow = p, ncol = NCOL(y)), resid),
+      fit = tibble(sigma = list(sqrt(sig/fit$df.residual)), logLik = loglik,
+                   aic = aic, hq = hq, sc = sc, fpe = fpe),
       spec = tibble(p = p),
       last_obs = y[NROW(y) - seq_len(p) + 1,,drop = FALSE],
       model = fit
@@ -209,4 +224,9 @@ tidy.VAR <- function(x){
     mutate(std.error = unlist(se),
            statistic = !!sym("estimate") / !!sym("std.error"),
            p.value = 2 * stats::pt(abs(!!sym("statistic")), rdf, lower.tail = FALSE))
+}
+
+#' @export
+glance.VAR <- function(x, ...){
+  x$fit
 }
