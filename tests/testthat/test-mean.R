@@ -7,8 +7,8 @@ test_that("MEAN", {
     USAccDeaths_tbl %>% transmute(.fitted = mean(value))
   )
   
-  expect_identical(
-    glance(fit)$sigma, sd(scale(USAccDeaths_tbl$value, scale = FALSE))
+  expect_equivalent(
+    glance(fit)$sigma2, var(scale(USAccDeaths_tbl$value, scale = FALSE))
   )
   
   expect_identical(

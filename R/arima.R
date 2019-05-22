@@ -300,7 +300,7 @@ This is generally discouraged, consider removing the constant or reducing the nu
         .resid = as.numeric(best$residuals),
         .regression_resid = reg_resid
       ),
-      fit = tibble(sigma = sqrt(best$sigma2),
+      fit = tibble(sigma2 = best$sigma2,
                    logLik = best$loglik,
                    AIC = best$aic, AICc = best$aicc, BIC = best$bic,
                    ar_roots = list(arroot), ma_roots = list(maroot)),
@@ -489,7 +489,7 @@ report.ARIMA <- function(object, ...){
     print.default(coef, print.gap = 2)
   }
   cat(
-    "\nsigma^2 estimated as ", format(object$fit$sigma^2, digits = 4),
+    "\nsigma^2 estimated as ", format(object$fit$sigma2, digits = 4),
     ":  log likelihood=", format(round(object$fit$logLik, 2L)), "\n", sep = ""
   )
   

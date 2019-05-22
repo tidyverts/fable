@@ -70,7 +70,7 @@ test_that("Manual ETS selection", {
   # Test report
   expect_output(
     report(fable_fit),
-    "sigma:  292.6907"
+    "sigma\\^2:  85667.86"
   )
   
   aug <- augment(fable_fit)

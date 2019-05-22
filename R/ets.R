@@ -81,7 +81,7 @@ train_ets <- function(.data, formula, specials, opt_crit,
           .fitted = best$fitted,
           .resid = best$residuals
         ),
-      fit = tibble(sigma = sqrt(sum(best$residuals^2, na.rm = TRUE) / (length(y) - length(best$par))),
+      fit = tibble(sigma2 = sum(best$residuals^2, na.rm = TRUE) / (length(y) - length(best$par)),
                    logLik = best$loglik, AIC = best$aic, AICc = best$aicc, BIC = best$bic,
                    MSE = best$mse, AMSE = best$amse, MAE = best$mae),
       states = tsibble(
@@ -306,7 +306,7 @@ forecast.ETS <- function(object, new_data, specials = NULL, simulate = FALSE, bo
   else{
     fc <- fc_class(h = NROW(new_data),
                    last.state = laststate,
-                   trendtype, seasontype, damped, object$spec$period, object$fit$sigma^2, 
+                   trendtype, seasontype, damped, object$spec$period, object$fit$sigma2, 
                    set_names(object$par$estimate, object$par$term))
     construct_fc(fc$mu, sqrt(fc$var), dist_normal(fc$mu, sqrt(fc$var)))
   }
@@ -333,7 +333,7 @@ imitate.ETS <- function(object, new_data, bootstrap = FALSE, ...){
                                      NROW(new_data), replace = TRUE)
     }
     else{
-      new_data[[".innov"]] <- stats::rnorm(NROW(new_data), sd = object$fit$sigma)
+      new_data[[".innov"]] <- stats::rnorm(NROW(new_data), sd = sqrt(object$fit$sigma2))
     }
   }
   
@@ -415,7 +415,7 @@ refit.ETS <- function(object, new_data, specials = NULL, reestimate = FALSE, rei
           .fitted = best$fitted,
           .resid = best$residuals
         ),
-      fit = tibble(sigma = sqrt(sum(best$residuals^2, na.rm = TRUE) / (length(y) - length(best$par))),
+      fit = tibble(sigma2 = sum(best$residuals^2, na.rm = TRUE) / (length(y) - length(best$par)),
                    logLik = best$loglik, AIC = best$aic, AICc = best$aicc, BIC = best$bic,
                    MSE = best$mse, AMSE = best$amse, MAE = best$mae),
       states = tsibble(
@@ -543,8 +543,8 @@ report.ETS <- function(object, ...) {
   print.data.frame(object$states[1,measured_vars(object$states)], row.names = FALSE)
   cat("\n")
   
-  cat("\n  sigma:  ")
-  cat(round(object$fit$sigma, 4))
+  cat("\n  sigma^2:  ")
+  cat(round(object$fit$sigma2, 4))
   if (!is.null(object$fit$AIC)) {
     stats <- c(AIC = object$fit$AIC, AICc = object$fit$AICc, BIC = object$fit$BIC)
     cat("\n\n")

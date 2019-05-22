@@ -6,7 +6,7 @@ lm_glance_measures <- function(fit){
   smmry <- summary(fit)
   
   tibble(r.squared = smmry$r.squared, adj.r.squared = smmry$adj.r.squared, 
-         sigma = smmry$sigma, statistic = smmry$fstatistic[1]%||%NA,
+         sigma2 = smmry$sigma^2, statistic = smmry$fstatistic[1]%||%NA,
          p.value = possibly(stats::pf, NA)(smmry$fstatistic[1], 
                                            smmry$fstatistic[2], smmry$fstatistic[3], lower.tail = FALSE),
          df = smmry$df[1],

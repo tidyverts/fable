@@ -57,7 +57,7 @@ test_that("RW w/ drift", {
   )
   
   expect_equal(
-    glance(fable_fit)$sigma^2,
+    glance(fable_fit)$sigma2,
     forecast_fc$model$sigma2
   )
   

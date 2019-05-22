@@ -44,7 +44,7 @@ train_lagwalk <- function(.data, formula, specials, ...){
           .fitted = fitted,
           .resid = res
         ),
-      fit = tibble(sigma = sigma),
+      fit = tibble(sigma2 = sigma^2),
       spec = tibble(lag = lag, drift = drift),
       future = mutate(new_data(.data, lag), 
                       !!expr_text(model_lhs(self)) := y[c(rep(NA, max(0, lag - n)), seq_len(min(n, lag)) + n - min(n, lag))]
@@ -236,7 +236,7 @@ imitate.RW <- function(object, new_data, bootstrap = FALSE, ...){
                                      NROW(new_data), replace = TRUE)
     }
     else{
-      new_data[[".innov"]] <- stats::rnorm(NROW(new_data), sd = object$fit$sigma)
+      new_data[[".innov"]] <- stats::rnorm(NROW(new_data), sd = sqrt(object$fit$sigma2))
     }
   }
 
@@ -282,7 +282,7 @@ report.RW <- function(object, ...){
     cat(paste("Drift: ", round(object$par$estimate[row], 4), 
               " (se: ", round(object$par$std.error[row], 4), ")\n", sep = ""))
   }
-  cat(paste("Residual sd:", round(object$fit$sigma, 4), "\n"))
+  cat(paste("sigma^2:", round(object$fit$sigma2, 4), "\n"))
 }
 
 #' @importFrom stats coef

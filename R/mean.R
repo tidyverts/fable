@@ -16,7 +16,7 @@ train_mean <- function(.data, formula, specials, ...){
     list(
       par = tibble(term = "mean", estimate = y_mean, std.error = sigma / sqrt(n)),
       est = tibble(.fitted = fits, .resid = res),
-      fit = tibble(sigma = sigma),
+      fit = tibble(sigma2 = sigma^2),
       spec = tibble()
     ),
     class = "model_mean"
@@ -57,7 +57,7 @@ forecast.model_mean <- function(object, new_data, specials = NULL, bootstrap = F
   
   y_mean <- object$par$estimate
   n <- NROW(object$est)
-  sigma <- object$fit$sigma
+  sigma <- sqrt(object$fit$sigma2)
   
   # Point forecasts
   fc <- rep(y_mean, h)
@@ -91,7 +91,8 @@ imitate.model_mean <- function(object, new_data, bootstrap = FALSE, ...){
                                      NROW(new_data), replace = TRUE)
     }
     else{
-      new_data[[".innov"]] <- stats::rnorm(NROW(new_data), sd = object$fit$sigma)
+      new_data[[".innov"]] <- stats::rnorm(NROW(new_data), 
+                                           sd = sqrt(object$fit$sigma2))
     }
   }
   
@@ -125,7 +126,7 @@ tidy.model_mean <- function(x, ...){
 report.model_mean <- function(object, ...){
   cat("\n")
   cat(paste("Mean:", round(object$par$estimate, 4), "\n"))
-  cat(paste("Residual sd:", round(object$fit$sigma, 4), "\n"))
+  cat(paste("sigma^2:", round(object$fit$sigma2, 4), "\n"))
 }
 
 #' @export
