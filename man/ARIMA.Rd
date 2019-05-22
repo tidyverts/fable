@@ -68,6 +68,9 @@ PDQ(P = 0:2, D = 0:1, Q = 0:2, period = NULL,
 
 \subsection{xreg}{
 Exogenous regressors can be included in an ARIMA model without explicitly using the \code{xreg()} special. Common exogenous regressor specials as specified in \code{\link{common_xregs}} can also be used. These regressors are handled using \code{\link[stats:model.frame]{stats::model.frame()}}, and so interactions and other functionality behaves similarly to \code{\link[stats:lm]{stats::lm()}}.
+
+The inclusion of a constant in the model follows the similar rules to \code{\link[stats:lm]{stats::lm()}}, where including \code{1} will add a constant and \code{0} or \code{-1} will remove the constant. If left out, the inclusion of a constant will be determined by minimising \code{ic}.
+
 \preformatted{
 xreg(...)
 }

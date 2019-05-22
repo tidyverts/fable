@@ -88,8 +88,11 @@ specials_var <- new_specials(
 #' }
 #' }
 #' 
-#' #' \subsection{xreg}{
+#' \subsection{xreg}{
 #' Exogenous regressors can be included in an ARIMA model without explicitly using the `xreg()` special. Common exogenous regressor specials as specified in [`common_xregs`] can also be used. These regressors are handled using [stats::model.frame()], and so interactions and other functionality behaves similarly to [stats::lm()].
+#' 
+#' The inclusion of a constant in the model follows the same rules as [`stats::lm()`], where including `1` will add a constant and `0` or `-1` will remove the constant (by default, a constant is included).
+#' 
 #' \preformatted{
 #' xreg(...)
 #' }
