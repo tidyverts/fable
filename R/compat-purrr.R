@@ -96,6 +96,15 @@ pmap_dbl <- function(.l, .f, ...) {
   )), mode = "double")
 }
 
+pmap_chr <- function(.l, .f, ...) {
+  args <- args_recycle(.l)
+  as.vector(do.call("mapply", c(
+    FUN = list(quote(.f)),
+    args, MoreArgs = quote(list(...)),
+    SIMPLIFY = FALSE, USE.NAMES = FALSE
+  )), mode = "character")
+}
+
 probe <- function(.x, .p, ...) {
   if (is_logical(.p)) {
     stopifnot(length(.p) == length(.x))
