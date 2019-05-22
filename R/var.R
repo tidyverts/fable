@@ -1,5 +1,5 @@
 #' @importFrom stats ts
-train_var <- function(.data, formula, specials, ...){
+train_var <- function(.data, formula, specials, ic, ...){
   # Get args
   p <- specials$AR[[1]]$p
   
@@ -9,7 +9,17 @@ train_var <- function(.data, formula, specials, ...){
   # Get xreg
   xreg <- specials$xreg[[1]]
   
-  # Compute response lags
+  # Choose best model
+  reduce(p, function(best, p){
+    new <- estimate_var(y, p, xreg)
+    if((new$fit[[ic]] %||% Inf) < (best$fit[[ic]] %||% Inf)){
+      best <- new
+    }
+    best
+  }, .init = NULL)
+}
+
+estimate_var <- function(y, p, xreg){
   y_lag <- stats::embed(y, dimension = p + 1)[, -(seq_len(NCOL(y)))]
   colnames(y_lag) <- pmap_chr(expand.grid(colnames(y), seq_len(p)), 
                               sprintf, fmt = "lag(%s,%i)")
@@ -51,7 +61,7 @@ train_var <- function(.data, formula, specials, ...){
 }
 
 specials_var <- new_specials(
-  AR = function(p = 0){
+  AR = function(p = 0:5){
     list(p=p)
   },
   common_xregs,
@@ -73,6 +83,7 @@ specials_var <- new_specials(
 #' Estimate an VAR model
 #' 
 #' @param formula Model specification (see "Specials" section).
+#' @param ic The information criterion used in selecting the model.
 #' @param ... Further arguments for arima
 #' 
 #' @section Specials:
@@ -80,11 +91,11 @@ specials_var <- new_specials(
 #' \subsection{pdq}{
 #' The `AR` special is used to specify the lag order for the auto-regression.
 #' \preformatted{
-#' AR(p = 0)
+#' AR(p = 0:5)
 #' }
 #'
 #' \tabular{ll}{
-#'   `p`        \tab The order of the auto-regressive (AR) terms.\cr
+#'   `p`        \tab The order of the auto-regressive (AR) terms. If multiple values are provided, the one which minimises `ic` will be chosen.\cr
 #' }
 #' }
 #' 
@@ -117,12 +128,13 @@ specials_var <- new_specials(
 #'   autoplot(lung_deaths)
 #' 
 #' @export
-VAR <- function(formula, ...){
+VAR <- function(formula, ic = c("aicc", "aic", "bic"), ...){
+  ic <- match.arg(ic)
   varma_model <- new_model_class("VAR", train = train_var, 
                                  specials = specials_var,
                                  origin = NULL,
                                  check = all_tsbl_checks)
-  new_model_definition(varma_model, !!enquo(formula), ...)
+  new_model_definition(varma_model, !!enquo(formula), ic = ic, ...)
 }
 
 #' @export

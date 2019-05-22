@@ -4,10 +4,12 @@
 \alias{VAR}
 \title{Estimate an VAR model}
 \usage{
-VAR(formula, ...)
+VAR(formula, ic = c("aicc", "aic", "bic"), ...)
 }
 \arguments{
 \item{formula}{Model specification (see "Specials" section).}
+
+\item{ic}{The information criterion used in selecting the model.}
 
 \item{...}{Further arguments for arima}
 }
@@ -20,11 +22,11 @@ Estimate an VAR model
 \subsection{pdq}{
 The \code{AR} special is used to specify the lag order for the auto-regression.
 \preformatted{
-AR(p = 0)
+AR(p = 0:5)
 }
 
 \tabular{ll}{
-\code{p}        \tab The order of the auto-regressive (AR) terms.\cr
+\code{p}        \tab The order of the auto-regressive (AR) terms. If multiple values are provided, the one which minimises \code{ic} will be chosen.\cr
 }
 }
 
