@@ -14,7 +14,13 @@ train_mean <- function(.data, formula, specials, ...){
   
   structure(
     list(
-      par = tibble(term = "mean", estimate = y_mean, std.error = sigma / sqrt(n)),
+      par = tibble(term = "mean", estimate = y_mean, std.error = sigma / sqrt(n)) %>%
+        mutate(
+          statistic = !!sym("estimate") / !!sym("std.error"),
+          p.value = 2 * stats::pt(abs(!!sym("statistic")), 
+                                  sum(!is.na(y)) - 1,
+                                  lower.tail = FALSE)
+        ),
       est = tibble(.fitted = fits, .resid = res),
       fit = tibble(sigma2 = sigma^2),
       spec = tibble()

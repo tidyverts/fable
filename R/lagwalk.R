@@ -39,7 +39,13 @@ train_lagwalk <- function(.data, formula, specials, ...){
   structure(
     list(
       par = tibble(term = if(drift) "b" else chr(),
-                   estimate = b%||%dbl(), std.error = b.se%||%dbl()),
+                   estimate = b%||%dbl(), std.error = b.se%||%dbl()) %>%
+        mutate(
+          statistic = !!sym("estimate") / !!sym("std.error"),
+          p.value = 2 * stats::pt(abs(!!sym("statistic")), 
+                                  n - lag - length(!!sym("estimate")),
+                                  lower.tail = FALSE)
+        ),
       est = .data %>% transmute(
           .fitted = fitted,
           .resid = res

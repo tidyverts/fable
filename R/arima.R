@@ -294,7 +294,13 @@ This is generally discouraged, consider removing the constant or reducing the nu
   structure(
     list(
       par = tibble(term = names(fit_coef)%||%chr(), estimate = fit_coef%||%dbl(), 
-                   std.error = fit_se%||%dbl()),
+                   std.error = fit_se%||%dbl()) %>%
+        mutate(
+          statistic = !!sym("estimate") / !!sym("std.error"),
+          p.value = 2 * stats::pt(abs(!!sym("statistic")),
+                                  best$nobs - length(best$coef[best$mask]),
+                                  lower.tail = FALSE)
+        ),
       est = tibble(
         .fitted = as.numeric(y - best$residuals), 
         .resid = as.numeric(best$residuals),
