@@ -205,7 +205,12 @@ forecast.VAR <- function(object, new_data = NULL, specials = NULL,
   
   y_lag <- object$last_obs
   for(i in seq_len(h)){
-    Z <-  c(t(y_lag), t(xreg[i,]))
+    if(is.null(xreg)){
+      Z <- c(t(y_lag))
+    }
+    else{
+      Z <-  c(t(y_lag), t(xreg[i,]))
+    }
     fc[i,] <- t(coef) %*% Z
     y_lag <- rbind(fc[i,,drop=FALSE], y_lag)[seq_len(p),,drop=FALSE]
   }
