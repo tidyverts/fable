@@ -11,12 +11,13 @@ train_var <- function(.data, formula, specials, ...){
   
   # Compute response lags
   y_lag <- stats::embed(y, dimension = p + 1)[, -(seq_len(NCOL(y)))]
+  colnames(y_lag) <- pmap_chr(expand.grid(colnames(y), seq_len(p)), 
+                              sprintf, fmt = "lag(%s,%i)")
   if(p > 0){
     xreg <- xreg[-seq_len(p),, drop = FALSE]
     y <- y[-seq_len(p),, drop = FALSE]
   }
-  dm <- cbind(y_lag, xreg) 
-  
+  dm <- cbind(y_lag, xreg)
   fit <- stats::lm.fit(as.matrix(dm), y)
 
   # Output model
@@ -190,4 +191,22 @@ residuals.VAR <- function(object, ...){
 #' @export
 model_sum.VAR <- function(x){
   sprintf("VAR(%s)", x$spec$p)
+}
+
+#' @export
+tidy.VAR <- function(x){
+  rdf <- x$model$df.residual
+  res <- split(x$resid, col(x$resid))
+  rss <- map_dbl(res, function(resid) sum(resid^2, na.rm = TRUE))
+  resvar <- rss/rdf
+  rank <- x$model$rank
+  
+  R <- chol2inv(x$model$qr$qr[seq_len(rank), seq_len(rank), drop = FALSE])
+  se <- map(resvar, function(resvar) sqrt(diag(R) * resvar))
+  
+  dplyr::as_tibble(x$coef, rownames = "term") %>% 
+    tidyr::gather(".response", "estimate", !!!syms(colnames(x$coef))) %>% 
+    mutate(std.error = unlist(se),
+           statistic = !!sym("estimate") / !!sym("std.error"),
+           p.value = 2 * stats::pt(abs(!!sym("statistic")), rdf, lower.tail = FALSE))
 }
