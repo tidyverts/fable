@@ -230,3 +230,30 @@ tidy.VAR <- function(x){
 glance.VAR <- function(x, ...){
   x$fit
 }
+
+#' @export
+report.VAR <- function(object, ...){
+  coef <- tidy(object)
+  coef <- map(split(coef, coef$.response), function(x){
+    `colnames<-`(rbind(x$estimate, s.e. = x$std.error), x$term)
+  })
+  
+  imap(coef, function(par, nm){
+    cat(sprintf("\nCoefficients for %s:\n", nm))
+    print.default(round(par, digits = 4), print.gap = 2)
+  })
+  
+  cat("\nResidual covariance matrix:\n")
+  print.default(round(object$fit$sigma2[[1]], 4))
+  
+  cat(sprintf("\nlog likelihood = %s\n", format(round(object$fit$logLik, 2L))))
+  
+  cat(
+    sprintf("AIC = %s\tHQ = %s\tSC = %s\tFPE = %s",
+            format(round(object$fit$aic, 2L)),
+            format(round(object$fit$hq, 2L)),
+            format(round(object$fit$sc, 2L)),
+            format(round(object$fit$fpe, 2L))
+    )
+  )
+}
