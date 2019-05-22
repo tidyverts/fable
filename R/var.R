@@ -40,7 +40,7 @@ train_var <- function(.data, formula, specials, ...){
       coef = as.matrix(fit$coefficients),
       fits = rbind(matrix(nrow = p, ncol = NCOL(y)), y - resid),
       resid = rbind(matrix(nrow = p, ncol = NCOL(y)), resid),
-      fit = tibble(sigma = list(sqrt(sig/fit$df.residual)), logLik = loglik,
+      fit = tibble(sigma2 = list(sig/fit$df.residual), logLik = loglik,
                    aic = aic, hq = hq, sc = sc, fpe = fpe),
       spec = tibble(p = p),
       last_obs = y[NROW(y) - seq_len(p) + 1,,drop = FALSE],
@@ -155,7 +155,7 @@ forecast.VAR <- function(object, new_data = NULL, specials = NULL,
     phi[[i]] <- tmp1 + tmp2
   }
   # Compute sigma
-  sigma.u <- object$fit$sigma[[1]]^2
+  sigma.u <- object$fit$sigma2[[1]]
   sigma <- rep(list(matrix(nrow = K, ncol = K)), h)
   sigma[[1]] <- sigma.u
   
