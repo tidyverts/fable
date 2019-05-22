@@ -22,17 +22,17 @@ train_var <- function(.data, formula, specials, ...){
   
   resid <- as.matrix(fit$residuals)
   
-  nr <- NROW(y)
+  nr <- NROW(stats::na.omit(y))
   nc <- NCOL(y)
   sig <- crossprod(fit$residuals)
   sig_det <- det(sig/nr)
   loglik <- -(nr * nc/2) * log(2 * pi) - (nr/2) * log(sig_det) - 
     (1/2) * sum(diag(resid %*% solve(sig/nr) %*% t(resid)))
   
-  aic <- log(sig_det) + (2/nr) * (p * nc^2 + nc * NCOL(xreg))
-  hq <- log(sig_det) + (2 * log(log(nr))/nr) * (p * nc^2 + nc * NCOL(xreg))
-  sc <- log(sig_det) + (log(nr)/nr) * (p * nc^2 + nc * NCOL(xreg))
-  fpe <- ((nr + NCOL(dm))/(nr - NCOL(dm)))^nc * sig_det
+  npar <- (length(fit$coef) + nc^2)
+  aic <- -2*loglik + 2*npar
+  bic <- aic + npar * (log(nr) - 2)
+  aicc <- aic + 2 * npar * (npar + 1) / (nr - npar - 1)
   
   # Output model
   structure(
@@ -41,7 +41,7 @@ train_var <- function(.data, formula, specials, ...){
       fits = rbind(matrix(nrow = p, ncol = NCOL(y)), y - resid),
       resid = rbind(matrix(nrow = p, ncol = NCOL(y)), resid),
       fit = tibble(sigma2 = list(sig/fit$df.residual), logLik = loglik,
-                   aic = aic, hq = hq, sc = sc, fpe = fpe),
+                   aic = aic, aicc = aicc, bic = bic),
       spec = tibble(p = p),
       last_obs = y[NROW(y) - seq_len(p) + 1,,drop = FALSE],
       model = fit
@@ -109,10 +109,12 @@ specials_var <- new_specials(
 #'   
 #' fit <- lung_deaths %>%
 #'   model(VAR(vars(log(mdeaths), fdeaths) ~ AR(3)))
-#' fit
+#' 
+#' report(fit)
 #'
 #' fit %>% 
-#'   forecast()
+#'   forecast() %>% 
+#'   autoplot(lung_deaths)
 #' 
 #' @export
 VAR <- function(formula, ...){
@@ -253,11 +255,10 @@ report.VAR <- function(object, ...){
   cat(sprintf("\nlog likelihood = %s\n", format(round(object$fit$logLik, 2L))))
   
   cat(
-    sprintf("AIC = %s\tHQ = %s\tSC = %s\tFPE = %s",
+    sprintf("AIC = %s\tAICc = %s\tBIC = %s",
             format(round(object$fit$aic, 2L)),
-            format(round(object$fit$hq, 2L)),
-            format(round(object$fit$sc, 2L)),
-            format(round(object$fit$fpe, 2L))
+            format(round(object$fit$aicc, 2L)),
+            format(round(object$fit$bic, 2L))
     )
   )
 }

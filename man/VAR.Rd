@@ -50,9 +50,11 @@ lung_deaths <- cbind(mdeaths, fdeaths) \%>\%
   
 fit <- lung_deaths \%>\%
   model(VAR(vars(log(mdeaths), fdeaths) ~ AR(3)))
-fit
+
+report(fit)
 
 fit \%>\% 
-  forecast()
+  forecast() \%>\% 
+  autoplot(lung_deaths)
 
 }
