@@ -68,6 +68,10 @@ estimate_var <- function(y, p, xreg, constant){
 
 specials_var <- new_specials(
   AR = function(p = 0:5){
+    if(any(p < 0)){
+      warn("The AR order must be non-negative. Only non-negative orders will be considered.")
+      p <- p[p >= 0]
+    }
     list(p=p)
   },
   common_xregs,
