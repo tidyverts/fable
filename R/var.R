@@ -234,9 +234,10 @@ glance.VAR <- function(x, ...){
 #' @export
 report.VAR <- function(object, ...){
   coef <- tidy(object)
-  coef <- map(split(coef, coef$.response), function(x){
-    `colnames<-`(rbind(x$estimate, s.e. = x$std.error), x$term)
-  })
+  coef <- map(
+    split(coef, factor(coef$.response, levels = unique(coef$.response))),
+    function(x) `colnames<-`(rbind(x$estimate, s.e. = x$std.error), x$term)
+  )
   
   imap(coef, function(par, nm){
     cat(sprintf("\nCoefficients for %s:\n", nm))
