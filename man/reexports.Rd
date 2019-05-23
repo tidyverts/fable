@@ -7,7 +7,7 @@
 \alias{as_tsibble}
 \alias{forecast}
 \alias{model}
-\alias{imitate}
+\alias{generate}
 \alias{accuracy}
 \alias{box_cox}
 \alias{interpolate}
@@ -21,7 +21,7 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
-  \item{fablelite}{\code{\link[fablelite]{forecast}}, \code{\link[fablelite]{model}}, \code{\link[fablelite]{imitate}}, \code{\link[fablelite]{accuracy}}, \code{\link[fablelite]{box_cox}}, \code{\link[fablelite]{interpolate}}, \code{\link[fablelite]{stream}}, \code{\link[fablelite]{refit}}, \code{\link[fablelite]{report}}}
+  \item{fablelite}{\code{\link[fablelite]{forecast}}, \code{\link[fablelite]{model}}, \code{\link[fablelite]{generate}}, \code{\link[fablelite]{accuracy}}, \code{\link[fablelite]{box_cox}}, \code{\link[fablelite]{interpolate}}, \code{\link[fablelite]{stream}}, \code{\link[fablelite]{refit}}, \code{\link[fablelite]{report}}}
 
   \item{tsibble}{\code{\link[tsibble]{\%>\%}}, \code{\link[tsibble]{as_tsibble}}}
 }}

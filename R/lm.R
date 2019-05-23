@@ -132,7 +132,7 @@ forecast.TSLM <- function(object, new_data, specials = NULL, bootstrap = FALSE,
   if (bootstrap){ # Compute prediction intervals using simulations
     fc <- predict(object$model, new_data, se.fit = FALSE)
     sim <- map(seq_len(times), function(x){
-      imitate(object, new_data, bootstrap = TRUE)[[".sim"]]
+      generate(object, new_data, bootstrap = TRUE)[[".sim"]]
     }) %>%
       transpose %>%
       map(as.numeric)
@@ -148,9 +148,8 @@ forecast.TSLM <- function(object, new_data, specials = NULL, bootstrap = FALSE,
   construct_fc(fc, se, dist)
 }
 
-#' @importFrom fablelite imitate
 #' @export
-imitate.TSLM <- function(object, new_data, bootstrap = FALSE, ...){
+generate.TSLM <- function(object, new_data, bootstrap = FALSE, ...){
   # Update data for re-evaluation
   mdl <- environment(attr(object$model$terms, ".Environment")$fourier)$self
   mdl$data <- new_data

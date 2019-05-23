@@ -193,7 +193,7 @@ forecast.RW <- function(object, new_data, specials = NULL, bootstrap = FALSE, ti
   # Intervals
   if (bootstrap){ # Compute prediction intervals using simulations
     sim <- map(seq_len(times), function(x){
-      imitate(object, new_data, bootstrap = TRUE)[[".sim"]]
+      generate(object, new_data, bootstrap = TRUE)[[".sim"]]
     }) %>%
       transpose %>%
       map(as.numeric)
@@ -215,7 +215,7 @@ forecast.RW <- function(object, new_data, specials = NULL, bootstrap = FALSE, ti
 
 
 #' @export
-imitate.RW <- function(object, new_data, bootstrap = FALSE, ...){
+generate.RW <- function(object, new_data, bootstrap = FALSE, ...){
   if(!is_regular(new_data)){
     abort("Simulation new_data must be regularly spaced")
   }

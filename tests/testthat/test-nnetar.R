@@ -11,7 +11,7 @@ test_that("Automatic NNETAR selection", {
   
   # Test simulations
   air_fit %>% 
-    imitate(h=10, times = 5)
+    generate(h=10, times = 5)
   
   # Test forecasts
   fc_sim <- air_fit %>% 

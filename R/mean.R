@@ -71,7 +71,7 @@ forecast.model_mean <- function(object, new_data, specials = NULL, bootstrap = F
   # Intervals
   if (bootstrap){ # Compute prediction intervals using simulations
     sim <- map(seq_len(times), function(x){
-      imitate(object, new_data, bootstrap = TRUE)[[".sim"]]
+      generate(object, new_data, bootstrap = TRUE)[[".sim"]]
     }) %>%
       transpose %>%
       map(as.numeric)
@@ -87,7 +87,7 @@ forecast.model_mean <- function(object, new_data, specials = NULL, bootstrap = F
 
 #' @importFrom stats na.omit
 #' @export
-imitate.model_mean <- function(object, new_data, bootstrap = FALSE, ...){
+generate.model_mean <- function(object, new_data, bootstrap = FALSE, ...){
   res <- residuals(object)
   f <- object$par$estimate
   

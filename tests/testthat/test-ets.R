@@ -42,9 +42,9 @@ test_that("Manual ETS selection", {
   
   # Test simulation
   fable_fit %>%
-    imitate(USAccDeaths_tbl)
+    generate(USAccDeaths_tbl)
   fable_fit %>% 
-    imitate(USAccDeaths_tbl %>% 
+    generate(USAccDeaths_tbl %>% 
               dplyr::mutate(index = index + 72))
   
   # Test refit

@@ -12,7 +12,7 @@ fablelite::forecast
 fablelite::model
 
 #' @export
-fablelite::imitate
+fablelite::generate
 
 #' @export
 fablelite::accuracy

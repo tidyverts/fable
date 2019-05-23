@@ -267,7 +267,7 @@ forecast.NNETAR <- function(object, new_data, specials = NULL, bootstrap = FALSE
   
   # Compute forecast intervals
   sim <- map(seq_len(times), function(x){
-    imitate(object, new_data, specials = specials, bootstrap = bootstrap)[[".sim"]]
+    generate(object, new_data, specials = specials, bootstrap = bootstrap)[[".sim"]]
   })
   if(length(sim) > 0){
     sim <- sim %>%
@@ -285,7 +285,7 @@ forecast.NNETAR <- function(object, new_data, specials = NULL, bootstrap = FALSE
 }
 
 #' @export
-imitate.NNETAR <- function(object, new_data, specials = NULL, bootstrap = FALSE, ...){
+generate.NNETAR <- function(object, new_data, specials = NULL, bootstrap = FALSE, ...){
   # Prepare xreg
   xreg <- specials$xreg[[1]]
   
