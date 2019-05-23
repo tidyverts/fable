@@ -87,9 +87,9 @@ forecast.model_mean <- function(object, new_data, specials = NULL, bootstrap = F
 
 #' @importFrom stats na.omit
 #' @export
-generate.model_mean <- function(object, new_data, bootstrap = FALSE, ...){
-  res <- residuals(object)
-  f <- object$par$estimate
+generate.model_mean <- function(x, new_data, bootstrap = FALSE, ...){
+  res <- residuals(x)
+  f <- x$par$estimate
   
   if(is.null(new_data[[".innov"]])){
     if(bootstrap){
@@ -98,7 +98,7 @@ generate.model_mean <- function(object, new_data, bootstrap = FALSE, ...){
     }
     else{
       new_data[[".innov"]] <- stats::rnorm(NROW(new_data), 
-                                           sd = sqrt(object$fit$sigma2))
+                                           sd = sqrt(x$fit$sigma2))
     }
   }
   

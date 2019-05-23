@@ -215,22 +215,22 @@ forecast.RW <- function(object, new_data, specials = NULL, bootstrap = FALSE, ti
 
 
 #' @export
-generate.RW <- function(object, new_data, bootstrap = FALSE, ...){
+generate.RW <- function(x, new_data, bootstrap = FALSE, ...){
   if(!is_regular(new_data)){
     abort("Simulation new_data must be regularly spaced")
   }
   
-  lag <- object$spec$lag
-  if(object$spec$drift){
-    b <- object$par$estimate
+  lag <- x$spec$lag
+  if(x$spec$drift){
+    b <- x$par$estimate
   } else {
     b <- 0
   }
-  fits <- select(rbind(object$est, object$future), !!index(object$est), !!measured_vars(object$future))
+  fits <- select(rbind(x$est, x$future), !!index(x$est), !!measured_vars(x$future))
   start_idx <- min(new_data[[expr_text(index(new_data))]])
-  start_pos <- match(start_idx, fits[[index(object$est)]])
+  start_pos <- match(start_idx, fits[[index(x$est)]])
   
-  future <- fits[[measured_vars(object$future)]][start_pos + seq_len(lag) - 1]
+  future <- fits[[measured_vars(x$future)]][start_pos + seq_len(lag) - 1]
   
   if(any(is.na(future))){
     abort("The first lag window for simulation must be within the model's training set.")
@@ -238,11 +238,11 @@ generate.RW <- function(object, new_data, bootstrap = FALSE, ...){
   
   if(is.null(new_data[[".innov"]])){
     if(bootstrap){
-      new_data[[".innov"]] <- sample(stats::na.omit(object$est$.resid - mean(object$est$.resid, na.rm = TRUE)),
+      new_data[[".innov"]] <- sample(stats::na.omit(x$est$.resid - mean(x$est$.resid, na.rm = TRUE)),
                                      NROW(new_data), replace = TRUE)
     }
     else{
-      new_data[[".innov"]] <- stats::rnorm(NROW(new_data), sd = sqrt(object$fit$sigma2))
+      new_data[[".innov"]] <- stats::rnorm(NROW(new_data), sd = sqrt(x$fit$sigma2))
     }
   }
 

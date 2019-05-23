@@ -149,13 +149,13 @@ forecast.TSLM <- function(object, new_data, specials = NULL, bootstrap = FALSE,
 }
 
 #' @export
-generate.TSLM <- function(object, new_data, bootstrap = FALSE, ...){
+generate.TSLM <- function(x, new_data, bootstrap = FALSE, ...){
   # Update data for re-evaluation
-  mdl <- environment(attr(object$model$terms, ".Environment")$fourier)$self
+  mdl <- environment(attr(x$model$terms, ".Environment")$fourier)$self
   mdl$data <- new_data
   
-  res <- residuals(object$model)
-  pred <- predict(object$model, newdata = new_data)
+  res <- residuals(x$model)
+  pred <- predict(x$model, newdata = new_data)
   
   if(is.null(new_data[[".innov"]])){
     if(bootstrap){
@@ -163,7 +163,7 @@ generate.TSLM <- function(object, new_data, bootstrap = FALSE, ...){
                                      NROW(new_data), replace = TRUE)
     }
     else{
-      vars <- stats::deviance(object$model)/stats::df.residual(object$model)
+      vars <- stats::deviance(x$model)/stats::df.residual(x$model)
       new_data[[".innov"]] <- stats::rnorm(length(pred), sd = sqrt(vars))
     }
   }

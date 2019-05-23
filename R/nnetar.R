@@ -285,45 +285,45 @@ forecast.NNETAR <- function(object, new_data, specials = NULL, bootstrap = FALSE
 }
 
 #' @export
-generate.NNETAR <- function(object, new_data, specials = NULL, bootstrap = FALSE, ...){
+generate.NNETAR <- function(x, new_data, specials = NULL, bootstrap = FALSE, ...){
   # Prepare xreg
   xreg <- specials$xreg[[1]]
   
   if(!is.null(xreg)){
     xreg <- as.matrix(xreg)
-    if(!is.null(object$scales$xreg)){
-      xreg <- scale(xreg, center = object$scales$xreg$center, scale = object$scales$xreg$scale)
+    if(!is.null(x$scales$xreg)){
+      xreg <- scale(xreg, center = x$scales$xreg$center, scale = x$scales$xreg$scale)
     }
   }
   
   if(is.null(new_data[[".innov"]])){
     if(bootstrap){
-      res <- stats::na.omit(object$est[[".resid"]] - mean(object$est[[".resid"]], na.rm = TRUE))
-      if (!is.null(object$scales$y)) {
-        res <- res / object$scales$y$scale
+      res <- stats::na.omit(x$est[[".resid"]] - mean(x$est[[".resid"]], na.rm = TRUE))
+      if (!is.null(x$scales$y)) {
+        res <- res / x$scales$y$scale
       }
       new_data[[".innov"]] <- sample(res, NROW(new_data), replace = TRUE)
     }
     else{
-      if (!is.null(object$scales$y)) {
-        sigma <- sd(object$est[[".resid"]] / object$scales$y$scale, na.rm = TRUE)
+      if (!is.null(x$scales$y)) {
+        sigma <- sd(x$est[[".resid"]] / x$scales$y$scale, na.rm = TRUE)
       }
       else{
-        sigma <- object$fit$sigma
+        sigma <- x$fit$sigma
       }
       new_data[[".innov"]] <- stats::rnorm(NROW(new_data), sd = sigma)
     }
   }
   else{
-    if (!is.null(object$scales$y)) {
-      new_data[[".innov"]] <- new_data[[".innov"]] / object$scales$y$scale
+    if (!is.null(x$scales$y)) {
+      new_data[[".innov"]] <- new_data[[".innov"]] / x$scales$y$scale
     }
   }
   
   # Extract model attributes
-  lags <- object$spec$lags[[1]]
+  lags <- x$spec$lags[[1]]
   maxlag <- max(lags)
-  future_lags <- rev(object$future[[measured_vars(object$future)]])
+  future_lags <- rev(x$future[[measured_vars(x$future)]])
   
   sim_nnetar <- function(e){
     path <- numeric(length(e))
@@ -333,13 +333,13 @@ generate.NNETAR <- function(object, new_data, specials = NULL, bootstrap = FALSE
       if (any(is.na(fcdata))) {
         abort("I can't use NNETAR to forecast with missing values near the end of the series.")
       }
-      path[i] <- mean(map_dbl(object$model, predict, newdata = fcdata)) + e[i]
+      path[i] <- mean(map_dbl(x$model, predict, newdata = fcdata)) + e[i]
       future_lags <- c(path[i], future_lags[-maxlag])
     }
     
     # Re-scale simulated paths
-    if (!is.null(object$scales$y)) {
-      path <- path * object$scales$y$scale + object$scales$y$center
+    if (!is.null(x$scales$y)) {
+      path <- path * x$scales$y$scale + x$scales$y$center
     }
     path
   }

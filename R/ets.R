@@ -313,49 +313,49 @@ forecast.ETS <- function(object, new_data, specials = NULL, simulate = FALSE, bo
 }
 
 #' @export
-generate.ETS <- function(object, new_data, bootstrap = FALSE, ...){
+generate.ETS <- function(x, new_data, bootstrap = FALSE, ...){
   if(!is_regular(new_data)){
     abort("Simulation new_data must be regularly spaced")
   }
   
   start_idx <- min(new_data[[expr_text(index(new_data))]])
-  start_pos <- match(start_idx - time_unit(interval(new_data)), object$states[[index(object$states)]])
+  start_pos <- match(start_idx - time_unit(interval(new_data)), x$states[[index(x$states)]])
   
   if(is.na(start_pos)){
     abort("The first observation index of simulation data must be within the model's training set.")
   }
   
-  initstate <- as.numeric(object$states[start_pos, measured_vars(object$states)])
+  initstate <- as.numeric(x$states[start_pos, measured_vars(x$states)])
   
   if(is.null(new_data[[".innov"]])){
     if(bootstrap){
-      new_data[[".innov"]] <- sample(stats::na.omit(residuals(object) - mean(residuals(object), na.rm = TRUE)),
+      new_data[[".innov"]] <- sample(stats::na.omit(residuals(x) - mean(residuals(x), na.rm = TRUE)),
                                      NROW(new_data), replace = TRUE)
     }
     else{
-      new_data[[".innov"]] <- stats::rnorm(NROW(new_data), sd = sqrt(object$fit$sigma2))
+      new_data[[".innov"]] <- stats::rnorm(NROW(new_data), sd = sqrt(x$fit$sigma2))
     }
   }
   
-  if (object$spec$errortype == "M") {
+  if (x$spec$errortype == "M") {
     new_data[[".innov"]] <- pmax(-1, new_data[[".innov"]])
   }
   
-  get_par <- function(par){object$par$estimate[object$par$term==par]}
+  get_par <- function(par){x$par$estimate[x$par$term==par]}
   
   result <- new_data %>% 
     group_by_key() %>% 
     transmute(".sim" := .C(
       "etssimulate",
       as.double(initstate),
-      as.integer(object$spec$period),
-      as.integer(switch(object$spec$errortype, "A" = 1, "M" = 2)),
-      as.integer(switch(object$spec$trendtype, "N" = 0, "A" = 1, "M" = 2)),
-      as.integer(switch(object$spec$seasontype, "N" = 0, "A" = 1, "M" = 2)),
+      as.integer(x$spec$period),
+      as.integer(switch(x$spec$errortype, "A" = 1, "M" = 2)),
+      as.integer(switch(x$spec$trendtype, "N" = 0, "A" = 1, "M" = 2)),
+      as.integer(switch(x$spec$seasontype, "N" = 0, "A" = 1, "M" = 2)),
       as.double(get_par("alpha")),
-      as.double(ifelse(object$spec$trendtype == "N", 0, get_par("beta"))),
-      as.double(ifelse(object$spec$seasontype == "N", 0, get_par("gamma"))),
-      as.double(ifelse(!object$spec$damped, 1, get_par("phi"))),
+      as.double(ifelse(x$spec$trendtype == "N", 0, get_par("beta"))),
+      as.double(ifelse(x$spec$seasontype == "N", 0, get_par("gamma"))),
+      as.double(ifelse(!x$spec$damped, 1, get_par("phi"))),
       as.integer(length(!!sym(".innov"))),
       as.double(numeric(length(!!sym(".innov")))),
       as.double(!!sym(".innov")),
