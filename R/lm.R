@@ -181,6 +181,7 @@ interpolate.TSLM <- function(object, new_data, ...){
   new_data
 }
 
+#' @importFrom stats fitted
 #' @export
 refit.TSLM <- function(object, new_data, specials = NULL, reestimate = FALSE, ...){
   # Update data for re-evaluation
