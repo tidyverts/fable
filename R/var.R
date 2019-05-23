@@ -37,6 +37,13 @@ estimate_var <- function(y, p, xreg, constant){
   fit <- stats::lm.fit(as.matrix(dm), y)
   
   resid <- as.matrix(fit$residuals)
+  if(is_empty(fit$coefficients)){
+    coef <- matrix(nrow = 0, ncol = NCOL(y))
+  }
+  else {
+    coef <- as.matrix(fit$coefficients)
+  }
+  colnames(coef) <- colnames(y)
   
   nr <- NROW(stats::na.omit(y))
   nc <- NCOL(y)
@@ -53,7 +60,7 @@ estimate_var <- function(y, p, xreg, constant){
   # Output model
   structure(
     list(
-      coef = `colnames<-`(as.matrix(fit$coefficients), colnames(y)),
+      coef = coef,
       fits = rbind(matrix(nrow = p, ncol = NCOL(y)), y - resid),
       resid = rbind(matrix(nrow = p, ncol = NCOL(y)), resid),
       fit = tibble(sigma2 = list(sig/fit$df.residual), logLik = loglik,
