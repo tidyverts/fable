@@ -1,6 +1,7 @@
 lm_glance_measures <- function(fit){
   # Set up fit measures
-  n <- length(fit$residuals)
+  res <- fit$residuals[!is.na(fit$residuals)]
+  n <- length(res)
   rdf <- fit$df.residual
   edf <- n - rdf
   rank <- fit$rank
@@ -9,7 +10,7 @@ lm_glance_measures <- function(fit){
   intercept <- "(Intercept)" %in% rownames(coef)
 
   mss <- sum((fit$fitted - intercept * mean(fit$fitted))^2)
-  rss <- sum(fit$residuals^2, na.rm = TRUE)
+  rss <- sum(res^2)
   resvar <- rss/rdf
   
   if(NROW(coef) - intercept == 0){
@@ -37,7 +38,7 @@ lm_glance_measures <- function(fit){
          p.value = p.value, df = edf, logLik = loglik,
          AIC = aic, AICc = aic + 2 * (k + 2) * (k + 3) / (n - k - 3),
          BIC = aic + (k + 2) * (log(n) - 2),
-         CV = mean((residuals(fit)/(1-influence$hat))^2, na.rm = TRUE),
+         CV = mean((res/(1-influence$hat))^2, na.rm = TRUE),
          deviance = rss, df.residual = rdf
   )
 }
@@ -51,8 +52,11 @@ train_tslm <- function(.data, formula, specials, ...){
   y <- as.matrix(.data[measured_vars(.data)])
   xreg <- as.matrix(specials$xreg[[1]])
   
-  fit <- stats::lm.fit(xreg, y)
-  fit$residuals <- as.matrix(fit$residuals)
+  keep <- complete.cases(xreg) & complete.cases(y)
+  fit <- stats::lm.fit(xreg[keep,], y[keep,])
+  resid <- matrix(nrow = nrow(y), ncol = ncol(y))
+  resid[keep,] <- as.matrix(fit$residuals)
+  fit$residuals <- resid
   fit$fitted <- y - fit$residuals
   
   if(is_empty(fit$coefficients)){
