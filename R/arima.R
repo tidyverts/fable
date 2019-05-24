@@ -568,14 +568,18 @@ interpolate.ARIMA <- function(object, new_data, specials, ...){
   y <- new_data[[measured_vars(new_data)]]
   miss_val <- which(is.na(y))
   object <- refit(object, new_data, specials, ...)$model$model
-  fits <- KalmanSmooth(y, object)$smooth[miss_val,,drop=FALSE] %*% as.matrix(object$Z)
+  fits <- stats::KalmanSmooth(y, object)$smooth[miss_val,,drop=FALSE] %*% as.matrix(object$Z)
   
   # Update data
   i <- miss_val%%NROW(new_data)
   j <- miss_val%/%NROW(new_data) + 1
   idx_pos <- match(as_string(index(new_data)), colnames(new_data))
   j <- ifelse(j>=idx_pos, j + 1, j)
-  new_data[i,j] <- fits
+  pos <- split(i, j)
+  for (i in seq_along(pos)){
+    new_data[[as.numeric(names(pos)[i])]][pos[[i]]] <- fits
+  }
+  new_data
   new_data
 }
 

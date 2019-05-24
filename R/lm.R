@@ -275,14 +275,17 @@ interpolate.TSLM <- function(object, new_data, specials, ...){
   # Make predictions
   coef <- object$coef
   piv <- object$model$qr$pivot[seq_len(object$model$rank)]
-  pred <- xreg[, piv, drop = FALSE] %*% coef[piv]
+  pred <- xreg[miss_val, piv, drop = FALSE] %*% coef[piv]
   
   # Update data
   i <- miss_val%%NROW(new_data)
   j <- miss_val%/%NROW(new_data) + 1
   idx_pos <- match(as_string(index(new_data)), colnames(new_data))
   j <- ifelse(j>=idx_pos, j + 1, j)
-  new_data[i,j] <- pred[miss_val]
+  pos <- split(i, j)
+  for (i in seq_along(pos)){
+    new_data[[as.numeric(names(pos)[i])]][pos[[i]]] <- pred
+  }
   new_data
 }
 
