@@ -39,7 +39,7 @@ lm_glance_measures <- function(fit){
          AIC = aic, AICc = aic + 2 * (k + 2) * (k + 3) / (n - k - 3),
          BIC = aic + (k + 2) * (log(n) - 2),
          CV = mean((res/(1-influence$hat))^2, na.rm = TRUE),
-         deviance = rss, df.residual = rdf
+         deviance = rss, df.residual = rdf, rank = rank
   )
 }
 
@@ -188,11 +188,11 @@ report.TSLM <- function(object, digits = max(3, getOption("digits") - 3), ...){
   cat(sprintf("\nResidual standard error: %s on %s degrees of freedom\n",
               format(signif(sqrt(glance$sigma2), digits)), rdf))
   if (!is.na(glance$statistic)) {
-    cat(sprintf("Multiple R-squared: %s,\tAdjusted R-squared\nF-statistic on %s and %s DF, p-value: %s\n",
+    cat(sprintf("Multiple R-squared: %s,\tAdjusted R-squared: %s\nF-statistic: %s on %s and %s DF, p-value: %s\n",
                 formatC(glance$r.squared, digits = digits), 
                 formatC(glance$adj.r.squared, digits = digits),
                 formatC(glance$statistic, digits = digits),
-                object$rank - intercept, rdf,
+                format(glance$rank - intercept), format(rdf),
                 format.pval(glance$p.value)))
   }
   invisible(object)
