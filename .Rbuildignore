@@ -10,3 +10,4 @@ Makefile
 ^\.travis\.yml$
 ^data-raw$
 ^codecov\.yml$
+^hex$
