@@ -78,6 +78,20 @@ test_that("Manual ETS selection", {
     aug$value,
     aug$.fitted + aug$.resid
   )
+  
+  # Test specification of smoothing params
+  coef <- USAccDeaths_tbl %>%
+    model(ETS(value ~ error("A") + season("A", gamma = 0.0001) +
+                trend("Ad", alpha = 0.5, beta = 0.006, phi = 0.975))) %>% 
+    tidy()
+  expect_identical(
+    coef$estimate[1:4],
+    c(0.5, 0.006, 0.0001, 0.975)
+  )
+  expect_identical(
+    coef$term,
+    c("alpha", "beta", "gamma", "phi", "l", "b", paste0("s", 0:10))
+  )
 })
 
 
