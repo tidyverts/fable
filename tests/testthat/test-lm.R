@@ -5,7 +5,7 @@ test_that("LM", {
   fable_fit <- USAccDeaths_tbl %>% model(lm = TSLM(value))
   forecast_fit <- lm(USAccDeaths~1)
   
-  expect_identical(
+  expect_equivalent(
     coef(fable_fit$lm[[1]]$fit$model),
     coef(forecast_fit)
   )

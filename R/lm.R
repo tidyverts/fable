@@ -234,11 +234,22 @@ generate.TSLM <- function(x, new_data, specials, bootstrap = FALSE, ...){
 }
 
 #' @export
-interpolate.TSLM <- function(object, new_data, ...){
-  tm <- stats::terms(object$model)
-  resp <- expr_text((tm%@%"variables")[[tm%@%"response" + 1]])
-  missingVals <- is.na(new_data[[resp]])
-  new_data[[resp]][missingVals] <- object$est$.fitted[missingVals]
+interpolate.TSLM <- function(object, new_data, specials, ...){
+  # Get inputs
+  miss_val <- which(is.na(new_data[measured_vars(new_data)]))
+  xreg <- as.matrix(specials$xreg[[1]])
+  
+  # Make predictions
+  coef <- object$coef
+  piv <- object$model$qr$pivot[seq_len(object$model$rank)]
+  pred <- xreg[, piv, drop = FALSE] %*% coef[piv]
+  
+  # Update data
+  i <- miss_val%%NROW(new_data)
+  j <- miss_val%/%NROW(new_data) + 1
+  idx_pos <- match(as_string(index(new_data)), colnames(new_data))
+  j <- ifelse(j>=idx_pos, j + 1, j)
+  new_data[i,j] <- pred[miss_val]
   new_data
 }
 
@@ -251,7 +262,7 @@ refit.TSLM <- function(object, new_data, specials = NULL, reestimate = FALSE, ..
   }
   
   # Get inputs
-  y <- as.matrix(.data[measured_vars(.data)])
+  y <- as.matrix(new_data[measured_vars(new_data)])
   xreg <- as.matrix(specials$xreg[[1]])
   
   fit <- object$model
