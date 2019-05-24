@@ -68,7 +68,7 @@ trend(method = c("N", "A", "Ad"),
 \code{method}     \tab The form of the trend term: either none ("N"), additive ("A"), multiplicative ("M") or damped variants ("Ad", "Md").\cr
 \code{alpha}      \tab The value of the smoothing parameter for the level. If \code{alpha = 0}, the level will not change over time. Conversely, if \code{alpha = 1} the level will update similarly to a random walk process. \cr
 \code{alpha_range} \tab If \code{alpha=NULL}, \code{alpha_range} provides bounds for the optimised value of \code{alpha}.\cr
-\code{beta}       \tab The value of the smoothing parameter for the slope. If \code{beta = 0}, the slope will not change over time. Conversely, if \code{beta = 1} the level will slope will have no memory of past slopes. \cr
+\code{beta}       \tab The value of the smoothing parameter for the slope. If \code{beta = 0}, the slope will not change over time. Conversely, if \code{beta = 1} the slope will have no memory of past slopes. \cr
 \code{beta_range}  \tab If \code{beta=NULL}, \code{beta_range} provides bounds for the optimised value of \code{beta}.\cr
 \code{phi}        \tab The value of the dampening parameter for the slope. If \code{phi = 0}, the slope will be dampened immediately (no slope). Conversely, if \code{phi = 1} the slope will not be dampened. \cr
 \code{phi_range}   \tab If \code{phi=NULL}, \code{phi_range} provides bounds for the optimised value of \code{phi}.
