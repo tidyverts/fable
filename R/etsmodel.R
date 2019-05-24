@@ -126,8 +126,8 @@ estimate_ets <- function(y, m, init.state, errortype, trendtype, seasontype,
   if (seasontype != "N") {
     init.state <- init.state[-length(init.state)]
   }
-  
-  fit.par <- c(alpha, beta, gamma, phi, init.state)
+  fit.par <- c(alpha = unname(alpha), beta = unname(beta),
+               gamma = unname(gamma), phi = unname(phi), init.state)
   if (errortype == "A") {
     fits <- y - e$e
   } else {
