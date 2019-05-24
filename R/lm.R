@@ -1,6 +1,6 @@
 lm_glance_measures <- function(fit){
   # Set up fit measures
-  res <- fit$residuals[!is.na(fit$residuals)]
+  res <- fit$residuals[complete.cases(fit$residuals),,drop = FALSE]
   n <- length(res)
   rdf <- fit$df.residual
   edf <- n - rdf
@@ -53,7 +53,7 @@ train_tslm <- function(.data, formula, specials, ...){
   xreg <- as.matrix(specials$xreg[[1]])
   
   keep <- complete.cases(xreg) & complete.cases(y)
-  fit <- stats::lm.fit(xreg[keep,], y[keep,])
+  fit <- stats::lm.fit(xreg[keep,,drop = FALSE], y[keep,,drop = FALSE])
   resid <- matrix(nrow = nrow(y), ncol = ncol(y))
   resid[keep,] <- as.matrix(fit$residuals)
   fit$residuals <- resid
