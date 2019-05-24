@@ -563,6 +563,23 @@ refit.ARIMA <- function(object, new_data, specials = NULL, reestimate = FALSE, .
 }
 
 #' @export
+interpolate.ARIMA <- function(object, new_data, specials, ...){
+  # Get missing values
+  y <- new_data[[measured_vars(new_data)]]
+  miss_val <- which(is.na(y))
+  object <- refit(object, new_data, specials, ...)$model$model
+  fits <- KalmanSmooth(y, object)$smooth[miss_val,,drop=FALSE] %*% as.matrix(object$Z)
+  
+  # Update data
+  i <- miss_val%%NROW(new_data)
+  j <- miss_val%/%NROW(new_data) + 1
+  idx_pos <- match(as_string(index(new_data)), colnames(new_data))
+  j <- ifelse(j>=idx_pos, j + 1, j)
+  new_data[i,j] <- fits
+  new_data
+}
+
+#' @export
 model_sum.ARIMA <- function(x){
   out <- sprintf("ARIMA(%i,%i,%i)%s",
                  x$spec$p, x$spec$d, x$spec$q,
