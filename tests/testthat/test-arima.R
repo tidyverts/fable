@@ -63,6 +63,11 @@ test_that("Manual ARIMA selection", {
     residuals(fable_fit)$.resid, unclass(residuals(stats_fit))
   )
   
+  expect_equivalent(
+    fitted(fable_fit),
+    fitted(refit(fable_fit, USAccDeaths_tbl))
+  )
+  
   expect_output(
     report(fable_fit),
     "log likelihood=-425.44"
