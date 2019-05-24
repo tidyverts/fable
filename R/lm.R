@@ -291,7 +291,7 @@ interpolate.TSLM <- function(object, new_data, specials, ...){
 refit.TSLM <- function(object, new_data, specials = NULL, reestimate = FALSE, ...){
   # Update data for re-evaluation
   if(reestimate){
-    return(train_tslm(new_data, y~x, specials, ...))
+    return(train_tslm(new_data, specials, ...))
   }
   
   # Get inputs
