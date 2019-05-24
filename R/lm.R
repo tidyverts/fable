@@ -25,7 +25,7 @@ lm_glance_measures <- function(fit){
     p.value <- stats::pf(fstatistic, rank - intercept, rdf, lower.tail = FALSE)
   }
   
-  influence <- lm.influence(fit)
+  influence <- stats::lm.influence(fit)
   
   dev <- n * log(rss/n)
   aic <- dev + 2 * edf + 2
@@ -232,7 +232,7 @@ forecast.TSLM <- function(object, new_data, specials = NULL, bootstrap = FALSE,
       ip <- drop(XRinv^2 %*% rep(resvar, rank))
     }
     else{
-      ip <- rep(0, n)
+      ip <- rep(0, length(fc))
     }
     
     se <- sqrt(ip + resvar)
