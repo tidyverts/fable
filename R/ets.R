@@ -1,4 +1,4 @@
-train_ets <- function(.data, formula, specials, opt_crit,
+train_ets <- function(.data, specials, opt_crit,
                       nmse, bounds, ic, restrict = TRUE, ...){
   if(length(measured_vars(.data)) > 1){
     abort("Only univariate responses are supported by ETS.")

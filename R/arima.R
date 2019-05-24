@@ -1,7 +1,7 @@
 globalVariables(c("p", "P", "q", "Q"))
 
 #' @importFrom stats approx lm ts
-train_arima <- function(.data, formula, specials, ic, stepwise = TRUE, 
+train_arima <- function(.data, specials, ic, stepwise = TRUE, 
                         greedy = TRUE, approximation = NULL, order_constraint, 
                         unitroot_spec, ...){
   if(length(measured_vars(.data)) > 1){

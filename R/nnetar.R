@@ -1,5 +1,5 @@
 #' @importFrom stats ar complete.cases
-train_nnetar <- function(.data, formula, specials, size, repeats, scale_inputs, ...){
+train_nnetar <- function(.data, specials, size, repeats, scale_inputs, ...){
   require_package("nnet")
   
   y <- x <- .data[[measured_vars(.data)]]

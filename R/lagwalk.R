@@ -1,4 +1,4 @@
-train_lagwalk <- function(.data, formula, specials, ...){
+train_lagwalk <- function(.data, specials, ...){
   if(length(measured_vars(.data)) > 1){
     abort("Only univariate responses are supported by lagwalks.")
   }

@@ -1,5 +1,5 @@
 #' @importFrom stats sd
-train_mean <- function(.data, formula, specials, ...){
+train_mean <- function(.data, specials, ...){
   y <- .data[[measured_vars(.data)]]
   
   if(all(is.na(y))){

@@ -1,5 +1,5 @@
 #' @importFrom stats ts
-train_var <- function(.data, formula, specials, ic, ...){
+train_var <- function(.data, formula, ic, ...){
   # Get args
   p <- specials$AR[[1]]$p
   

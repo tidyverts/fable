@@ -48,7 +48,7 @@ lm_tidy_measures <- function(fit){
          !!!as_tibble(`colnames<-`(coef(summary(fit)), c("estimate", "std.error", "statistic", "p.value"))))
 }
 
-train_tslm <- function(.data, formula, specials, ...){
+train_tslm <- function(.data, specials, ...){
   y <- as.matrix(.data[measured_vars(.data)])
   xreg <- as.matrix(specials$xreg[[1]])
   
