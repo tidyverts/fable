@@ -164,9 +164,38 @@ tidy.TSLM <- function(x, ...){
 }
 
 #' @export
-report.TSLM <- function(object, ...){
-  print(object[["model"]])
-  # cat(utils::capture.output(summary(object[["model"]]))[-1:-3], sep = "\n")
+report.TSLM <- function(object, digits = max(3, getOption("digits") - 3), ...){
+  cat("\nResiduals:\n")
+  glance <- glance(object)
+  intercept <- "(Intercept)" %in% rownames(object$coef)
+  
+  rdf <- glance$df.residual
+  if (rdf > 5L) {
+    res <- residuals(object)
+    res_qt <- zapsmall(stats::quantile(res))
+    names(res_qt) <- c("Min", "1Q", "Median", "3Q", "Max")
+    print(res_qt, digits = digits, ...)
+  }
+  
+  cat("\nCoefficients:\n")
+  coef <- tidy(object)
+  coef_mat <- as.matrix(coef[ncol(coef)-c(3:0)])
+  colnames(coef_mat) <- c("Estimate", "Std. Error", "t value", "Pr(>|t|)")
+  rownames(coef_mat) <- coef$term
+  stats::printCoefmat(coef_mat, digits = digits,
+                      signif.stars = getOption("show.signif.stars"), ...)
+  
+  cat(sprintf("\nResidual standard error: %s on %s degrees of freedom\n",
+              format(signif(sqrt(glance$sigma2), digits)), rdf))
+  if (!is.na(glance$statistic)) {
+    cat(sprintf("Multiple R-squared: %s,\tAdjusted R-squared\nF-statistic on %s and %s DF, p-value: %s\n",
+                formatC(glance$r.squared, digits = digits), 
+                formatC(glance$adj.r.squared, digits = digits),
+                formatC(glance$statistic, digits = digits),
+                object$rank - intercept, rdf,
+                format.pval(glance$p.value)))
+  }
+  invisible(object)
 }
 
 #' @importFrom stats predict
