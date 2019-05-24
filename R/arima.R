@@ -1,9 +1,10 @@
 globalVariables(c("p", "P", "q", "Q"))
 
 #' @importFrom stats approx lm ts
-train_arima <- function(.data, specials, ic, stepwise = TRUE, 
-                        greedy = TRUE, approximation = NULL, order_constraint, 
-                        unitroot_spec, ...){
+train_arima <- function(.data, specials,  ic = "aicc",
+                        stepwise = TRUE, greedy = TRUE, approximation = NULL,
+                        order_constraint = p + q + P + Q <= 6, 
+                        unitroot_spec = unitroot_options(), ...){
   if(length(measured_vars(.data)) > 1){
     abort("Only univariate responses are supported by ARIMA.")
   }
@@ -276,7 +277,10 @@ This is generally discouraged, consider removing the constant or reducing the nu
   
   fit_coef <- coef(best)
   fit_se <- sqrt(diag(best$var.coef))
-  if(model_opts[which.min(est_ic),"constant"] && is.null(xreg)){
+  if(is_empty(fit_se)){
+    fit_se <- NULL
+  }
+  else if(model_opts[which.min(est_ic),"constant"] && is.null(xreg)){
     fit_coef["constant"] <- fit_coef["constant"]*(1-sum(best$model$phi))
     fit_se["constant"] <- fit_se["constant"]*(1-sum(best$model$phi))
   }
@@ -294,7 +298,7 @@ This is generally discouraged, consider removing the constant or reducing the nu
   structure(
     list(
       par = tibble(term = names(fit_coef)%||%chr(), estimate = fit_coef%||%dbl(), 
-                   std.error = fit_se%||%dbl()) %>%
+                   std.error = fit_se%||%rep(NA, length(fit_coef))) %>%
         mutate(
           statistic = !!sym("estimate") / !!sym("std.error"),
           p.value = 2 * stats::pt(abs(!!sym("statistic")),
@@ -539,6 +543,23 @@ forecast.ARIMA <- function(object, new_data = NULL, specials = NULL,
   fc$se <- as.numeric(fc$se)
   # Output forecasts
   construct_fc(fc$pred, fc$se, dist_normal(fc$pred, fc$se))
+}
+
+#' @export
+refit.ARIMA <- function(object, new_data, specials = NULL, reestimate = FALSE, ...){
+  # Update data for re-evaluation
+  specials$pdq[[1]] <- set_names(as.list(object$spec[c("p","d","q","p","q")]),
+                                 names(specials$pdq[[1]]))
+  specials$PDQ[[1]] <- set_names(as.list(object$spec[c("P","D","Q","period","P","Q")]),
+                                 names(specials$PDQ[[1]]))
+  if(reestimate){
+    return(train_arima(new_data, specials, ...))
+  }
+  
+  out <- train_arima(new_data, specials, fixed = object$model$coef, ...)
+  out$par <- object$par
+  # out$model$mask <- object$model$mask
+  out
 }
 
 #' @export
