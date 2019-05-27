@@ -72,6 +72,18 @@ test_that("Manual ARIMA selection", {
     report(fable_fit),
     "log likelihood=-425.44"
   )
+  
+  USAccDeaths_miss <- USAccDeaths_tbl
+  USAccDeaths_miss$value[c(10, 14, 15)] <- NA
+  USAccDeaths_miss <- fable_fit %>% 
+    interpolate(USAccDeaths_miss)
+  expect_false(
+    any(is.na(USAccDeaths_miss$value))
+  )
+  expect_equal(
+    USAccDeaths_tbl$value[-c(10, 14, 15)],
+    USAccDeaths_miss$value[-c(10, 14, 15)]
+  )
 })
 
 test_that("ARIMA with bad inputs", {
