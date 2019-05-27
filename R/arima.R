@@ -113,7 +113,7 @@ train_arima <- function(.data, specials,  ic = "aicc",
   
   if (approximation) {
     method <- "CSS"
-    offset <- with(stats::arima(y, order = c(0, d, 0), xreg = xreg, ...),
+    offset <- with(stats::arima(y, order = c(0, d, 0), xreg = xreg),
                    -2 * loglik - NROW(data) * log(sigma2))
   } else {
     method <- "CSS-ML"
