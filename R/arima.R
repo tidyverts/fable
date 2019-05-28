@@ -351,7 +351,9 @@ specials_arima <- new_specials(
   common_xregs,
   xreg = function(...){
     dots <- enexprs(...)
-    
+    env <- map(enquos(...), get_env)
+    env[map_lgl(env, compose(is_empty, env_parents))] <- NULL
+    env <- if(!is_empty(env)) get_env(env[[1]]) else base_env()
     constants <- map_lgl(dots, inherits, "numeric") 
     constant_given <- any(map_lgl(dots[constants], `%in%`, -1:1))
     
@@ -359,8 +361,8 @@ specials_arima <- new_specials(
       lhs = NULL,
       rhs = reduce(dots, function(.x, .y) call2("+", .x, .y))
     )
-    xreg <- model.frame(model_formula, data = self$data, na.action = stats::na.pass)
     
+    xreg <- model.frame(model_formula, data = env, na.action = stats::na.pass)
     list(
       constant = if(constant_given) as_logical(terms(xreg)%@%"intercept") else c(TRUE, FALSE),
       xreg = if(NCOL(xreg) == 0) NULL else xreg

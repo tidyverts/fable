@@ -209,4 +209,17 @@ quietly <- function (.f)
 {
   function(...) suppressMessages(suppressWarnings(.f(...)))
 }
+compose <- function (...) {
+  fs <- lapply(list(...), match.fun)
+  n <- length(fs)
+  last <- fs[[n]]
+  rest <- fs[-n]
+  function(...) {
+    out <- last(...)
+    for (f in rev(rest)) {
+      out <- f(out)
+    }
+    out
+  }
+}
 # nocov end

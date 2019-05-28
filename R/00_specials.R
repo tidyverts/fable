@@ -6,7 +6,10 @@ model_xreg <- function(...){
     lhs = NULL,
     rhs = reduce(enexprs(...), function(.x, .y) call2("+", .x, .y))
   )
-  model.frame(model_formula, data = self$data, na.action = stats::na.pass)
+  env <- map(enquos(...), get_env)
+  env[map_lgl(env, compose(is_empty, env_parents))] <- NULL
+  env <- if(!is_empty(env)) get_env(env[[1]]) else base_env()
+  out <- model.frame(model_formula, data = env, na.action = stats::na.pass)
 }
 
 no_xreg <- function(...){
