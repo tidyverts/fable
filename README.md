@@ -23,8 +23,8 @@ You can install the **development** version from
 [GitHub](https://github.com/tidyverts/fable)
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("tidyverts/fable")
+# install.packages("remotes")
+remotes::install_github("tidyverts/fable")
 ```
 
 Installing this software requires a compiler
