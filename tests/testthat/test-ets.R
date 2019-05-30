@@ -97,22 +97,22 @@ test_that("Manual ETS selection", {
 
 test_that("ETS with bad inputs", {
   # Test for multiple specials defined
-  expect_error(
+  expect_warning(
     USAccDeaths_tbl %>% model(ETS(value ~ error("A") + error("A"))),
     "Only one special of each type is allowed for ETS"
   )
   
-  expect_error(
+  expect_warning(
     USAccDeaths_tbl %>% model(ETS(value ~ trend(alpha = 1.5))),
     "Inconsistent parameter boundaries"
   )
   
-  expect_error(
+  expect_warning(
     USAccDeaths_tbl %>% model(ETS(value ~ error("A") + trend("A", alpha = 0.2, beta = 0.5) + season("N"))),
     "Parameters out of range"
   )
   
-  expect_error(
+  expect_warning(
     UKLungDeaths %>% 
       model(ETS(vars(mdeaths, fdeaths))),
     "Only univariate responses are supported by ETS"
@@ -120,19 +120,19 @@ test_that("ETS with bad inputs", {
   
   UK_missing <- UKLungDeaths
   UK_missing[["mdeaths"]][3:5] <- NA
-  expect_error(
+  expect_warning(
     UK_missing %>% 
       model(ETS(mdeaths)),
     "ETS does not support missing values"
   )
   
-  expect_error(
+  expect_warning(
     UKLungDeaths %>% 
       model(ETS(mdeaths ~ trend("M") + season("A"))),
     "No valid ETS models have been allowed"
   )
   
-  expect_error(
+  expect_warning(
     UKLungDeaths[1:2,] %>% 
       model(ETS(mdeaths)),
     "Not enough data to estimate this ETS model"

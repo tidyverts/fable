@@ -93,7 +93,7 @@ test_that("ARIMA with bad inputs", {
     "Only one special for `pdq` is allowed"
   )
   
-  expect_error(
+  expect_warning(
     UKLungDeaths %>% 
       model(ARIMA(vars(mdeaths, fdeaths))),
     "Only univariate responses are supported by ARIMA"

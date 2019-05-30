@@ -110,19 +110,19 @@ test_that("RW short", {
 })
 
 test_that("lagwalk with bad inputs", {
-  expect_error(
+  expect_warning(
     UKLungDeaths %>%
       model(SNAIVE(vars(mdeaths, fdeaths))),
     "Only univariate responses are supported by lagwalks"
   )
   
-  expect_error(
+  expect_warning(
     UKLungDeaths %>%
       model(SNAIVE(resp(rep_along(mdeaths, NA)))),
     "All observations are missing"
   )
   
-  expect_error(
+  expect_warning(
     UKLungDeaths %>%
       model(SNAIVE(mdeaths ~ lag(1))),
     "Non-seasonal model specification provided"

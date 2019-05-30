@@ -53,13 +53,13 @@ test_that("Manual NNETAR selection", {
 
 
 test_that("NNETAR with bad inputs", {
-  expect_error(
+  expect_warning(
     airmiles[1:2,] %>% 
       model(NNETAR(value)),
     "Not enough data to fit a model"
   )
   
-  expect_error(
+  expect_warning(
     airmiles %>% 
       model(NNETAR(resp(rep_along(value, NA)))),
     "All observations are missing, a model cannot be estimated without data"
