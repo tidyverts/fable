@@ -266,7 +266,7 @@ This is generally discouraged, consider removing the constant or reducing the nu
   }
   
   if(is.null(best)){
-    stop("Could not find an appropriate ARIMA model.")
+    abort("Could not find an appropriate ARIMA model.")
   }
   
   # Compute ARMA roots
