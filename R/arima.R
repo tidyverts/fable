@@ -15,7 +15,7 @@ train_arima <- function(.data, specials,  ic = "aicc",
 
   
   # Get response
-  y <- x <- ts(.data[[measured_vars(.data)]], frequency = period)
+  y <- x <- ts(unclass(.data)[[measured_vars(.data)]], frequency = period)
   
   if(all(is.na(y))){
     abort("All observations are missing, a model cannot be estimated without data.")
@@ -567,7 +567,7 @@ refit.ARIMA <- function(object, new_data, specials = NULL, reestimate = FALSE, .
 #' @export
 interpolate.ARIMA <- function(object, new_data, specials, ...){
   # Get missing values
-  y <- new_data[[measured_vars(new_data)]]
+  y <- unclass(new_data)[[measured_vars(new_data)]]
   miss_val <- which(is.na(y))
   object <- refit(object, new_data, specials, ...)$model$model
   fits <- stats::KalmanSmooth(y, object)$smooth[miss_val,,drop=FALSE] %*% as.matrix(object$Z)

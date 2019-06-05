@@ -3,7 +3,7 @@ train_lagwalk <- function(.data, specials, ...){
     abort("Only univariate responses are supported by lagwalks.")
   }
   
-  y <- .data[[measured_vars(.data)]]
+  y <- unclass(.data)[[measured_vars(.data)]]
   n <- length(y)
   
   if(all(is.na(y))){

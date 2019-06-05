@@ -50,7 +50,7 @@ lm_tidy_measures <- function(fit){
 }
 
 train_tslm <- function(.data, specials, ...){
-  y <- as.matrix(.data[measured_vars(.data)])
+  y <- invoke(cbind, unclass(.data)[measured_vars(.data)])
   xreg <- as.matrix(specials$xreg[[1]])
   
   keep <- complete.cases(xreg) & complete.cases(y)
@@ -304,7 +304,7 @@ refit.TSLM <- function(object, new_data, specials = NULL, reestimate = FALSE, ..
   }
   
   # Get inputs
-  y <- as.matrix(new_data[measured_vars(new_data)])
+  y <- invoke(cbind, unclass(new_data)[measured_vars(new_data)])
   xreg <- as.matrix(specials$xreg[[1]])
   
   fit <- object$model

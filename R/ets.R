@@ -10,8 +10,8 @@ train_ets <- function(.data, specials, opt_crit,
   ets_spec <- unlist(ets_spec, recursive = FALSE)
 
   # Get response
-  y <- .data[[measured_vars(.data)]]
-  idx <- .data[[expr_text(index(.data))]]
+  y <- unclass(.data)[[measured_vars(.data)]]
+  idx <- unclass(.data)[[expr_text(index(.data))]]
 
   if(any(is.na(y))){
     abort("ETS does not support missing values.")
@@ -383,8 +383,8 @@ refit.ETS <- function(object, new_data, specials = NULL, reestimate = FALSE, rei
     transmute(
       !!parse_expr(measured_vars(object$est)[1])
     )
-  idx <- y[[expr_text(index(y))]]
-  y <- y[[measured_vars(y)]]
+  idx <- unclass(y)[[expr_text(index(y))]]
+  y <- unclass(y)[[measured_vars(y)]]
 
   best <- if(reinitialise){
     etsmodel(

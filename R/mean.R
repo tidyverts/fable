@@ -1,6 +1,10 @@
 #' @importFrom stats sd
 train_mean <- function(.data, specials, ...){
-  y <- .data[[measured_vars(.data)]]
+  if(length(measured_vars(.data)) > 1){
+    abort("Only univariate responses are supported by MEAN.")
+  }
+  
+  y <- unclass(.data)[[measured_vars(.data)]]
   
   if(all(is.na(y))){
     abort("All observations are missing, a model cannot be estimated without data.")

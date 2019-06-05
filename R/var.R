@@ -4,7 +4,7 @@ train_var <- function(.data, specials, ic, ...){
   p <- specials$AR[[1]]$p
   
   # Get response variables
-  y <- as.matrix(.data[measured_vars(.data)])
+  y <- invoke(cbind, unclass(.data)[measured_vars(.data)])
   
   # Get xreg
   constant <- specials$xreg[[1]]$constant
