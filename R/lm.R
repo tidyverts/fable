@@ -33,13 +33,14 @@ lm_glance_measures <- function(fit){
   
   loglik <- 0.5 * (- n * (log(2 * pi) + 1 - log(n) + log(rss)))
   
-  tibble(r.squared = r.squared, adj.r.squared = adj.r.squared, 
-         sigma2 = resvar, statistic = fstatistic,
-         p.value = p.value, df = edf, logLik = loglik,
-         AIC = aic, AICc = aic + 2 * (k + 2) * (k + 3) / (n - k - 3),
-         BIC = aic + (k + 2) * (log(n) - 2),
-         CV = mean((res/(1-influence$hat))^2, na.rm = TRUE),
-         deviance = rss, df.residual = rdf, rank = rank
+  list(
+    r.squared = r.squared, adj.r.squared = adj.r.squared, 
+    sigma2 = resvar, statistic = fstatistic,
+    p.value = p.value, df = edf, logLik = loglik,
+    AIC = aic, AICc = aic + 2 * (k + 2) * (k + 3) / (n - k - 3),
+    BIC = aic + (k + 2) * (log(n) - 2),
+    CV = mean((res/(1-influence$hat))^2, na.rm = TRUE),
+    deviance = rss, df.residual = rdf, rank = rank
   )
 }
 
@@ -147,7 +148,7 @@ residuals.TSLM <- function(object, ...){
 
 #' @export
 glance.TSLM <- function(x, ...){
-  x$fit
+  as_tibble(x$fit)
 }
 
 #' @export
