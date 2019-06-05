@@ -51,7 +51,7 @@ lm_tidy_measures <- function(fit){
 
 train_tslm <- function(.data, specials, ...){
   y <- invoke(cbind, unclass(.data)[measured_vars(.data)])
-  xreg <- as.matrix(specials$xreg[[1]])
+  xreg <- specials$xreg[[1]]
   
   keep <- complete.cases(xreg) & complete.cases(y)
   fit <- stats::lm.fit(xreg[keep,,drop = FALSE], y[keep,,drop = FALSE])
@@ -87,16 +87,13 @@ specials_tslm <- new_specials(
       lhs = NULL,
       rhs = reduce(enexprs(...), function(.x, .y) call2("+", .x, .y))
     )
-    env <- map(enquos(...), get_env)
-    env[map_lgl(env, compose(is_empty, env_parents))] <- NULL
-    env <- if(!is_empty(env)) get_env(env[[1]]) else base_env()
-    out <- model.frame(model_formula, data = env, na.action = stats::na.pass)
-    intercept <- out%@%"terms"%@%"intercept"
-    if(NROW(out) != NROW(self$data)) out <- NULL
-    if(intercept){
-      out <- cbind(`(Intercept)` = rep(1, NROW(self$data)), out)
+    env <- parent.frame()
+    if(!exists("list", env)) env <- base_env()
+    mm <- model.matrix(model_formula, data = env, na.action = stats::na.pass)
+    if(NROW(mm) == 0 && identical(colnames(mm), "(Intercept)")){
+      return(matrix(data = 1, nrow = NROW(self$data), dimnames = list(NULL, "(Intercept)")))
     }
-    out
+    mm
   },
   .required_specials = "xreg",
   .xreg_specials = names(common_xregs),
@@ -214,7 +211,7 @@ forecast.TSLM <- function(object, new_data, specials = NULL, bootstrap = FALSE,
   piv <- qr$pivot[seq_len(rank)]
   
   # Get xreg
-  xreg <- as.matrix(specials$xreg[[1]])
+  xreg <- specials$xreg[[1]]
   
   if (rank < ncol(xreg)) 
     warn("prediction from a rank-deficient fit may be misleading")
@@ -251,7 +248,7 @@ forecast.TSLM <- function(object, new_data, specials = NULL, bootstrap = FALSE,
 #' @export
 generate.TSLM <- function(x, new_data, specials, bootstrap = FALSE, ...){
   # Get xreg
-  xreg <- as.matrix(specials$xreg[[1]])
+  xreg <- specials$xreg[[1]]
 
   coef <- x$coef
   piv <- x$model$qr$pivot[seq_len(x$model$rank)]
@@ -276,7 +273,7 @@ generate.TSLM <- function(x, new_data, specials, bootstrap = FALSE, ...){
 interpolate.TSLM <- function(object, new_data, specials, ...){
   # Get inputs
   miss_val <- which(is.na(new_data[measured_vars(new_data)]))
-  xreg <- as.matrix(specials$xreg[[1]])
+  xreg <- specials$xreg[[1]]
   
   # Make predictions
   coef <- object$coef
@@ -305,7 +302,7 @@ refit.TSLM <- function(object, new_data, specials = NULL, reestimate = FALSE, ..
   
   # Get inputs
   y <- invoke(cbind, unclass(new_data)[measured_vars(new_data)])
-  xreg <- as.matrix(specials$xreg[[1]])
+  xreg <- specials$xreg[[1]]
   
   fit <- object$model
   coef <- object$coef
