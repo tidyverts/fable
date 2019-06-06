@@ -121,7 +121,8 @@ for forecasting univariate time series.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>NNETAR</span>(<span class='no'>formula</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>repeats</span> <span class='kw'>=</span> <span class='fl'>20</span>, <span class='kw'>scale_inputs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>NNETAR</span>(<span class='no'>formula</span>, <span class='kw'>n_nodes</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>n_networks</span> <span class='kw'>=</span> <span class='fl'>20</span>, <span class='kw'>scale_inputs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -131,12 +132,12 @@ for forecasting univariate time series.</p>
       <td><p>Model specification (see "Specials" section).</p></td>
     </tr>
     <tr>
-      <th>size</th>
+      <th>n_nodes</th>
       <td><p>Number of nodes in the hidden layer. Default is half of the
 number of input nodes (including external regressors, if given) plus 1.</p></td>
     </tr>
     <tr>
-      <th>repeats</th>
+      <th>n_networks</th>
       <td><p>Number of networks to fit with different random starting
 weights. These are then averaged when producing forecasts.</p></td>
     </tr>
