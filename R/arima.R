@@ -79,7 +79,7 @@ train_arima <- function(.data, specials,  ic = "aicc",
     }
     D <- unname(feasts::unitroot_nsdiffs(stats::na.contiguous(x),
                                          alpha = unitroot_spec$nsdiffs_alpha,
-                                         unitroot_fn = unitroot_spec$nsdiffs_pval,
+                                         unitroot_fn = unitroot_spec$nsdiffs_pvalue,
                                          differences = D, .period = period))
   }
   x <- diff(x, lag = period, differences = D)
@@ -98,7 +98,7 @@ train_arima <- function(.data, specials,  ic = "aicc",
     
     d <- unname(feasts::unitroot_ndiffs(stats::na.contiguous(x),
                                         alpha = unitroot_spec$ndiffs_alpha,
-                                        unitroot_fn = unitroot_spec$ndiffs_pval,
+                                        unitroot_fn = unitroot_spec$ndiffs_pvalue,
                                         differences = d))
   }
   
@@ -625,7 +625,7 @@ arima_constant <- function(n, d, D, period){
 #' Options for the unit root tests for order of integration
 #' 
 #' @param ndiffs_alpha,nsdiffs_alpha The level for the test specified in the `pval` functions As long as `pval < alpha`, differences will be added.
-#' @param ndiffs_pval,nsdiffs_pval A function (or lambda expression) which returns the probability of the . As long as `pval < alpha`, differences will be added.
+#' @param ndiffs_pvalue,nsdiffs_pvalue A function (or lambda expression) which returns the probability of the . As long as `pval < alpha`, differences will be added.
 #' 
 #' For the function for the seasonal p-value, the seasonal period will be provided as the `.period` argument to this function.
 #' A vector of data to test is available as `.` or `.x`.
@@ -635,7 +635,7 @@ arima_constant <- function(n, d, D, period){
 #' 
 #' @export
 unitroot_options <- function(ndiffs_alpha = 0.05, nsdiffs_alpha = 0.05,
-                              ndiffs_pval = ~feasts::unitroot_kpss(.)["kpss_pval"],
-                              nsdiffs_pval = ~feasts::stl_features(., .period)[2] < 0.64){
+                              ndiffs_pvalue = ~feasts::unitroot_kpss(.)["kpss_pval"],
+                              nsdiffs_pvalue = ~feasts::stl_features(., .period)[2] < 0.64){
   as.list(environment())
 }
