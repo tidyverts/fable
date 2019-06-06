@@ -1,5 +1,5 @@
 #' @importFrom stats ar complete.cases
-train_nnetar <- function(.data, specials, size, repeats, scale_inputs, ...){
+train_nnetar <- function(.data, specials, n_nodes, n_networks, scale_inputs, ...){
   require_package("nnet")
   
   if(length(measured_vars(.data)) > 1){
@@ -94,8 +94,8 @@ train_nnetar <- function(.data, specials, size, repeats, scale_inputs, ...){
   x <- x[-(1:maxlag)]
   # Add xreg into lagged matrix
   x_lags <- cbind(x_lags, xreg[-(1:maxlag), ])
-  if (is.null(size)) {
-    size <- round((NCOL(x_lags) + 1) / 2)
+  if (is.null(n_nodes)) {
+    n_nodes <- round((NCOL(x_lags) + 1) / 2)
   }
   
   # Remove missing values if present
@@ -108,8 +108,8 @@ train_nnetar <- function(.data, specials, size, repeats, scale_inputs, ...){
   }
   
   # Fit the nnet
-  nn_models <- map(seq_len(repeats),
-                   function(.){wrap_nnet(x_lags, x, size = size, ...)})
+  nn_models <- map(seq_len(n_networks),
+                   function(.) wrap_nnet(x_lags, x, size = n_nodes, ...))
   
   # Construct model output
   fits <- map(nn_models, predict) %>% 
@@ -127,7 +127,7 @@ train_nnetar <- function(.data, specials, size, repeats, scale_inputs, ...){
       par = tibble(),
       est = tibble(.fitted = fits, .resid = res),
       fit = tibble(sigma = sd(res, na.rm = TRUE)),
-      spec = tibble(period = period, p = p, P = P, size = size, lags = list(lags)),
+      spec = tibble(period = period, p = p, P = P, size = n_nodes, lags = list(lags)),
       scales = list(y = y_scale, xreg = xreg_scale),
       future = mutate(new_data(.data, maxlag), 
                       !!expr_text(model_lhs(self)) := utils::tail(x, maxlag))
@@ -137,7 +137,7 @@ train_nnetar <- function(.data, specials, size, repeats, scale_inputs, ...){
 }
 
 # Wrap nnet to change the default for linout to be TRUE
-wrap_nnet <- function(x, y, repeats, linout = TRUE, trace = FALSE, ...) {
+wrap_nnet <- function(x, y, linout = TRUE, trace = FALSE, ...) {
   nnet::nnet(x, y, linout = linout, trace = trace, ...)
 }
 
@@ -186,9 +186,9 @@ specials_nnetar <- new_specials(
 #' model but with non-linear functions.
 #'
 #' @param formula Model specification (see "Specials" section).
-#' @param size Number of nodes in the hidden layer. Default is half of the
+#' @param n_nodes Number of nodes in the hidden layer. Default is half of the
 #' number of input nodes (including external regressors, if given) plus 1.
-#' @param repeats Number of networks to fit with different random starting
+#' @param n_networks Number of networks to fit with different random starting
 #' weights. These are then averaged when producing forecasts.
 #' @param scale_inputs If TRUE, inputs are scaled by subtracting the column
 #' means and dividing by their respective standard deviations. Scaling is
@@ -226,11 +226,11 @@ specials_nnetar <- new_specials(
 #' @author Gabriel Caceres, Mitchell O'Hara-Wild & Rob J Hyndman
 #' 
 #' @export
-NNETAR <- function(formula, size = NULL, repeats = 20, scale_inputs = TRUE, ...){
+NNETAR <- function(formula, n_nodes = NULL, n_networks = 20, scale_inputs = TRUE, ...){
   nnetar_model <- new_model_class("NNETAR", train_nnetar, specials_nnetar, 
                                   origin = NULL, check = all_tsbl_checks)
-  new_model_definition(nnetar_model, !!enquo(formula), size = size,
-                       repeats = repeats, scale_inputs = scale_inputs, ...)
+  new_model_definition(nnetar_model, !!enquo(formula), n_nodes = n_nodes,
+                       n_networks = n_networks, scale_inputs = scale_inputs, ...)
 }
 
 #' @export

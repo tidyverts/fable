@@ -4,15 +4,16 @@
 \alias{NNETAR}
 \title{Neural Network Time Series Forecasts}
 \usage{
-NNETAR(formula, size = NULL, repeats = 20, scale_inputs = TRUE, ...)
+NNETAR(formula, n_nodes = NULL, n_networks = 20, scale_inputs = TRUE,
+  ...)
 }
 \arguments{
 \item{formula}{Model specification (see "Specials" section).}
 
-\item{size}{Number of nodes in the hidden layer. Default is half of the
+\item{n_nodes}{Number of nodes in the hidden layer. Default is half of the
 number of input nodes (including external regressors, if given) plus 1.}
 
-\item{repeats}{Number of networks to fit with different random starting
+\item{n_networks}{Number of networks to fit with different random starting
 weights. These are then averaged when producing forecasts.}
 
 \item{scale_inputs}{If TRUE, inputs are scaled by subtracting the column
