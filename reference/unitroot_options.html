@@ -120,8 +120,8 @@
     </div>
 
     <pre class="usage"><span class='fu'>unitroot_options</span>(<span class='kw'>ndiffs_alpha</span> <span class='kw'>=</span> <span class='fl'>0.05</span>, <span class='kw'>nsdiffs_alpha</span> <span class='kw'>=</span> <span class='fl'>0.05</span>,
-  <span class='kw'>ndiffs_pval</span> <span class='kw'>=</span> ~<span class='kw pkg'>feasts</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/feasts/topics/unitroot'>unitroot_kpss</a></span>(<span class='no'>.</span>)[<span class='st'>"kpss_pval"</span>],
-  <span class='kw'>nsdiffs_pval</span> <span class='kw'>=</span> ~<span class='kw pkg'>feasts</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/feasts/topics/stl_features'>stl_features</a></span>(<span class='no'>.</span>, <span class='no'>.period</span>)[<span class='fl'>2</span>] <span class='kw'>&lt;</span> <span class='fl'>0.64</span>)</pre>
+  <span class='kw'>ndiffs_pvalue</span> <span class='kw'>=</span> ~<span class='kw pkg'>feasts</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/feasts/topics/unitroot'>unitroot_kpss</a></span>(<span class='no'>.</span>)[<span class='st'>"kpss_pval"</span>],
+  <span class='kw'>nsdiffs_pvalue</span> <span class='kw'>=</span> ~<span class='kw pkg'>feasts</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/feasts/topics/stl_features'>stl_features</a></span>(<span class='no'>.</span>, <span class='no'>.period</span>)[<span class='fl'>2</span>] <span class='kw'>&lt;</span> <span class='fl'>0.64</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -131,7 +131,7 @@
       <td><p>The level for the test specified in the <code>pval</code> functions As long as <code>pval &lt; alpha</code>, differences will be added.</p></td>
     </tr>
     <tr>
-      <th>ndiffs_pval, nsdiffs_pval</th>
+      <th>ndiffs_pvalue, nsdiffs_pvalue</th>
       <td><p>A function (or lambda expression) which returns the probability of the . As long as <code>pval &lt; alpha</code>, differences will be added.</p>
 <p>For the function for the seasonal p-value, the seasonal period will be provided as the <code>.period</code> argument to this function.
 A vector of data to test is available as <code>.</code> or <code>.x</code>.</p></td>
