@@ -63,8 +63,8 @@ estimate_var <- function(y, p, xreg, constant){
       coef = coef,
       fits = rbind(matrix(nrow = p, ncol = NCOL(y)), y - resid),
       resid = rbind(matrix(nrow = p, ncol = NCOL(y)), resid),
-      fit = tibble(sigma2 = list(sig/fit$df.residual), logLik = loglik,
-                   aic = aic, aicc = aicc, bic = bic),
+      fit = tibble(sigma2 = list(sig/fit$df.residual), log_lik = loglik,
+                   AIC = aic, AICc = aicc, BIC = bic),
       spec = tibble(p = p, constant = constant),
       last_obs = y[NROW(y) - seq_len(p) + 1,,drop = FALSE],
       model = fit
@@ -155,6 +155,7 @@ specials_var <- new_specials(
 #' @export
 VAR <- function(formula, ic = c("aicc", "aic", "bic"), ...){
   ic <- match.arg(ic)
+  ic <- switch(ic, aicc = "AICc", aic = "AIC", bic = "BIC")
   varma_model <- new_model_class("VAR", train = train_var, 
                                  specials = specials_var,
                                  origin = NULL,
@@ -293,13 +294,13 @@ report.VAR <- function(object, ...){
   cat("\nResidual covariance matrix:\n")
   print.default(round(object$fit$sigma2[[1]], 4))
   
-  cat(sprintf("\nlog likelihood = %s\n", format(round(object$fit$logLik, 2L))))
+  cat(sprintf("\nlog likelihood = %s\n", format(round(object$fit$log_lik, 2L))))
   
   cat(
     sprintf("AIC = %s\tAICc = %s\tBIC = %s",
-            format(round(object$fit$aic, 2L)),
-            format(round(object$fit$aicc, 2L)),
-            format(round(object$fit$bic, 2L))
+            format(round(object$fit$AIC, 2L)),
+            format(round(object$fit$AICc, 2L)),
+            format(round(object$fit$BIC, 2L))
     )
   )
 }

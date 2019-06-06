@@ -34,9 +34,9 @@ lm_glance_measures <- function(fit){
   loglik <- 0.5 * (- n * (log(2 * pi) + 1 - log(n) + log(rss)))
   
   list(
-    r.squared = r.squared, adj.r.squared = adj.r.squared, 
+    r_squared = r.squared, adj_r_squared = adj.r.squared, 
     sigma2 = resvar, statistic = fstatistic,
-    p.value = p.value, df = edf, logLik = loglik,
+    p_value = p.value, df = edf, log_lik = loglik,
     AIC = aic, AICc = aic + 2 * (k + 2) * (k + 3) / (n - k - 3),
     BIC = aic + (k + 2) * (log(n) - 2),
     CV = mean((res/(1-influence$hat))^2, na.rm = TRUE),
@@ -192,11 +192,11 @@ report.TSLM <- function(object, digits = max(3, getOption("digits") - 3), ...){
               format(signif(sqrt(glance$sigma2), digits)), rdf))
   if (!is.na(glance$statistic)) {
     cat(sprintf("Multiple R-squared: %s,\tAdjusted R-squared: %s\nF-statistic: %s on %s and %s DF, p-value: %s\n",
-                formatC(glance$r.squared, digits = digits), 
-                formatC(glance$adj.r.squared, digits = digits),
+                formatC(glance$r_squared, digits = digits), 
+                formatC(glance$adj_r_squared, digits = digits),
                 formatC(glance$statistic, digits = digits),
                 format(glance$rank - intercept), format(rdf),
-                format.pval(glance$p.value)))
+                format.pval(glance$p_value)))
   }
   invisible(object)
 }

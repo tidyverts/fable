@@ -311,7 +311,7 @@ This is generally discouraged, consider removing the constant or reducing the nu
         .regression_resid = reg_resid
       ),
       fit = tibble(sigma2 = best$sigma2,
-                   logLik = best$loglik,
+                   log_lik = best$loglik,
                    AIC = best$aic, AICc = best$aicc, BIC = best$bic,
                    ar_roots = list(arroot), ma_roots = list(maroot)),
       spec = as_tibble(model_opts[which.min(est_ic),]) %>% mutate(period = period),
@@ -502,7 +502,7 @@ report.ARIMA <- function(object, ...){
   }
   cat(
     "\nsigma^2 estimated as ", format(object$fit$sigma2, digits = 4),
-    ":  log likelihood=", format(round(object$fit$logLik, 2L)), "\n", sep = ""
+    ":  log likelihood=", format(round(object$fit$log_lik, 2L)), "\n", sep = ""
   )
   
   cat("AIC=", format(round(object$fit$AIC, 2L)), sep = "")
