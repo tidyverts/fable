@@ -126,7 +126,7 @@ train_nnetar <- function(.data, specials, n_nodes, n_networks, scale_inputs, ...
       model = nn_models,
       par = tibble(),
       est = tibble(.fitted = fits, .resid = res),
-      fit = tibble(sigma2 = var(res, na.rm = TRUE)),
+      fit = tibble(sigma2 = stats::var(res, na.rm = TRUE)),
       spec = tibble(period = period, p = p, P = P, size = n_nodes, lags = list(lags)),
       scales = list(y = y_scale, xreg = xreg_scale),
       future = mutate(new_data(.data, maxlag), 
