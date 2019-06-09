@@ -159,8 +159,10 @@ tidy.TSLM <- function(x, ...){
   R <- chol2inv(x$model$qr$qr[seq_len(rank), seq_len(rank), drop = FALSE])
   se <- map(resvar, function(resvar) sqrt(diag(R) * resvar))
   
-  dplyr::as_tibble(x$coef, rownames = "term") %>% 
-    tidyr::gather(".response", "estimate", !!!syms(colnames(x$coef))) %>% 
+  out <- dplyr::as_tibble(x$coef, rownames = "term") %>% 
+    tidyr::gather(".response", "estimate", !!!syms(colnames(x$coef)))
+  if(NCOL(x$coef) == 1) out[[".response"]] <- NULL
+  out %>% 
     mutate(std.error = unlist(se),
            statistic = !!sym("estimate") / !!sym("std.error"),
            p.value = 2 * stats::pt(abs(!!sym("statistic")), rdf, lower.tail = FALSE))
