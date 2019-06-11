@@ -105,8 +105,8 @@
 <a class="sourceLine" id="cb2-8" data-line-number="8">    State <span class="op">%in%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"New South Wales"</span>, <span class="st">"Victoria"</span>),</a>
 <a class="sourceLine" id="cb2-9" data-line-number="9">    Industry <span class="op">==</span><span class="st"> "Department stores"</span></a>
 <a class="sourceLine" id="cb2-10" data-line-number="10">  ) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/fablelite/topics/model">model</a></span>(</a>
-<a class="sourceLine" id="cb2-12" data-line-number="12">    <span class="dt">ets =</span> <span class="kw"><a href="reference/ETS.html">ETS</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/fablelite/topics/box_cox">box_cox</a></span>(Turnover, <span class="fl">0.3</span>)),</a>
+<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="st">  </span><span class="kw">model</span>(</a>
+<a class="sourceLine" id="cb2-12" data-line-number="12">    <span class="dt">ets =</span> <span class="kw"><a href="reference/ETS.html">ETS</a></span>(<span class="kw">box_cox</span>(Turnover, <span class="fl">0.3</span>)),</a>
 <a class="sourceLine" id="cb2-13" data-line-number="13">    <span class="dt">arima =</span> <span class="kw"><a href="reference/ARIMA.html">ARIMA</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Log">log</a></span>(Turnover)),</a>
 <a class="sourceLine" id="cb2-14" data-line-number="14">    <span class="dt">snaive =</span> <span class="kw"><a href="reference/RW.html">SNAIVE</a></span>(Turnover)</a>
 <a class="sourceLine" id="cb2-15" data-line-number="15">  ) <span class="op">%&gt;%</span></a>

@@ -235,7 +235,7 @@ xreg(...)
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Manual ARIMA specification</span>
 <span class='no'>USAccDeaths</span> <span class='kw'>%&gt;%</span> <span class='no'>as_tsibble</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://www.rdocumentation.org/packages/fablelite/topics/model'>model</a></span>(<span class='kw'>arima</span> <span class='kw'>=</span> <span class='fu'>ARIMA</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Log'>log</a></span>(<span class='no'>value</span>) ~ <span class='fu'>pdq</span>(<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>1</span>) + <span class='fu'>PDQ</span>(<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>1</span>)))</div><div class='output co'>#&gt; # A mable: 1 x 1
+  <span class='fu'>model</span>(<span class='kw'>arima</span> <span class='kw'>=</span> <span class='fu'>ARIMA</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Log'>log</a></span>(<span class='no'>value</span>) ~ <span class='fu'>pdq</span>(<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>1</span>) + <span class='fu'>PDQ</span>(<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>1</span>)))</div><div class='output co'>#&gt; # A mable: 1 x 1
 #&gt;   arima                    
 #&gt;   &lt;model&gt;                  
 #&gt; 1 &lt;ARIMA(0,1,1)(0,1,1)[12]&gt;</div><div class='input'>
@@ -252,7 +252,7 @@ xreg(...)
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    intersect, setdiff, setequal, union</span></div><div class='input'><span class='kw pkg'>tsibbledata</span><span class='kw ns'>::</span><span class='no'><a href='https://www.rdocumentation.org/packages/tsibbledata/topics/global_economy'>global_economy</a></span> <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>Country</span> <span class='kw'>==</span> <span class='st'>"Australia"</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://www.rdocumentation.org/packages/fablelite/topics/model'>model</a></span>(<span class='fu'>ARIMA</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Log'>log</a></span>(<span class='no'>GDP</span>) ~ <span class='no'>Population</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: NaNs produced</span></div><div class='output co'>#&gt; # A mable: 1 x 2
+  <span class='fu'>model</span>(<span class='fu'>ARIMA</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Log'>log</a></span>(<span class='no'>GDP</span>) ~ <span class='no'>Population</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: NaNs produced</span></div><div class='output co'>#&gt; # A mable: 1 x 2
 #&gt; # Key:     Country [1]
 #&gt;   Country   `ARIMA(log(GDP) ~ Population)`
 #&gt;   &lt;fct&gt;     &lt;model&gt;                       

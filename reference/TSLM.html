@@ -151,14 +151,14 @@ xreg(...)
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='no'>USAccDeaths</span> <span class='kw'>%&gt;%</span> <span class='no'>as_tsibble</span> <span class='kw'>%&gt;%</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/fablelite/topics/model'>model</a></span>(<span class='fu'>TSLM</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Log'>log</a></span>(<span class='no'>value</span>) ~ <span class='fu'>trend</span>() + <span class='fu'>season</span>()))</div><div class='output co'>#&gt; # A mable: 1 x 1
+<span class='no'>USAccDeaths</span> <span class='kw'>%&gt;%</span> <span class='no'>as_tsibble</span> <span class='kw'>%&gt;%</span> <span class='fu'>model</span>(<span class='fu'>TSLM</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Log'>log</a></span>(<span class='no'>value</span>) ~ <span class='fu'>trend</span>() + <span class='fu'>season</span>()))</div><div class='output co'>#&gt; # A mable: 1 x 1
 #&gt;   `TSLM(log(value) ~ trend() + season())`
 #&gt;   &lt;model&gt;                                
 #&gt; 1 &lt;TSLM&gt;                                 </div><div class='input'>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>tsibbledata</span>)
 <span class='no'>olympic_running</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://www.rdocumentation.org/packages/fablelite/topics/model'>model</a></span>(<span class='fu'>TSLM</span>(<span class='no'>Time</span> ~ <span class='fu'>trend</span>())) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://www.rdocumentation.org/packages/generics/topics/interpolate'>interpolate</a></span>(<span class='no'>olympic_running</span>)</div><div class='output co'>#&gt; # A tsibble: 312 x 4 [4Y]
+  <span class='fu'>model</span>(<span class='fu'>TSLM</span>(<span class='no'>Time</span> ~ <span class='fu'>trend</span>())) <span class='kw'>%&gt;%</span>
+  <span class='fu'>interpolate</span>(<span class='no'>olympic_running</span>)</div><div class='output co'>#&gt; # A tsibble: 312 x 4 [4Y]
 #&gt; # Key:       Length, Sex [14]
 #&gt;    Length Sex    Year  Time
 #&gt;    &lt;fct&gt;  &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;
