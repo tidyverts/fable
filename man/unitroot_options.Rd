@@ -5,7 +5,7 @@
 \title{Options for the unit root tests for order of integration}
 \usage{
 unitroot_options(ndiffs_alpha = 0.05, nsdiffs_alpha = 0.05,
-  ndiffs_pvalue = ~feasts::unitroot_kpss(.)["kpss_pval"],
+  ndiffs_pvalue = ~feasts::unitroot_kpss(.)["kpss_pvalue"],
   nsdiffs_pvalue = ~feasts::feat_stl(., .period)[2] < 0.64)
 }
 \arguments{
