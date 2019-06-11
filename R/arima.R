@@ -636,6 +636,6 @@ arima_constant <- function(n, d, D, period){
 #' @export
 unitroot_options <- function(ndiffs_alpha = 0.05, nsdiffs_alpha = 0.05,
                               ndiffs_pvalue = ~feasts::unitroot_kpss(.)["kpss_pval"],
-                              nsdiffs_pvalue = ~feasts::features_stl(., .period)[2] < 0.64){
+                              nsdiffs_pvalue = ~feasts::feat_stl(., .period)[2] < 0.64){
   as.list(environment())
 }
