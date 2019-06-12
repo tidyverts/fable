@@ -39,7 +39,10 @@
 
 <meta property="og:title" content="Estimate an ARIMA model — ARIMA" />
 
-<meta property="og:description" content="Estimate an ARIMA model" />
+<meta property="og:description" content="Searches through the model space specified in the specials to identify the
+best ARIMA model which has lowest AIC, AICc or BIC value. It is implemented
+using stats::arima() and allows ARIMA models to be used in the fable
+framework." />
 
 <meta property="og:image" content="https://fable.tidyverts.org/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -115,7 +118,10 @@
 
     <div class="ref-description">
     
-    <p>Estimate an ARIMA model</p>
+    <p>Searches through the model space specified in the specials to identify the
+best ARIMA model which has lowest AIC, AICc or BIC value. It is implemented
+using <code><a href='https://www.rdocumentation.org/packages/stats/topics/arima'>stats::arima()</a></code> and allows ARIMA models to be used in the fable
+framework.</p>
     
     </div>
 
@@ -250,7 +256,7 @@ xreg(...)
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    filter, lag</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
 #&gt; <span class='message'></span>
-#&gt; <span class='message'>    intersect, setdiff, setequal, union</span></div><div class='input'><span class='kw pkg'>tsibbledata</span><span class='kw ns'>::</span><span class='no'><a href='https://www.rdocumentation.org/packages/tsibbledata/topics/global_economy'>global_economy</a></span> <span class='kw'>%&gt;%</span>
+#&gt; <span class='message'>    intersect, setdiff, setequal, union</span></div><div class='input'><span class='kw pkg'>tsibbledata</span><span class='kw ns'>::</span><span class='no'><a href='https://tsibbledata.tidyverts.org/reference/global_economy.html'>global_economy</a></span> <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>Country</span> <span class='kw'>==</span> <span class='st'>"Australia"</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>model</span>(<span class='fu'>ARIMA</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Log'>log</a></span>(<span class='no'>GDP</span>) ~ <span class='no'>Population</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: NaNs produced</span></div><div class='output co'>#&gt; # A mable: 1 x 2
 #&gt; # Key:     Country [1]

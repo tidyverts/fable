@@ -31,7 +31,28 @@
     <loc>https://fable.tidyverts.org/reference/fable-package.html</loc>
   </url>
   <url>
+    <loc>https://fable.tidyverts.org/reference/fitted.html</loc>
+  </url>
+  <url>
+    <loc>https://fable.tidyverts.org/reference/forecast.html</loc>
+  </url>
+  <url>
+    <loc>https://fable.tidyverts.org/reference/glance.ARIMA.html</loc>
+  </url>
+  <url>
+    <loc>https://fable.tidyverts.org/reference/interpolate.ARIMA.html</loc>
+  </url>
+  <url>
     <loc>https://fable.tidyverts.org/reference/reexports.html</loc>
+  </url>
+  <url>
+    <loc>https://fable.tidyverts.org/reference/refit.ARIMA.html</loc>
+  </url>
+  <url>
+    <loc>https://fable.tidyverts.org/reference/residuals.html</loc>
+  </url>
+  <url>
+    <loc>https://fable.tidyverts.org/reference/tidy.ARIMA.html</loc>
   </url>
   <url>
     <loc>https://fable.tidyverts.org/reference/unitroot_options.html</loc>

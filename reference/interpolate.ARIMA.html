@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • fable</title>
+<title>Interpolate missing values from a fable model — interpolate.ARIMA • fable</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,7 +37,9 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Interpolate missing values from a fable model — interpolate.ARIMA" />
+
+<meta property="og:description" content="Applies a model specific estimation technique to predict the values of missing values in a tsibble, and replace them." />
 
 <meta property="og:image" content="https://fable.tidyverts.org/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -57,7 +59,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -104,72 +106,51 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Interpolate missing values from a fable model</h1>
+    
+    <div class="hidden name"><code>interpolate.ARIMA.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    
+    <p>Applies a model specific estimation technique to predict the values of missing values in a <code>tsibble</code>, and replace them.</p>
+    
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
-
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-arima" class="hasAnchor"><a href="#section-arima" class="anchor"></a>ARIMA</h2>
-          <p class="section-desc"><p>The ARIMA model and its supported methods.</p></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="ARIMA.html">ARIMA()</a></code> </p>
-        </td>
-        <td><p>Estimate an ARIMA model</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="forecast.html">forecast(<i>&lt;ARIMA&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Forecast a model from the fable package</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="refit.ARIMA.html">refit(<i>&lt;ARIMA&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Refit an ARIMA model</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="interpolate.ARIMA.html">interpolate(<i>&lt;ARIMA&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Interpolate missing values from a fable model</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="fitted.html">fitted(<i>&lt;ARIMA&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Extract fitted values from a fable model</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="residuals.html">residuals(<i>&lt;ARIMA&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Extract residuals values from a fable model</p></td>
-      </tr>
-    </tbody>
+    <pre class="usage"><span class='co'># S3 method for ARIMA</span>
+<span class='fu'>interpolate</span>(<span class='no'>object</span>, <span class='no'>new_data</span>, <span class='no'>specials</span>, <span class='no'>...</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>object</th>
+      <td><p>The time series model used to produce the forecasts</p></td>
+    </tr>
+    <tr>
+      <th>new_data</th>
+      <td><p>A <code>tsibble</code> containing future information used to forecast.</p></td>
+    </tr>
+    <tr>
+      <th>specials</th>
+      <td><p>(passed by <code><a href='https://www.rdocumentation.org/packages/fablelite/topics/forecast'>fablelite::forecast.mdl_df()</a></code>).</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Additional arguments for forecast model methods.</p></td>
+    </tr>
     </table>
-  </div>
+    
 
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-arima">ARIMA</a></li>
-    </ul>
+      <li><a href="#arguments">Arguments</a></li>
+                </ul>
+
   </div>
 </div>
 

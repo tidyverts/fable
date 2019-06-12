@@ -147,16 +147,11 @@ right-hand-side will be ignored.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>tsibbledata</span>)
-<span class='no'>aus_elec</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='kw'>rw</span> <span class='kw'>=</span> <span class='fu'>MEAN</span>(<span class='no'>Demand</span>))</div><div class='output co'>#&gt; # A mable: 5 x 2
-#&gt; # Key:     State [5]
-#&gt;   State           rw     
-#&gt;   &lt;chr&gt;           &lt;model&gt;
-#&gt; 1 New South Wales &lt;MEAN&gt; 
-#&gt; 2 Queensland      &lt;MEAN&gt; 
-#&gt; 3 South Australia &lt;MEAN&gt; 
-#&gt; 4 Tasmania        &lt;MEAN&gt; 
-#&gt; 5 Victoria        &lt;MEAN&gt; </div><div class='input'>
+<span class='no'>vic_elec</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'>model</span>(<span class='kw'>rw</span> <span class='kw'>=</span> <span class='fu'>MEAN</span>(<span class='no'>Demand</span>))</div><div class='output co'>#&gt; # A mable: 1 x 1
+#&gt;   rw     
+#&gt;   &lt;model&gt;
+#&gt; 1 &lt;MEAN&gt; </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
