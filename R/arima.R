@@ -374,6 +374,13 @@ specials_arima <- new_specials(
 
 #' Estimate an ARIMA model
 #' 
+#' Searches through the model space specified in the specials to identify the
+#' best ARIMA model which has lowest AIC, AICc or BIC value. It is implemented
+#' using [`stats::arima()`] and allows ARIMA models to be used in the fable
+#' framework.
+#' 
+#' @aliases report.ARIMA
+#' 
 #' @param formula Model specification (see "Specials" section).
 #' @param ic The information criterion used in selecting the model.
 #' @param stepwise Should stepwise be used?
@@ -463,13 +470,29 @@ ARIMA <- function(formula, ic = c("aicc", "aic", "bic"), stepwise = TRUE, greedy
 }
 
 
+#' Extract fitted values from a fable model
+#' 
+#' Extracts the fitted values.
+#' 
+#' @inheritParams forecast.ARIMA
+#' 
+#' @rdname fitted
 #' @export
 fitted.ARIMA <- function(object, ...){
   object$est[[".fitted"]]
 }
 
+#' Extract residuals values from a fable model
+#' 
+#' Extracts the residuals.
+#' 
+#' @inheritParams forecast.ARIMA
+#' @param type The type of the residuals to extract.
+#' 
+#' @rdname residuals
 #' @export
-residuals.ARIMA <- function(object, type = "innovation", ...){
+residuals.ARIMA <- function(object, type = c("innovation", "regression"), ...){
+  type <- match.arg(type)
   if(type == "innovation"){
     object$est[[".resid"]]
   }
@@ -481,11 +504,28 @@ residuals.ARIMA <- function(object, type = "innovation", ...){
   }
 }
 
+#' Glance an ARIMA model
+#' 
+#' Construct a single row summary of the ARIMA model.
+#' 
+#' Contains the variance of residuals (`sigma2`), the log-likelihood (`log_lik`),
+#' information criterion (`AIC`, `AICc`, `BIC`) and the characteristic roots
+#' (`ar_roots` and `ma_roots`). The characteristic roots can be plotted using
+#' [`feasts::gg_arma()`].
+#' 
+#' @inheritParams generics::glance
+#' 
 #' @export
 glance.ARIMA <- function(x, ...){
   x$fit
 }
 
+#' Tidy a fable model
+#' 
+#' Returns the coefficients from the model in a tibble format.
+#' 
+#' @inheritParams generics::tidy
+#' 
 #' @export
 tidy.ARIMA <- function(x, ...){
   x$par
@@ -510,7 +550,17 @@ report.ARIMA <- function(object, ...){
   cat("   BIC=", format(round(object$fit$BIC, 2L)), "\n", sep = "")
 }
 
+#' Forecast a model from the fable package
+#' 
+#' Produces forecasts from a trained model.
+#' 
+#' @inheritParams fablelite::forecast
+#' @param specials (passed by fablelite:::forecast.mdl_ts).
+#' @param bootstrap If `TRUE`, then forecast distributions are computed using simulation with resampled errors.
+#' @param times The number of sample paths to use in estimating the forecast distribution when `boostrap = TRUE`.
+#' 
 #' @importFrom stats formula residuals
+#' @rdname forecast
 #' @export
 forecast.ARIMA <- function(object, new_data = NULL, specials = NULL, 
                            bootstrap = FALSE, times = 5000, ...){
@@ -547,6 +597,15 @@ forecast.ARIMA <- function(object, new_data = NULL, specials = NULL,
   construct_fc(fc$pred, fc$se, dist_normal(fc$pred, fc$se))
 }
 
+
+#' Refit an ARIMA model
+#' 
+#' Applies a fitted ARIMA model to a new dataset.
+#' 
+#' @inheritParams forecast.ARIMA
+#' @param reestimate If `TRUE`, the coefficients for the fitted model will be re-estimated to suit the new data.
+#' 
+#' @importFrom stats formula residuals
 #' @export
 refit.ARIMA <- function(object, new_data, specials = NULL, reestimate = FALSE, ...){
   # Update data for re-evaluation
@@ -560,10 +619,17 @@ refit.ARIMA <- function(object, new_data, specials = NULL, reestimate = FALSE, .
   
   out <- train_arima(new_data, specials, fixed = object$model$coef, ...)
   out$par <- object$par
-  # out$model$mask <- object$model$mask
   out
 }
 
+#' Interpolate missing values from a fable model
+#' 
+#' Applies a model specific estimation technique to predict the values of missing values in a tsibble, and replace them.
+#' 
+#' @inheritParams forecast.ARIMA
+#' 
+#' @importFrom stats formula residuals
+#' @export
 #' @export
 interpolate.ARIMA <- function(object, new_data, specials, ...){
   # Get missing values

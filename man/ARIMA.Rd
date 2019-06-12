@@ -2,6 +2,7 @@
 % Please edit documentation in R/arima.R
 \name{ARIMA}
 \alias{ARIMA}
+\alias{report.ARIMA}
 \title{Estimate an ARIMA model}
 \usage{
 ARIMA(formula, ic = c("aicc", "aic", "bic"), stepwise = TRUE,
@@ -28,7 +29,10 @@ selection of \code{d} and \code{D}. See \code{\link[=unitroot_options]{unitroot_
 \item{...}{Further arguments for \code{\link[stats:arima]{stats::arima()}}}
 }
 \description{
-Estimate an ARIMA model
+Searches through the model space specified in the specials to identify the
+best ARIMA model which has lowest AIC, AICc or BIC value. It is implemented
+using \code{\link[stats:arima]{stats::arima()}} and allows ARIMA models to be used in the fable
+framework.
 }
 \section{Specials}{
 

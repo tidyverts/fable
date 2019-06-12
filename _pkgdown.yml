@@ -24,3 +24,17 @@ navbar:
     href: https://docs.google.com/forms/d/e/1FAIpQLSfc66U8e8e-x_7TeWpuBAtxqdJD4UXozdkLgmBI3mlRuKPkzA/viewform?usp=sf_link
   - icon: fa-github fa-lg
     href: https://github.com/tidyverts/fable
+
+
+reference:
+- title: ARIMA
+  desc: >
+    The ARIMA model and its supported methods.
+  contents:
+    - ARIMA
+    - forecast.ARIMA
+    - report.ARIMA
+    - refit.ARIMA
+    - interpolate.ARIMA
+    - fitted.ARIMA
+    - residuals.ARIMA
