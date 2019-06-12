@@ -253,7 +253,8 @@ specials_ets <- new_specials(
 #'
 #' @examples
 #'
-#' USAccDeaths %>% as_tsibble %>% model(ETS(log(value) ~ season("A")))
+#' as_tsibble(USAccDeaths) %>%
+#'   model(ETS(log(value) ~ season("A")))
 ETS <- function(formula, opt_crit = c("lik", "amse", "mse", "sigma", "mae"),
                 nmse = 3, bounds = c("both", "usual", "admissible"),
                 ic = c("aicc", "aic", "bic"), restrict = TRUE, ...){
@@ -268,6 +269,7 @@ ETS <- function(formula, opt_crit = c("lik", "amse", "mse", "sigma", "mae"),
   )
 }
 
+#' @rdname forecast
 #' @export
 forecast.ETS <- function(object, new_data, specials = NULL, simulate = FALSE, bootstrap = FALSE, times = 5000, ...){
   errortype <- object$spec$errortype
@@ -312,6 +314,23 @@ forecast.ETS <- function(object, new_data, specials = NULL, simulate = FALSE, bo
   }
 }
 
+#' Generate new data from a fable model
+#' 
+#' Simulates future paths from a dataset using a fitted model. Innovations are 
+#' sampled by the model's assumed error distribution. If `bootstrap` is `TRUE`,
+#' innovations will be sampled from the model's residuals. If `new_data` 
+#' contains the `.innov` column, those values will be treated as innovations.
+#' 
+#' @inheritParams forecast.ETS 
+#' 
+#' @examples 
+#' as_tsibble(USAccDeaths) %>%
+#'   model(ETS(log(value) ~ season("A"))) %>% 
+#'   generate(times = 100)
+#'   
+#' @seealso [`fablelite::generate.mdl_df`]
+#' 
+#' @rdname generate
 #' @export
 generate.ETS <- function(x, new_data, bootstrap = FALSE, ...){
   if(!is_regular(new_data)){
@@ -369,6 +388,28 @@ generate.ETS <- function(x, new_data, bootstrap = FALSE, ...){
   result
 }
 
+
+#' Refit an ETS model
+#' 
+#' Applies a fitted ETS model to a new dataset.
+#' 
+#' @inheritParams refit.ARIMA
+#' @param reinitialise If TRUE, the initial parameters will be re-estimated to suit the new data.
+#' 
+#' @examples 
+#' lung_deaths_male <- as_tsibble(mdeaths)
+#' lung_deaths_female <- as_tsibble(fdeaths)
+#' 
+#' fit <- lung_deaths_male %>% 
+#'   model(ETS(value))
+#'   
+#' report(fit)
+#' 
+#' fit %>% 
+#'  refit(lung_deaths_female, reinitialise = TRUE) %>% 
+#'  report()
+#' 
+#' @importFrom stats formula residuals
 #' @export
 refit.ETS <- function(object, new_data, specials = NULL, reestimate = FALSE, reinitialise = TRUE, ...){
   est_par <- function(par){
@@ -431,11 +472,13 @@ refit.ETS <- function(object, new_data, specials = NULL, reestimate = FALSE, rei
   )
 }
 
+#' @rdname fitted
 #' @export
 fitted.ETS <- function(object, ...){
   object$est[[".fitted"]]
 }
 
+#' @rdname residuals
 #' @export
 residuals.ETS <- function(object, ...){
   object$est[[".resid"]]

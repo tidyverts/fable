@@ -33,8 +33,20 @@ reference:
   contents:
     - ARIMA
     - forecast.ARIMA
-    - report.ARIMA
     - refit.ARIMA
     - interpolate.ARIMA
     - fitted.ARIMA
     - residuals.ARIMA
+
+
+reference:
+- title: ETS
+  desc: >
+    Exponential smoothing state space models.
+  contents:
+    - ETS
+    - forecast.ETS
+    - refit.ETS
+    - generate.ETS
+    - fitted.ETS
+    - residuals.ETS

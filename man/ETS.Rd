@@ -93,7 +93,8 @@ season(method = c("N", "A", "M"), period = NULL,
 
 \examples{
 
-USAccDeaths \%>\% as_tsibble \%>\% model(ETS(log(value) ~ season("A")))
+as_tsibble(USAccDeaths) \%>\%
+  model(ETS(log(value) ~ season("A")))
 }
 \references{
 Hyndman, R.J., Koehler, A.B., Snyder, R.D., and Grose, S. (2002)
