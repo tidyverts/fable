@@ -441,6 +441,9 @@ specials_arima <- new_specials(
 #' }
 #' }
 #' 
+#' @seealso 
+#' [Forecasting: Principles and Practices, ARIMA models (chapter 9)](https://otexts.com/fpp3/arima.html)
+#' 
 #' @examples 
 #' # Manual ARIMA specification
 #' USAccDeaths %>% as_tsibble %>% 

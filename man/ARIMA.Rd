@@ -98,3 +98,6 @@ tsibbledata::global_economy \%>\%
   model(ARIMA(log(GDP) ~ Population))
 
 }
+\seealso{
+\href{https://otexts.com/fpp3/arima.html}{Forecasting: Principles and Practices, ARIMA models (chapter 9)}
+}

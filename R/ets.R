@@ -168,6 +168,8 @@ specials_ets <- new_specials(
 #' specified. This methodology performed extremely well on the M3-competition
 #' data. (See Hyndman, et al, 2002, below.)
 #'
+#' @aliases report.ETS
+#'
 #' @param formula Model specification (see "Specials" section).
 #' @param opt_crit The optimization criterion. Defaults to the log-likelihood
 #' `"lik"`, but can also be set to `"mse"` (Mean Square Error), `"amse"`
@@ -234,8 +236,10 @@ specials_ets <- new_specials(
 #'
 #'
 #' @author Rob J Hyndman & Mitchell O'Hara-Wild
-#' @seealso \code{\link[stats]{HoltWinters}}, \code{\link{RW}},
-#' \code{\link{ARIMA}}.
+#' 
+#' @seealso 
+#' [Forecasting: Principles and Practices, Exponential smoothing (chapter 8)](https://otexts.com/fpp3/expsmooth.html)
+#' 
 #' @references Hyndman, R.J., Koehler, A.B., Snyder, R.D., and Grose, S. (2002)
 #' "A state space framework for automatic forecasting using exponential
 #' smoothing methods", \emph{International J. Forecasting}, \bold{18}(3),

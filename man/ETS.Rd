@@ -2,6 +2,7 @@
 % Please edit documentation in R/ets.R
 \name{ETS}
 \alias{ETS}
+\alias{report.ETS}
 \title{Exponential smoothing state space model}
 \usage{
 ETS(formula, opt_crit = c("lik", "amse", "mse", "sigma", "mae"),
@@ -111,8 +112,7 @@ Hyndman, R.J., Koehler, A.B., Ord, J.K., and Snyder, R.D. (2008)
 Springer-Verlag. \url{http://www.exponentialsmoothing.net}.
 }
 \seealso{
-\code{\link[stats]{HoltWinters}}, \code{\link{RW}},
-\code{\link{ARIMA}}.
+\href{https://otexts.com/fpp3/expsmooth.html}{Forecasting: Principles and Practices, Exponential smoothing (chapter 8)}
 }
 \author{
 Rob J Hyndman & Mitchell O'Hara-Wild
