@@ -12,9 +12,10 @@ Authors@R:
       person(given = "Earo",
              family = "Wang",
              role = "aut"))
-Description: The R package *fable* provides methods and tools
-    for displaying and analysing time series forecasts. Data, model and
-    forecast objects are all stored in a tidy format.
+Description: Provides a collection of commonly used univariate and multivariate
+    time series forecasting models. These models work within the fable framework
+    provided by the fablelite package, which provides the tools to evaluate,
+    visualise, and combine models in a workflow consistent with the tidyverse.
 License: GPL-3
 URL: https://fable.tidyverts.org
 BugReports: https://github.com/tidyverts/fable/issues

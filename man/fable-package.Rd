@@ -8,9 +8,10 @@
 \description{
 \if{html}{\figure{logo.png}{options: align='right'}}
 
-The R package *fable* provides methods and tools
-    for displaying and analysing time series forecasts. Data, model and
-    forecast objects are all stored in a tidy format.
+Provides a collection of commonly used univariate and multivariate
+    time series forecasting models. These models work within the fable framework
+    provided by the fablelite package, which provides the tools to evaluate,
+    visualise, and combine models in a workflow consistent with the tidyverse.
 }
 \seealso{
 Useful links:
