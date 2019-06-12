@@ -11,7 +11,7 @@
 
 \item{new_data}{A \code{tsibble} containing future information used to forecast.}
 
-\item{specials}{(passed by \code{\link[fablelite:forecast.mdl_ts]{fablelite::forecast.mdl_ts}}).}
+\item{specials}{(passed by \code{\link[fablelite:forecast.mdl_df]{fablelite::forecast.mdl_df()}}).}
 
 \item{...}{Additional arguments for forecast model methods.}
 }
