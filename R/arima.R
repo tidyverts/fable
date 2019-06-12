@@ -522,7 +522,7 @@ glance.ARIMA <- function(x, ...){
 
 #' Tidy a fable model
 #' 
-#' Returns the coefficients from the model in a tibble format.
+#' Returns the coefficients from the model in a `tibble` format.
 #' 
 #' @inheritParams generics::tidy
 #' 
@@ -555,7 +555,7 @@ report.ARIMA <- function(object, ...){
 #' Produces forecasts from a trained model.
 #' 
 #' @inheritParams fablelite::forecast
-#' @param specials (passed by fablelite:::forecast.mdl_ts).
+#' @param specials (passed by [`fablelite::forecast.mdl_ts`]).
 #' @param bootstrap If `TRUE`, then forecast distributions are computed using simulation with resampled errors.
 #' @param times The number of sample paths to use in estimating the forecast distribution when `boostrap = TRUE`.
 #' 
@@ -624,7 +624,7 @@ refit.ARIMA <- function(object, new_data, specials = NULL, reestimate = FALSE, .
 
 #' Interpolate missing values from a fable model
 #' 
-#' Applies a model specific estimation technique to predict the values of missing values in a tsibble, and replace them.
+#' Applies a model specific estimation technique to predict the values of missing values in a `tsibble`, and replace them.
 #' 
 #' @inheritParams forecast.ARIMA
 #' 

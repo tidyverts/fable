@@ -11,10 +11,10 @@
 
 \item{new_data}{A \code{tsibble} containing future information used to forecast.}
 
-\item{specials}{(passed by fablelite:::forecast.mdl_ts).}
+\item{specials}{(passed by \code{\link[fablelite:forecast.mdl_ts]{fablelite::forecast.mdl_ts}}).}
 
 \item{...}{Additional arguments for forecast model methods.}
 }
 \description{
-Applies a model specific estimation technique to predict the values of missing values in a tsibble, and replace them.
+Applies a model specific estimation technique to predict the values of missing values in a \code{tsibble}, and replace them.
 }

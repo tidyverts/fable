@@ -12,5 +12,5 @@
 \item{...}{Additional arguments to tidying method.}
 }
 \description{
-Returns the coefficients from the model in a tibble format.
+Returns the coefficients from the model in a \code{tibble} format.
 }
