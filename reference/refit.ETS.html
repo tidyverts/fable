@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Interpolate missing values from a fable model — interpolate.ARIMA • fable</title>
+<title>Refit an ETS model — refit.ETS • fable</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,9 +37,9 @@
 
 
 
-<meta property="og:title" content="Interpolate missing values from a fable model — interpolate.ARIMA" />
+<meta property="og:title" content="Refit an ETS model — refit.ETS" />
 
-<meta property="og:description" content="Applies a model specific estimation technique to predict the values of missing values in a tsibble, and replace them." />
+<meta property="og:description" content="Applies a fitted ETS model to a new dataset." />
 
 <meta property="og:image" content="https://fable.tidyverts.org/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -108,19 +108,20 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Interpolate missing values from a fable model</h1>
+    <h1>Refit an ETS model</h1>
     
-    <div class="hidden name"><code>interpolate.ARIMA.Rd</code></div>
+    <div class="hidden name"><code>refit.ETS.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Applies a model specific estimation technique to predict the values of missing values in a <code>tsibble</code>, and replace them.</p>
+    <p>Applies a fitted ETS model to a new dataset.</p>
     
     </div>
 
-    <pre class="usage"><span class='co'># S3 method for ARIMA</span>
-<span class='fu'>interpolate</span>(<span class='no'>object</span>, <span class='no'>new_data</span>, <span class='no'>specials</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='co'># S3 method for ETS</span>
+<span class='fu'>refit</span>(<span class='no'>object</span>, <span class='no'>new_data</span>, <span class='kw'>specials</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>reestimate</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>reinitialise</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -138,18 +139,74 @@
       <td><p>(passed by <code><a href='https://www.rdocumentation.org/packages/fablelite/topics/forecast'>fablelite::forecast.mdl_df()</a></code>).</p></td>
     </tr>
     <tr>
+      <th>reestimate</th>
+      <td><p>If <code>TRUE</code>, the coefficients for the fitted model will be re-estimated to suit the new data.</p></td>
+    </tr>
+    <tr>
+      <th>reinitialise</th>
+      <td><p>If TRUE, the initial parameters will be re-estimated to suit the new data.</p></td>
+    </tr>
+    <tr>
       <th>...</th>
       <td><p>Additional arguments for forecast model methods.</p></td>
     </tr>
     </table>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>lung_deaths_male</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='no'>mdeaths</span>)
+<span class='no'>lung_deaths_female</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='no'>fdeaths</span>)
+
+<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='no'>lung_deaths_male</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'>model</span>(<span class='fu'><a href='ETS.html'>ETS</a></span>(<span class='no'>value</span>))
+
+<span class='fu'>report</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; Series: value 
+#&gt; Model: ETS(M,A,A) 
+#&gt;   Smoothing parameters:
+#&gt;     alpha = 0.0002065548 
+#&gt;     beta  = 0.0001865257 
+#&gt;     gamma = 0.000118306 
+#&gt; 
+#&gt;   Initial states:
+#&gt;         l         b       s1        s2        s3        s4        s5        s6
+#&gt;  1671.676 -4.334248 373.1746 -121.3157 -246.1697 -484.8581 -476.2192 -370.1939
+#&gt;         s7       s8       s9      s10      s11      s12
+#&gt;  -303.5806 -207.384 122.0022 483.3319 620.3601 610.8525
+#&gt; 
+#&gt; 
+#&gt;   sigma^2:  0.009
+#&gt; 
+#&gt;      AIC     AICc      BIC 
+#&gt; 1033.474 1044.807 1072.177 </div><div class='input'>
+<span class='no'>fit</span> <span class='kw'>%&gt;%</span>
+ <span class='fu'>refit</span>(<span class='no'>lung_deaths_female</span>, <span class='kw'>reinitialise</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) <span class='kw'>%&gt;%</span>
+ <span class='fu'>report</span>()</div><div class='output co'>#&gt; Series: value 
+#&gt; Model: ETS(M,A,A) 
+#&gt;   Smoothing parameters:
+#&gt;     alpha = 0.0002065548 
+#&gt;     beta  = 0.0001865257 
+#&gt;     gamma = 0.000118306 
+#&gt; 
+#&gt;   Initial states:
+#&gt;         l          b       s1      s2        s3       s4        s5        s6
+#&gt;  586.8764 -0.7008449 129.4235 -60.401 -108.8126 -185.465 -189.2346 -149.2135
+#&gt;         s7        s8       s9      s10      s11      s12
+#&gt;  -134.8698 -70.64105 45.28081 204.0216 279.4489 240.4628
+#&gt; 
+#&gt; 
+#&gt;   sigma^2:  0.0118
+#&gt; 
+#&gt;      AIC     AICc      BIC 
+#&gt; 903.5169 910.8854 935.3903 </div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+            
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

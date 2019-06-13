@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Fit a linear model with time series components — TSLM • fable</title>
+<title>Refit a <code>TSLM</code> — refit.TSLM • fable</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,13 +37,9 @@
 
 
 
-<meta property="og:title" content="Fit a linear model with time series components — TSLM" />
+<meta property="og:title" content="Refit a <code>TSLM</code> — refit.TSLM" />
 
-<meta property="og:description" content="The model formula will be handled using stats::model.matrix(), and so
-the the same approach to include interactions in stats::lm() applies when
-specifying the formula. In addition to stats::lm(), it is possible to
-include common_xregs in the model formula, such as trend(), season(),
-and fourier()." />
+<meta property="og:description" content="Applies a fitted TSLM to a new dataset." />
 
 <meta property="og:image" content="https://fable.tidyverts.org/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -112,87 +108,119 @@ and fourier()." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Fit a linear model with time series components</h1>
+    <h1>Refit a <code>TSLM</code></h1>
     
-    <div class="hidden name"><code>TSLM.Rd</code></div>
+    <div class="hidden name"><code>refit.TSLM.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>The model formula will be handled using <code><a href='https://www.rdocumentation.org/packages/stats/topics/model.matrix'>stats::model.matrix()</a></code>, and so
-the the same approach to include interactions in <code><a href='https://www.rdocumentation.org/packages/stats/topics/lm'>stats::lm()</a></code> applies when
-specifying the <code>formula</code>. In addition to <code><a href='https://www.rdocumentation.org/packages/stats/topics/lm'>stats::lm()</a></code>, it is possible to
-include <code><a href='common_xregs.html'>common_xregs</a></code> in the model formula, such as <code>trend()</code>, <code>season()</code>,
-and <code>fourier()</code>.</p>
+    <p>Applies a fitted <code>TSLM</code> to a new dataset.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>TSLM</span>(<span class='no'>formula</span>)</pre>
+    <pre class="usage"><span class='co'># S3 method for TSLM</span>
+<span class='fu'>refit</span>(<span class='no'>object</span>, <span class='no'>new_data</span>, <span class='kw'>specials</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>reestimate</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>formula</th>
-      <td><p>Model specification.</p></td>
+      <th>object</th>
+      <td><p>The time series model used to produce the forecasts</p></td>
+    </tr>
+    <tr>
+      <th>new_data</th>
+      <td><p>A <code>tsibble</code> containing future information used to forecast.</p></td>
+    </tr>
+    <tr>
+      <th>specials</th>
+      <td><p>(passed by <code><a href='https://www.rdocumentation.org/packages/fablelite/topics/forecast'>fablelite::forecast.mdl_df()</a></code>).</p></td>
+    </tr>
+    <tr>
+      <th>reestimate</th>
+      <td><p>If <code>TRUE</code>, the coefficients for the fitted model will be re-estimated to suit the new data.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Additional arguments for forecast model methods.</p></td>
     </tr>
     </table>
     
-    <h2 class="hasAnchor" id="specials"><a class="anchor" href="#specials"></a>Specials</h2>
-
-    
-    <h3>xreg</h3>
-    Exogenous regressors can be included in an ARIMA model without explicitly using the <code>xreg()</code> special. Common exogenous regressor specials as specified in <code><a href='common_xregs.html'>common_xregs</a></code> can also be used. These regressors are handled using <code><a href='https://www.rdocumentation.org/packages/stats/topics/model.frame'>stats::model.frame()</a></code>, and so interactions and other functionality behaves similarly to <code><a href='https://www.rdocumentation.org/packages/stats/topics/lm'>stats::lm()</a></code>.
-<pre>
-xreg(...)
-</pre>
-    <table class='table'>
-<tr><td></td><td><code>...</code></td></tr>
-<tr><td></td><td>Bare expressions for the exogenous regressors (such as</td></tr>
-<tr><td><code><a href='https://www.rdocumentation.org/packages/base/topics/Log'>log(x)</a></code></td><td>)</td></tr>
-</table>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p><code><a href='https://www.rdocumentation.org/packages/stats/topics/lm'>stats::lm()</a></code>, <code><a href='https://www.rdocumentation.org/packages/stats/topics/model.matrix'>stats::model.matrix()</a></code>
-<a href='https://otexts.com/fpp3/regression.html'>Forecasting: Principles and Practices, Time series regression models (chapter 6)</a></p></div>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='no'>USAccDeaths</span> <span class='kw'>%&gt;%</span> <span class='no'>as_tsibble</span> <span class='kw'>%&gt;%</span> <span class='fu'>model</span>(<span class='fu'>TSLM</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Log'>log</a></span>(<span class='no'>value</span>) ~ <span class='fu'>trend</span>() + <span class='fu'>season</span>()))</div><div class='output co'>#&gt; # A mable: 1 x 1
-#&gt;   `TSLM(log(value) ~ trend() + season())`
-#&gt;   &lt;model&gt;                                
-#&gt; 1 &lt;TSLM&gt;                                 </div><div class='input'>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>tsibbledata</span>)
-<span class='no'>olympic_running</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='fu'>TSLM</span>(<span class='no'>Time</span> ~ <span class='fu'>trend</span>())) <span class='kw'>%&gt;%</span>
-  <span class='fu'>interpolate</span>(<span class='no'>olympic_running</span>)</div><div class='output co'>#&gt; # A tsibble: 312 x 4 [4Y]
-#&gt; # Key:       Length, Sex [14]
-#&gt;    Length Sex    Year  Time
-#&gt;    &lt;fct&gt;  &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;
-#&gt;  1 100m   men    1896  12  
-#&gt;  2 100m   men    1900  11  
-#&gt;  3 100m   men    1904  11  
-#&gt;  4 100m   men    1908  10.8
-#&gt;  5 100m   men    1912  10.8
-#&gt;  6 100m   men    1916  10.8
-#&gt;  7 100m   men    1920  10.8
-#&gt;  8 100m   men    1924  10.6
-#&gt;  9 100m   men    1928  10.8
-#&gt; 10 100m   men    1932  10.3
-#&gt; # … with 302 more rows</div><div class='input'>
+    <pre class="examples"><div class='input'><span class='no'>lung_deaths_male</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='no'>mdeaths</span>)
+<span class='no'>lung_deaths_female</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='no'>fdeaths</span>)
+
+<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='no'>lung_deaths_male</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'>model</span>(<span class='fu'><a href='TSLM.html'>TSLM</a></span>(<span class='no'>value</span> ~ <span class='fu'>trend</span>() + <span class='fu'>season</span>()))
+
+<span class='fu'>report</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; Series: value 
+#&gt; Model: TSLM 
+#&gt; 
+#&gt; Residuals:
+#&gt;       Min        1Q    Median        3Q       Max 
+#&gt; -422.6976  -58.6048   -0.1143   64.2905  644.0310 
+#&gt; 
+#&gt; Coefficients:
+#&gt;                  Estimate Std. Error t value Pr(&gt;|t|)    
+#&gt; (Intercept)     2257.1179    74.8463  30.157  &lt; 2e-16 ***
+#&gt; trend()           -4.1060     0.9662  -4.250 7.72e-05 ***
+#&gt; season()year2    -44.3940    97.0086  -0.458  0.64890    
+#&gt; season()year3   -151.1214    97.0230  -1.558  0.12468    
+#&gt; season()year4   -460.1821    97.0471  -4.742 1.38e-05 ***
+#&gt; season()year5   -799.2429    97.0807  -8.233 2.21e-11 ***
+#&gt; season()year6   -922.4702    97.1240  -9.498 1.71e-13 ***
+#&gt; season()year7   -968.5310    97.1768  -9.967 2.91e-14 ***
+#&gt; season()year8  -1063.4250    97.2393 -10.936 8.09e-16 ***
+#&gt; season()year9  -1075.3190    97.3112 -11.050 5.34e-16 ***
+#&gt; season()year10  -851.7131    97.3927  -8.745 3.04e-12 ***
+#&gt; season()year11  -711.1071    97.4838  -7.295 8.57e-10 ***
+#&gt; season()year12  -288.1679    97.5843  -2.953  0.00451 ** 
+#&gt; ---
+#&gt; Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+#&gt; 
+#&gt; Residual standard error: 168 on 59 degrees of freedom
+#&gt; Multiple R-squared: 0.875,	Adjusted R-squared: 0.8495
+#&gt; F-statistic: 34.41 on 12 and 59 DF, p-value: &lt; 2.22e-16</div><div class='input'>
+<span class='no'>fit</span> <span class='kw'>%&gt;%</span>
+ <span class='fu'>refit</span>(<span class='no'>lung_deaths_female</span>) <span class='kw'>%&gt;%</span>
+ <span class='fu'>report</span>()</div><div class='output co'>#&gt; Series: value 
+#&gt; Model: TSLM 
+#&gt; 
+#&gt; Residuals:
+#&gt;     Min      1Q  Median      3Q     Max 
+#&gt; -1515.5 -1123.7  -897.9  -748.7  -505.5 
+#&gt; 
+#&gt; Coefficients:
+#&gt;                 Estimate Std. Error t value Pr(&gt;|t|)    
+#&gt; (Intercept)     2257.118    475.866   4.743 1.38e-05 ***
+#&gt; trend()           -4.106      6.143  -0.668   0.5065    
+#&gt; season()year2    -44.394    616.772  -0.072   0.9429    
+#&gt; season()year3   -151.121    616.864  -0.245   0.8073    
+#&gt; season()year4   -460.182    617.017  -0.746   0.4587    
+#&gt; season()year5   -799.243    617.231  -1.295   0.2004    
+#&gt; season()year6   -922.470    617.506  -1.494   0.1405    
+#&gt; season()year7   -968.531    617.842  -1.568   0.1223    
+#&gt; season()year8  -1063.425    618.238  -1.720   0.0907 .  
+#&gt; season()year9  -1075.319    618.696  -1.738   0.0874 .  
+#&gt; season()year10  -851.713    619.214  -1.375   0.1742    
+#&gt; season()year11  -711.107    619.793  -1.147   0.2559    
+#&gt; season()year12  -288.168    620.432  -0.464   0.6440    
+#&gt; ---
+#&gt; Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+#&gt; 
+#&gt; Residual standard error: 1068 on 59 degrees of freedom
+#&gt; Multiple R-squared: 0.1476,	Adjusted R-squared: -0.0258
+#&gt; F-statistic: 0.8512 on 12 and 59 DF, p-value: 0.59898</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#specials">Specials</a></li>
-
-      <li><a href="#see-also">See also</a></li>
-      
+            
       <li><a href="#examples">Examples</a></li>
     </ul>
 

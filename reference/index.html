@@ -133,7 +133,7 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="forecast.html">forecast(<i>&lt;ARIMA&gt;</i>)</a></code> </p>
+          <p><code><a href="forecast.html">forecast(<i>&lt;ARIMA&gt;</i>)</a></code> <code><a href="forecast.html">forecast(<i>&lt;ETS&gt;</i>)</a></code> <code><a href="forecast.html">forecast(<i>&lt;RW&gt;</i>)</a></code> <code><a href="forecast.html">forecast(<i>&lt;TSLM&gt;</i>)</a></code> <code><a href="forecast.html">forecast(<i>&lt;model_mean&gt;</i>)</a></code> </p>
         </td>
         <td><p>Forecast a model from the fable package</p></td>
       </tr><tr>
@@ -145,19 +145,157 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="interpolate.ARIMA.html">interpolate(<i>&lt;ARIMA&gt;</i>)</a></code> </p>
+          <p><code><a href="interpolate.html">interpolate(<i>&lt;ARIMA&gt;</i>)</a></code> <code><a href="interpolate.html">interpolate(<i>&lt;TSLM&gt;</i>)</a></code> </p>
         </td>
         <td><p>Interpolate missing values from a fable model</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="fitted.html">fitted(<i>&lt;ARIMA&gt;</i>)</a></code> </p>
+          <p><code><a href="fitted.html">fitted(<i>&lt;ARIMA&gt;</i>)</a></code> <code><a href="fitted.html">fitted(<i>&lt;ETS&gt;</i>)</a></code> <code><a href="fitted.html">fitted(<i>&lt;RW&gt;</i>)</a></code> <code><a href="fitted.html">fitted(<i>&lt;TSLM&gt;</i>)</a></code> <code><a href="fitted.html">fitted(<i>&lt;model_mean&gt;</i>)</a></code> </p>
         </td>
         <td><p>Extract fitted values from a fable model</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="residuals.html">residuals(<i>&lt;ARIMA&gt;</i>)</a></code> </p>
+          <p><code><a href="residuals.html">residuals(<i>&lt;ARIMA&gt;</i>)</a></code> <code><a href="residuals.html">residuals(<i>&lt;ETS&gt;</i>)</a></code> <code><a href="residuals.html">residuals(<i>&lt;RW&gt;</i>)</a></code> <code><a href="residuals.html">residuals(<i>&lt;TSLM&gt;</i>)</a></code> <code><a href="residuals.html">residuals(<i>&lt;model_mean&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Extract residuals values from a fable model</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-ets" class="hasAnchor"><a href="#section-ets" class="anchor"></a>ETS</h2>
+          <p class="section-desc"><p>Exponential smoothing state space models.</p></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="ETS.html">ETS()</a></code> </p>
+        </td>
+        <td><p>Exponential smoothing state space model</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="forecast.html">forecast(<i>&lt;ARIMA&gt;</i>)</a></code> <code><a href="forecast.html">forecast(<i>&lt;ETS&gt;</i>)</a></code> <code><a href="forecast.html">forecast(<i>&lt;RW&gt;</i>)</a></code> <code><a href="forecast.html">forecast(<i>&lt;TSLM&gt;</i>)</a></code> <code><a href="forecast.html">forecast(<i>&lt;model_mean&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Forecast a model from the fable package</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="refit.ETS.html">refit(<i>&lt;ETS&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Refit an ETS model</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="generate.html">generate(<i>&lt;ETS&gt;</i>)</a></code> <code><a href="generate.html">generate(<i>&lt;RW&gt;</i>)</a></code> <code><a href="generate.html">generate(<i>&lt;TSLM&gt;</i>)</a></code> <code><a href="generate.html">generate(<i>&lt;model_mean&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Generate new data from a fable model</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="fitted.html">fitted(<i>&lt;ARIMA&gt;</i>)</a></code> <code><a href="fitted.html">fitted(<i>&lt;ETS&gt;</i>)</a></code> <code><a href="fitted.html">fitted(<i>&lt;RW&gt;</i>)</a></code> <code><a href="fitted.html">fitted(<i>&lt;TSLM&gt;</i>)</a></code> <code><a href="fitted.html">fitted(<i>&lt;model_mean&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Extract fitted values from a fable model</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="residuals.html">residuals(<i>&lt;ARIMA&gt;</i>)</a></code> <code><a href="residuals.html">residuals(<i>&lt;ETS&gt;</i>)</a></code> <code><a href="residuals.html">residuals(<i>&lt;RW&gt;</i>)</a></code> <code><a href="residuals.html">residuals(<i>&lt;TSLM&gt;</i>)</a></code> <code><a href="residuals.html">residuals(<i>&lt;model_mean&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Extract residuals values from a fable model</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-tslm" class="hasAnchor"><a href="#section-tslm" class="anchor"></a>TSLM</h2>
+          <p class="section-desc"><p>Time series linear models.</p></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="TSLM.html">TSLM()</a></code> </p>
+        </td>
+        <td><p>Fit a linear model with time series components</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="forecast.html">forecast(<i>&lt;ARIMA&gt;</i>)</a></code> <code><a href="forecast.html">forecast(<i>&lt;ETS&gt;</i>)</a></code> <code><a href="forecast.html">forecast(<i>&lt;RW&gt;</i>)</a></code> <code><a href="forecast.html">forecast(<i>&lt;TSLM&gt;</i>)</a></code> <code><a href="forecast.html">forecast(<i>&lt;model_mean&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Forecast a model from the fable package</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="refit.TSLM.html">refit(<i>&lt;TSLM&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Refit a <code>TSLM</code></p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="generate.html">generate(<i>&lt;ETS&gt;</i>)</a></code> <code><a href="generate.html">generate(<i>&lt;RW&gt;</i>)</a></code> <code><a href="generate.html">generate(<i>&lt;TSLM&gt;</i>)</a></code> <code><a href="generate.html">generate(<i>&lt;model_mean&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Generate new data from a fable model</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="interpolate.html">interpolate(<i>&lt;ARIMA&gt;</i>)</a></code> <code><a href="interpolate.html">interpolate(<i>&lt;TSLM&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Interpolate missing values from a fable model</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="fitted.html">fitted(<i>&lt;ARIMA&gt;</i>)</a></code> <code><a href="fitted.html">fitted(<i>&lt;ETS&gt;</i>)</a></code> <code><a href="fitted.html">fitted(<i>&lt;RW&gt;</i>)</a></code> <code><a href="fitted.html">fitted(<i>&lt;TSLM&gt;</i>)</a></code> <code><a href="fitted.html">fitted(<i>&lt;model_mean&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Extract fitted values from a fable model</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="residuals.html">residuals(<i>&lt;ARIMA&gt;</i>)</a></code> <code><a href="residuals.html">residuals(<i>&lt;ETS&gt;</i>)</a></code> <code><a href="residuals.html">residuals(<i>&lt;RW&gt;</i>)</a></code> <code><a href="residuals.html">residuals(<i>&lt;TSLM&gt;</i>)</a></code> <code><a href="residuals.html">residuals(<i>&lt;model_mean&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Extract residuals values from a fable model</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-simple-forecasting-methods" class="hasAnchor"><a href="#section-simple-forecasting-methods" class="anchor"></a>Simple forecasting methods</h2>
+          <p class="section-desc"><p>A collection of simple forecasting methods that are commonly used as benchmarks.</p></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="MEAN.html">MEAN()</a></code> </p>
+        </td>
+        <td><p>Mean models</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="RW.html">RW()</a></code> <code><a href="RW.html">NAIVE()</a></code> <code><a href="RW.html">SNAIVE()</a></code> </p>
+        </td>
+        <td><p>Random walk models</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="forecast.html">forecast(<i>&lt;ARIMA&gt;</i>)</a></code> <code><a href="forecast.html">forecast(<i>&lt;ETS&gt;</i>)</a></code> <code><a href="forecast.html">forecast(<i>&lt;RW&gt;</i>)</a></code> <code><a href="forecast.html">forecast(<i>&lt;TSLM&gt;</i>)</a></code> <code><a href="forecast.html">forecast(<i>&lt;model_mean&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Forecast a model from the fable package</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="generate.html">generate(<i>&lt;ETS&gt;</i>)</a></code> <code><a href="generate.html">generate(<i>&lt;RW&gt;</i>)</a></code> <code><a href="generate.html">generate(<i>&lt;TSLM&gt;</i>)</a></code> <code><a href="generate.html">generate(<i>&lt;model_mean&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Generate new data from a fable model</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="fitted.html">fitted(<i>&lt;ARIMA&gt;</i>)</a></code> <code><a href="fitted.html">fitted(<i>&lt;ETS&gt;</i>)</a></code> <code><a href="fitted.html">fitted(<i>&lt;RW&gt;</i>)</a></code> <code><a href="fitted.html">fitted(<i>&lt;TSLM&gt;</i>)</a></code> <code><a href="fitted.html">fitted(<i>&lt;model_mean&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Extract fitted values from a fable model</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="residuals.html">residuals(<i>&lt;ARIMA&gt;</i>)</a></code> <code><a href="residuals.html">residuals(<i>&lt;ETS&gt;</i>)</a></code> <code><a href="residuals.html">residuals(<i>&lt;RW&gt;</i>)</a></code> <code><a href="residuals.html">residuals(<i>&lt;TSLM&gt;</i>)</a></code> <code><a href="residuals.html">residuals(<i>&lt;model_mean&gt;</i>)</a></code> </p>
         </td>
         <td><p>Extract residuals values from a fable model</p></td>
       </tr>
@@ -169,6 +307,9 @@
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#section-arima">ARIMA</a></li>
+      <li><a href="#section-ets">ETS</a></li>
+      <li><a href="#section-tslm">TSLM</a></li>
+      <li><a href="#section-simple-forecasting-methods">Simple forecasting methods</a></li>
     </ul>
   </div>
 </div>

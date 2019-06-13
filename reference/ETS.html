@@ -259,13 +259,13 @@ Springer-Verlag. <a href='http://www.exponentialsmoothing.net'>http://www.expone
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='https://www.rdocumentation.org/packages/stats/topics/HoltWinters'>HoltWinters</a></code>, <code><a href='RW.html'>RW</a></code>,
-<code><a href='ARIMA.html'>ARIMA</a></code>.</p></div>
+    <div class='dont-index'><p><a href='https://otexts.com/fpp3/expsmooth.html'>Forecasting: Principles and Practices, Exponential smoothing (chapter 8)</a></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='no'>USAccDeaths</span> <span class='kw'>%&gt;%</span> <span class='no'>as_tsibble</span> <span class='kw'>%&gt;%</span> <span class='fu'>model</span>(<span class='fu'>ETS</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Log'>log</a></span>(<span class='no'>value</span>) ~ <span class='fu'>season</span>(<span class='st'>"A"</span>)))</div><div class='output co'>#&gt; # A mable: 1 x 1
+<span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='no'>USAccDeaths</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'>model</span>(<span class='fu'>ETS</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Log'>log</a></span>(<span class='no'>value</span>) ~ <span class='fu'>season</span>(<span class='st'>"A"</span>)))</div><div class='output co'>#&gt; # A mable: 1 x 1
 #&gt;   `ETS(log(value) ~ season("A"))`
 #&gt;   &lt;model&gt;                        
 #&gt; 1 &lt;ETS(A,A,A)&gt;                   </div></pre>

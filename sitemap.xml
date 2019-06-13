@@ -37,16 +37,25 @@
     <loc>https://fable.tidyverts.org/reference/forecast.html</loc>
   </url>
   <url>
+    <loc>https://fable.tidyverts.org/reference/generate.html</loc>
+  </url>
+  <url>
     <loc>https://fable.tidyverts.org/reference/glance.ARIMA.html</loc>
   </url>
   <url>
-    <loc>https://fable.tidyverts.org/reference/interpolate.ARIMA.html</loc>
+    <loc>https://fable.tidyverts.org/reference/interpolate.html</loc>
   </url>
   <url>
     <loc>https://fable.tidyverts.org/reference/reexports.html</loc>
   </url>
   <url>
     <loc>https://fable.tidyverts.org/reference/refit.ARIMA.html</loc>
+  </url>
+  <url>
+    <loc>https://fable.tidyverts.org/reference/refit.ETS.html</loc>
+  </url>
+  <url>
+    <loc>https://fable.tidyverts.org/reference/refit.TSLM.html</loc>
   </url>
   <url>
     <loc>https://fable.tidyverts.org/reference/residuals.html</loc>
