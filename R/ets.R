@@ -339,7 +339,7 @@ forecast.ETS <- function(object, new_data, specials = NULL, simulate = FALSE, bo
 #' @seealso [`fablelite::generate.mdl_df`]
 #' 
 #' @export
-generate.ETS <- function(x, new_data, bootstrap = FALSE, ...){
+generate.ETS <- function(x, new_data, specials, bootstrap = FALSE, ...){
   if(!is_regular(new_data)){
     abort("Simulation new_data must be regularly spaced")
   }

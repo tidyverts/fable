@@ -4,12 +4,14 @@
 \alias{generate.ETS}
 \title{Generate new data from a fable model}
 \usage{
-\method{generate}{ETS}(x, new_data, bootstrap = FALSE, ...)
+\method{generate}{ETS}(x, new_data, specials, bootstrap = FALSE, ...)
 }
 \arguments{
 \item{x}{A fitted model.}
 
 \item{new_data}{A \code{tsibble} containing future information used to forecast.}
+
+\item{specials}{(passed by \code{\link[fablelite:forecast.mdl_df]{fablelite::forecast.mdl_df()}}).}
 
 \item{bootstrap}{If \code{TRUE}, then forecast distributions are computed using simulation with resampled errors.}
 

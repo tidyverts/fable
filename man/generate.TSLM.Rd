@@ -11,6 +11,8 @@
 
 \item{new_data}{A \code{tsibble} containing future information used to forecast.}
 
+\item{specials}{(passed by \code{\link[fablelite:forecast.mdl_df]{fablelite::forecast.mdl_df()}}).}
+
 \item{bootstrap}{If \code{TRUE}, then forecast distributions are computed using simulation with resampled errors.}
 
 \item{...}{Additional arguments for forecast model methods.}
