@@ -2,6 +2,7 @@
 % Please edit documentation in R/lagwalk.R
 \name{RW}
 \alias{RW}
+\alias{report.RW}
 \alias{NAIVE}
 \alias{SNAIVE}
 \title{Random walk models}
@@ -76,4 +77,7 @@ library(tsibbledata)
 aus_production \%>\% 
   model(snaive = SNAIVE(Beer ~ lag("year")))
 
+}
+\seealso{
+\href{https://otexts.com/fpp3/simple-methods.html}{Forecasting: Principles and Practices, Some simple forecasting methods (section 3.2)}
 }

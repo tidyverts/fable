@@ -40,12 +40,17 @@ train_mean <- function(.data, specials, ...){
 #' The model does not use any specials, and so everything on the formula's 
 #' right-hand-side will be ignored.
 #' 
+#' @aliases report.model_mean
+#' 
 #' @param formula Model specification.
 #' @param ... Not used.
 #' 
 #' @section Specials:
 #' 
 #' This model does not support usage of any specials. It only computes the mean!
+#' 
+#' @seealso 
+#' [Forecasting: Principles and Practices, Some simple forecasting methods (section 3.2)](https://otexts.com/fpp3/simple-methods.html)
 #' 
 #' @examples 
 #' library(tsibbledata)
@@ -61,6 +66,8 @@ MEAN <- function(formula, ...){
 #' @importFrom fablelite forecast
 #' @importFrom stats qnorm time
 #' @importFrom utils tail
+#' 
+#' @rdname forecast
 #' @export
 forecast.model_mean <- function(object, new_data, specials = NULL, bootstrap = FALSE, times = 5000, ...){
   h <- NROW(new_data)
@@ -89,6 +96,7 @@ forecast.model_mean <- function(object, new_data, specials = NULL, bootstrap = F
   construct_fc(fc, se, dist)
 }
 
+#' @rdname generate
 #' @importFrom stats na.omit
 #' @export
 generate.model_mean <- function(x, new_data, bootstrap = FALSE, ...){
@@ -111,12 +119,13 @@ generate.model_mean <- function(x, new_data, bootstrap = FALSE, ...){
     transmute(".sim" := f + !!sym(".innov"))
 }
 
-
+#' @rdname fitted
 #' @export
 fitted.model_mean <- function(object, ...){
   object$est[[".fitted"]]
 }
 
+#' @rdname residuals
 #' @export
 residuals.model_mean <- function(object, ...){
   object$est[[".resid"]]

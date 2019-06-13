@@ -78,9 +78,10 @@ train_lagwalk <- function(.data, specials, ...){
 #' The seasonal naive model is \deqn{Y_t= Y_{t-m} + Z_t}{Y[t]=Y[t-m] + Z[t]}
 #' where \eqn{Z_t}{Z[t]} is a normal iid error.
 #' 
+#' @aliases report.RW
+#' 
 #' @param formula Model specification (see "Specials" section).
 #' @param ... Not used.
-#' 
 #' 
 #' @section Specials:
 #' 
@@ -108,6 +109,9 @@ train_lagwalk <- function(.data, specials, ...){
 #'   `drift`      \tab If `drift = TRUE`, a drift term will be included in the model.
 #' }
 #' }
+#' 
+#' @seealso 
+#' [Forecasting: Principles and Practices, Some simple forecasting methods (section 3.2)](https://otexts.com/fpp3/simple-methods.html)
 #' 
 #' @examples 
 #' library(tsibbledata)
@@ -171,7 +175,7 @@ SNAIVE <- function(formula, ...){
   new_model_definition(snaive_model, !!enquo(formula), ...)
 }
 
-#' @importFrom fablelite forecast
+#' @rdname forecast
 #' @importFrom stats qnorm time
 #' @importFrom utils tail
 #' @export
@@ -213,7 +217,7 @@ forecast.RW <- function(object, new_data, specials = NULL, bootstrap = FALSE, ti
   construct_fc(fc, se, dist)
 }
 
-
+#' @rdname generate
 #' @export
 generate.RW <- function(x, new_data, bootstrap = FALSE, ...){
   if(!is_regular(new_data)){
@@ -260,11 +264,13 @@ generate.RW <- function(x, new_data, bootstrap = FALSE, ...){
     transmute(".sim" := sim_rw(!!sym(".innov")))
 }
 
+#' @rdname fitted
 #' @export
 fitted.RW <- function(object, ...){
   object$est[[".fitted"]]
 }
 
+#' @rdname residuals
 #' @export
 residuals.RW <- function(object, ...){
   object$est[[".resid"]]

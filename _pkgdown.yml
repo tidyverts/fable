@@ -58,3 +58,19 @@ reference:
     - interpolate.TSLM
     - fitted.TSLM
     - residuals.TSLM
+- title: Simple forecasting methods
+  desc: >
+    A collection of simple forecasting methods that are commonly used as benchmarks.
+  contents:
+    - MEAN
+    - RW
+    - NAIVE
+    - SNAIVE
+    - forecast.model_mean
+    - forecast.RW
+    - generate.model_mean
+    - generate.RW
+    - fitted.model_mean
+    - fitted.RW
+    - residuals.model_mean
+    - residuals.RW
