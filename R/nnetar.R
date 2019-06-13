@@ -294,6 +294,7 @@ forecast.NNETAR <- function(object, new_data, specials = NULL, bootstrap = FALSE
   construct_fc(fc, se, dist)
 }
 
+#' @inheritParams forecast.ARIMA
 #' @inherit generate.ETS
 #' @export
 generate.NNETAR <- function(x, new_data, specials = NULL, bootstrap = FALSE, ...){
