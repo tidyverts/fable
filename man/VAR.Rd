@@ -2,7 +2,8 @@
 % Please edit documentation in R/var.R
 \name{VAR}
 \alias{VAR}
-\title{Estimate an VAR model}
+\alias{report.VAR}
+\title{Estimate a VAR model}
 \usage{
 VAR(formula, ic = c("aicc", "aic", "bic"), ...)
 }
@@ -14,7 +15,12 @@ VAR(formula, ic = c("aicc", "aic", "bic"), ...)
 \item{...}{Further arguments for arima}
 }
 \description{
-Estimate an VAR model
+Searches through the vector of lag orders to find the best VAR model which
+has lowest AIC, AICc or BIC value. It is implemented using OLS per equation.
+}
+\details{
+Exogenous regressors and \code{\link{common_xregs}} can be specified in the model
+formula.
 }
 \section{Specials}{
 
@@ -59,4 +65,7 @@ fit \%>\%
   forecast() \%>\% 
   autoplot(lung_deaths)
 
+}
+\seealso{
+\href{https://otexts.com/fpp2/VAR.html}{Forecasting: Principles and Practices, Vector autoregressions (section 11.2)}
 }

@@ -83,3 +83,11 @@ reference:
     - generate.NNETAR
     - fitted.NNETAR
     - residuals.NNETAR
+- title: Vector autoregression
+  desc: >
+    Estimates a VAR(p) model with support for exogenous regressors.
+  contents:
+    - VAR
+    - forecast.VAR
+    - fitted.VAR
+    - residuals.VAR

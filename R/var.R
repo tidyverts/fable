@@ -105,7 +105,15 @@ specials_var <- new_specials(
   .xreg_specials = names(common_xregs)
 )
 
-#' Estimate an VAR model
+#' Estimate a VAR model
+#' 
+#' Searches through the vector of lag orders to find the best VAR model which
+#' has lowest AIC, AICc or BIC value. It is implemented using OLS per equation.
+#' 
+#' Exogenous regressors and [`common_xregs`] can be specified in the model 
+#' formula.
+#' 
+#' @aliases report.VAR
 #' 
 #' @param formula Model specification (see "Specials" section).
 #' @param ic The information criterion used in selecting the model.
@@ -138,6 +146,9 @@ specials_var <- new_specials(
 #' }
 #' }
 #' 
+#' @seealso 
+#' [Forecasting: Principles and Practices, Vector autoregressions (section 11.2)](https://otexts.com/fpp2/VAR.html)
+#' 
 #' @examples 
 #' 
 #' lung_deaths <- cbind(mdeaths, fdeaths) %>%
@@ -163,6 +174,7 @@ VAR <- function(formula, ic = c("aicc", "aic", "bic"), ...){
   new_model_definition(varma_model, !!enquo(formula), ic = ic, ...)
 }
 
+#' @rdname forecast
 #' @export
 forecast.VAR <- function(object, new_data = NULL, specials = NULL, 
                            bootstrap = FALSE, times = 5000, ...){
@@ -240,11 +252,13 @@ forecast.VAR <- function(object, new_data = NULL, specials = NULL,
   )
 }
 
+#' @rdname fitted
 #' @export
 fitted.VAR <- function(object, ...){
   object$fits
 }
 
+#' @rdname residuals
 #' @export
 residuals.VAR <- function(object, ...){
   object$resid
