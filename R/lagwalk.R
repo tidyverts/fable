@@ -175,7 +175,7 @@ SNAIVE <- function(formula, ...){
   new_model_definition(snaive_model, !!enquo(formula), ...)
 }
 
-#' @rdname forecast
+#' @inherit forecast.ARIMA
 #' @importFrom stats qnorm time
 #' @importFrom utils tail
 #' @export
@@ -217,7 +217,7 @@ forecast.RW <- function(object, new_data, specials = NULL, bootstrap = FALSE, ti
   construct_fc(fc, se, dist)
 }
 
-#' @rdname generate
+#' @inherit generate.ETS
 #' @export
 generate.RW <- function(x, new_data, bootstrap = FALSE, ...){
   if(!is_regular(new_data)){
@@ -264,13 +264,13 @@ generate.RW <- function(x, new_data, bootstrap = FALSE, ...){
     transmute(".sim" := sim_rw(!!sym(".innov")))
 }
 
-#' @rdname fitted
+#' @inherit fitted.ARIMA
 #' @export
 fitted.RW <- function(object, ...){
   object$est[[".fitted"]]
 }
 
-#' @rdname residuals
+#' @inherit residuals.ARIMA
 #' @export
 residuals.RW <- function(object, ...){
   object$est[[".resid"]]

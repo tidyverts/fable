@@ -238,7 +238,7 @@ NNETAR <- function(formula, n_nodes = NULL, n_networks = 20, scale_inputs = TRUE
                        n_networks = n_networks, scale_inputs = scale_inputs, ...)
 }
 
-#' @rdname forecast
+#' @inherit forecast.ARIMA
 #' @export
 forecast.NNETAR <- function(object, new_data, specials = NULL, bootstrap = FALSE, times = 1000, ...){
   require_package("nnet")
@@ -294,7 +294,7 @@ forecast.NNETAR <- function(object, new_data, specials = NULL, bootstrap = FALSE
   construct_fc(fc, se, dist)
 }
 
-#' @rdname generate
+#' @inherit generate.ETS
 #' @export
 generate.NNETAR <- function(x, new_data, specials = NULL, bootstrap = FALSE, ...){
   # Prepare xreg
@@ -360,13 +360,13 @@ generate.NNETAR <- function(x, new_data, specials = NULL, bootstrap = FALSE, ...
     transmute(".sim" := sim_nnetar(!!sym(".innov")))
 }
 
-#' @rdname fitted
+#' @inherit fitted.ARIMA
 #' @export
 fitted.NNETAR <- function(object, ...){
   object$est[[".fitted"]]
 }
 
-#' @rdname residuals
+#' @inherit residuals.ARIMA
 #' @export
 residuals.NNETAR <- function(object, ...){
   object$est[[".resid"]]

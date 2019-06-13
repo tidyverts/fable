@@ -480,7 +480,6 @@ ARIMA <- function(formula, ic = c("aicc", "aic", "bic"), stepwise = TRUE, greedy
 #' 
 #' @inheritParams forecast.ARIMA
 #' 
-#' @rdname fitted
 #' @export
 fitted.ARIMA <- function(object, ...){
   object$est[[".fitted"]]
@@ -493,7 +492,6 @@ fitted.ARIMA <- function(object, ...){
 #' @inheritParams forecast.ARIMA
 #' @param type The type of the residuals to extract.
 #' 
-#' @rdname residuals
 #' @export
 residuals.ARIMA <- function(object, type = c("innovation", "regression"), ...){
   type <- match.arg(type)
@@ -564,7 +562,7 @@ report.ARIMA <- function(object, ...){
 #' @param times The number of sample paths to use in estimating the forecast distribution when `boostrap = TRUE`.
 #' 
 #' @importFrom stats formula residuals
-#' @rdname forecast
+#' 
 #' @export
 forecast.ARIMA <- function(object, new_data = NULL, specials = NULL, 
                            bootstrap = FALSE, times = 5000, ...){
@@ -646,7 +644,7 @@ refit.ARIMA <- function(object, new_data, specials = NULL, reestimate = FALSE, .
 #' @inheritParams forecast.ARIMA
 #' 
 #' @importFrom stats formula residuals
-#' @rdname interpolate
+#' 
 #' @export
 interpolate.ARIMA <- function(object, new_data, specials, ...){
   # Get missing values

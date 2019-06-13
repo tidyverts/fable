@@ -144,13 +144,13 @@ TSLM <- function(formula){
   new_model_definition(tslm_model, !!enquo(formula))
 }
 
-#' @rdname fitted
+#' @inherit fitted.ARIMA
 #' @export
 fitted.TSLM <- function(object, ...){
   object$fits
 }
 
-#' @rdname residuals
+#' @inherit residuals.ARIMA
 #' @export
 residuals.TSLM <- function(object, ...){
   object$resid
@@ -216,7 +216,7 @@ report.TSLM <- function(object, digits = max(3, getOption("digits") - 3), ...){
   invisible(object)
 }
 
-#' @rdname forecast
+#' @inherit forecast.ARIMA
 #' @importFrom stats predict
 #' @export
 forecast.TSLM <- function(object, new_data, specials = NULL, bootstrap = FALSE, 
@@ -261,7 +261,7 @@ forecast.TSLM <- function(object, new_data, specials = NULL, bootstrap = FALSE,
   construct_fc(fc, se, dist)
 }
 
-#' @rdname generate
+#' @inherit generate.ETS
 #' @export
 generate.TSLM <- function(x, new_data, specials, bootstrap = FALSE, ...){
   # Get xreg
@@ -286,7 +286,7 @@ generate.TSLM <- function(x, new_data, specials, bootstrap = FALSE, ...){
   transmute(new_data, .sim = pred + !!sym(".innov"))
 }
 
-#' @rdname interpolate
+#' @inherit interpolate.ARIMA
 #' @export
 interpolate.TSLM <- function(object, new_data, specials, ...){
   # Get inputs

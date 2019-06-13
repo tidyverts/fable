@@ -273,7 +273,7 @@ ETS <- function(formula, opt_crit = c("lik", "amse", "mse", "sigma", "mae"),
   )
 }
 
-#' @rdname forecast
+#' @inherit forecast.ARIMA
 #' 
 #' @param simulate If `TRUE`, prediction intervals are produced by simulation rather than using analytic formulae.
 #' 
@@ -338,7 +338,6 @@ forecast.ETS <- function(object, new_data, specials = NULL, simulate = FALSE, bo
 #'   
 #' @seealso [`fablelite::generate.mdl_df`]
 #' 
-#' @rdname generate
 #' @export
 generate.ETS <- function(x, new_data, bootstrap = FALSE, ...){
   if(!is_regular(new_data)){
@@ -480,13 +479,13 @@ refit.ETS <- function(object, new_data, specials = NULL, reestimate = FALSE, rei
   )
 }
 
-#' @rdname fitted
+#' @inherit fitted.ARIMA
 #' @export
 fitted.ETS <- function(object, ...){
   object$est[[".fitted"]]
 }
 
-#' @rdname residuals
+#' @inherit residuals.ARIMA
 #' @export
 residuals.ETS <- function(object, ...){
   object$est[[".resid"]]

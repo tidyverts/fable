@@ -67,7 +67,7 @@ MEAN <- function(formula, ...){
 #' @importFrom stats qnorm time
 #' @importFrom utils tail
 #' 
-#' @rdname forecast
+#' @inherit forecast.ARIMA
 #' @export
 forecast.model_mean <- function(object, new_data, specials = NULL, bootstrap = FALSE, times = 5000, ...){
   h <- NROW(new_data)
@@ -96,7 +96,7 @@ forecast.model_mean <- function(object, new_data, specials = NULL, bootstrap = F
   construct_fc(fc, se, dist)
 }
 
-#' @rdname generate
+#' @inherit generate.ETS
 #' @importFrom stats na.omit
 #' @export
 generate.model_mean <- function(x, new_data, bootstrap = FALSE, ...){
@@ -119,13 +119,13 @@ generate.model_mean <- function(x, new_data, bootstrap = FALSE, ...){
     transmute(".sim" := f + !!sym(".innov"))
 }
 
-#' @rdname fitted
+#' @inherit fitted.ARIMA
 #' @export
 fitted.model_mean <- function(object, ...){
   object$est[[".fitted"]]
 }
 
-#' @rdname residuals
+#' @inherit residuals.ARIMA
 #' @export
 residuals.model_mean <- function(object, ...){
   object$est[[".resid"]]

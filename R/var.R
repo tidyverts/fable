@@ -174,7 +174,7 @@ VAR <- function(formula, ic = c("aicc", "aic", "bic"), ...){
   new_model_definition(varma_model, !!enquo(formula), ic = ic, ...)
 }
 
-#' @rdname forecast
+#' @inherit forecast.ARIMA
 #' @export
 forecast.VAR <- function(object, new_data = NULL, specials = NULL, 
                            bootstrap = FALSE, times = 5000, ...){
@@ -252,13 +252,13 @@ forecast.VAR <- function(object, new_data = NULL, specials = NULL,
   )
 }
 
-#' @rdname fitted
+#' @inherit fitted.ARIMA
 #' @export
 fitted.VAR <- function(object, ...){
   object$fits
 }
 
-#' @rdname residuals
+#' @inherit residuals.ARIMA
 #' @export
 residuals.VAR <- function(object, ...){
   object$resid
