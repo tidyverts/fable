@@ -179,3 +179,7 @@ common_xregs <- list(
     fable:::fourier(self$data, period, K, origin) %>% as.matrix
   }
 )
+
+as_model_matrix <- function(tbl){
+  stats::model.matrix(~ ., data = tbl)[,-1, drop = FALSE]
+}

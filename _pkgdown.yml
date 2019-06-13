@@ -37,9 +37,6 @@ reference:
     - interpolate.ARIMA
     - fitted.ARIMA
     - residuals.ARIMA
-
-
-reference:
 - title: ETS
   desc: >
     Exponential smoothing state space models.
@@ -50,3 +47,14 @@ reference:
     - generate.ETS
     - fitted.ETS
     - residuals.ETS
+- title: TSLM
+  desc: >
+    Time series linear models.
+  contents:
+    - TSLM
+    - forecast.TSLM
+    - refit.TSLM
+    - generate.TSLM
+    - interpolate.TSLM
+    - fitted.TSLM
+    - residuals.TSLM

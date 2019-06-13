@@ -101,8 +101,15 @@ specials_tslm <- new_specials(
 
 #' Fit a linear model with time series components
 #' 
+#' The model formula will be handled using [`stats::model.matrix()`], and so 
+#' the the same approach to include interactions in [`stats::lm()`] applies when
+#' specifying the `formula`. In addition to [`stats::lm()`], it is possible to
+#' include [`common_xregs`] in the model formula, such as `trend()`, `season()`,
+#' and `fourier()`.
+#' 
+#' @aliases report.TSLM
+#' 
 #' @param formula Model specification.
-#' @param ... Additional arguments passed to lm
 #' 
 #' @section Specials:
 #' 
@@ -117,7 +124,9 @@ specials_tslm <- new_specials(
 #' }
 #' }
 #' 
-#' @export
+#' @seealso 
+#' [`stats::lm()`], [`stats::model.matrix()`]
+#' [Forecasting: Principles and Practices, Time series regression models (chapter 6)](https://otexts.com/fpp3/regression.html)
 #' 
 #' @examples 
 #' 
@@ -127,17 +136,21 @@ specials_tslm <- new_specials(
 #' olympic_running %>% 
 #'   model(TSLM(Time ~ trend())) %>% 
 #'   interpolate(olympic_running)
-TSLM <- function(formula, ...){
+#' 
+#' @export
+TSLM <- function(formula){
   tslm_model <- new_model_class("TSLM", train = train_tslm,
                                 specials = specials_tslm, origin = NULL)
-  new_model_definition(tslm_model, !!enquo(formula), ...)
+  new_model_definition(tslm_model, !!enquo(formula))
 }
 
+#' @rdname fitted
 #' @export
 fitted.TSLM <- function(object, ...){
   object$fits
 }
 
+#' @rdname residuals
 #' @export
 residuals.TSLM <- function(object, ...){
   object$resid
@@ -203,6 +216,7 @@ report.TSLM <- function(object, digits = max(3, getOption("digits") - 3), ...){
   invisible(object)
 }
 
+#' @rdname forecast
 #' @importFrom stats predict
 #' @export
 forecast.TSLM <- function(object, new_data, specials = NULL, bootstrap = FALSE, 
@@ -247,6 +261,7 @@ forecast.TSLM <- function(object, new_data, specials = NULL, bootstrap = FALSE,
   construct_fc(fc, se, dist)
 }
 
+#' @rdname generate
 #' @export
 generate.TSLM <- function(x, new_data, specials, bootstrap = FALSE, ...){
   # Get xreg
@@ -271,6 +286,7 @@ generate.TSLM <- function(x, new_data, specials, bootstrap = FALSE, ...){
   transmute(new_data, .sim = pred + !!sym(".innov"))
 }
 
+#' @rdname interpolate
 #' @export
 interpolate.TSLM <- function(object, new_data, specials, ...){
   # Get inputs
@@ -294,7 +310,25 @@ interpolate.TSLM <- function(object, new_data, specials, ...){
   new_data
 }
 
-#' @importFrom stats fitted
+#' Refit an TSLM
+#' 
+#' Applies a fitted TSLM to a new dataset.
+#' 
+#' @inheritParams refit.ARIMA
+#' 
+#' @examples 
+#' lung_deaths_male <- as_tsibble(mdeaths)
+#' lung_deaths_female <- as_tsibble(fdeaths)
+#' 
+#' fit <- lung_deaths_male %>% 
+#'   model(TSLM(value ~ trend() + season()))
+#'   
+#' report(fit)
+#' 
+#' fit %>% 
+#'  refit(lung_deaths_female) %>% 
+#'  report()
+#' 
 #' @export
 refit.TSLM <- function(object, new_data, specials = NULL, reestimate = FALSE, ...){
   # Update data for re-evaluation
@@ -328,8 +362,4 @@ refit.TSLM <- function(object, new_data, specials = NULL, reestimate = FALSE, ..
 #' @export
 model_sum.TSLM <- function(x){
   "TSLM"
-}
-
-as_model_matrix <- function(tbl){
-  stats::model.matrix(~ ., data = tbl)[,-1, drop = FALSE]
 }

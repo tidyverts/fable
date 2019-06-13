@@ -100,4 +100,5 @@ tsibbledata::global_economy \%>\%
 }
 \seealso{
 \href{https://otexts.com/fpp3/arima.html}{Forecasting: Principles and Practices, ARIMA models (chapter 9)}
+\href{https://otexts.com/fpp3/dynamic.html}{Forecasting: Principles and Practices, Dynamic regression models (chapter 10)}
 }

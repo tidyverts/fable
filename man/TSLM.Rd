@@ -2,17 +2,20 @@
 % Please edit documentation in R/lm.R
 \name{TSLM}
 \alias{TSLM}
+\alias{report.TSLM}
 \title{Fit a linear model with time series components}
 \usage{
-TSLM(formula, ...)
+TSLM(formula)
 }
 \arguments{
 \item{formula}{Model specification.}
-
-\item{...}{Additional arguments passed to lm}
 }
 \description{
-Fit a linear model with time series components
+The model formula will be handled using \code{\link[stats:model.matrix]{stats::model.matrix()}}, and so
+the the same approach to include interactions in \code{\link[stats:lm]{stats::lm()}} applies when
+specifying the \code{formula}. In addition to \code{\link[stats:lm]{stats::lm()}}, it is possible to
+include \code{\link{common_xregs}} in the model formula, such as \code{trend()}, \code{season()},
+and \code{fourier()}.
 }
 \section{Specials}{
 
@@ -37,4 +40,9 @@ library(tsibbledata)
 olympic_running \%>\% 
   model(TSLM(Time ~ trend())) \%>\% 
   interpolate(olympic_running)
+
+}
+\seealso{
+\code{\link[stats:lm]{stats::lm()}}, \code{\link[stats:model.matrix]{stats::model.matrix()}}
+\href{https://otexts.com/fpp3/regression.html}{Forecasting: Principles and Practices, Time series regression models (chapter 6)}
 }

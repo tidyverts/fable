@@ -443,6 +443,7 @@ specials_arima <- new_specials(
 #' 
 #' @seealso 
 #' [Forecasting: Principles and Practices, ARIMA models (chapter 9)](https://otexts.com/fpp3/arima.html)
+#' [Forecasting: Principles and Practices, Dynamic regression models (chapter 10)](https://otexts.com/fpp3/dynamic.html)
 #' 
 #' @examples 
 #' # Manual ARIMA specification
@@ -608,6 +609,19 @@ forecast.ARIMA <- function(object, new_data = NULL, specials = NULL,
 #' @inheritParams forecast.ARIMA
 #' @param reestimate If `TRUE`, the coefficients for the fitted model will be re-estimated to suit the new data.
 #' 
+#' @examples 
+#' lung_deaths_male <- as_tsibble(mdeaths)
+#' lung_deaths_female <- as_tsibble(fdeaths)
+#' 
+#' fit <- lung_deaths_male %>% 
+#'   model(ARIMA(value ~ 1 + pdq(2,0,0) + PDQ(2,1,0)))
+#'   
+#' report(fit)
+#' 
+#' fit %>% 
+#'  refit(lung_deaths_female) %>% 
+#'  report()
+#' 
 #' @importFrom stats formula residuals
 #' @export
 refit.ARIMA <- function(object, new_data, specials = NULL, reestimate = FALSE, ...){
@@ -632,7 +646,7 @@ refit.ARIMA <- function(object, new_data, specials = NULL, reestimate = FALSE, .
 #' @inheritParams forecast.ARIMA
 #' 
 #' @importFrom stats formula residuals
-#' @export
+#' @rdname interpolate
 #' @export
 interpolate.ARIMA <- function(object, new_data, specials, ...){
   # Get missing values
