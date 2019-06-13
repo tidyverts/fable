@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Forecast a model from the fable package — forecast.ARIMA • fable</title>
+<title>Interpolate missing values from a fable model — interpolate.ARIMA • fable</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,9 +37,9 @@
 
 
 
-<meta property="og:title" content="Forecast a model from the fable package — forecast.ARIMA" />
+<meta property="og:title" content="Interpolate missing values from a fable model — interpolate.ARIMA" />
 
-<meta property="og:description" content="Produces forecasts from a trained model." />
+<meta property="og:description" content="Applies a model specific estimation technique to predict the values of missing values in a tsibble, and replace them." />
 
 <meta property="og:image" content="https://fable.tidyverts.org/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -108,44 +108,19 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Forecast a model from the fable package</h1>
+    <h1>Interpolate missing values from a fable model</h1>
     
-    <div class="hidden name"><code>forecast.Rd</code></div>
+    <div class="hidden name"><code>interpolate.ARIMA.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Produces forecasts from a trained model.</p>
+    <p>Applies a model specific estimation technique to predict the values of missing values in a <code>tsibble</code>, and replace them.</p>
     
     </div>
 
     <pre class="usage"><span class='co'># S3 method for ARIMA</span>
-<span class='fu'>forecast</span>(<span class='no'>object</span>, <span class='kw'>new_data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>specials</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>bootstrap</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>times</span> <span class='kw'>=</span> <span class='fl'>5000</span>, <span class='no'>...</span>)
-
-<span class='co'># S3 method for ETS</span>
-<span class='fu'>forecast</span>(<span class='no'>object</span>, <span class='no'>new_data</span>, <span class='kw'>specials</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>simulate</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>bootstrap</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>times</span> <span class='kw'>=</span> <span class='fl'>5000</span>, <span class='no'>...</span>)
-
-<span class='co'># S3 method for RW</span>
-<span class='fu'>forecast</span>(<span class='no'>object</span>, <span class='no'>new_data</span>, <span class='kw'>specials</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>bootstrap</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>times</span> <span class='kw'>=</span> <span class='fl'>5000</span>, <span class='no'>...</span>)
-
-<span class='co'># S3 method for TSLM</span>
-<span class='fu'>forecast</span>(<span class='no'>object</span>, <span class='no'>new_data</span>, <span class='kw'>specials</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>bootstrap</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>times</span> <span class='kw'>=</span> <span class='fl'>5000</span>, <span class='no'>...</span>)
-
-<span class='co'># S3 method for model_mean</span>
-<span class='fu'>forecast</span>(<span class='no'>object</span>, <span class='no'>new_data</span>, <span class='kw'>specials</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>bootstrap</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>times</span> <span class='kw'>=</span> <span class='fl'>5000</span>, <span class='no'>...</span>)
-
-<span class='co'># S3 method for NNETAR</span>
-<span class='fu'>forecast</span>(<span class='no'>object</span>, <span class='no'>new_data</span>, <span class='kw'>specials</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>bootstrap</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>times</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='no'>...</span>)
-
-<span class='co'># S3 method for VAR</span>
-<span class='fu'>forecast</span>(<span class='no'>object</span>, <span class='kw'>new_data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>specials</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>bootstrap</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>times</span> <span class='kw'>=</span> <span class='fl'>5000</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>interpolate</span>(<span class='no'>object</span>, <span class='no'>new_data</span>, <span class='no'>specials</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -163,20 +138,8 @@
       <td><p>(passed by <code><a href='https://www.rdocumentation.org/packages/fablelite/topics/forecast'>fablelite::forecast.mdl_df()</a></code>).</p></td>
     </tr>
     <tr>
-      <th>bootstrap</th>
-      <td><p>If <code>TRUE</code>, then forecast distributions are computed using simulation with resampled errors.</p></td>
-    </tr>
-    <tr>
-      <th>times</th>
-      <td><p>The number of sample paths to use in estimating the forecast distribution when <code>boostrap = TRUE</code>.</p></td>
-    </tr>
-    <tr>
       <th>...</th>
       <td><p>Additional arguments for forecast model methods.</p></td>
-    </tr>
-    <tr>
-      <th>simulate</th>
-      <td><p>If <code>TRUE</code>, prediction intervals are produced by simulation rather than using analytic formulae.</p></td>
     </tr>
     </table>
     

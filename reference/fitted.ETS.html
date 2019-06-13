@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Generate new data from a fable model — generate.ETS • fable</title>
+<title>Extract fitted values from a fable model — fitted.ETS • fable</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,12 +37,9 @@
 
 
 
-<meta property="og:title" content="Generate new data from a fable model — generate.ETS" />
+<meta property="og:title" content="Extract fitted values from a fable model — fitted.ETS" />
 
-<meta property="og:description" content="Simulates future paths from a dataset using a fitted model. Innovations are
-sampled by the model's assumed error distribution. If bootstrap is TRUE,
-innovations will be sampled from the model's residuals. If new_data
-contains the .innov column, those values will be treated as innovations." />
+<meta property="og:description" content="Extracts the fitted values." />
 
 <meta property="og:image" content="https://fable.tidyverts.org/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -111,95 +108,40 @@ contains the .innov column, those values will be treated as innovations." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Generate new data from a fable model</h1>
+    <h1>Extract fitted values from a fable model</h1>
     
-    <div class="hidden name"><code>generate.Rd</code></div>
+    <div class="hidden name"><code>fitted.ETS.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Simulates future paths from a dataset using a fitted model. Innovations are
-sampled by the model's assumed error distribution. If <code>bootstrap</code> is <code>TRUE</code>,
-innovations will be sampled from the model's residuals. If <code>new_data</code>
-contains the <code>.innov</code> column, those values will be treated as innovations.</p>
+    <p>Extracts the fitted values.</p>
     
     </div>
 
     <pre class="usage"><span class='co'># S3 method for ETS</span>
-<span class='fu'>generate</span>(<span class='no'>x</span>, <span class='no'>new_data</span>, <span class='kw'>bootstrap</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
-
-<span class='co'># S3 method for RW</span>
-<span class='fu'>generate</span>(<span class='no'>x</span>, <span class='no'>new_data</span>, <span class='kw'>bootstrap</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
-
-<span class='co'># S3 method for TSLM</span>
-<span class='fu'>generate</span>(<span class='no'>x</span>, <span class='no'>new_data</span>, <span class='no'>specials</span>, <span class='kw'>bootstrap</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
-
-<span class='co'># S3 method for model_mean</span>
-<span class='fu'>generate</span>(<span class='no'>x</span>, <span class='no'>new_data</span>, <span class='kw'>bootstrap</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
-
-<span class='co'># S3 method for NNETAR</span>
-<span class='fu'>generate</span>(<span class='no'>x</span>, <span class='no'>new_data</span>, <span class='kw'>specials</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>bootstrap</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/fitted.values'>fitted</a></span>(<span class='no'>object</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>A fitted model.</p></td>
-    </tr>
-    <tr>
-      <th>new_data</th>
-      <td><p>A <code>tsibble</code> containing future information used to forecast.</p></td>
-    </tr>
-    <tr>
-      <th>bootstrap</th>
-      <td><p>If <code>TRUE</code>, then forecast distributions are computed using simulation with resampled errors.</p></td>
+      <th>object</th>
+      <td><p>The time series model used to produce the forecasts</p></td>
     </tr>
     <tr>
       <th>...</th>
       <td><p>Additional arguments for forecast model methods.</p></td>
     </tr>
-    <tr>
-      <th>specials</th>
-      <td><p>(passed by <code><a href='https://www.rdocumentation.org/packages/fablelite/topics/forecast'>fablelite::forecast.mdl_df()</a></code>).</p></td>
-    </tr>
     </table>
     
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='https://www.rdocumentation.org/packages/fablelite/topics/generate.mdl_df'>fablelite::generate.mdl_df</a></code></p></div>
-    
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='no'>USAccDeaths</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='fu'><a href='ETS.html'>ETS</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Log'>log</a></span>(<span class='no'>value</span>) ~ <span class='fu'>season</span>(<span class='st'>"A"</span>))) <span class='kw'>%&gt;%</span>
-  <span class='fu'>generate</span>(<span class='kw'>times</span> <span class='kw'>=</span> <span class='fl'>100</span>)</div><div class='output co'>#&gt; # A tsibble: 2,400 x 4 [1M]
-#&gt; # Key:       .model, .rep [100]
-#&gt;    .model                             .rep    index  .sim
-#&gt;    &lt;chr&gt;                             &lt;int&gt;    &lt;mth&gt; &lt;dbl&gt;
-#&gt;  1 "ETS(log(value) ~ season(\"A\"))"     1 1979 Jan 7917.
-#&gt;  2 "ETS(log(value) ~ season(\"A\"))"     1 1979 Feb 7391.
-#&gt;  3 "ETS(log(value) ~ season(\"A\"))"     1 1979 Mar 7545.
-#&gt;  4 "ETS(log(value) ~ season(\"A\"))"     1 1979 Apr 8053.
-#&gt;  5 "ETS(log(value) ~ season(\"A\"))"     1 1979 May 9065.
-#&gt;  6 "ETS(log(value) ~ season(\"A\"))"     1 1979 Jun 9810.
-#&gt;  7 "ETS(log(value) ~ season(\"A\"))"     1 1979 Jul 9899.
-#&gt;  8 "ETS(log(value) ~ season(\"A\"))"     1 1979 Aug 9408.
-#&gt;  9 "ETS(log(value) ~ season(\"A\"))"     1 1979 Sep 8355.
-#&gt; 10 "ETS(log(value) ~ season(\"A\"))"     1 1979 Oct 8582.
-#&gt; # … with 2,390 more rows</div><div class='input'>  
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#see-also">See also</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+                </ul>
 
   </div>
 </div>

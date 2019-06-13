@@ -31,19 +31,70 @@
     <loc>https://fable.tidyverts.org/reference/fable-package.html</loc>
   </url>
   <url>
-    <loc>https://fable.tidyverts.org/reference/fitted.html</loc>
+    <loc>https://fable.tidyverts.org/reference/fitted.ARIMA.html</loc>
   </url>
   <url>
-    <loc>https://fable.tidyverts.org/reference/forecast.html</loc>
+    <loc>https://fable.tidyverts.org/reference/fitted.ETS.html</loc>
   </url>
   <url>
-    <loc>https://fable.tidyverts.org/reference/generate.html</loc>
+    <loc>https://fable.tidyverts.org/reference/fitted.NNETAR.html</loc>
+  </url>
+  <url>
+    <loc>https://fable.tidyverts.org/reference/fitted.RW.html</loc>
+  </url>
+  <url>
+    <loc>https://fable.tidyverts.org/reference/fitted.TSLM.html</loc>
+  </url>
+  <url>
+    <loc>https://fable.tidyverts.org/reference/fitted.VAR.html</loc>
+  </url>
+  <url>
+    <loc>https://fable.tidyverts.org/reference/fitted.model_mean.html</loc>
+  </url>
+  <url>
+    <loc>https://fable.tidyverts.org/reference/forecast.ARIMA.html</loc>
+  </url>
+  <url>
+    <loc>https://fable.tidyverts.org/reference/forecast.ETS.html</loc>
+  </url>
+  <url>
+    <loc>https://fable.tidyverts.org/reference/forecast.NNETAR.html</loc>
+  </url>
+  <url>
+    <loc>https://fable.tidyverts.org/reference/forecast.RW.html</loc>
+  </url>
+  <url>
+    <loc>https://fable.tidyverts.org/reference/forecast.TSLM.html</loc>
+  </url>
+  <url>
+    <loc>https://fable.tidyverts.org/reference/forecast.VAR.html</loc>
+  </url>
+  <url>
+    <loc>https://fable.tidyverts.org/reference/forecast.model_mean.html</loc>
+  </url>
+  <url>
+    <loc>https://fable.tidyverts.org/reference/generate.ETS.html</loc>
+  </url>
+  <url>
+    <loc>https://fable.tidyverts.org/reference/generate.NNETAR.html</loc>
+  </url>
+  <url>
+    <loc>https://fable.tidyverts.org/reference/generate.RW.html</loc>
+  </url>
+  <url>
+    <loc>https://fable.tidyverts.org/reference/generate.TSLM.html</loc>
+  </url>
+  <url>
+    <loc>https://fable.tidyverts.org/reference/generate.model_mean.html</loc>
   </url>
   <url>
     <loc>https://fable.tidyverts.org/reference/glance.ARIMA.html</loc>
   </url>
   <url>
-    <loc>https://fable.tidyverts.org/reference/interpolate.html</loc>
+    <loc>https://fable.tidyverts.org/reference/interpolate.ARIMA.html</loc>
+  </url>
+  <url>
+    <loc>https://fable.tidyverts.org/reference/interpolate.TSLM.html</loc>
   </url>
   <url>
     <loc>https://fable.tidyverts.org/reference/reexports.html</loc>
@@ -58,7 +109,25 @@
     <loc>https://fable.tidyverts.org/reference/refit.TSLM.html</loc>
   </url>
   <url>
-    <loc>https://fable.tidyverts.org/reference/residuals.html</loc>
+    <loc>https://fable.tidyverts.org/reference/residuals.ARIMA.html</loc>
+  </url>
+  <url>
+    <loc>https://fable.tidyverts.org/reference/residuals.ETS.html</loc>
+  </url>
+  <url>
+    <loc>https://fable.tidyverts.org/reference/residuals.NNETAR.html</loc>
+  </url>
+  <url>
+    <loc>https://fable.tidyverts.org/reference/residuals.RW.html</loc>
+  </url>
+  <url>
+    <loc>https://fable.tidyverts.org/reference/residuals.TSLM.html</loc>
+  </url>
+  <url>
+    <loc>https://fable.tidyverts.org/reference/residuals.VAR.html</loc>
+  </url>
+  <url>
+    <loc>https://fable.tidyverts.org/reference/residuals.model_mean.html</loc>
   </url>
   <url>
     <loc>https://fable.tidyverts.org/reference/tidy.ARIMA.html</loc>

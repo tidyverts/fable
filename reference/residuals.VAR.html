@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Interpolate missing values from a fable model — interpolate.ARIMA • fable</title>
+<title>Extract residuals values from a fable model — residuals.VAR • fable</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,9 +37,9 @@
 
 
 
-<meta property="og:title" content="Interpolate missing values from a fable model — interpolate.ARIMA" />
+<meta property="og:title" content="Extract residuals values from a fable model — residuals.VAR" />
 
-<meta property="og:description" content="Applies a model specific estimation technique to predict the values of missing values in a tsibble, and replace them." />
+<meta property="og:description" content="Extracts the residuals." />
 
 <meta property="og:image" content="https://fable.tidyverts.org/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -108,22 +108,19 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Interpolate missing values from a fable model</h1>
+    <h1>Extract residuals values from a fable model</h1>
     
-    <div class="hidden name"><code>interpolate.Rd</code></div>
+    <div class="hidden name"><code>residuals.VAR.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Applies a model specific estimation technique to predict the values of missing values in a <code>tsibble</code>, and replace them.</p>
+    <p>Extracts the residuals.</p>
     
     </div>
 
-    <pre class="usage"><span class='co'># S3 method for ARIMA</span>
-<span class='fu'>interpolate</span>(<span class='no'>object</span>, <span class='no'>new_data</span>, <span class='no'>specials</span>, <span class='no'>...</span>)
-
-<span class='co'># S3 method for TSLM</span>
-<span class='fu'>interpolate</span>(<span class='no'>object</span>, <span class='no'>new_data</span>, <span class='no'>specials</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='co'># S3 method for VAR</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/residuals'>residuals</a></span>(<span class='no'>object</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -131,14 +128,6 @@
     <tr>
       <th>object</th>
       <td><p>The time series model used to produce the forecasts</p></td>
-    </tr>
-    <tr>
-      <th>new_data</th>
-      <td><p>A <code>tsibble</code> containing future information used to forecast.</p></td>
-    </tr>
-    <tr>
-      <th>specials</th>
-      <td><p>(passed by <code><a href='https://www.rdocumentation.org/packages/fablelite/topics/forecast'>fablelite::forecast.mdl_df()</a></code>).</p></td>
     </tr>
     <tr>
       <th>...</th>
