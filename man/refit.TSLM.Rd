@@ -2,7 +2,7 @@
 % Please edit documentation in R/lm.R
 \name{refit.TSLM}
 \alias{refit.TSLM}
-\title{Refit an TSLM}
+\title{Refit a \code{TSLM}}
 \usage{
 \method{refit}{TSLM}(object, new_data, specials = NULL,
   reestimate = FALSE, ...)
@@ -19,7 +19,7 @@
 \item{...}{Additional arguments for forecast model methods.}
 }
 \description{
-Applies a fitted TSLM to a new dataset.
+Applies a fitted \code{TSLM} to a new dataset.
 }
 \examples{
 lung_deaths_male <- as_tsibble(mdeaths)

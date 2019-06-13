@@ -310,9 +310,9 @@ interpolate.TSLM <- function(object, new_data, specials, ...){
   new_data
 }
 
-#' Refit an TSLM
+#' Refit a `TSLM`
 #' 
-#' Applies a fitted TSLM to a new dataset.
+#' Applies a fitted `TSLM` to a new dataset.
 #' 
 #' @inheritParams refit.ARIMA
 #' 
