@@ -7,6 +7,8 @@
 \method{generate}{ETS}(x, new_data, bootstrap = FALSE, ...)
 }
 \arguments{
+\item{x}{A fitted model.}
+
 \item{new_data}{A \code{tsibble} containing future information used to forecast.}
 
 \item{bootstrap}{If \code{TRUE}, then forecast distributions are computed using simulation with resampled errors.}

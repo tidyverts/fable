@@ -23,6 +23,8 @@
 \item{times}{The number of sample paths to use in estimating the forecast distribution when \code{boostrap = TRUE}.}
 
 \item{...}{Additional arguments for forecast model methods.}
+
+\item{simulate}{If \code{TRUE}, prediction intervals are produced by simulation rather than using analytic formulae.}
 }
 \description{
 Produces forecasts from a trained model.

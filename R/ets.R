@@ -274,6 +274,9 @@ ETS <- function(formula, opt_crit = c("lik", "amse", "mse", "sigma", "mae"),
 }
 
 #' @rdname forecast
+#' 
+#' @param simulate If `TRUE`, prediction intervals are produced by simulation rather than using analytic formulae.
+#' 
 #' @export
 forecast.ETS <- function(object, new_data, specials = NULL, simulate = FALSE, bootstrap = FALSE, times = 5000, ...){
   errortype <- object$spec$errortype
@@ -325,7 +328,8 @@ forecast.ETS <- function(object, new_data, specials = NULL, simulate = FALSE, bo
 #' innovations will be sampled from the model's residuals. If `new_data` 
 #' contains the `.innov` column, those values will be treated as innovations.
 #' 
-#' @inheritParams forecast.ETS 
+#' @inheritParams forecast.ETS
+#' @param x A fitted model.
 #' 
 #' @examples 
 #' as_tsibble(USAccDeaths) %>%
