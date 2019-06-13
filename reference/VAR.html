@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Estimate an VAR model — VAR • fable</title>
+<title>Estimate a VAR model — VAR • fable</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,9 +37,10 @@
 
 
 
-<meta property="og:title" content="Estimate an VAR model — VAR" />
+<meta property="og:title" content="Estimate a VAR model — VAR" />
 
-<meta property="og:description" content="Estimate an VAR model" />
+<meta property="og:description" content="Searches through the vector of lag orders to find the best VAR model which
+has lowest AIC, AICc or BIC value. It is implemented using OLS per equation." />
 
 <meta property="og:image" content="https://fable.tidyverts.org/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -108,14 +109,15 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Estimate an VAR model</h1>
+    <h1>Estimate a VAR model</h1>
     
     <div class="hidden name"><code>VAR.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Estimate an VAR model</p>
+    <p>Searches through the vector of lag orders to find the best VAR model which
+has lowest AIC, AICc or BIC value. It is implemented using OLS per equation.</p>
     
     </div>
 
@@ -137,6 +139,11 @@
       <td><p>Further arguments for arima</p></td>
     </tr>
     </table>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Exogenous regressors and <code><a href='common_xregs.html'>common_xregs</a></code> can be specified in the model
+formula.</p>
     
     <h2 class="hasAnchor" id="specials"><a class="anchor" href="#specials"></a>Specials</h2>
 
@@ -163,6 +170,10 @@ xreg(...)
 <tr><td></td><td>Bare expressions for the exogenous regressors (such as</td></tr>
 <tr><td><code><a href='https://www.rdocumentation.org/packages/base/topics/Log'>log(x)</a></code></td><td>)</td></tr>
 </table>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><a href='https://otexts.com/fpp2/VAR.html'>Forecasting: Principles and Practices, Vector autoregressions (section 11.2)</a></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -209,7 +220,11 @@ xreg(...)
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
+      <li><a href="#details">Details</a></li>
+
       <li><a href="#specials">Specials</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>
