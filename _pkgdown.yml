@@ -74,3 +74,12 @@ reference:
     - fitted.RW
     - residuals.model_mean
     - residuals.RW
+- title: Neural network autoregression
+  desc: >
+    Feed-forward neural networks with a single hidden layer and lagged inputs for forecasting univariate time series.
+  contents:
+    - NNETAR
+    - forecast.NNETAR
+    - generate.NNETAR
+    - fitted.NNETAR
+    - residuals.NNETAR

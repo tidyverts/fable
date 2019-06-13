@@ -2,6 +2,7 @@
 % Please edit documentation in R/nnetar.R
 \name{NNETAR}
 \alias{NNETAR}
+\alias{report.NNETAR}
 \title{Neural Network Time Series Forecasts}
 \usage{
 NNETAR(formula, n_nodes = NULL, n_networks = 20, scale_inputs = TRUE,
@@ -75,6 +76,9 @@ xreg(...)
 }
 }
 
+\seealso{
+\href{https://otexts.com/fpp2/nnetar.html}{Forecasting: Principles and Practices, Neural network models (section 11.3)}
+}
 \author{
 Gabriel Caceres, Mitchell O'Hara-Wild & Rob J Hyndman
 }

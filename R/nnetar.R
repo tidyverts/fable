@@ -185,6 +185,8 @@ specials_nnetar <- new_specials(
 #' an NNAR(p,P,k)\[m\] model, which is analogous to an ARIMA(p,0,0)(P,0,0)\[m\]
 #' model but with non-linear functions.
 #'
+#' @aliases report.NNETAR
+#'
 #' @param formula Model specification (see "Specials" section).
 #' @param n_nodes Number of nodes in the hidden layer. Default is half of the
 #' number of input nodes (including external regressors, if given) plus 1.
@@ -223,6 +225,9 @@ specials_nnetar <- new_specials(
 #' }
 #' }
 #' 
+#' @seealso 
+#' [Forecasting: Principles and Practices, Neural network models (section 11.3)](https://otexts.com/fpp2/nnetar.html)
+#' 
 #' @author Gabriel Caceres, Mitchell O'Hara-Wild & Rob J Hyndman
 #' 
 #' @export
@@ -233,6 +238,7 @@ NNETAR <- function(formula, n_nodes = NULL, n_networks = 20, scale_inputs = TRUE
                        n_networks = n_networks, scale_inputs = scale_inputs, ...)
 }
 
+#' @rdname forecast
 #' @export
 forecast.NNETAR <- function(object, new_data, specials = NULL, bootstrap = FALSE, times = 1000, ...){
   require_package("nnet")
@@ -288,6 +294,7 @@ forecast.NNETAR <- function(object, new_data, specials = NULL, bootstrap = FALSE
   construct_fc(fc, se, dist)
 }
 
+#' @rdname generate
 #' @export
 generate.NNETAR <- function(x, new_data, specials = NULL, bootstrap = FALSE, ...){
   # Prepare xreg
@@ -353,11 +360,13 @@ generate.NNETAR <- function(x, new_data, specials = NULL, bootstrap = FALSE, ...
     transmute(".sim" := sim_nnetar(!!sym(".innov")))
 }
 
+#' @rdname fitted
 #' @export
 fitted.NNETAR <- function(object, ...){
   object$est[[".fitted"]]
 }
 
+#' @rdname residuals
 #' @export
 residuals.NNETAR <- function(object, ...){
   object$est[[".resid"]]
