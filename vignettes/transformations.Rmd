@@ -59,7 +59,7 @@ scaled_logit <- function(x, lower=0, upper=1){
 inv_scaled_logit <- function(x, lower=0, upper=1){
   (upper-lower)*exp(x)/(1+exp(x)) + lower
 }
-my_scaled_logit <- fablelite::new_transformation(scaled_logit, inv_scaled_logit)
+my_scaled_logit <- new_transformation(scaled_logit, inv_scaled_logit)
 ```
 
 Once you define your transformation as above, it is ready to use anywhere you would normally use a transformation.
