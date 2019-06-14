@@ -47,7 +47,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li>
-  <a href="../news/index.html">News</a>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
@@ -142,7 +142,7 @@
 <a class="sourceLine" id="cb3-4" data-line-number="4">inv_scaled_logit &lt;-<span class="st"> </span><span class="cf">function</span>(x, <span class="dt">lower=</span><span class="dv">0</span>, <span class="dt">upper=</span><span class="dv">1</span>){</a>
 <a class="sourceLine" id="cb3-5" data-line-number="5">  (upper<span class="op">-</span>lower)<span class="op">*</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Log">exp</a></span>(x)<span class="op">/</span>(<span class="dv">1</span><span class="op">+</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Log">exp</a></span>(x)) <span class="op">+</span><span class="st"> </span>lower</a>
 <a class="sourceLine" id="cb3-6" data-line-number="6">}</a>
-<a class="sourceLine" id="cb3-7" data-line-number="7">my_scaled_logit &lt;-<span class="st"> </span>fablelite<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/fablelite/topics/new_transformation">new_transformation</a></span>(scaled_logit, inv_scaled_logit)</a></code></pre></div>
+<a class="sourceLine" id="cb3-7" data-line-number="7">my_scaled_logit &lt;-<span class="st"> </span><span class="kw">new_transformation</span>(scaled_logit, inv_scaled_logit)</a></code></pre></div>
 <p>Once you define your transformation as above, it is ready to use anywhere you would normally use a transformation.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">cbind</a></span>(mdeaths, fdeaths) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb4-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://tsibble.tidyverts.org/reference/as-tsibble.html">as_tsibble</a></span>(<span class="dt">pivot_longer =</span> <span class="ot">FALSE</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
