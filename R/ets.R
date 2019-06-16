@@ -27,7 +27,7 @@ train_ets <- function(.data, specials, opt_crit,
 
   # Remove bad models
   if(NROW(model_opts) > 1){
-    if(min(y) < 0){
+    if(min(y) <= 0){
       model_opts <- model_opts[model_opts$errortype != "M",]
     }
     if(restrict){
