@@ -238,9 +238,9 @@ NNETAR <- function(formula, n_nodes = NULL, n_networks = 20, scale_inputs = TRUE
                        n_networks = n_networks, scale_inputs = scale_inputs, ...)
 }
 
-#' @inherit forecast.ARIMA
+#' @inherit forecast.ETS
 #' @export
-forecast.NNETAR <- function(object, new_data, specials = NULL, bootstrap = FALSE, times = 1000, ...){
+forecast.NNETAR <- function(object, new_data, specials = NULL, simulate = TRUE, bootstrap = FALSE, times = 1000, ...){
   require_package("nnet")
   
   # Prepare xreg
@@ -276,6 +276,10 @@ forecast.NNETAR <- function(object, new_data, specials = NULL, bootstrap = FALSE
   }
   
   # Compute forecast intervals
+  if(!simulate){
+    warn("Analytical forecast distributions are not available for NNETAR.")
+    times <- 0
+  }
   sim <- map(seq_len(times), function(x){
     generate(object, new_data, specials = specials, bootstrap = bootstrap)[[".sim"]]
   })

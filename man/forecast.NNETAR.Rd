@@ -5,7 +5,7 @@
 \title{Forecast a model from the fable package}
 \usage{
 \method{forecast}{NNETAR}(object, new_data, specials = NULL,
-  bootstrap = FALSE, times = 1000, ...)
+  simulate = TRUE, bootstrap = FALSE, times = 1000, ...)
 }
 \arguments{
 \item{object}{The time series model used to produce the forecasts}
@@ -14,9 +14,11 @@
 
 \item{specials}{(passed by \code{\link[fablelite:forecast.mdl_df]{fablelite::forecast.mdl_df()}}).}
 
+\item{simulate}{If \code{TRUE}, prediction intervals are produced by simulation rather than using analytic formulae.}
+
 \item{bootstrap}{If \code{TRUE}, then forecast distributions are computed using simulation with resampled errors.}
 
-\item{times}{The number of sample paths to use in estimating the forecast distribution when \code{boostrap = TRUE}.}
+\item{times}{The number of sample paths to use in estimating the forecast distribution if simulated intervals are used.}
 
 \item{...}{Additional arguments for forecast model methods.}
 }

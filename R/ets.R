@@ -276,6 +276,7 @@ ETS <- function(formula, opt_crit = c("lik", "amse", "mse", "sigma", "mae"),
 #' @inherit forecast.ARIMA
 #' 
 #' @param simulate If `TRUE`, prediction intervals are produced by simulation rather than using analytic formulae.
+#' @param times The number of sample paths to use in estimating the forecast distribution if simulated intervals are used.
 #' 
 #' @export
 forecast.ETS <- function(object, new_data, specials = NULL, simulate = FALSE, bootstrap = FALSE, times = 5000, ...){
