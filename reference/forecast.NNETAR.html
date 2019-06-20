@@ -121,7 +121,7 @@
 
     <pre class="usage"><span class='co'># S3 method for NNETAR</span>
 <span class='fu'>forecast</span>(<span class='no'>object</span>, <span class='no'>new_data</span>, <span class='kw'>specials</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>bootstrap</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>times</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='no'>...</span>)</pre>
+  <span class='kw'>simulate</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>bootstrap</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>times</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -139,12 +139,16 @@
       <td><p>(passed by <code><a href='https://fablelite.tidyverts.org/reference/forecast.html'>fablelite::forecast.mdl_df()</a></code>).</p></td>
     </tr>
     <tr>
+      <th>simulate</th>
+      <td><p>If <code>TRUE</code>, prediction intervals are produced by simulation rather than using analytic formulae.</p></td>
+    </tr>
+    <tr>
       <th>bootstrap</th>
       <td><p>If <code>TRUE</code>, then forecast distributions are computed using simulation with resampled errors.</p></td>
     </tr>
     <tr>
       <th>times</th>
-      <td><p>The number of sample paths to use in estimating the forecast distribution when <code>boostrap = TRUE</code>.</p></td>
+      <td><p>The number of sample paths to use in estimating the forecast distribution if simulated intervals are used.</p></td>
     </tr>
     <tr>
       <th>...</th>
