@@ -126,6 +126,10 @@ RW <- function(formula, ...){
                                   if(is.null(lag)){
                                     lag <- 1
                                   }
+                                  if(!rlang::is_integerish(lag)){
+                                    warn("Non-integer lag orders for random walk models are not supported. Rounding to the nearest integer.")
+                                    lag <- round(lag)
+                                  }
                                   get_frequencies(lag, self$data, .auto = "smallest")
                                 },
                                 drift = function(drift = TRUE){
@@ -162,6 +166,10 @@ SNAIVE <- function(formula, ...){
                                   lag <- get_frequencies(lag, self$data, .auto = "smallest")
                                   if(lag == 1){
                                     abort("Non-seasonal model specification provided, use RW() or provide a different lag specification.")
+                                  }
+                                  if(!rlang::is_integerish(lag)){
+                                    warn("Non-integer lag orders for random walk models are not supported. Rounding to the nearest integer.")
+                                    lag <- round(lag)
                                   }
                                   lag
                                 },
