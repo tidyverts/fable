@@ -98,7 +98,7 @@ test_that("SNAIVE", {
   
   expect_warning(
     tsibbledata::vic_elec %>% 
-      tsibble::index_by(date = lubridate::as_date(Time)) %>% 
+      tsibble::index_by(date = as.Date(Time)) %>% 
       dplyr::summarise(demand = mean(Demand)) %>% 
       model(SNAIVE(demand ~ lag("year"))),
     "Non-integer lag orders for random walk models are not supported"
