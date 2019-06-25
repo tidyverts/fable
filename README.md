@@ -12,10 +12,12 @@ status](https://codecov.io/gh/tidyverts/fable/branch/master/graph/badge.svg)](ht
 [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/fable)](https://cran.r-project.org/package=fable)
 [![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 
-The R package *fable* provides methods and tools for displaying and
-analysing univariate time series forecasts including exponential
-smoothing via state space models and automatic ARIMA modelling. Data,
-model and forecast objects are all stored in a tidy format.
+The R package *fable* provides a collection of commonly used univariate
+and multivariate time series forecasting models including exponential
+smoothing via state space models and automatic ARIMA modelling. These
+models work within the fable framework, which provides the tools to
+evaluate, visualise, and combine models in a workflow consistent with
+the tidyverse.
 
 ## Installation
 
@@ -47,12 +49,29 @@ aus_retail %>%
     arima = ARIMA(log(Turnover)),
     snaive = SNAIVE(Turnover)
   ) %>%
-  forecast %>% 
+  forecast(h = "2 years") %>% 
   autoplot(filter(aus_retail, year(Month) > 2010), level = NULL)
 ```
 
 <img src="man/figures/README-example-1.png" width="100%" />
 
-You can read more about the functionality of this package and the ideas
-behind it here:
-<https://tidyverts.github.io/tidy-forecasting-principles/>
+## Learning to forecast with fable
+
+  - The pkgdown site describes all models provided by fable, and how
+    they are used: <http://fable.tidyverts.org/>
+  - The forecasting principles and practices online textbook provides an
+    introduction to time series forecasting using fable:
+    <https://otexts.com/fpp3/> (WIP)
+  - A quick start functionality guide can be found here:
+    <https://tidyverts.github.io/tidy-forecasting-principles/> (WIP)
+
+## Getting help
+
+  - Questions about forecasting can be asked on [Cross
+    Validated](http://stats.stackexchange.com/tags/forecasting).
+
+  - Common questions about the fable package are often found on [Stack
+    Overflow](http://stackoverflow.com/tags/fable+r). You can use this
+    to ask for help if the question isn’t already answered. A [minimally
+    reproducible example](https://www.tidyverse.org/help/) that
+    describes your issue is the best way to ask for help\!
