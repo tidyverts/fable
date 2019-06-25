@@ -84,7 +84,7 @@
 <a href="#fable" class="anchor"></a>fable <a href="https://fable.tidyverts.org"><img src="reference/figures/logo.png" align="right" height="138.5"></a>
 </h1></div>
 
-<p>The R package <em>fable</em> provides methods and tools for displaying and analysing univariate time series forecasts including exponential smoothing via state space models and automatic ARIMA modelling. Data, model and forecast objects are all stored in a tidy format.</p>
+<p>The R package <em>fable</em> provides a collection of commonly used univariate and multivariate time series forecasting models including exponential smoothing via state space models and automatic ARIMA modelling. These models work within the fable framework, which provides the tools to evaluate, visualise, and combine models in a workflow consistent with the tidyverse.</p>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
@@ -111,10 +111,27 @@
 <a class="sourceLine" id="cb2-13" data-line-number="13">    <span class="dt">arima =</span> <span class="kw"><a href="reference/ARIMA.html">ARIMA</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Log">log</a></span>(Turnover)),</a>
 <a class="sourceLine" id="cb2-14" data-line-number="14">    <span class="dt">snaive =</span> <span class="kw"><a href="reference/RW.html">SNAIVE</a></span>(Turnover)</a>
 <a class="sourceLine" id="cb2-15" data-line-number="15">  ) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb2-16" data-line-number="16"><span class="st">  </span>forecast <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb2-16" data-line-number="16"><span class="st">  </span><span class="kw">forecast</span>(<span class="dt">h =</span> <span class="st">"2 years"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb2-17" data-line-number="17"><span class="st">  </span><span class="kw">autoplot</span>(<span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(aus_retail, <span class="kw"><a href="http://lubridate.tidyverse.org/reference/year.html">year</a></span>(Month) <span class="op">&gt;</span><span class="st"> </span><span class="dv">2010</span>), <span class="dt">level =</span> <span class="ot">NULL</span>)</a></code></pre></div>
 <p><img src="reference/figures/README-example-1.png" width="100%"></p>
-<p>You can read more about the functionality of this package and the ideas behind it here: <a href="https://tidyverts.github.io/tidy-forecasting-principles/" class="uri">https://tidyverts.github.io/tidy-forecasting-principles/</a></p>
+</div>
+<div id="learning-to-forecast-with-fable" class="section level2">
+<h2 class="hasAnchor">
+<a href="#learning-to-forecast-with-fable" class="anchor"></a>Learning to forecast with fable</h2>
+<ul>
+<li>The pkgdown site describes all models provided by fable, and how they are used: <a href="http://fable.tidyverts.org/" class="uri">http://fable.tidyverts.org/</a>
+</li>
+<li>The forecasting principles and practices online textbook provides an introduction to time series forecasting using fable: <a href="https://otexts.com/fpp3/" class="uri">https://otexts.com/fpp3/</a> (WIP)</li>
+<li>A quick start functionality guide can be found here: <a href="https://tidyverts.github.io/tidy-forecasting-principles/" class="uri">https://tidyverts.github.io/tidy-forecasting-principles/</a> (WIP)</li>
+</ul>
+</div>
+<div id="getting-help" class="section level2">
+<h2 class="hasAnchor">
+<a href="#getting-help" class="anchor"></a>Getting help</h2>
+<ul>
+<li><p>Questions about forecasting can be asked on <a href="http://stats.stackexchange.com/tags/forecasting">Cross Validated</a>.</p></li>
+<li><p>Common questions about the fable package are often found on <a href="http://stackoverflow.com/tags/fable+r">Stack Overflow</a>. You can use this to ask for help if the question isn’t already answered. A <a href="https://www.tidyverse.org/help/">minimally reproducible example</a> that describes your issue is the best way to ask for help!</p></li>
+</ul>
 </div>
 </div>
   </div>
