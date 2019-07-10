@@ -11,3 +11,4 @@ Makefile
 ^data-raw$
 ^codecov\.yml$
 ^hex$
+^cran-comments\.md$
