@@ -34,13 +34,12 @@ jobs:
   - r: devel
     env:
     - DEV_VERSIONS=true
-  - r: 3.4
+  - r: 3.5
   - stage: full
     os: osx
   - r: release
     env:
     - BUILD_PKGDOWN=true
-  - r: 3.5
   fast_finish: true
 
 # Header
