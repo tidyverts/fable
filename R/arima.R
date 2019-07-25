@@ -44,7 +44,7 @@ train_arima <- function(.data, specials,  ic = "aicc",
       }
       
       # Now check if it is rank deficient
-      sv <- svd(stats::na.omit(cbind(rep(1, NROW(xreg)), xreg)))$d
+      sv <- svd(stats::na.omit(if(all(constant)) cbind(rep(1, NROW(xreg)), xreg) else xreg))$d
       if (min(sv) / sum(sv) < .Machine$double.eps) {
         stop("xreg is rank deficient")
       }
@@ -113,7 +113,8 @@ train_arima <- function(.data, specials,  ic = "aicc",
   
   if (approximation) {
     method <- "CSS"
-    offset <- with(stats::arima(y, order = c(0, d, 0), xreg = xreg),
+    offset <- with(stats::arima(y, order = c(0, d, 0), xreg = xreg, 
+                                include.mean = all(constant)),
                    -2 * loglik - NROW(data) * log(sigma2))
   } else {
     method <- "CSS-ML"
@@ -362,9 +363,16 @@ specials_arima <- new_specials(
       rhs = reduce(dots, function(.x, .y) call2("+", .x, .y))
     )
     
-    xreg <- model.frame(model_formula, data = env, na.action = stats::na.pass)
+    xreg <- terms(model_formula)
+    constant <- as_logical(xreg%@%"intercept")
+    xreg <- model.matrix(xreg, data = env, na.action = stats::na.pass)
+    
+    if(constant){
+      xreg <- xreg[,-1]
+    }
+    
     list(
-      constant = if(constant_given) as_logical(terms(xreg)%@%"intercept") else c(TRUE, FALSE),
+      constant = if(constant_given) constant else c(TRUE, FALSE),
       xreg = if(NCOL(xreg) == 0) NULL else xreg
     )
   },
