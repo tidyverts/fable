@@ -46,7 +46,7 @@ train_lagwalk <- function(.data, specials, ...){
                                   n - lag - length(!!sym("estimate")),
                                   lower.tail = FALSE)
         ),
-      est = .data %>% transmute(
+      est = dplyr::ungroup(.data) %>% transmute(
           .fitted = fitted,
           .resid = res
         ),
