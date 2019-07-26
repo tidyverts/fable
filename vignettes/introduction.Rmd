@@ -1,0 +1,142 @@
+---
+title: "Introduction to fable"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{fable}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.height = 10
+)
+```
+
+```{r setup, message=FALSE}
+library(fable)
+library(tsibble)
+library(dplyr)
+```
+
+The fable package provides some commonly used univariate and multivariate time series forecasting models which can be used with tidy temporal data in the tsibble format. These models are used within a consistent and tidy modelling framework, allowing several models to be estimated, compared, combined, forecasted and otherwise worked with across many time series.
+
+Suppose we wanted to forecast the number of people travel domestically to Melbourne, Australia. In the `tsibble::tourism` dataset, this can be further broken down into 4 reasons of travel: "business", "holiday", "visiting friends and relatives" and "other reasons". The first observation from each series is shown below.
+
+```{r data}
+tourism_melb <- tourism %>%
+  filter(Region == "Melbourne")
+tourism_melb %>% 
+  group_by(Purpose) %>% 
+  slice(1)
+```
+
+The variable that we'd like to estimate is the number of overnight trips (in thousands) represented by the `Trips` variable. A plot of the data reveals that some trends and weak seasonality are apparent.
+
+```{r plot}
+tourism_melb %>% 
+  autoplot(Trips)
+```
+
+Two widely used models available in this package are ETS and ARIMA. These models are specified using a compact formula representation (much like cross-sectional models such as `lm()`). The response variable (`Trips`) and any transformations are included on the left, while the model specification is on the right of the formula. When a model is not fully specified (or if the formula's right side is missing completely), the unspecified components will be chosen automatically.
+
+Suppose we insist that the ETS model must have an additive trend, and want the other elements to be chosen automatically. This model would be specified using `ETS(Trips ~ trend("A"))`. Similarly, a completely automatic ARIMA model (much like `auto.arima()` from the `forecast` package) can be specified using `ARIMA(Trips)`. The `model()` function is used to estimate these model specifications on a particular dataset, and will return a "mable" (model table).
+
+```{r mdl}
+fit <- tourism_melb %>% 
+  model(
+    ets = ETS(Trips ~ trend("A")),
+    arima = ARIMA(Trips)
+  )
+fit
+```
+
+A mable contains a row for each time series (uniquely identified by the key variables), and a column for each model specification. A model is contained within the cells of each model column. In the example above we can see that the all four ETS models have an additive trend, and the error and seasonality has been chosen automatically. Similarly, the ARIMA model varies between time series as it has been automatically selected.
+
+The `coef()` or `tidy()` function is used to extract the coefficients from the models. It's possible to use `select()` and other verbs to focus on the coefficients from a particular model.
+
+```{r}
+fit %>% 
+  select(arima) %>% 
+  coef()
+```
+
+The `glance()` function provides a one-row summary of each model, and commonly includes descriptions of the model's fit such as the residual variance and information criterions. Be wary though, as information criterions (AIC, AICc, BIC) are only comparable between the same model class and only if those models share the same response (after transformations and differencing).
+
+```{r}
+fit %>% 
+  glance()
+```
+
+If you're working with a single model (or want to look at one model in particular), the `report()` function gives a familiar and nicely formatted model-specific display.
+
+```{r}
+fit %>% 
+  filter(Purpose == "Holiday") %>% 
+  select(ets) %>% 
+  report()
+```
+
+The fitted values and residuals from a model can obtained using `fitted()` and `residuals()` respectively. Additionally, the `augment()` function may be more convenient, which provides the original data along with both fitted values and their residuals.
+
+```{r}
+fit %>% 
+  augment()
+```
+
+To compare how well the models fit the data we can consider some common accuracy measures. It seems that on the training set the ETS model out-performs ARIMA for the series where travellers are on holiday, business and visiting friends and relatives. The [*Evaluating modelling accuracy*](https://otexts.com/fpp3/evaluation.html) chapter from the [*Forecasting: Principles and Practices (3rd Ed.)*](https://otexts.com/fpp3/) textbook provides more detail in how modelling and forecasting accuracy is evaluated.
+
+```{r}
+fit %>% 
+  accuracy() %>% 
+  arrange(MASE)
+```
+
+Forecasts from these models can be produced directly as our specified models do not require on any additional data.
+
+```{r}
+fc <- fit %>% 
+  forecast(h = "5 years")
+fc
+```
+
+The resulting forecasts are contained in a "fable" (forecast table), and both point forecasts (`Trips`) and forecast distributions (`.distribution`) are available in the table for the next five years.
+
+Intervals can be extracted from the distribution using the `hilo()` function.
+
+```{r}
+fc %>% 
+  mutate(interval = hilo(.distribution, 80))
+```
+
+It may be more convenient to use `hilo()` on the entire fable, which allows you to extract multiple intervals at once.
+
+```{r}
+fc %>% 
+  hilo(level = c(80, 95))
+```
+
+
+<!--
+These intervals can also be unnested if you're looking to obtain the numerical values (`.lower`, `.upper`, and `level`).
+
+```{r, eval = FALSE}
+library(tidyr)
+fc %>% 
+  mutate(interval = hilo(.distribution, 80)) %>% 
+  unnest_tsibble(interval)
+```
+-->
+
+Lastly you can see a plot of the forecasts using `autoplot()`. To see the historical data along with the forecasts you can provide it as the first argument to the function.
+
+```{r}
+fc %>% 
+  autoplot(tourism_melb)
+```
+
+More model methods may be supported by particular models, including the ability to `refit()` the model to new data, `stream()` in new data to extend the fit, `generate()` simulated paths from a model, `interpolate()` missing values, extract `components()` from the fitted model, and display the model's `equation()`.
+
+More information about modelling time series and using the fable package can be found in [*Forecasting: Principles and Practices (3rd Ed.)*](https://otexts.com/fpp3/) and in the [*pkgdown site*](fable.tidyverts.org/).

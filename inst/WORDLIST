@@ -8,6 +8,7 @@ backtransformations
 backtransforming
 Caceres
 com
+criterions
 dfrac
 fablelite
 fourier
@@ -18,6 +19,7 @@ io
 Koehler
 KPSS
 lifecycle
+mable
 Md
 NNAR
 NNETAR
@@ -25,11 +27,13 @@ org
 otexts
 pdq
 pkgdown
+rd
 SAR
 SMA
 STL
 tidyverse
 tidyverts
+tsibble
 VAR
 Verlag
 WIP

@@ -12,3 +12,5 @@ Makefile
 ^codecov\.yml$
 ^hex$
 ^cran-comments\.md$
+^doc$
+^Meta$
