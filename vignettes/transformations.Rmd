@@ -1,7 +1,6 @@
 ---
 title: "Forecasting with transformations"
 author: "Mitchell O'Hara-Wild"
-date: "June 6 2018"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{transformations}
@@ -14,7 +13,6 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-library(fable)
 ```
 
 All fable models with formula-based model specification support a highly flexible specification of transformations. Specified transformations are automatically back-transformed and bias adjusted to produce forecast means and fitted values on the original scale of the data.
@@ -22,6 +20,7 @@ All fable models with formula-based model specification support a highly flexibl
 The transformation used for the model is defined on the left of the tilde (`~`) in the formula. For example, when forecasting Melbourne `Trips` from the `tsibble::tourism` dataset, a square root transformation can applied using `sqrt(Trips)`.
 
 ```{r sqrt}
+library(fable)
 library(tsibble)
 library(dplyr)
 tourism %>%
