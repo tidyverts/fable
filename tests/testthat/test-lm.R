@@ -27,10 +27,15 @@ test_that("LM", {
   
   # Forecast
   fable_fc <- fable_fit %>% forecast(h = 12)
+  fable_fc_short <- fable_fit %>% forecast(h = 1)
   forecast_fc <- forecast_fit %>% forecast::forecast(h = 12)
   expect_equivalent(
     fable_fc$value,
     unclass(forecast_fc$mean)
+  )
+  expect_equivalent(
+    fable_fc$value[1],
+    fable_fc_short$value
   )
   
   fable_fc_sim <- fable_fit %>% forecast(h = 12, bootstrap = TRUE, times = 5)
