@@ -11,7 +11,7 @@
 
 \item{new_data}{A \code{tsibble} containing future information used to forecast.}
 
-\item{specials}{(passed by \code{\link[fablelite:forecast.mdl_df]{fablelite::forecast.mdl_df()}}).}
+\item{specials}{(passed by \code{\link[fabletools:forecast.mdl_df]{fabletools::forecast.mdl_df()}}).}
 
 \item{bootstrap}{If \code{TRUE}, then forecast distributions are computed using simulation with resampled errors.}
 
@@ -30,5 +30,5 @@ as_tsibble(USAccDeaths) \%>\%
   
 }
 \seealso{
-\code{\link[fablelite:generate.mdl_df]{fablelite::generate.mdl_df}}
+\code{\link[fabletools:generate.mdl_df]{fabletools::generate.mdl_df}}
 }

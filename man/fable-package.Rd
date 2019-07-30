@@ -10,7 +10,7 @@
 
 Provides a collection of commonly used univariate and multivariate
     time series forecasting models. These models work within the fable framework
-    provided by the fablelite package, which provides the tools to evaluate,
+    provided by the fabletools package, which provides the tools to evaluate,
     visualise, and combine models in a workflow consistent with the tidyverse.
 }
 \seealso{

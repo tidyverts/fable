@@ -63,7 +63,7 @@ MEAN <- function(formula, ...){
   new_model_definition(mean_model, !!enquo(formula), ...)
 }
 
-#' @importFrom fablelite forecast
+#' @importFrom fabletools forecast
 #' @importFrom stats qnorm time
 #' @importFrom utils tail
 #' 

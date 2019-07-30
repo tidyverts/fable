@@ -12,11 +12,11 @@
 
 ## Comments
 
-This is a joint submission with feasts and fablelite. These packages are
+This is a joint submission with feasts and fabletools. These packages are
 interdependent in their examples and functionality, so all packages will need
 to be installed prior to checking the packages.
 
-fablelite should be installed first, and then fable and feasts.
+fabletools should be installed first, and then fable and feasts.
 
 Unfortunately due to this dependency, the packages could not be tested using 
 win-builder. Instead these packages have been checked on Windows using AppVeyor.

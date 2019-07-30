@@ -337,7 +337,7 @@ forecast.ETS <- function(object, new_data, specials = NULL, simulate = FALSE, bo
 #'   model(ETS(log(value) ~ season("A"))) %>% 
 #'   generate(times = 100)
 #'   
-#' @seealso [`fablelite::generate.mdl_df`]
+#' @seealso [`fabletools::generate.mdl_df`]
 #' 
 #' @export
 generate.ETS <- function(x, new_data, specials, bootstrap = FALSE, ...){
@@ -563,7 +563,7 @@ components.ETS <- function(object, ...){
     eqn <- expr((!!eqn)*(1 + !!sym("remainder")))
   }
 
-  fablelite::as_dable(out, resp = !!sym(response), method = model_sum(object),
+  fabletools::as_dable(out, resp = !!sym(response), method = model_sum(object),
                       seasons = seasonalities, aliases = list2(!!response := eqn))
 }
 

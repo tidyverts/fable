@@ -564,8 +564,8 @@ report.ARIMA <- function(object, ...){
 #' 
 #' Produces forecasts from a trained model.
 #' 
-#' @inheritParams fablelite::forecast
-#' @param specials (passed by [`fablelite::forecast.mdl_df()`]).
+#' @inheritParams fabletools::forecast
+#' @param specials (passed by [`fabletools::forecast.mdl_df()`]).
 #' @param bootstrap If `TRUE`, then forecast distributions are computed using simulation with resampled errors.
 #' @param times The number of sample paths to use in estimating the forecast distribution when `boostrap = TRUE`.
 #' 

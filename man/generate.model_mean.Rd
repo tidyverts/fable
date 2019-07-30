@@ -28,5 +28,5 @@ as_tsibble(USAccDeaths) \%>\%
   
 }
 \seealso{
-\code{\link[fablelite:generate.mdl_df]{fablelite::generate.mdl_df}}
+\code{\link[fabletools:generate.mdl_df]{fabletools::generate.mdl_df}}
 }
