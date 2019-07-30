@@ -61,7 +61,7 @@ season.tbl_ts <- function(x, period){
 
 season.numeric <- function(x, period){
   season_exprs <- period %>% 
-    map(function(.x) expr(as.factor((x%%(!!.x))+1))) %>%
+    map(function(.x) expr(factor((x%%(!!.x))+1, levels = seq_len(!!.x)))) %>%
     set_names(names(period)%||%paste0("season_", period))
   tibble(!!!season_exprs)
 }
