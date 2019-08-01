@@ -174,11 +174,10 @@
 <a class="sourceLine" id="cb7-13" data-line-number="13"><span class="co">#&gt;         l         b       s1       s2        s3       s4</span></a>
 <a class="sourceLine" id="cb7-14" data-line-number="14"><span class="co">#&gt;  424.0777 -2.535481 -26.7441 4.256618 -10.10668 32.59417</span></a>
 <a class="sourceLine" id="cb7-15" data-line-number="15"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb7-16" data-line-number="16"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb7-17" data-line-number="17"><span class="co">#&gt;   sigma^2:  0.011</span></a>
-<a class="sourceLine" id="cb7-18" data-line-number="18"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb7-19" data-line-number="19"><span class="co">#&gt;       AIC      AICc       BIC </span></a>
-<a class="sourceLine" id="cb7-20" data-line-number="20"><span class="co">#&gt;  991.7305  994.3020 1013.1688</span></a></code></pre></div>
+<a class="sourceLine" id="cb7-16" data-line-number="16"><span class="co">#&gt;   sigma^2:  0.011</span></a>
+<a class="sourceLine" id="cb7-17" data-line-number="17"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb7-18" data-line-number="18"><span class="co">#&gt;       AIC      AICc       BIC </span></a>
+<a class="sourceLine" id="cb7-19" data-line-number="19"><span class="co">#&gt;  991.7305  994.3020 1013.1688</span></a></code></pre></div>
 <p>The fitted values and residuals from a model can obtained using <code><a href="https://www.rdocumentation.org/packages/stats/topics/fitted.values">fitted()</a></code> and <code><a href="https://www.rdocumentation.org/packages/stats/topics/residuals">residuals()</a></code> respectively. Additionally, the <code>augment()</code> function may be more convenient, which provides the original data along with both fitted values and their residuals.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">fit <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb8-2" data-line-number="2"><span class="st">  </span><span class="kw">augment</span>()</a>
