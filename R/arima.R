@@ -355,7 +355,8 @@ specials_arima <- new_specials(
     env <- map(enquos(...), get_env)
     env[map_lgl(env, compose(is_empty, env_parents))] <- NULL
     env <- if(!is_empty(env)) get_env(env[[1]]) else base_env()
-    constants <- map_lgl(dots, inherits, "numeric") 
+    
+    constants <- map_lgl(dots, inherits, "numeric")
     constant_given <- any(map_lgl(dots[constants], `%in%`, -1:1))
     
     model_formula <- new_formula(
@@ -363,9 +364,10 @@ specials_arima <- new_specials(
       rhs = reduce(dots, function(.x, .y) call2("+", .x, .y))
     )
     
-    xreg <- terms(model_formula)
-    constant <- as_logical(xreg%@%"intercept")
-    xreg <- model.matrix(xreg, data = env, na.action = stats::na.pass)
+    env$lag <- lag # Mask user defined lag to retain history when forecasting
+    xreg <- model.frame(model_formula, data = env, na.action = stats::na.pass)
+    constant <- as_logical(terms(xreg)%@%"intercept")
+    xreg <- model.matrix(terms(xreg), xreg)
     
     if(constant){
       xreg <- xreg[,-1]

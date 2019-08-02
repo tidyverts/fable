@@ -148,4 +148,16 @@ test_that("ARIMA with xregs", {
     model_sum(fable_fit$model[[1]]),
     "LM w/ ARIMA(1,1,1) errors"
   )
+  
+  fable_fit <- tr %>%
+    model(model = ARIMA(mdeaths ~ 1 + lag(fdeaths) + PDQ(P=0,Q=0)))
+  expect_equal(
+    model_sum(fable_fit$model[[1]]),
+    "LM w/ ARIMA(5,0,0) errors"
+  )
+  fable_fc <- fable_fit %>% 
+    forecast(ts)
+  expect_true(
+    !any(is.na(fable_fc$mdeaths))
+  )
 })

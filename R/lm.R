@@ -89,7 +89,10 @@ specials_tslm <- new_specials(
     )
     env <- parent.frame()
     if(!exists("list", env)) env <- base_env()
-    mm <- model.matrix(model_formula, data = env, na.action = stats::na.pass)
+    
+    env$lag <- lag # Mask user defined lag to retain history when forecasting
+    xreg <- model.frame(model_formula, data = env, na.action = stats::na.pass)
+    mm <- model.matrix(terms(xreg), xreg)
     if(NROW(mm) == 0 && identical(colnames(mm), "(Intercept)")){
       return(matrix(data = 1, nrow = NROW(self$data), dimnames = list(NULL, "(Intercept)")))
     }
