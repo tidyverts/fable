@@ -236,10 +236,10 @@ specials_ets <- new_specials(
 #'
 #'
 #' @author Rob J Hyndman & Mitchell O'Hara-Wild
-#' 
-#' @seealso 
+#'
+#' @seealso
 #' [Forecasting: Principles and Practices, Exponential smoothing (chapter 8)](https://otexts.com/fpp3/expsmooth.html)
-#' 
+#'
 #' @references Hyndman, R.J., Koehler, A.B., Snyder, R.D., and Grose, S. (2002)
 #' "A state space framework for automatic forecasting using exponential
 #' smoothing methods", \emph{International J. Forecasting}, \bold{18}(3),
@@ -274,10 +274,10 @@ ETS <- function(formula, opt_crit = c("lik", "amse", "mse", "sigma", "mae"),
 }
 
 #' @inherit forecast.ARIMA
-#' 
+#'
 #' @param simulate If `TRUE`, prediction intervals are produced by simulation rather than using analytic formulae.
 #' @param times The number of sample paths to use in estimating the forecast distribution if simulated intervals are used.
-#' 
+#'
 #' @export
 forecast.ETS <- function(object, new_data, specials = NULL, simulate = FALSE, bootstrap = FALSE, times = 5000, ...){
   errortype <- object$spec$errortype
@@ -323,22 +323,22 @@ forecast.ETS <- function(object, new_data, specials = NULL, simulate = FALSE, bo
 }
 
 #' Generate new data from a fable model
-#' 
-#' Simulates future paths from a dataset using a fitted model. Innovations are 
+#'
+#' Simulates future paths from a dataset using a fitted model. Innovations are
 #' sampled by the model's assumed error distribution. If `bootstrap` is `TRUE`,
-#' innovations will be sampled from the model's residuals. If `new_data` 
+#' innovations will be sampled from the model's residuals. If `new_data`
 #' contains the `.innov` column, those values will be treated as innovations.
-#' 
+#'
 #' @inheritParams forecast.ETS
 #' @param x A fitted model.
-#' 
-#' @examples 
+#'
+#' @examples
 #' as_tsibble(USAccDeaths) %>%
-#'   model(ETS(log(value) ~ season("A"))) %>% 
+#'   model(ETS(log(value) ~ season("A"))) %>%
 #'   generate(times = 100)
-#'   
+#'
 #' @seealso [`fabletools::generate.mdl_df`]
-#' 
+#'
 #' @export
 generate.ETS <- function(x, new_data, specials, bootstrap = FALSE, ...){
   if(!is_regular(new_data)){
@@ -398,25 +398,25 @@ generate.ETS <- function(x, new_data, specials, bootstrap = FALSE, ...){
 
 
 #' Refit an ETS model
-#' 
+#'
 #' Applies a fitted ETS model to a new dataset.
-#' 
+#'
 #' @inheritParams refit.ARIMA
 #' @param reinitialise If TRUE, the initial parameters will be re-estimated to suit the new data.
-#' 
-#' @examples 
+#'
+#' @examples
 #' lung_deaths_male <- as_tsibble(mdeaths)
 #' lung_deaths_female <- as_tsibble(fdeaths)
-#' 
-#' fit <- lung_deaths_male %>% 
+#'
+#' fit <- lung_deaths_male %>%
 #'   model(ETS(value))
-#'   
+#'
 #' report(fit)
-#' 
-#' fit %>% 
-#'  refit(lung_deaths_female, reinitialise = TRUE) %>% 
+#'
+#' fit %>%
+#'  refit(lung_deaths_female, reinitialise = TRUE) %>%
 #'  report()
-#' 
+#'
 #' @importFrom stats formula residuals
 #' @export
 refit.ETS <- function(object, new_data, specials = NULL, reestimate = FALSE, reinitialise = TRUE, ...){
@@ -592,7 +592,6 @@ report.ETS <- function(object, ...) {
 
   cat("\n  Initial states:\n")
   print.data.frame(object$states[1,measured_vars(object$states)], row.names = FALSE)
-  cat("\n")
 
   cat("\n  sigma^2:  ")
   cat(round(object$fit$sigma2, 4))
