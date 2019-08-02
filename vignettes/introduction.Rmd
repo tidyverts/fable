@@ -23,7 +23,7 @@ library(dplyr)
 
 The fable package provides some commonly used univariate and multivariate time series forecasting models which can be used with tidy temporal data in the tsibble format. These models are used within a consistent and tidy modelling framework, allowing several models to be estimated, compared, combined, forecasted and otherwise worked with across many time series.
 
-Suppose we wanted to forecast the number of people travel domestically to Melbourne, Australia. In the `tsibble::tourism` dataset, this can be further broken down into 4 reasons of travel: "business", "holiday", "visiting friends and relatives" and "other reasons". The first observation from each series is shown below.
+Suppose we wanted to forecast the number of people travel domestically to Melbourne, Australia. In the `tsibble::tourism` dataset, this can be further broken down into 4 reasons of travel: "business", "holiday", "visiting friends and relatives" and "other reasons". The first observation from each series are shown below.
 
 ```{r data}
 tourism_melb <- tourism %>%
