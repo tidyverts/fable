@@ -3,6 +3,10 @@ url: https://fable.tidyverts.org
 template:
   params:
     bootswatch: cosmo
+    ganalytics: UA-145057858-1
+
+development:
+  mode: auto
 
 authors:
   Rob Hyndman:
@@ -19,6 +23,12 @@ navbar:
     href: reference/index.html
   - text: Changelog
     href: news/index.html
+  - text: Vignettes
+    menu:
+    - text: Introduction to fable
+      href: articles/fable.html
+    - text: Forecasting with transformations
+      href: articles/transformations.html
   right:
   - text: Feedback
     href: https://docs.google.com/forms/d/e/1FAIpQLSfc66U8e8e-x_7TeWpuBAtxqdJD4UXozdkLgmBI3mlRuKPkzA/viewform?usp=sf_link
