@@ -60,6 +60,16 @@ seasonal period." />
 <![endif]-->
 
 
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-145057858-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-145057858-1');
+</script>
+
   </head>
 
   <body>
@@ -76,7 +86,7 @@ seasonal period." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9100</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9100</span>
       </span>
     </div>
 
@@ -87,6 +97,21 @@ seasonal period." />
 </li>
 <li>
   <a href="../news/index.html">Changelog</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Vignettes
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/fable.html">Introduction to fable</a>
+    </li>
+    <li>
+      <a href="../articles/transformations.html">Forecasting with transformations</a>
+    </li>
+  </ul>
 </li>
       </ul>
       
