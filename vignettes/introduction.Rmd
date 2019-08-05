@@ -11,7 +11,8 @@ vignette: >
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.height = 10
+  fig.height = 4,
+  fig.width = 7
 )
 ```
 
@@ -57,7 +58,7 @@ A mable contains a row for each time series (uniquely identified by the key vari
 
 The `coef()` or `tidy()` function is used to extract the coefficients from the models. It's possible to use `select()` and other verbs to focus on the coefficients from a particular model.
 
-```{r}
+```{r coef}
 fit %>% 
   select(arima) %>% 
   coef()
@@ -65,14 +66,14 @@ fit %>%
 
 The `glance()` function provides a one-row summary of each model, and commonly includes descriptions of the model's fit such as the residual variance and information criterions. Be wary though, as information criterions (AIC, AICc, BIC) are only comparable between the same model class and only if those models share the same response (after transformations and differencing).
 
-```{r}
+```{r glance}
 fit %>% 
   glance()
 ```
 
 If you're working with a single model (or want to look at one model in particular), the `report()` function gives a familiar and nicely formatted model-specific display.
 
-```{r}
+```{r report}
 fit %>% 
   filter(Purpose == "Holiday") %>% 
   select(ets) %>% 
@@ -81,14 +82,14 @@ fit %>%
 
 The fitted values and residuals from a model can obtained using `fitted()` and `residuals()` respectively. Additionally, the `augment()` function may be more convenient, which provides the original data along with both fitted values and their residuals.
 
-```{r}
+```{r augment}
 fit %>% 
   augment()
 ```
 
 To compare how well the models fit the data we can consider some common accuracy measures. It seems that on the training set the ETS model out-performs ARIMA for the series where travellers are on holiday, business and visiting friends and relatives. The [*Evaluating modelling accuracy*](https://otexts.com/fpp3/evaluation.html) chapter from the [*Forecasting: Principles and Practices (3rd Ed.)*](https://otexts.com/fpp3/) textbook provides more detail in how modelling and forecasting accuracy is evaluated.
 
-```{r}
+```{r accuracy}
 fit %>% 
   accuracy() %>% 
   arrange(MASE)
@@ -96,7 +97,7 @@ fit %>%
 
 Forecasts from these models can be produced directly as our specified models do not require on any additional data.
 
-```{r}
+```{r fc}
 fc <- fit %>% 
   forecast(h = "5 years")
 fc
@@ -106,14 +107,14 @@ The resulting forecasts are contained in a "fable" (forecast table), and both po
 
 Intervals can be extracted from the distribution using the `hilo()` function.
 
-```{r}
+```{r dist-hilo}
 fc %>% 
   mutate(interval = hilo(.distribution, 80))
 ```
 
 It may be more convenient to use `hilo()` on the entire fable, which allows you to extract multiple intervals at once.
 
-```{r}
+```{r fc-hilo}
 fc %>% 
   hilo(level = c(80, 95))
 ```
@@ -132,7 +133,7 @@ fc %>%
 
 Lastly you can see a plot of the forecasts using `autoplot()`. To see the historical data along with the forecasts you can provide it as the first argument to the function.
 
-```{r}
+```{r fc-plot, fig.height=10}
 fc %>% 
   autoplot(tourism_melb)
 ```
