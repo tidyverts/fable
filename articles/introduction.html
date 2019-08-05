@@ -104,7 +104,7 @@
 <p>The variable that we’d like to estimate is the number of overnight trips (in thousands) represented by the <code>Trips</code> variable. A plot of the data reveals that some trends and weak seasonality are apparent.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">tourism_melb <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb3-2" data-line-number="2"><span class="st">  </span><span class="kw">autoplot</span>(Trips)</a></code></pre></div>
-<p><img src="introduction_files/figure-html/plot-1.png" width="700"></p>
+<p><img src="introduction_files/figure-html/plot-1.png" width="672"></p>
 <p>Two widely used models available in this package are ETS and ARIMA. These models are specified using a compact formula representation (much like cross-sectional models such as <code><a href="https://www.rdocumentation.org/packages/stats/topics/lm">lm()</a></code>). The response variable (<code>Trips</code>) and any transformations are included on the left, while the model specification is on the right of the formula. When a model is not fully specified (or if the formula’s right side is missing completely), the unspecified components will be chosen automatically.</p>
 <p>Suppose we insist that the ETS model must have an additive trend, and want the other elements to be chosen automatically. This model would be specified using <code><a href="../reference/ETS.html">ETS(Trips ~ trend("A"))</a></code>. Similarly, a completely automatic ARIMA model (much like <code>auto.arima()</code> from the <code>forecast</code> package) can be specified using <code><a href="../reference/ARIMA.html">ARIMA(Trips)</a></code>. The <code>model()</code> function is used to estimate these model specifications on a particular dataset, and will return a “mable” (model table).</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">fit &lt;-<span class="st"> </span>tourism_melb <span class="op">%&gt;%</span><span class="st"> </span></a>
@@ -282,7 +282,7 @@ fc %>%
 <p>Lastly you can see a plot of the forecasts using <code>autoplot()</code>. To see the historical data along with the forecasts you can provide it as the first argument to the function.</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">fc <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb13-2" data-line-number="2"><span class="st">  </span><span class="kw">autoplot</span>(tourism_melb)</a></code></pre></div>
-<p><img src="introduction_files/figure-html/unnamed-chunk-11-1.png" width="700"></p>
+<p><img src="introduction_files/figure-html/fc-plot-1.png" width="672"></p>
 <p>More model methods may be supported by particular models, including the ability to <code>refit()</code> the model to new data, <code>stream()</code> in new data to extend the fit, <code>generate()</code> simulated paths from a model, <code>interpolate()</code> missing values, extract <code>components()</code> from the fitted model, and display the model’s <code>equation()</code>.</p>
 <p>More information about modelling time series and using the fable package can be found in <a href="https://otexts.com/fpp3/"><em>Forecasting: Principles and Practices (3rd Ed.)</em></a> and in the <a href="fable.tidyverts.org/"><em>pkgdown site</em></a>.</p>
   </div>
