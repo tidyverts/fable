@@ -370,7 +370,7 @@ specials_arima <- new_specials(
     xreg <- model.matrix(terms(xreg), xreg)
     
     if(constant){
-      xreg <- xreg[,-1]
+      xreg <- xreg[,-1,drop=FALSE]
     }
     
     list(
