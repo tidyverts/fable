@@ -3,7 +3,7 @@ context("test-nnetar")
 airmiles <- as_tsibble(airmiles)
 test_that("Automatic NNETAR selection", {
   air_fit <- airmiles %>% model(NNETAR(box_cox(value, 0.15)))
-  expect_output(print(air_fit), regexp = "NNAR\\(1,1\\)")
+  expect_equal(model_sum(air_fit[[1]][[1]]), "NNAR(1,1)")
   
   # Test with xreg
   air_fit <- airmiles %>% model(NNETAR(box_cox(value, 0.15) ~ trend() + rnorm(length(index))))
@@ -36,7 +36,7 @@ test_that("Automatic NNETAR selection", {
 test_that("Manual NNETAR selection", {
   fit <- UKLungDeaths %>% 
     model(NNETAR(mdeaths ~ AR(p = 3, P = 2)))
-  expect_output(print(fit), regexp = "NNAR\\(3,2,3\\)\\[12\\]")
+  expect_equal(model_sum(fit[[1]][[1]]), "NNAR(3,2,3)[12]")
   
   expect_equal(
     with(augment(fit), .fitted + .resid)[-(1:24)],
