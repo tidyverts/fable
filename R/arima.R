@@ -366,7 +366,7 @@ specials_arima <- new_specials(
     
     env$lag <- lag # Mask user defined lag to retain history when forecasting
     xreg <- model.frame(model_formula, data = env, na.action = stats::na.pass)
-    constant <- as_logical(terms(xreg)%@%"intercept")
+    constant <- as.logical(terms(xreg)%@%"intercept")
     xreg <- model.matrix(terms(xreg), xreg)
     
     if(constant){
