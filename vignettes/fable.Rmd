@@ -140,4 +140,4 @@ fc %>%
 
 More model methods may be supported by particular models, including the ability to `refit()` the model to new data, `stream()` in new data to extend the fit, `generate()` simulated paths from a model, `interpolate()` missing values, extract `components()` from the fitted model, and display the model's `equation()`.
 
-More information about modelling time series and using the fable package can be found in [*Forecasting: Principles and Practices (3rd Ed.)*](https://otexts.com/fpp3/) and in the [*pkgdown site*](fable.tidyverts.org/).
+More information about modelling time series and using the fable package can be found in [*Forecasting: Principles and Practices (3rd Ed.)*](https://otexts.com/fpp3/) and in the [*pkgdown site*](https://fable.tidyverts.org/).
