@@ -44,9 +44,6 @@ LinkingTo:
     RcppArmadillo (>= 0.2.3)
 VignetteBuilder: 
     knitr
-Remotes:
-    tidyverts/fabletools,
-    tidyverts/feasts
 ByteCompile: true
 Encoding: UTF-8
 Language: en-GB
