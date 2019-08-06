@@ -22,3 +22,7 @@ Unfortunately due to this dependency, the packages could not be tested using
 win-builder. Instead these packages have been checked on Windows using AppVeyor.
 
 Apologies for the added complexity in reviewing this submission.
+
+## Re-submission
+
+* Fixed URL in vignette.
