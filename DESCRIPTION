@@ -1,6 +1,6 @@
 Package: fable
 Title: Forecasting tidy time series
-Version: 0.0.0.9100
+Version: 0.1.0
 Authors@R: 
     c(person(given = "Mitchell",
              family = "O'Hara-Wild",
