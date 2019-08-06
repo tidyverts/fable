@@ -27,13 +27,13 @@ Applies a fitted ETS model to a new dataset.
 lung_deaths_male <- as_tsibble(mdeaths)
 lung_deaths_female <- as_tsibble(fdeaths)
 
-fit <- lung_deaths_male \%>\% 
+fit <- lung_deaths_male \%>\%
   model(ETS(value))
-  
+
 report(fit)
 
-fit \%>\% 
- refit(lung_deaths_female, reinitialise = TRUE) \%>\% 
+fit \%>\%
+ refit(lung_deaths_female, reinitialise = TRUE) \%>\%
  report()
 
 }

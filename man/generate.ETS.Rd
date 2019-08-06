@@ -25,9 +25,9 @@ contains the \code{.innov} column, those values will be treated as innovations.
 }
 \examples{
 as_tsibble(USAccDeaths) \%>\%
-  model(ETS(log(value) ~ season("A"))) \%>\% 
+  model(ETS(log(value) ~ season("A"))) \%>\%
   generate(times = 100)
-  
+
 }
 \seealso{
 \code{\link[fabletools:generate.mdl_df]{fabletools::generate.mdl_df}}
