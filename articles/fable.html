@@ -107,11 +107,11 @@
 <a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tsibble)</a>
 <a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(dplyr)</a></code></pre></div>
 <p>The fable package provides some commonly used univariate and multivariate time series forecasting models which can be used with tidy temporal data in the tsibble format. These models are used within a consistent and tidy modelling framework, allowing several models to be estimated, compared, combined, forecasted and otherwise worked with across many time series.</p>
-<p>Suppose we wanted to forecast the number of people travel domestically to Melbourne, Australia. In the <code><a href="https://tsibble.tidyverts.org/reference/tourism.html">tsibble::tourism</a></code> dataset, this can be further broken down into 4 reasons of travel: “business”, “holiday”, “visiting friends and relatives” and “other reasons”. The first observation from each series are shown below.</p>
+<p>Suppose we wanted to forecast the number of domestic travellers to Melbourne, Australia. In the <code><a href="https://tsibble.tidyverts.org/reference/tourism.html">tsibble::tourism</a></code> data set, this can be further broken down into 4 reasons of travel: “business”, “holiday”, “visiting friends and relatives” and “other reasons”. The first observation from each series are shown below.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">tourism_melb &lt;-<span class="st"> </span>tourism <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb2-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(Region <span class="op">==</span><span class="st"> "Melbourne"</span>)</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">tourism_melb <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(Purpose) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">tourism_melb <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(Purpose) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb2-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span>(<span class="dv">1</span>)</a>
 <a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt; # A tsibble: 4 x 5 [?]</span></a>
 <a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt; # Key:       Region, State, Purpose [4]</span></a>
@@ -123,12 +123,12 @@
 <a class="sourceLine" id="cb2-13" data-line-number="13"><span class="co">#&gt; 3 1998 Q1 Melbourne Victoria Other     79.9</span></a>
 <a class="sourceLine" id="cb2-14" data-line-number="14"><span class="co">#&gt; 4 1998 Q1 Melbourne Victoria Visiting 666.</span></a></code></pre></div>
 <p>The variable that we’d like to estimate is the number of overnight trips (in thousands) represented by the <code>Trips</code> variable. A plot of the data reveals that some trends and weak seasonality are apparent.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">tourism_melb <span class="op">%&gt;%</span><span class="st"> </span></a>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">tourism_melb <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb3-2" data-line-number="2"><span class="st">  </span><span class="kw">autoplot</span>(Trips)</a></code></pre></div>
 <p><img src="fable_files/figure-html/plot-1.png" width="672"></p>
-<p>Two widely used models available in this package are ETS and ARIMA. These models are specified using a compact formula representation (much like cross-sectional models such as <code><a href="https://www.rdocumentation.org/packages/stats/topics/lm">lm()</a></code>). The response variable (<code>Trips</code>) and any transformations are included on the left, while the model specification is on the right of the formula. When a model is not fully specified (or if the formula’s right side is missing completely), the unspecified components will be chosen automatically.</p>
-<p>Suppose we insist that the ETS model must have an additive trend, and want the other elements to be chosen automatically. This model would be specified using <code><a href="../reference/ETS.html">ETS(Trips ~ trend("A"))</a></code>. Similarly, a completely automatic ARIMA model (much like <code>auto.arima()</code> from the <code>forecast</code> package) can be specified using <code><a href="../reference/ARIMA.html">ARIMA(Trips)</a></code>. The <code>model()</code> function is used to estimate these model specifications on a particular dataset, and will return a “mable” (model table).</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">fit &lt;-<span class="st"> </span>tourism_melb <span class="op">%&gt;%</span><span class="st"> </span></a>
+<p>Two widely used models available in this package are ETS and ARIMA. These models are specified using a compact formula representation (much like cross-sectional linear models using <code><a href="https://www.rdocumentation.org/packages/stats/topics/lm">lm()</a></code>). The response variable (<code>Trips</code>) and any transformations are included on the left, while the model specification is on the right of the formula. When a model is not fully specified (or if the formula’s right side is missing completely), the unspecified components will be chosen automatically.</p>
+<p>Suppose we think that the ETS model must have an additive trend, and want the other elements to be chosen automatically. This model would be specified using <code><a href="../reference/ETS.html">ETS(Trips ~ trend("A"))</a></code>. Similarly, a completely automatic ARIMA model (much like <code>auto.arima()</code> from the <code>forecast</code> package) can be specified using <code><a href="../reference/ARIMA.html">ARIMA(Trips)</a></code>. The <code>model()</code> function is used to estimate these model specifications on a particular dataset, and will return a “mable” (model table).</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">fit &lt;-<span class="st"> </span>tourism_melb <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb4-2" data-line-number="2"><span class="st">  </span><span class="kw">model</span>(</a>
 <a class="sourceLine" id="cb4-3" data-line-number="3">    <span class="dt">ets =</span> <span class="kw"><a href="../reference/ETS.html">ETS</a></span>(Trips <span class="op">~</span><span class="st"> </span><span class="kw">trend</span>(<span class="st">"A"</span>)),</a>
 <a class="sourceLine" id="cb4-4" data-line-number="4">    <span class="dt">arima =</span> <span class="kw"><a href="../reference/ARIMA.html">ARIMA</a></span>(Trips)</a>
@@ -142,10 +142,10 @@
 <a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">#&gt; 2 Melbourne Victoria Holiday  &lt;ETS(M,A,A)&gt; &lt;ARIMA(0,1,1) w/ drift&gt;         </span></a>
 <a class="sourceLine" id="cb4-13" data-line-number="13"><span class="co">#&gt; 3 Melbourne Victoria Other    &lt;ETS(A,A,N)&gt; &lt;ARIMA(0,1,1) w/ drift&gt;         </span></a>
 <a class="sourceLine" id="cb4-14" data-line-number="14"><span class="co">#&gt; 4 Melbourne Victoria Visiting &lt;ETS(M,A,A)&gt; &lt;ARIMA(0,1,1)(1,0,2)[4]&gt;</span></a></code></pre></div>
-<p>A mable contains a row for each time series (uniquely identified by the key variables), and a column for each model specification. A model is contained within the cells of each model column. In the example above we can see that the all four ETS models have an additive trend, and the error and seasonality has been chosen automatically. Similarly, the ARIMA model varies between time series as it has been automatically selected.</p>
+<p>A mable contains a row for each time series (uniquely identified by the key variables), and a column for each model specification. A model is contained within the cells of each model column. In the example above we can see that the all four ETS models have an additive trend, and the error and seasonality have been chosen automatically. Similarly, the ARIMA model varies between time series as it has been automatically selected.</p>
 <p>The <code><a href="https://www.rdocumentation.org/packages/stats/topics/coef">coef()</a></code> or <code>tidy()</code> function is used to extract the coefficients from the models. It’s possible to use <code><a href="https://dplyr.tidyverse.org/reference/select.html">select()</a></code> and other verbs to focus on the coefficients from a particular model.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">fit <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(arima) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">fit <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(arima) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb5-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/coef">coef</a></span>()</a>
 <a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt; # A tibble: 13 x 9</span></a>
 <a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt;    Region  State Purpose .model term  estimate std.error statistic  p.value</span></a>
@@ -163,8 +163,8 @@
 <a class="sourceLine" id="cb5-17" data-line-number="17"><span class="co">#&gt; 11 Melbou… Vict… Visiti… arima  sar1     0.659    0.193      3.41  1.06e- 3</span></a>
 <a class="sourceLine" id="cb5-18" data-line-number="18"><span class="co">#&gt; 12 Melbou… Vict… Visiti… arima  sma1    -0.402    0.206     -1.95  5.49e- 2</span></a>
 <a class="sourceLine" id="cb5-19" data-line-number="19"><span class="co">#&gt; 13 Melbou… Vict… Visiti… arima  sma2     0.322    0.143      2.26  2.70e- 2</span></a></code></pre></div>
-<p>The <code>glance()</code> function provides a one-row summary of each model, and commonly includes descriptions of the model’s fit such as the residual variance and information criterions. Be wary though, as information criterions (AIC, AICc, BIC) are only comparable between the same model class and only if those models share the same response (after transformations and differencing).</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">fit <span class="op">%&gt;%</span><span class="st"> </span></a>
+<p>The <code>glance()</code> function provides a one-row summary of each model, and commonly includes descriptions of the model’s fit such as the residual variance and information criteria. Be wary though, as information criteria (AIC, AICc, BIC) are only comparable between the same model class and only if those models share the same response (after transformations and differencing).</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">fit <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb6-2" data-line-number="2"><span class="st">  </span><span class="kw">glance</span>()</a>
 <a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co">#&gt; # A tibble: 8 x 15</span></a>
 <a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">#&gt;   Region State Purpose .model  sigma2 log_ik   AIC  AICc   BIC   MSE  AMSE</span></a>
@@ -180,9 +180,9 @@
 <a class="sourceLine" id="cb6-14" data-line-number="14"><span class="co">#&gt; # … with 4 more variables: MAE &lt;dbl&gt;, log_lik &lt;dbl&gt;, ar_roots &lt;list&gt;,</span></a>
 <a class="sourceLine" id="cb6-15" data-line-number="15"><span class="co">#&gt; #   ma_roots &lt;list&gt;</span></a></code></pre></div>
 <p>If you’re working with a single model (or want to look at one model in particular), the <code>report()</code> function gives a familiar and nicely formatted model-specific display.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">fit <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(Purpose <span class="op">==</span><span class="st"> "Holiday"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(ets) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">fit <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(Purpose <span class="op">==</span><span class="st"> "Holiday"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(ets) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb7-4" data-line-number="4"><span class="st">  </span><span class="kw">report</span>()</a>
 <a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt; Series: Trips </span></a>
 <a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">#&gt; Model: ETS(M,A,A) </span></a>
@@ -200,7 +200,7 @@
 <a class="sourceLine" id="cb7-18" data-line-number="18"><span class="co">#&gt;       AIC      AICc       BIC </span></a>
 <a class="sourceLine" id="cb7-19" data-line-number="19"><span class="co">#&gt;  991.7305  994.3020 1013.1688</span></a></code></pre></div>
 <p>The fitted values and residuals from a model can obtained using <code><a href="https://www.rdocumentation.org/packages/stats/topics/fitted.values">fitted()</a></code> and <code><a href="https://www.rdocumentation.org/packages/stats/topics/residuals">residuals()</a></code> respectively. Additionally, the <code>augment()</code> function may be more convenient, which provides the original data along with both fitted values and their residuals.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">fit <span class="op">%&gt;%</span><span class="st"> </span></a>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">fit <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb8-2" data-line-number="2"><span class="st">  </span><span class="kw">augment</span>()</a>
 <a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co">#&gt; # A tsibble: 640 x 8 [1Q]</span></a>
 <a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co">#&gt; # Key:       Region, State, Purpose, .model [8]</span></a>
@@ -217,9 +217,9 @@
 <a class="sourceLine" id="cb8-15" data-line-number="15"><span class="co">#&gt;  9 Melbourne Victoria Business ets    2000 Q1  495.    364.  130.  </span></a>
 <a class="sourceLine" id="cb8-16" data-line-number="16"><span class="co">#&gt; 10 Melbourne Victoria Business ets    2000 Q2  499.    477.   22.0 </span></a>
 <a class="sourceLine" id="cb8-17" data-line-number="17"><span class="co">#&gt; # … with 630 more rows</span></a></code></pre></div>
-<p>To compare how well the models fit the data we can consider some common accuracy measures. It seems that on the training set the ETS model out-performs ARIMA for the series where travellers are on holiday, business and visiting friends and relatives. The <a href="https://otexts.com/fpp3/evaluation.html"><em>Evaluating modelling accuracy</em></a> chapter from the <a href="https://otexts.com/fpp3/"><em>Forecasting: Principles and Practices (3rd Ed.)</em></a> textbook provides more detail in how modelling and forecasting accuracy is evaluated.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">fit <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="st">  </span><span class="kw">accuracy</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<p>To compare how well the models fit the data, we can consider some common accuracy measures. It seems that on the training set the ETS model out-performs ARIMA for the series where travellers are on holiday, business, and visiting friends and relatives. The <a href="https://otexts.com/fpp3/evaluation.html"><em>Evaluating modelling accuracy</em></a> chapter from the <a href="https://otexts.com/fpp3/"><em>Forecasting: Principles and Practices (3rd Ed.)</em></a> textbook provides more detail in how modelling and forecasting accuracy is evaluated.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">fit <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="st">  </span><span class="kw">accuracy</span>() <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb9-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(MASE)</a>
 <a class="sourceLine" id="cb9-4" data-line-number="4"><span class="co">#&gt; # A tibble: 8 x 12</span></a>
 <a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co">#&gt;   Region State Purpose .model .type     ME  RMSE   MAE    MPE  MAPE  MASE</span></a>
@@ -233,8 +233,8 @@
 <a class="sourceLine" id="cb9-13" data-line-number="13"><span class="co">#&gt; 7 Melbo… Vict… Visiti… ets    Trai…  8.17   60.9  51.4  0.433  8.28 0.819</span></a>
 <a class="sourceLine" id="cb9-14" data-line-number="14"><span class="co">#&gt; 8 Melbo… Vict… Visiti… arima  Trai…  6.89   63.1  51.7  0.106  8.44 0.825</span></a>
 <a class="sourceLine" id="cb9-15" data-line-number="15"><span class="co">#&gt; # … with 1 more variable: ACF1 &lt;dbl&gt;</span></a></code></pre></div>
-<p>Forecasts from these models can be produced directly as our specified models do not require on any additional data.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">fc &lt;-<span class="st"> </span>fit <span class="op">%&gt;%</span><span class="st"> </span></a>
+<p>Forecasts from these models can be produced directly as our specified models do not require any additional data.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">fc &lt;-<span class="st"> </span>fit <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb10-2" data-line-number="2"><span class="st">  </span><span class="kw">forecast</span>(<span class="dt">h =</span> <span class="st">"5 years"</span>)</a>
 <a class="sourceLine" id="cb10-3" data-line-number="3">fc</a>
 <a class="sourceLine" id="cb10-4" data-line-number="4"><span class="co">#&gt; # A fable: 160 x 7 [1Q]</span></a>
@@ -254,7 +254,7 @@
 <a class="sourceLine" id="cb10-18" data-line-number="18"><span class="co">#&gt; # … with 150 more rows</span></a></code></pre></div>
 <p>The resulting forecasts are contained in a “fable” (forecast table), and both point forecasts (<code>Trips</code>) and forecast distributions (<code>.distribution</code>) are available in the table for the next five years.</p>
 <p>Intervals can be extracted from the distribution using the <code>hilo()</code> function.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">fc <span class="op">%&gt;%</span><span class="st"> </span></a>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">fc <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb11-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">interval =</span> <span class="kw">hilo</span>(.distribution, <span class="dv">80</span>))</a>
 <a class="sourceLine" id="cb11-3" data-line-number="3"><span class="co">#&gt; # A fable: 160 x 8 [1Q]</span></a>
 <a class="sourceLine" id="cb11-4" data-line-number="4"><span class="co">#&gt; # Key:     Region, State, Purpose, .model [8]</span></a>
@@ -272,7 +272,7 @@
 <a class="sourceLine" id="cb11-16" data-line-number="16"><span class="co">#&gt; 10 Melbou… Victo… Busine… ets      2020 Q2  800. N(800, 7458)  [689.3620, …</span></a>
 <a class="sourceLine" id="cb11-17" data-line-number="17"><span class="co">#&gt; # … with 150 more rows</span></a></code></pre></div>
 <p>It may be more convenient to use <code>hilo()</code> on the entire fable, which allows you to extract multiple intervals at once.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">fc <span class="op">%&gt;%</span><span class="st"> </span></a>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">fc <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb12-2" data-line-number="2"><span class="st">  </span><span class="kw">hilo</span>(<span class="dt">level =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">80</span>, <span class="dv">95</span>))</a>
 <a class="sourceLine" id="cb12-3" data-line-number="3"><span class="co">#&gt; # A tsibble: 160 x 8 [1Q]</span></a>
 <a class="sourceLine" id="cb12-4" data-line-number="4"><span class="co">#&gt; # Key:       Region, State, Purpose, .model [8]</span></a>
@@ -295,13 +295,13 @@ These intervals can also be unnested if you're looking to obtain the numerical v
 
 ```r
 library(tidyr)
-fc %>% 
-  mutate(interval = hilo(.distribution, 80)) %>% 
+fc %>%
+  mutate(interval = hilo(.distribution, 80)) %>%
   unnest_tsibble(interval)
 ```
 -->
-<p>Lastly you can see a plot of the forecasts using <code>autoplot()</code>. To see the historical data along with the forecasts you can provide it as the first argument to the function.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">fc <span class="op">%&gt;%</span><span class="st"> </span></a>
+<p>You can also see a plot of the forecasts using <code>autoplot()</code>. To see the historical data along with the forecasts you can provide it as the first argument to the function.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">fc <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb13-2" data-line-number="2"><span class="st">  </span><span class="kw">autoplot</span>(tourism_melb)</a></code></pre></div>
 <p><img src="fable_files/figure-html/fc-plot-1.png" width="672"></p>
 <p>More model methods may be supported by particular models, including the ability to <code>refit()</code> the model to new data, <code>stream()</code> in new data to extend the fit, <code>generate()</code> simulated paths from a model, <code>interpolate()</code> missing values, extract <code>components()</code> from the fitted model, and display the model’s <code>equation()</code>.</p>
