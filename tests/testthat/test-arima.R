@@ -2,6 +2,7 @@ context("test-arima.R")
 
 stats_fit <- arima(USAccDeaths, c(0,1,1), list(order = c(0,1,1), 12))
 test_that("Automatic ARIMA selection", {
+  skip_if_not_installed("feasts")
   # Automatic model selection
   fable_fit <- USAccDeaths_tbl %>% 
     model(arima = ARIMA(value ~ pdq(0:1,0:1,0:1) + PDQ(0:1,0:1,0:1)))
@@ -124,6 +125,7 @@ test_that("ARIMA with bad inputs", {
 })
 
 test_that("ARIMA with xregs", {
+  skip_if_not_installed("feasts")
   tr <- UKLungDeaths %>% head(-12)
   ts <- UKLungDeaths %>% tail(12)
   fable_fit <- tr %>% model(model = ARIMA(mdeaths ~ 1 + fdeaths + PDQ(P=0,Q=0)))

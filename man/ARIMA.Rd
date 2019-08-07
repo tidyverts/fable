@@ -90,12 +90,14 @@ xreg(...)
 USAccDeaths \%>\% as_tsibble \%>\% 
   model(arima = ARIMA(log(value) ~ pdq(0,1,1) + PDQ(0,1,1)))
 
+if (requireNamespace("feasts", quietly = TRUE)) {
 # Automatic ARIMA specification
 library(tsibble)
 library(dplyr)
 tsibbledata::global_economy \%>\% 
   filter(Country == "Australia") \%>\%
   model(ARIMA(log(GDP) ~ Population))
+}
 
 }
 \seealso{

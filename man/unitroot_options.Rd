@@ -19,6 +19,3 @@ A vector of data to test is available as \code{.} or \code{.x}.}
 \description{
 Options for the unit root tests for order of integration
 }
-\seealso{
-\link[feasts:unitroot_ndiffs]{feasts::unitroot_ndiffs} and \link[feasts:unitroot_nsdiffs]{feasts::unitroot_nsdiffs}
-}

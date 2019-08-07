@@ -17,6 +17,5 @@ Construct a single row summary of the ARIMA model.
 \details{
 Contains the variance of residuals (\code{sigma2}), the log-likelihood (\code{log_lik}),
 information criterion (\code{AIC}, \code{AICc}, \code{BIC}) and the characteristic roots
-(\code{ar_roots} and \code{ma_roots}). The characteristic roots can be plotted using
-\code{\link[feasts:gg_arma]{feasts::gg_arma()}}.
+(\code{ar_roots} and \code{ma_roots}).
 }

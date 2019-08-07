@@ -460,12 +460,14 @@ specials_arima <- new_specials(
 #' USAccDeaths %>% as_tsibble %>% 
 #'   model(arima = ARIMA(log(value) ~ pdq(0,1,1) + PDQ(0,1,1)))
 #' 
+#' if (requireNamespace("feasts", quietly = TRUE)) {
 #' # Automatic ARIMA specification
 #' library(tsibble)
 #' library(dplyr)
 #' tsibbledata::global_economy %>% 
 #'   filter(Country == "Australia") %>%
 #'   model(ARIMA(log(GDP) ~ Population))
+#' }
 #' 
 #' @importFrom stats model.matrix
 #' @export
@@ -522,8 +524,7 @@ residuals.ARIMA <- function(object, type = c("innovation", "regression"), ...){
 #' 
 #' Contains the variance of residuals (`sigma2`), the log-likelihood (`log_lik`),
 #' information criterion (`AIC`, `AICc`, `BIC`) and the characteristic roots
-#' (`ar_roots` and `ma_roots`). The characteristic roots can be plotted using
-#' [`feasts::gg_arma()`].
+#' (`ar_roots` and `ma_roots`).
 #' 
 #' @inheritParams generics::glance
 #' 
@@ -720,9 +721,6 @@ arima_constant <- function(n, d, D, period){
 #' 
 #' For the function for the seasonal p-value, the seasonal period will be provided as the `.period` argument to this function.
 #' A vector of data to test is available as `.` or `.x`.
-#' 
-#' @seealso 
-#' [feasts::unitroot_ndiffs] and [feasts::unitroot_nsdiffs]
 #' 
 #' @export
 unitroot_options <- function(ndiffs_alpha = 0.05, nsdiffs_alpha = 0.05,

@@ -39,6 +39,7 @@ Suggests:
     spelling,
     testthat,
     tsibbledata
+Additional_repositories: https://tidyverts.org/
 LinkingTo:
     Rcpp (>= 0.11.0),
     RcppArmadillo (>= 0.2.3)
