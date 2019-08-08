@@ -4,7 +4,7 @@
 \name{fable-package}
 \alias{fable}
 \alias{fable-package}
-\title{fable: Forecasting tidy time series}
+\title{fable: Forecasting Models for Tidy Time Series}
 \description{
 \if{html}{\figure{logo.png}{options: align='right'}}
 
