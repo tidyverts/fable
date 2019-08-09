@@ -28,3 +28,9 @@ A list of forecasts.
 \description{
 Produces forecasts from a trained model.
 }
+\examples{
+as_tsibble(USAccDeaths) \%>\%
+  model(ets = ETS(log(value) ~ season("A"))) \%>\% 
+  forecast()
+
+}

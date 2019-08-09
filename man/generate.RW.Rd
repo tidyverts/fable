@@ -22,10 +22,14 @@ innovations will be sampled from the model's residuals. If \code{new_data}
 contains the \code{.innov} column, those values will be treated as innovations.
 }
 \examples{
-as_tsibble(USAccDeaths) \%>\%
-  model(ETS(log(value) ~ season("A"))) \%>\%
-  generate(times = 100)
+as_tsibble(Nile) \%>\%
+  model(NAIVE(value)) \%>\% 
+  generate()
 
+library(tsibbledata)
+aus_production \%>\% 
+  model(snaive = SNAIVE(Beer ~ lag("year"))) \%>\% 
+  generate()
 }
 \seealso{
 \code{\link[fabletools:generate.mdl_df]{fabletools::generate.mdl_df}}

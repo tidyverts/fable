@@ -17,3 +17,9 @@ A vector of fitted residuals.
 \description{
 Extracts the residuals.
 }
+\examples{
+as_tsibble(airmiles) \%>\%
+  model(nn = NNETAR(box_cox(value, 0.15))) \%>\% 
+  residuals()
+  
+}

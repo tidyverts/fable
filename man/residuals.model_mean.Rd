@@ -17,3 +17,10 @@ A vector of fitted residuals.
 \description{
 Extracts the residuals.
 }
+\examples{
+library(tsibbledata)
+vic_elec \%>\% 
+  model(avg = MEAN(Demand)) \%>\% 
+  residuals()
+  
+}

@@ -17,3 +17,10 @@ A vector of fitted values.
 \description{
 Extracts the fitted values.
 }
+\examples{
+USAccDeaths \%>\% 
+  as_tsibble \%>\% 
+  model(arima = ARIMA(log(value) ~ pdq(0,1,1) + PDQ(0,1,1))) \%>\% 
+  fitted()
+  
+}

@@ -25,10 +25,10 @@ innovations will be sampled from the model's residuals. If \code{new_data}
 contains the \code{.innov} column, those values will be treated as innovations.
 }
 \examples{
-as_tsibble(USAccDeaths) \%>\%
-  model(ETS(log(value) ~ season("A"))) \%>\%
-  generate(times = 100)
-
+as_tsibble(airmiles) \%>\%
+  model(nn = NNETAR(box_cox(value, 0.15))) \%>\% 
+  generate()
+  
 }
 \seealso{
 \code{\link[fabletools:generate.mdl_df]{fabletools::generate.mdl_df}}

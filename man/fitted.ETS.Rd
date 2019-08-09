@@ -17,3 +17,9 @@ A vector of fitted values.
 \description{
 Extracts the fitted values.
 }
+\examples{
+as_tsibble(USAccDeaths) \%>\%
+  model(ets = ETS(log(value) ~ season("A"))) \%>\% 
+  fitted()
+  
+}

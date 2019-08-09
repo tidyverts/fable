@@ -26,3 +26,10 @@ A list of forecasts.
 \description{
 Produces forecasts from a trained model.
 }
+\examples{
+library(tsibbledata)
+vic_elec \%>\% 
+  model(avg = MEAN(Demand)) \%>\% 
+  forecast()
+   
+}

@@ -17,3 +17,14 @@ A vector of fitted values.
 \description{
 Extracts the fitted values.
 }
+\examples{
+as_tsibble(Nile) \%>\%
+  model(NAIVE(value)) \%>\% 
+  fitted()
+
+library(tsibbledata)
+aus_production \%>\% 
+  model(snaive = SNAIVE(Beer ~ lag("year"))) \%>\% 
+  fitted()
+  
+}

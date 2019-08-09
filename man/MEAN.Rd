@@ -31,7 +31,7 @@ This model does not support usage of any specials. It only computes the mean!
 \examples{
 library(tsibbledata)
 vic_elec \%>\% 
-  model(rw = MEAN(Demand))
+  model(avg = MEAN(Demand))
 
 }
 \seealso{

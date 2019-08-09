@@ -17,3 +17,10 @@ A vector of fitted values.
 \description{
 Extracts the fitted values.
 }
+\examples{
+library(tsibbledata)
+vic_elec \%>\% 
+  model(avg = MEAN(Demand)) \%>\% 
+  fitted()
+  
+}

@@ -20,3 +20,10 @@ A vector of fitted residuals.
 \description{
 Extracts the residuals.
 }
+\examples{
+USAccDeaths \%>\% 
+  as_tsibble \%>\% 
+  model(arima = ARIMA(log(value) ~ pdq(0,1,1) + PDQ(0,1,1))) \%>\% 
+  residuals()
+
+}

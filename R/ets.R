@@ -236,9 +236,14 @@ specials_ets <- new_specials(
 #'
 #' @return A model specification.
 #' 
+#' @examples
+#' as_tsibble(USAccDeaths) %>%
+#'   model(ETS(log(value) ~ season("A")))
+#' 
 #' @seealso
 #' [Forecasting: Principles and Practices, Exponential smoothing (chapter 8)](https://otexts.com/fpp3/expsmooth.html)
 #'
+#' 
 #' @references Hyndman, R.J., Koehler, A.B., Snyder, R.D., and Grose, S. (2002)
 #' "A state space framework for automatic forecasting using exponential
 #' smoothing methods", \emph{International J. Forecasting}, \bold{18}(3),
@@ -251,13 +256,8 @@ specials_ets <- new_specials(
 #' Hyndman, R.J., Koehler, A.B., Ord, J.K., and Snyder, R.D. (2008)
 #' \emph{Forecasting with exponential smoothing: the state space approach},
 #' Springer-Verlag. \url{http://www.exponentialsmoothing.net}.
-#'
+#'   
 #' @export
-#'
-#' @examples
-#'
-#' as_tsibble(USAccDeaths) %>%
-#'   model(ETS(log(value) ~ season("A")))
 ETS <- function(formula, opt_crit = c("lik", "amse", "mse", "sigma", "mae"),
                 nmse = 3, bounds = c("both", "usual", "admissible"),
                 ic = c("aicc", "aic", "bic"), restrict = TRUE, ...){
@@ -276,6 +276,11 @@ ETS <- function(formula, opt_crit = c("lik", "amse", "mse", "sigma", "mae"),
 #'
 #' @param simulate If `TRUE`, prediction intervals are produced by simulation rather than using analytic formulae.
 #' @param times The number of sample paths to use in estimating the forecast distribution if simulated intervals are used.
+#'
+#' @examples 
+#' as_tsibble(USAccDeaths) %>%
+#'   model(ets = ETS(log(value) ~ season("A"))) %>% 
+#'   forecast()
 #'
 #' @export
 forecast.ETS <- function(object, new_data, specials = NULL, simulate = FALSE, bootstrap = FALSE, times = 5000, ...){
@@ -480,12 +485,24 @@ refit.ETS <- function(object, new_data, specials = NULL, reestimate = FALSE, rei
 }
 
 #' @inherit fitted.ARIMA
+#' 
+#' @examples 
+#' as_tsibble(USAccDeaths) %>%
+#'   model(ets = ETS(log(value) ~ season("A"))) %>% 
+#'   fitted()
+#'   
 #' @export
 fitted.ETS <- function(object, ...){
   object$est[[".fitted"]]
 }
 
 #' @inherit residuals.ARIMA
+#' 
+#' @examples 
+#' as_tsibble(USAccDeaths) %>%
+#'   model(ets = ETS(log(value) ~ season("A"))) %>% 
+#'   residuals()
+#'   
 #' @export
 residuals.ETS <- function(object, ...){
   object$est[[".resid"]]
@@ -502,12 +519,23 @@ residuals.ETS <- function(object, ...){
 #' 
 #' @return A one row tibble summarising the model's fit.
 #' 
+#' @examples 
+#' as_tsibble(USAccDeaths) %>%
+#'   model(ets = ETS(log(value) ~ season("A"))) %>% 
+#'   glance()
+#' 
 #' @export
 glance.ETS <- function(x, ...){
   x$fit
 }
 
 #' @inherit tidy.ARIMA
+#' 
+#' @examples 
+#' as_tsibble(USAccDeaths) %>%
+#'   model(ets = ETS(log(value) ~ season("A"))) %>% 
+#'   tidy()
+#'   
 #' @export
 tidy.ETS <- function(x, ...){
   x$par
@@ -519,6 +547,11 @@ tidy.ETS <- function(x, ...){
 #' @param ... Unused.
 #' 
 #' @return A [fabletools::dable()] containing estimated states.
+#' 
+#' @examples 
+#' as_tsibble(USAccDeaths) %>%
+#'   model(ets = ETS(log(value) ~ season("A"))) %>% 
+#'   components()
 #' 
 #' @export
 components.ETS <- function(object, ...){

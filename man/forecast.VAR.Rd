@@ -26,3 +26,12 @@ A list of forecasts.
 \description{
 Produces forecasts from a trained model.
 }
+\examples{
+lung_deaths <- cbind(mdeaths, fdeaths) \%>\%
+  as_tsibble(pivot_longer = FALSE)
+  
+lung_deaths \%>\%
+  model(VAR(vars(log(mdeaths), fdeaths) ~ AR(3))) \%>\% 
+  forecast()
+  
+}

@@ -227,6 +227,10 @@ specials_nnetar <- new_specials(
 #' 
 #' @return A model specification.
 #' 
+#' @examples 
+#' as_tsibble(airmiles) %>%
+#'   model(nn = NNETAR(box_cox(value, 0.15)))
+#' 
 #' @seealso 
 #' [Forecasting: Principles and Practices, Neural network models (section 11.3)](https://otexts.com/fpp2/nnetar.html)
 #' 
@@ -239,6 +243,12 @@ NNETAR <- function(formula, n_nodes = NULL, n_networks = 20, scale_inputs = TRUE
 }
 
 #' @inherit forecast.ETS
+#' 
+#' @examples 
+#' as_tsibble(airmiles) %>%
+#'   model(nn = NNETAR(box_cox(value, 0.15))) %>% 
+#'   forecast(times = 10)
+#' 
 #' @export
 forecast.NNETAR <- function(object, new_data, specials = NULL, simulate = TRUE, bootstrap = FALSE, times = 1000, ...){
   require_package("nnet")
@@ -299,6 +309,12 @@ forecast.NNETAR <- function(object, new_data, specials = NULL, simulate = TRUE, 
 }
 
 #' @inherit generate.ETS
+#'
+#' @examples 
+#' as_tsibble(airmiles) %>%
+#'   model(nn = NNETAR(box_cox(value, 0.15))) %>% 
+#'   generate()
+#'   
 #' @export
 generate.NNETAR <- function(x, new_data, specials = NULL, bootstrap = FALSE, ...){
   # Prepare xreg
@@ -365,22 +381,55 @@ generate.NNETAR <- function(x, new_data, specials = NULL, bootstrap = FALSE, ...
 }
 
 #' @inherit fitted.ARIMA
+#' 
+#' @examples 
+#' as_tsibble(airmiles) %>%
+#'   model(nn = NNETAR(box_cox(value, 0.15))) %>% 
+#'   fitted()
+#'   
 #' @export
 fitted.NNETAR <- function(object, ...){
   object$est[[".fitted"]]
 }
 
 #' @inherit residuals.ARIMA
+#' 
+#' @examples 
+#' as_tsibble(airmiles) %>%
+#'   model(nn = NNETAR(box_cox(value, 0.15))) %>% 
+#'   residuals()
+#'   
 #' @export
 residuals.NNETAR <- function(object, ...){
   object$est[[".resid"]]
 }
 
+#' Glance a NNETAR model
+#' 
+#' Construct a single row summary of the NNETAR model.
+#' Contains the variance of residuals (`sigma2`).
+#' 
+#' @inheritParams generics::glance
+#' 
+#' @return A one row tibble summarising the model's fit.
+#' 
+#' @examples 
+#' as_tsibble(airmiles) %>%
+#'   model(nn = NNETAR(box_cox(value, 0.15))) %>% 
+#'   glance()
+#'   
 #' @export
 glance.NNETAR <- function(x, ...){
   x$fit
 }
 
+#' @inherit tidy.ARIMA
+#' 
+#' @examples 
+#' as_tsibble(airmiles) %>%
+#'   model(nn = NNETAR(box_cox(value, 0.15))) %>% 
+#'   tidy()
+#'   
 #' @export
 tidy.NNETAR <- function(x, ...){
   x$par

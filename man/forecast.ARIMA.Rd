@@ -26,3 +26,10 @@ A list of forecasts.
 \description{
 Produces forecasts from a trained model.
 }
+\examples{
+USAccDeaths \%>\% 
+  as_tsibble \%>\% 
+  model(arima = ARIMA(log(value) ~ pdq(0,1,1) + PDQ(0,1,1))) \%>\% 
+  forecast()
+
+}

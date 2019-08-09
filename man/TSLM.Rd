@@ -36,8 +36,8 @@ xreg(...)
 }
 
 \examples{
-
-USAccDeaths \%>\% as_tsibble \%>\% model(TSLM(log(value) ~ trend() + season()))
+as_tsibble(USAccDeaths) \%>\% 
+  model(lm = TSLM(log(value) ~ trend() + season()))
 
 library(tsibbledata)
 olympic_running \%>\% 

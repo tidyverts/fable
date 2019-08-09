@@ -24,9 +24,9 @@ innovations will be sampled from the model's residuals. If \code{new_data}
 contains the \code{.innov} column, those values will be treated as innovations.
 }
 \examples{
-as_tsibble(USAccDeaths) \%>\%
-  model(ETS(log(value) ~ season("A"))) \%>\%
-  generate(times = 100)
+as_tsibble(USAccDeaths) \%>\% 
+  model(lm = TSLM(log(value) ~ trend() + season())) \%>\% 
+  generate()
 
 }
 \seealso{

@@ -134,8 +134,8 @@ specials_tslm <- new_specials(
 #' [Forecasting: Principles and Practices, Time series regression models (chapter 6)](https://otexts.com/fpp3/regression.html)
 #' 
 #' @examples 
-#' 
-#' USAccDeaths %>% as_tsibble %>% model(TSLM(log(value) ~ trend() + season()))
+#' as_tsibble(USAccDeaths) %>% 
+#'   model(lm = TSLM(log(value) ~ trend() + season()))
 #' 
 #' library(tsibbledata)
 #' olympic_running %>% 
@@ -150,22 +150,57 @@ TSLM <- function(formula){
 }
 
 #' @inherit fitted.ARIMA
+#' 
+#' @examples 
+#' as_tsibble(USAccDeaths) %>% 
+#'   model(lm = TSLM(log(value) ~ trend() + season())) %>% 
+#'   fitted()
+#' 
 #' @export
 fitted.TSLM <- function(object, ...){
   object$fits
 }
 
 #' @inherit residuals.ARIMA
+#' 
+#' @examples 
+#' as_tsibble(USAccDeaths) %>% 
+#'   model(lm = TSLM(log(value) ~ trend() + season())) %>% 
+#'   residuals()
+#'   
 #' @export
 residuals.TSLM <- function(object, ...){
   object$resid
 }
 
+#' Glance a TSLM
+#' 
+#' Construct a single row summary of the TSLM model.
+#' 
+#' Contains the R squared (`r_squared`), variance of residuals (`sigma2`),
+#' the log-likelihood (`log_lik`), and information criterion (`AIC`, `AICc`, `BIC`).
+#' 
+#' @inheritParams generics::glance
+#' 
+#' @return A one row tibble summarising the model's fit.
+#' 
+#' @examples 
+#' as_tsibble(USAccDeaths) %>% 
+#'   model(lm = TSLM(log(value) ~ trend() + season())) %>% 
+#'   glance()
+#' 
 #' @export
 glance.TSLM <- function(x, ...){
   as_tibble(x$fit)
 }
 
+#' @inherit tidy.ARIMA
+#' 
+#' @examples 
+#' as_tsibble(USAccDeaths) %>% 
+#'   model(lm = TSLM(log(value) ~ trend() + season())) %>% 
+#'   tidy()
+#' 
 #' @export
 tidy.TSLM <- function(x, ...){
   rdf <- x$model$df.residual
@@ -223,6 +258,12 @@ report.TSLM <- function(object, digits = max(3, getOption("digits") - 3), ...){
 
 #' @inherit forecast.ARIMA
 #' @importFrom stats predict
+#' 
+#' @examples 
+#' as_tsibble(USAccDeaths) %>% 
+#'   model(lm = TSLM(log(value) ~ trend() + season())) %>% 
+#'   forecast()
+#'
 #' @export
 forecast.TSLM <- function(object, new_data, specials = NULL, bootstrap = FALSE, 
                           times = 5000, ...){
@@ -267,6 +308,12 @@ forecast.TSLM <- function(object, new_data, specials = NULL, bootstrap = FALSE,
 }
 
 #' @inherit generate.ETS
+#' 
+#' @examples 
+#' as_tsibble(USAccDeaths) %>% 
+#'   model(lm = TSLM(log(value) ~ trend() + season())) %>% 
+#'   generate()
+#' 
 #' @export
 generate.TSLM <- function(x, new_data, specials, bootstrap = FALSE, ...){
   # Get xreg
@@ -292,6 +339,14 @@ generate.TSLM <- function(x, new_data, specials, bootstrap = FALSE, ...){
 }
 
 #' @inherit interpolate.ARIMA
+#' 
+#' @examples 
+#' library(tsibbledata)
+#' 
+#' olympic_running %>% 
+#'   model(lm = TSLM(Time ~ trend())) %>% 
+#'   interpolate(olympic_running)
+#'   
 #' @export
 interpolate.TSLM <- function(object, new_data, specials, ...){
   # Get inputs

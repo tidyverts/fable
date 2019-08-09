@@ -74,7 +74,8 @@ aus_production \%>\%
   model(rw = RW(Beer ~ drift()))
 
 
-Nile \%>\% as_tsibble \%>\% model(NAIVE())
+as_tsibble(Nile) \%>\% 
+  model(NAIVE(value))
 
 library(tsibbledata)
 aus_production \%>\% 

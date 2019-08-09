@@ -26,3 +26,14 @@ A list of forecasts.
 \description{
 Produces forecasts from a trained model.
 }
+\examples{
+as_tsibble(Nile) \%>\%
+  model(NAIVE(value)) \%>\% 
+  forecast()
+
+library(tsibbledata)
+aus_production \%>\% 
+  model(snaive = SNAIVE(Beer ~ lag("year"))) \%>\% 
+  forecast()
+  
+}

@@ -497,6 +497,12 @@ ARIMA <- function(formula, ic = c("aicc", "aic", "bic"), stepwise = TRUE, greedy
 #' 
 #' @return A vector of fitted values.
 #' 
+#' @examples 
+#' USAccDeaths %>% 
+#'   as_tsibble %>% 
+#'   model(arima = ARIMA(log(value) ~ pdq(0,1,1) + PDQ(0,1,1))) %>% 
+#'   fitted()
+#'   
 #' @export
 fitted.ARIMA <- function(object, ...){
   object$est[[".fitted"]]
@@ -510,6 +516,12 @@ fitted.ARIMA <- function(object, ...){
 #' @param type The type of the residuals to extract.
 #' 
 #' @return A vector of fitted residuals.
+#' 
+#' @examples 
+#' USAccDeaths %>% 
+#'   as_tsibble %>% 
+#'   model(arima = ARIMA(log(value) ~ pdq(0,1,1) + PDQ(0,1,1))) %>% 
+#'   residuals()
 #' 
 #' @export
 residuals.ARIMA <- function(object, type = c("innovation", "regression"), ...){
@@ -537,6 +549,12 @@ residuals.ARIMA <- function(object, type = c("innovation", "regression"), ...){
 #' 
 #' @return A one row tibble summarising the model's fit.
 #' 
+#' @examples 
+#' USAccDeaths %>% 
+#'   as_tsibble %>% 
+#'   model(arima = ARIMA(log(value) ~ pdq(0,1,1) + PDQ(0,1,1))) %>% 
+#'   glance()
+#' 
 #' @export
 glance.ARIMA <- function(x, ...){
   x$fit
@@ -549,6 +567,12 @@ glance.ARIMA <- function(x, ...){
 #' @inheritParams generics::tidy
 #' 
 #' @return The model's coefficients in a `tibble`.
+#' 
+#' @examples 
+#' USAccDeaths %>% 
+#'   as_tsibble %>% 
+#'   model(arima = ARIMA(log(value) ~ pdq(0,1,1) + PDQ(0,1,1))) %>% 
+#'   tidy()
 #' 
 #' @export
 tidy.ARIMA <- function(x, ...){
@@ -586,6 +610,12 @@ report.ARIMA <- function(object, ...){
 #' @importFrom stats formula residuals
 #' 
 #' @return A list of forecasts.
+#' 
+#' @examples 
+#' USAccDeaths %>% 
+#'   as_tsibble %>% 
+#'   model(arima = ARIMA(log(value) ~ pdq(0,1,1) + PDQ(0,1,1))) %>% 
+#'   forecast()
 #' 
 #' @export
 forecast.ARIMA <- function(object, new_data = NULL, specials = NULL, 
@@ -671,6 +701,13 @@ refit.ARIMA <- function(object, new_data, specials = NULL, reestimate = FALSE, .
 #' @inheritParams forecast.ARIMA
 #' 
 #' @return A tibble of the same dimension of `new_data` with missing values interpolated.
+#' 
+#' @examples 
+#' library(tsibbledata)
+#' 
+#' olympic_running %>% 
+#'   model(arima = ARIMA(Time ~ trend())) %>% 
+#'   interpolate(olympic_running)
 #' 
 #' @importFrom stats formula residuals
 #' @export

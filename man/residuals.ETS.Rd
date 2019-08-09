@@ -17,3 +17,9 @@ A vector of fitted residuals.
 \description{
 Extracts the residuals.
 }
+\examples{
+as_tsibble(USAccDeaths) \%>\%
+  model(ets = ETS(log(value) ~ season("A"))) \%>\% 
+  residuals()
+  
+}

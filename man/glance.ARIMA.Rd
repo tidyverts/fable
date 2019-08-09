@@ -22,3 +22,10 @@ Contains the variance of residuals (\code{sigma2}), the log-likelihood (\code{lo
 information criterion (\code{AIC}, \code{AICc}, \code{BIC}) and the characteristic roots
 (\code{ar_roots} and \code{ma_roots}).
 }
+\examples{
+USAccDeaths \%>\% 
+  as_tsibble \%>\% 
+  model(arima = ARIMA(log(value) ~ pdq(0,1,1) + PDQ(0,1,1))) \%>\% 
+  glance()
+
+}

@@ -17,3 +17,13 @@ A vector of fitted residuals.
 \description{
 Extracts the residuals.
 }
+\examples{
+as_tsibble(Nile) \%>\%
+  model(NAIVE(value)) \%>\% 
+  residuals()
+
+library(tsibbledata)
+aus_production \%>\% 
+  model(snaive = SNAIVE(Beer ~ lag("year"))) \%>\% 
+  residuals()
+}

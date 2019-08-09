@@ -148,7 +148,8 @@ RW <- function(formula, ...){
 #'
 #' @examples
 #' 
-#' Nile %>% as_tsibble %>% model(NAIVE())
+#' as_tsibble(Nile) %>% 
+#'   model(NAIVE(value))
 #'
 #' @export
 NAIVE <- RW
@@ -188,6 +189,17 @@ SNAIVE <- function(formula, ...){
 #' @inherit forecast.ARIMA
 #' @importFrom stats qnorm time
 #' @importFrom utils tail
+#' 
+#' @examples 
+#' as_tsibble(Nile) %>%
+#'   model(NAIVE(value)) %>% 
+#'   forecast()
+#' 
+#' library(tsibbledata)
+#' aus_production %>% 
+#'   model(snaive = SNAIVE(Beer ~ lag("year"))) %>% 
+#'   forecast()
+#'   
 #' @export
 forecast.RW <- function(object, new_data, specials = NULL, bootstrap = FALSE, times = 5000, ...){
   h <- NROW(new_data)
@@ -228,6 +240,16 @@ forecast.RW <- function(object, new_data, specials = NULL, bootstrap = FALSE, ti
 }
 
 #' @inherit generate.ETS
+#' 
+#' @examples 
+#' as_tsibble(Nile) %>%
+#'   model(NAIVE(value)) %>% 
+#'   generate()
+#' 
+#' library(tsibbledata)
+#' aus_production %>% 
+#'   model(snaive = SNAIVE(Beer ~ lag("year"))) %>% 
+#'   generate()
 #' @export
 generate.RW <- function(x, new_data, bootstrap = FALSE, ...){
   if(!is_regular(new_data)){
@@ -275,22 +297,72 @@ generate.RW <- function(x, new_data, bootstrap = FALSE, ...){
 }
 
 #' @inherit fitted.ARIMA
+#' 
+#' @examples 
+#' as_tsibble(Nile) %>%
+#'   model(NAIVE(value)) %>% 
+#'   fitted()
+#' 
+#' library(tsibbledata)
+#' aus_production %>% 
+#'   model(snaive = SNAIVE(Beer ~ lag("year"))) %>% 
+#'   fitted()
+#'   
 #' @export
 fitted.RW <- function(object, ...){
   object$est[[".fitted"]]
 }
 
 #' @inherit residuals.ARIMA
+#' 
+#' @examples 
+#' as_tsibble(Nile) %>%
+#'   model(NAIVE(value)) %>% 
+#'   residuals()
+#' 
+#' library(tsibbledata)
+#' aus_production %>% 
+#'   model(snaive = SNAIVE(Beer ~ lag("year"))) %>% 
+#'   residuals()
 #' @export
 residuals.RW <- function(object, ...){
   object$est[[".resid"]]
 }
 
+#' Glance a lag walk model
+#' 
+#' Construct a single row summary of the lag walk model.
+#' Contains the variance of residuals (`sigma2`).
+#' 
+#' @inheritParams generics::glance
+#' 
+#' @return A one row tibble summarising the model's fit.
+#' 
+#' @examples 
+#' as_tsibble(Nile) %>%
+#'   model(NAIVE(value)) %>% 
+#'   glance()
+#' 
+#' library(tsibbledata)
+#' aus_production %>% 
+#'   model(snaive = SNAIVE(Beer ~ lag("year"))) %>% 
+#'   glance()
 #' @export
 glance.RW <- function(x, ...){
   x$fit
 }
 
+#' @inherit tidy.ARIMA
+#' 
+#' @examples 
+#' as_tsibble(Nile) %>%
+#'   model(NAIVE(value)) %>% 
+#'   tidy()
+#' 
+#' library(tsibbledata)
+#' aus_production %>% 
+#'   model(snaive = SNAIVE(Beer ~ lag("year"))) %>% 
+#'   tidy()
 #' @export
 tidy.RW <- function(x, ...){
   x$par

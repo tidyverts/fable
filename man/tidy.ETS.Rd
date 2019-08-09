@@ -17,3 +17,9 @@ The model's coefficients in a \code{tibble}.
 \description{
 Returns the coefficients from the model in a \code{tibble} format.
 }
+\examples{
+as_tsibble(USAccDeaths) \%>\%
+  model(ets = ETS(log(value) ~ season("A"))) \%>\% 
+  tidy()
+  
+}

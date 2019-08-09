@@ -21,3 +21,4 @@
 * Removed author field from docs.
 * Added Gabriel Caceres as ctb, Ross Ihaka as cph and R Core Team as cph.
 * Added \value to documentation for model functions and methods.
+* Added more examples to model method documentation.

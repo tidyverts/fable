@@ -177,6 +177,14 @@ VAR <- function(formula, ic = c("aicc", "aic", "bic"), ...){
 }
 
 #' @inherit forecast.ARIMA
+#' @examples 
+#' lung_deaths <- cbind(mdeaths, fdeaths) %>%
+#'   as_tsibble(pivot_longer = FALSE)
+#'   
+#' lung_deaths %>%
+#'   model(VAR(vars(log(mdeaths), fdeaths) ~ AR(3))) %>% 
+#'   forecast()
+#'   
 #' @export
 forecast.VAR <- function(object, new_data = NULL, specials = NULL, 
                            bootstrap = FALSE, times = 5000, ...){
@@ -255,12 +263,30 @@ forecast.VAR <- function(object, new_data = NULL, specials = NULL,
 }
 
 #' @inherit fitted.ARIMA
+#' 
+#' @examples 
+#' lung_deaths <- cbind(mdeaths, fdeaths) %>%
+#'   as_tsibble(pivot_longer = FALSE)
+#'   
+#' lung_deaths %>%
+#'   model(VAR(vars(log(mdeaths), fdeaths) ~ AR(3))) %>% 
+#'   fitted()
+#'   
 #' @export
 fitted.VAR <- function(object, ...){
   object$fits
 }
 
 #' @inherit residuals.ARIMA
+#' 
+#' @examples 
+#' lung_deaths <- cbind(mdeaths, fdeaths) %>%
+#'   as_tsibble(pivot_longer = FALSE)
+#'   
+#' lung_deaths %>%
+#'   model(VAR(vars(log(mdeaths), fdeaths) ~ AR(3))) %>% 
+#'   residuals()
+#'   
 #' @export
 residuals.VAR <- function(object, ...){
   object$resid
@@ -271,6 +297,16 @@ model_sum.VAR <- function(x){
   sprintf("VAR(%s)%s", x$spec$p, ifelse(x$spec$constant, " w/ mean", ""))
 }
 
+#' @inherit tidy.ARIMA
+#' 
+#' @examples 
+#' lung_deaths <- cbind(mdeaths, fdeaths) %>%
+#'   as_tsibble(pivot_longer = FALSE)
+#'   
+#' lung_deaths %>%
+#'   model(VAR(vars(log(mdeaths), fdeaths) ~ AR(3))) %>% 
+#'   tidy()
+#' 
 #' @export
 tidy.VAR <- function(x){
   rdf <- x$model$df.residual
@@ -289,6 +325,26 @@ tidy.VAR <- function(x){
            p.value = 2 * stats::pt(abs(!!sym("statistic")), rdf, lower.tail = FALSE))
 }
 
+
+#' Glance a VAR
+#' 
+#' Construct a single row summary of the VAR model.
+#' 
+#' Contains the variance of residuals (`sigma2`), the log-likelihood (`log_lik`), 
+#' and information criterion (`AIC`, `AICc`, `BIC`).
+#' 
+#' @inheritParams generics::glance
+#' 
+#' @return A one row tibble summarising the model's fit.
+#' 
+#' @examples 
+#' lung_deaths <- cbind(mdeaths, fdeaths) %>%
+#'   as_tsibble(pivot_longer = FALSE)
+#'   
+#' lung_deaths %>%
+#'   model(VAR(vars(log(mdeaths), fdeaths) ~ AR(3))) %>% 
+#'   glance()
+#'   
 #' @export
 glance.VAR <- function(x, ...){
   x$fit

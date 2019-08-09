@@ -57,7 +57,7 @@ train_mean <- function(.data, specials, ...){
 #' @examples 
 #' library(tsibbledata)
 #' vic_elec %>% 
-#'   model(rw = MEAN(Demand))
+#'   model(avg = MEAN(Demand))
 #' 
 #' @export
 MEAN <- function(formula, ...){
@@ -70,6 +70,13 @@ MEAN <- function(formula, ...){
 #' @importFrom utils tail
 #' 
 #' @inherit forecast.ARIMA
+#' 
+#' @examples 
+#' library(tsibbledata)
+#' vic_elec %>% 
+#'   model(avg = MEAN(Demand)) %>% 
+#'   forecast()
+#'    
 #' @export
 forecast.model_mean <- function(object, new_data, specials = NULL, bootstrap = FALSE, times = 5000, ...){
   h <- NROW(new_data)
@@ -100,6 +107,13 @@ forecast.model_mean <- function(object, new_data, specials = NULL, bootstrap = F
 
 #' @inherit generate.ETS
 #' @importFrom stats na.omit
+#' 
+#' @examples 
+#' library(tsibbledata)
+#' vic_elec %>% 
+#'   model(avg = MEAN(Demand)) %>% 
+#'   generate()
+#'   
 #' @export
 generate.model_mean <- function(x, new_data, bootstrap = FALSE, ...){
   res <- residuals(x)
@@ -122,22 +136,60 @@ generate.model_mean <- function(x, new_data, bootstrap = FALSE, ...){
 }
 
 #' @inherit fitted.ARIMA
+#' 
+#' @examples 
+#' library(tsibbledata)
+#' vic_elec %>% 
+#'   model(avg = MEAN(Demand)) %>% 
+#'   fitted()
+#'   
 #' @export
 fitted.model_mean <- function(object, ...){
   object$est[[".fitted"]]
 }
 
 #' @inherit residuals.ARIMA
+#' 
+#' @examples 
+#' library(tsibbledata)
+#' vic_elec %>% 
+#'   model(avg = MEAN(Demand)) %>% 
+#'   residuals()
+#'   
 #' @export
 residuals.model_mean <- function(object, ...){
   object$est[[".resid"]]
 }
 
+#' Glance a average method model
+#' 
+#' Construct a single row summary of the average method model.
+#' 
+#' Contains the variance of residuals (`sigma2`).
+#' 
+#' @inheritParams generics::glance
+#' 
+#' @return A one row tibble summarising the model's fit.
+#' 
+#' @examples 
+#' library(tsibbledata)
+#' vic_elec %>% 
+#'   model(avg = MEAN(Demand)) %>% 
+#'   glance()
+#' 
 #' @export
 glance.model_mean <- function(x, ...){
   x$fit
 }
 
+#' @inherit tidy.ARIMA
+#' 
+#' @examples 
+#' library(tsibbledata)
+#' vic_elec %>% 
+#'   model(avg = MEAN(Demand)) %>% 
+#'   tidy()
+#' 
 #' @export
 tidy.model_mean <- function(x, ...){
   x$par

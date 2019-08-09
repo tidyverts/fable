@@ -6,9 +6,8 @@ arima
 autoregressions
 backtransformations
 backtransforming
-Caceres
 com
-criterions
+cpoly
 dfrac
 fabletools
 fourier
@@ -31,9 +30,11 @@ rd
 SAR
 SMA
 STL
+tibble
 tidyverse
 tidyverts
 tsibble
+TSLM
 VAR
 Verlag
 WIP
