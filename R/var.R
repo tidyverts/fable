@@ -146,6 +146,8 @@ specials_var <- new_specials(
 #' }
 #' }
 #' 
+#' @return A model specification.
+#' 
 #' @seealso 
 #' [Forecasting: Principles and Practices, Vector autoregressions (section 11.2)](https://otexts.com/fpp2/VAR.html)
 #' 

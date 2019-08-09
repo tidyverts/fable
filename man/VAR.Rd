@@ -14,6 +14,9 @@ VAR(formula, ic = c("aicc", "aic", "bic"), ...)
 
 \item{...}{Further arguments for arima}
 }
+\value{
+A model specification.
+}
 \description{
 Searches through the vector of lag orders to find the best VAR model which
 has lowest AIC, AICc or BIC value. It is implemented using OLS per equation.

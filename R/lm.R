@@ -127,6 +127,8 @@ specials_tslm <- new_specials(
 #' }
 #' }
 #' 
+#' @return A model specification.
+#' 
 #' @seealso 
 #' [`stats::lm()`], [`stats::model.matrix()`]
 #' [Forecasting: Principles and Practices, Time series regression models (chapter 6)](https://otexts.com/fpp3/regression.html)

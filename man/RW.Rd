@@ -18,6 +18,9 @@ SNAIVE(formula, ...)
 
 \item{...}{Not used.}
 }
+\value{
+A model specification.
+}
 \description{
 \code{RW()} returns a random walk model, which is equivalent to an ARIMA(0,1,0)
 model with an optional drift coefficient included using \code{drift()}. \code{naive()} is simply a wrapper

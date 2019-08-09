@@ -32,6 +32,9 @@ be allowed.}
 
 \item{...}{Other arguments}
 }
+\value{
+A model specification.
+}
 \description{
 Returns ETS model specified by the formula.
 }

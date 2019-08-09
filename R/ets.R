@@ -234,6 +234,8 @@ specials_ets <- new_specials(
 #' }
 #' }
 #'
+#' @return A model specification.
+#' 
 #' @seealso
 #' [Forecasting: Principles and Practices, Exponential smoothing (chapter 8)](https://otexts.com/fpp3/expsmooth.html)
 #'

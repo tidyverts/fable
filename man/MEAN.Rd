@@ -12,6 +12,9 @@ MEAN(formula, ...)
 
 \item{...}{Not used.}
 }
+\value{
+A model specification.
+}
 \description{
 \code{MEAN()} returns an iid model applied to the formula's response variable.
 }

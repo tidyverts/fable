@@ -49,6 +49,8 @@ train_mean <- function(.data, specials, ...){
 #' 
 #' This model does not support usage of any specials. It only computes the mean!
 #' 
+#' @return A model specification.
+#' 
 #' @seealso 
 #' [Forecasting: Principles and Practices, Some simple forecasting methods (section 3.2)](https://otexts.com/fpp3/simple-methods.html)
 #' 

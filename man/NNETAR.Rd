@@ -23,6 +23,9 @@ applied after transformations.}
 
 \item{...}{Other arguments passed to \code{\link[nnet]{nnet}}.}
 }
+\value{
+A model specification.
+}
 \description{
 Feed-forward neural networks with a single hidden layer and lagged inputs
 for forecasting univariate time series.

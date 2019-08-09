@@ -20,3 +20,4 @@
 * Updated description to provide examples of included models.
 * Removed author field from docs.
 * Added Gabriel Caceres as ctb, Ross Ihaka as cph and R Core Team as cph.
+* Added \value to documentation for model functions.

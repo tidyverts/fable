@@ -225,6 +225,8 @@ specials_nnetar <- new_specials(
 #' }
 #' }
 #' 
+#' @return A model specification.
+#' 
 #' @seealso 
 #' [Forecasting: Principles and Practices, Neural network models (section 11.3)](https://otexts.com/fpp2/nnetar.html)
 #' 

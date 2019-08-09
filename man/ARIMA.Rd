@@ -28,6 +28,9 @@ selection of \code{d} and \code{D}. See \code{\link[=unitroot_options]{unitroot_
 
 \item{...}{Further arguments for \code{\link[stats:arima]{stats::arima()}}}
 }
+\value{
+A model specification.
+}
 \description{
 Searches through the model space specified in the specials to identify the
 best ARIMA model which has lowest AIC, AICc or BIC value. It is implemented

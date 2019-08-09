@@ -110,6 +110,8 @@ train_lagwalk <- function(.data, specials, ...){
 #' }
 #' }
 #' 
+#' @return A model specification.
+#' 
 #' @seealso 
 #' [Forecasting: Principles and Practices, Some simple forecasting methods (section 3.2)](https://otexts.com/fpp3/simple-methods.html)
 #' 

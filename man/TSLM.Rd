@@ -10,6 +10,9 @@ TSLM(formula)
 \arguments{
 \item{formula}{Model specification.}
 }
+\value{
+A model specification.
+}
 \description{
 The model formula will be handled using \code{\link[stats:model.matrix]{stats::model.matrix()}}, and so
 the the same approach to include interactions in \code{\link[stats:lm]{stats::lm()}} applies when

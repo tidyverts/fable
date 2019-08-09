@@ -455,6 +455,8 @@ specials_arima <- new_specials(
 #' [Forecasting: Principles and Practices, ARIMA models (chapter 9)](https://otexts.com/fpp3/arima.html)
 #' [Forecasting: Principles and Practices, Dynamic regression models (chapter 10)](https://otexts.com/fpp3/dynamic.html)
 #' 
+#' @return A model specification.
+#' 
 #' @examples 
 #' # Manual ARIMA specification
 #' USAccDeaths %>% as_tsibble %>% 
