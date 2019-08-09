@@ -16,3 +16,5 @@
 
 * Fixed URL in vignette.
 * Updated tests and examples to conditionally depend on feasts.
+* Updated description to use '' for package names.
+* Updated description to provide examples of included models.
