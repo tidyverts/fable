@@ -459,7 +459,8 @@ specials_arima <- new_specials(
 #' 
 #' @examples 
 #' # Manual ARIMA specification
-#' USAccDeaths %>% as_tsibble %>% 
+#' USAccDeaths %>% 
+#'   as_tsibble %>% 
 #'   model(arima = ARIMA(log(value) ~ pdq(0,1,1) + PDQ(0,1,1)))
 #' 
 #' if (requireNamespace("feasts", quietly = TRUE)) {
@@ -494,6 +495,8 @@ ARIMA <- function(formula, ic = c("aicc", "aic", "bic"), stepwise = TRUE, greedy
 #' 
 #' @inheritParams forecast.ARIMA
 #' 
+#' @return A vector of fitted values.
+#' 
 #' @export
 fitted.ARIMA <- function(object, ...){
   object$est[[".fitted"]]
@@ -505,6 +508,8 @@ fitted.ARIMA <- function(object, ...){
 #' 
 #' @inheritParams forecast.ARIMA
 #' @param type The type of the residuals to extract.
+#' 
+#' @return A vector of fitted residuals.
 #' 
 #' @export
 residuals.ARIMA <- function(object, type = c("innovation", "regression"), ...){
@@ -530,6 +535,8 @@ residuals.ARIMA <- function(object, type = c("innovation", "regression"), ...){
 #' 
 #' @inheritParams generics::glance
 #' 
+#' @return A one row tibble summarising the model's fit.
+#' 
 #' @export
 glance.ARIMA <- function(x, ...){
   x$fit
@@ -540,6 +547,8 @@ glance.ARIMA <- function(x, ...){
 #' Returns the coefficients from the model in a `tibble` format.
 #' 
 #' @inheritParams generics::tidy
+#' 
+#' @return The model's coefficients in a `tibble`.
 #' 
 #' @export
 tidy.ARIMA <- function(x, ...){
@@ -575,6 +584,8 @@ report.ARIMA <- function(object, ...){
 #' @param times The number of sample paths to use in estimating the forecast distribution when `boostrap = TRUE`.
 #' 
 #' @importFrom stats formula residuals
+#' 
+#' @return A list of forecasts.
 #' 
 #' @export
 forecast.ARIMA <- function(object, new_data = NULL, specials = NULL, 
@@ -633,6 +644,9 @@ forecast.ARIMA <- function(object, new_data = NULL, specials = NULL,
 #'  refit(lung_deaths_female) %>% 
 #'  report()
 #' 
+#' 
+#' @return A refitted model.
+#' 
 #' @importFrom stats formula residuals
 #' @export
 refit.ARIMA <- function(object, new_data, specials = NULL, reestimate = FALSE, ...){
@@ -656,8 +670,9 @@ refit.ARIMA <- function(object, new_data, specials = NULL, reestimate = FALSE, .
 #' 
 #' @inheritParams forecast.ARIMA
 #' 
-#' @importFrom stats formula residuals
+#' @return A tibble of the same dimension of `new_data` with missing values interpolated.
 #' 
+#' @importFrom stats formula residuals
 #' @export
 interpolate.ARIMA <- function(object, new_data, specials, ...){
   # Get missing values
@@ -724,9 +739,11 @@ arima_constant <- function(n, d, D, period){
 #' For the function for the seasonal p-value, the seasonal period will be provided as the `.period` argument to this function.
 #' A vector of data to test is available as `.` or `.x`.
 #' 
+#' @return A list of parameters
+#' 
 #' @export
 unitroot_options <- function(ndiffs_alpha = 0.05, nsdiffs_alpha = 0.05,
-                              ndiffs_pvalue = ~feasts::unitroot_kpss(.)["kpss_pvalue"],
-                              nsdiffs_pvalue = ~feasts::feat_stl(., .period)[2] < 0.64){
+                             ndiffs_pvalue = ~feasts::unitroot_kpss(.)["kpss_pvalue"],
+                             nsdiffs_pvalue = ~feasts::feat_stl(., .period)[2] < 0.64){
   as.list(environment())
 }

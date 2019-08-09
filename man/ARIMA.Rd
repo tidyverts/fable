@@ -90,7 +90,8 @@ xreg(...)
 
 \examples{
 # Manual ARIMA specification
-USAccDeaths \%>\% as_tsibble \%>\% 
+USAccDeaths \%>\% 
+  as_tsibble \%>\% 
   model(arima = ARIMA(log(value) ~ pdq(0,1,1) + PDQ(0,1,1)))
 
 if (requireNamespace("feasts", quietly = TRUE)) {

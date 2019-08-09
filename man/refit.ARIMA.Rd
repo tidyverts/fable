@@ -18,6 +18,9 @@
 
 \item{...}{Additional arguments for forecast model methods.}
 }
+\value{
+A refitted model.
+}
 \description{
 Applies a fitted ARIMA model to a new dataset.
 }
@@ -33,5 +36,6 @@ report(fit)
 fit \%>\% 
  refit(lung_deaths_female) \%>\% 
  report()
+
 
 }

@@ -11,6 +11,9 @@
 
 \item{...}{Additional arguments for forecast model methods.}
 }
+\value{
+A vector of fitted residuals.
+}
 \description{
 Extracts the residuals.
 }

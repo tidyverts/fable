@@ -491,16 +491,35 @@ residuals.ETS <- function(object, ...){
   object$est[[".resid"]]
 }
 
+#' Glance an ETS model
+#' 
+#' Construct a single row summary of the ETS model.
+#' 
+#' Contains the variance of residuals (`sigma2`), the log-likelihood (`log_lik`),
+#' and information criterion (`AIC`, `AICc`, `BIC`).
+#' 
+#' @inheritParams generics::glance
+#' 
+#' @return A one row tibble summarising the model's fit.
+#' 
 #' @export
 glance.ETS <- function(x, ...){
   x$fit
 }
 
+#' @inherit tidy.ARIMA
 #' @export
 tidy.ETS <- function(x, ...){
   x$par
 }
 
+#' Extract estimated states from an ETS model.
+#' 
+#' @param object An estimated model.
+#' @param ... Unused.
+#' 
+#' @return A [fabletools::dable()] containing estimated states.
+#' 
 #' @export
 components.ETS <- function(object, ...){
   spec <- object$spec

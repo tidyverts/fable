@@ -15,6 +15,9 @@
 
 \item{...}{Additional arguments for forecast model methods.}
 }
+\value{
+A tibble of the same dimension of \code{new_data} with missing values interpolated.
+}
 \description{
 Applies a model specific estimation technique to predict the values of missing values in a \code{tsibble}, and replace them.
 }

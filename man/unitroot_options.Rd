@@ -16,6 +16,9 @@ unitroot_options(ndiffs_alpha = 0.05, nsdiffs_alpha = 0.05,
 For the function for the seasonal p-value, the seasonal period will be provided as the \code{.period} argument to this function.
 A vector of data to test is available as \code{.} or \code{.x}.}
 }
+\value{
+A list of parameters
+}
 \description{
 Options for the unit root tests for order of integration
 }

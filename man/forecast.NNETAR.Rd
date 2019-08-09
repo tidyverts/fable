@@ -22,6 +22,9 @@
 
 \item{...}{Additional arguments for forecast model methods.}
 }
+\value{
+A list of forecasts.
+}
 \description{
 Produces forecasts from a trained model.
 }
