@@ -16,7 +16,18 @@ Authors@R:
              role = "aut"),
       person(given = "Earo",
              family = "Wang",
-             role = "aut"))
+             role = "aut"),
+      person(given = "Gabriel",
+             family = "Caceres",
+             role = "ctb",
+             comment = "NNETAR implementation"),
+      person(given = "R Core Team",
+             role = c("ctb", "cph"),
+             comment = "cpoly implementation"),
+      person(given = "Ross",
+             family = "Ihaka",
+             role = c("ctb", "cph"),
+             comment = "cpoly implementation"))
 License: GPL-3
 URL: https://fable.tidyverts.org
 BugReports: https://github.com/tidyverts/fable/issues

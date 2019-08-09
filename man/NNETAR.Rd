@@ -79,6 +79,3 @@ xreg(...)
 \seealso{
 \href{https://otexts.com/fpp2/nnetar.html}{Forecasting: Principles and Practices, Neural network models (section 11.3)}
 }
-\author{
-Gabriel Caceres, Mitchell O'Hara-Wild & Rob J Hyndman
-}

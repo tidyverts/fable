@@ -228,8 +228,6 @@ specials_nnetar <- new_specials(
 #' @seealso 
 #' [Forecasting: Principles and Practices, Neural network models (section 11.3)](https://otexts.com/fpp2/nnetar.html)
 #' 
-#' @author Gabriel Caceres, Mitchell O'Hara-Wild & Rob J Hyndman
-#' 
 #' @export
 NNETAR <- function(formula, n_nodes = NULL, n_networks = 20, scale_inputs = TRUE, ...){
   nnetar_model <- new_model_class("NNETAR", train_nnetar, specials_nnetar, 

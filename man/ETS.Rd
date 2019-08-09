@@ -114,6 +114,3 @@ Springer-Verlag. \url{http://www.exponentialsmoothing.net}.
 \seealso{
 \href{https://otexts.com/fpp3/expsmooth.html}{Forecasting: Principles and Practices, Exponential smoothing (chapter 8)}
 }
-\author{
-Rob J Hyndman & Mitchell O'Hara-Wild
-}

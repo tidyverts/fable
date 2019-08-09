@@ -18,3 +18,5 @@
 * Updated tests and examples to conditionally depend on feasts.
 * Updated description to use '' for package names.
 * Updated description to provide examples of included models.
+* Removed author field from docs.
+* Added Gabriel Caceres as ctb, Ross Ihaka as cph and R Core Team as cph.
