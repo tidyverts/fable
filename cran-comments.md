@@ -17,8 +17,14 @@
 * Fixed URL in vignette.
 * Updated tests and examples to conditionally depend on feasts.
 * Updated description to use '' for package names.
-* Updated description to provide examples of included models.
+* Improved detail in package description to provide examples of included models.
 * Removed author field from docs.
 * Added Gabriel Caceres as ctb, Ross Ihaka as cph and R Core Team as cph.
 * Added \value to documentation for model functions and methods.
 * Added more examples to model method documentation.
+
+> If there are references describing the (theoretical background of)
+methods in your package, please add these in the Description field of
+your DESCRIPTION file in the form
+
+There are no published references for the package's methods yet.
