@@ -1,5 +1,5 @@
 check_gaps <- function(x){
-  if (any(has_gaps(x)$.gaps)) {
+  if (length(unique(diff(x[[index_var(x)]]))) > 1) {
     abort(sprintf("%s contains implicit gaps in time. You should check your data and convert implicit gaps into explicit missing values using `tsibble::fill_gaps()` if required.", deparse(substitute(x))))
   }
 }
