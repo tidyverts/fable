@@ -703,11 +703,13 @@ refit.ARIMA <- function(object, new_data, specials = NULL, reestimate = FALSE, .
 #' @return A tibble of the same dimension of `new_data` with missing values interpolated.
 #' 
 #' @examples 
+#' if (requireNamespace("feasts", quietly = TRUE)) {
 #' library(tsibbledata)
 #' 
 #' olympic_running %>% 
 #'   model(arima = ARIMA(Time ~ trend())) %>% 
 #'   interpolate(olympic_running)
+#' }
 #' 
 #' @importFrom stats formula residuals
 #' @export
