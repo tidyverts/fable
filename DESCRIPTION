@@ -51,6 +51,9 @@ Suggests:
     spelling,
     testthat,
     tsibbledata
+Remotes:
+    tidyverts/fabletools,
+    tidyverts/feasts
 Additional_repositories: https://tidyverts.org/
 LinkingTo:
     Rcpp (>= 0.11.0),

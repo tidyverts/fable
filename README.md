@@ -21,6 +21,12 @@ the tidyverse.
 
 ## Installation
 
+The v0.1.0 pre-release can be installed using:
+
+``` r
+install.packages("fable", repos = "https://tidyverts.org/")
+```
+
 You can install the **development** version from
 [GitHub](https://github.com/tidyverts/fable)
 
