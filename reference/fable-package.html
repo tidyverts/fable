@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>fable: Forecasting tidy time series — fable-package • fable</title>
+<title>fable: Forecasting Models for Tidy Time Series — fable-package • fable</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,12 +37,13 @@
 
 
 
-<meta property="og:title" content="fable: Forecasting tidy time series — fable-package" />
+<meta property="og:title" content="fable: Forecasting Models for Tidy Time Series — fable-package" />
 
 <meta property="og:description" content="
 Provides a collection of commonly used univariate and multivariate
-    time series forecasting models. These models work within the fable framework
-    provided by the fabletools package, which provides the tools to evaluate,
+    time series forecasting models including automatically selected exponential 
+    smoothing and ARIMA models. These models work within the 'fable' framework
+    provided by the 'fabletools' package, which provides the tools to evaluate,
     visualise, and combine models in a workflow consistent with the tidyverse." />
 
 <meta property="og:image" content="https://fable.tidyverts.org/logo.png" />
@@ -86,7 +87,7 @@ Provides a collection of commonly used univariate and multivariate
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9100</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -137,7 +138,7 @@ Provides a collection of commonly used univariate and multivariate
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>fable: Forecasting tidy time series</h1>
+    <h1>fable: Forecasting Models for Tidy Time Series</h1>
     
     <div class="hidden name"><code>fable-package.Rd</code></div>
     </div>
@@ -146,8 +147,9 @@ Provides a collection of commonly used univariate and multivariate
     
     <p><img src='figures/logo.png' align='right' /></p>
 <p>Provides a collection of commonly used univariate and multivariate
-    time series forecasting models. These models work within the fable framework
-    provided by the fabletools package, which provides the tools to evaluate,
+    time series forecasting models including automatically selected exponential 
+    smoothing and ARIMA models. These models work within the 'fable' framework
+    provided by the 'fabletools' package, which provides the tools to evaluate,
     visualise, and combine models in a workflow consistent with the tidyverse.</p>
     
     </div>
@@ -174,6 +176,12 @@ Provides a collection of commonly used univariate and multivariate
 <p>Authors:</p><ul>
 <li><p>Rob Hyndman</p></li>
 <li><p>Earo Wang</p></li>
+</ul>
+
+<p>Other contributors:</p><ul>
+<li><p>Gabriel Caceres (NNETAR implementation) [contributor]</p></li>
+<li><p>R Core Team (cpoly implementation) [contributor, copyright holder]</p></li>
+<li><p>Ross Ihaka (cpoly implementation) [contributor, copyright holder]</p></li>
 </ul>
 
 

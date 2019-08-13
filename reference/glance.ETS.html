@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract fitted values from a fable model — fitted.model_mean • fable</title>
+<title>Glance an ETS model — glance.ETS • fable</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,9 +37,9 @@
 
 
 
-<meta property="og:title" content="Extract fitted values from a fable model — fitted.model_mean" />
+<meta property="og:title" content="Glance an ETS model — glance.ETS" />
 
-<meta property="og:description" content="Extracts the fitted values." />
+<meta property="og:description" content="Construct a single row summary of the ETS model." />
 
 <meta property="og:image" content="https://fable.tidyverts.org/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -133,57 +133,50 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Extract fitted values from a fable model</h1>
+    <h1>Glance an ETS model</h1>
     
-    <div class="hidden name"><code>fitted.model_mean.Rd</code></div>
+    <div class="hidden name"><code>glance.ETS.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Extracts the fitted values.</p>
+    <p>Construct a single row summary of the ETS model.</p>
     
     </div>
 
-    <pre class="usage"><span class='co'># S3 method for model_mean</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/fitted.values'>fitted</a></span>(<span class='no'>object</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='co'># S3 method for ETS</span>
+<span class='fu'>glance</span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>object</th>
-      <td><p>The time series model used to produce the forecasts</p></td>
+      <th>x</th>
+      <td><p>model or other R object to convert to single-row data frame</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Additional arguments for forecast model methods.</p></td>
+      <td><p>other arguments passed to methods</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A vector of fitted values.</p>
+    <p>A one row tibble summarising the model's fit.</p>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Contains the variance of residuals (<code>sigma2</code>), the log-likelihood (<code>log_lik</code>),
+and information criterion (<code>AIC</code>, <code>AICc</code>, <code>BIC</code>).</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>tsibbledata</span>)
-<span class='no'>vic_elec</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='kw'>avg</span> <span class='kw'>=</span> <span class='fu'><a href='MEAN.html'>MEAN</a></span>(<span class='no'>Demand</span>)) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/fitted.values'>fitted</a></span>()</div><div class='output co'>#&gt; # A tsibble: 52,608 x 3 [30m] &lt;UTC&gt;
-#&gt; # Key:       .model [1]
-#&gt;    .model Time                .fitted
-#&gt;    &lt;chr&gt;  &lt;dttm&gt;                &lt;dbl&gt;
-#&gt;  1 avg    2012-01-01 00:00:00   4665.
-#&gt;  2 avg    2012-01-01 00:30:00   4665.
-#&gt;  3 avg    2012-01-01 01:00:00   4665.
-#&gt;  4 avg    2012-01-01 01:30:00   4665.
-#&gt;  5 avg    2012-01-01 02:00:00   4665.
-#&gt;  6 avg    2012-01-01 02:30:00   4665.
-#&gt;  7 avg    2012-01-01 03:00:00   4665.
-#&gt;  8 avg    2012-01-01 03:30:00   4665.
-#&gt;  9 avg    2012-01-01 04:00:00   4665.
-#&gt; 10 avg    2012-01-01 04:30:00   4665.
-#&gt; # … with 52,598 more rows</div><div class='input'>  
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='no'>USAccDeaths</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'>model</span>(<span class='kw'>ets</span> <span class='kw'>=</span> <span class='fu'><a href='ETS.html'>ETS</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Log'>log</a></span>(<span class='no'>value</span>) ~ <span class='fu'>season</span>(<span class='st'>"A"</span>))) <span class='kw'>%&gt;%</span>
+  <span class='fu'>glance</span>()</div><div class='output co'>#&gt; # A tibble: 1 x 9
+#&gt;   .model  sigma2 log_ik   AIC  AICc   BIC      MSE    AMSE    MAE
+#&gt;   &lt;chr&gt;    &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+#&gt; 1 ets    0.00109   101. -167. -156. -129. 0.000849 0.00111 0.0228</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -192,6 +185,8 @@
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

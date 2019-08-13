@@ -82,7 +82,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9100</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -160,13 +160,41 @@
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
+    <p>A vector of fitted residuals.</p>
+    
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>tsibbledata</span>)
+<span class='no'>vic_elec</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'>model</span>(<span class='kw'>avg</span> <span class='kw'>=</span> <span class='fu'><a href='MEAN.html'>MEAN</a></span>(<span class='no'>Demand</span>)) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/residuals'>residuals</a></span>()</div><div class='output co'>#&gt; # A tsibble: 52,608 x 3 [30m] &lt;UTC&gt;
+#&gt; # Key:       .model [1]
+#&gt;    .model Time                .resid
+#&gt;    &lt;chr&gt;  &lt;dttm&gt;               &lt;dbl&gt;
+#&gt;  1 avg    2012-01-01 00:00:00  -402.
+#&gt;  2 avg    2012-01-01 00:30:00  -616.
+#&gt;  3 avg    2012-01-01 01:00:00  -788.
+#&gt;  4 avg    2012-01-01 01:30:00  -629.
+#&gt;  5 avg    2012-01-01 02:00:00  -800.
+#&gt;  6 avg    2012-01-01 02:30:00  -971.
+#&gt;  7 avg    2012-01-01 03:00:00 -1104.
+#&gt;  8 avg    2012-01-01 03:30:00 -1232.
+#&gt;  9 avg    2012-01-01 04:00:00 -1306.
+#&gt; 10 avg    2012-01-01 04:30:00 -1334.
+#&gt; # … with 52,598 more rows</div><div class='input'>  
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+      
+      <li><a href="#value">Value</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

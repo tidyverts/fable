@@ -82,7 +82,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9100</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -160,13 +160,58 @@
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
+    <p>A vector of fitted values.</p>
+    
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='no'>Nile</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'>model</span>(<span class='fu'><a href='RW.html'>NAIVE</a></span>(<span class='no'>value</span>)) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/fitted.values'>fitted</a></span>()</div><div class='output co'>#&gt; # A tsibble: 100 x 3 [1Y]
+#&gt; # Key:       .model [1]
+#&gt;    .model       index .fitted
+#&gt;    &lt;chr&gt;        &lt;dbl&gt;   &lt;dbl&gt;
+#&gt;  1 NAIVE(value)  1871      NA
+#&gt;  2 NAIVE(value)  1872    1120
+#&gt;  3 NAIVE(value)  1873    1160
+#&gt;  4 NAIVE(value)  1874     963
+#&gt;  5 NAIVE(value)  1875    1210
+#&gt;  6 NAIVE(value)  1876    1160
+#&gt;  7 NAIVE(value)  1877    1160
+#&gt;  8 NAIVE(value)  1878     813
+#&gt;  9 NAIVE(value)  1879    1230
+#&gt; 10 NAIVE(value)  1880    1370
+#&gt; # … with 90 more rows</div><div class='input'>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>tsibbledata</span>)
+<span class='no'>aus_production</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'>model</span>(<span class='kw'>snaive</span> <span class='kw'>=</span> <span class='fu'><a href='RW.html'>SNAIVE</a></span>(<span class='no'>Beer</span> ~ <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/lag'>lag</a></span>(<span class='st'>"year"</span>))) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/fitted.values'>fitted</a></span>()</div><div class='output co'>#&gt; # A tsibble: 218 x 3 [1Q]
+#&gt; # Key:       .model [1]
+#&gt;    .model Quarter .fitted
+#&gt;    &lt;chr&gt;    &lt;qtr&gt;   &lt;dbl&gt;
+#&gt;  1 snaive 1956 Q1      NA
+#&gt;  2 snaive 1956 Q2      NA
+#&gt;  3 snaive 1956 Q3      NA
+#&gt;  4 snaive 1956 Q4      NA
+#&gt;  5 snaive 1957 Q1     284
+#&gt;  6 snaive 1957 Q2     213
+#&gt;  7 snaive 1957 Q3     227
+#&gt;  8 snaive 1957 Q4     308
+#&gt;  9 snaive 1958 Q1     262
+#&gt; 10 snaive 1958 Q2     228
+#&gt; # … with 208 more rows</div><div class='input'>  
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+      
+      <li><a href="#value">Value</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

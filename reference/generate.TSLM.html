@@ -85,7 +85,7 @@ contains the .innov column, those values will be treated as innovations." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9100</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -166,7 +166,7 @@ contains the <code>.innov</code> column, those values will be treated as innovat
     </tr>
     <tr>
       <th>specials</th>
-      <td><p>(passed by <code><a href='https://www.rdocumentation.org/packages/fabletools/topics/forecast'>fabletools::forecast.mdl_df()</a></code>).</p></td>
+      <td><p>(passed by <code><a href='https://fabletools.tidyverts.org/reference/forecast.html'>fabletools::forecast.mdl_df()</a></code>).</p></td>
     </tr>
     <tr>
       <th>bootstrap</th>
@@ -180,27 +180,27 @@ contains the <code>.innov</code> column, those values will be treated as innovat
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='https://www.rdocumentation.org/packages/fabletools/topics/generate.mdl_df'>fabletools::generate.mdl_df</a></code></p></div>
+    <div class='dont-index'><p><code><a href='https://fabletools.tidyverts.org/reference/generate.mdl_df.html'>fabletools::generate.mdl_df</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='no'>USAccDeaths</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='fu'><a href='ETS.html'>ETS</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Log'>log</a></span>(<span class='no'>value</span>) ~ <span class='fu'>season</span>(<span class='st'>"A"</span>))) <span class='kw'>%&gt;%</span>
-  <span class='fu'>generate</span>(<span class='kw'>times</span> <span class='kw'>=</span> <span class='fl'>100</span>)</div><div class='output co'>#&gt; # A tsibble: 2,400 x 4 [1M]
-#&gt; # Key:       .model, .rep [100]
-#&gt;    .model                             .rep    index   .sim
-#&gt;    &lt;chr&gt;                             &lt;int&gt;    &lt;mth&gt;  &lt;dbl&gt;
-#&gt;  1 "ETS(log(value) ~ season(\"A\"))"     1 1979 Jan  8118.
-#&gt;  2 "ETS(log(value) ~ season(\"A\"))"     1 1979 Feb  7307.
-#&gt;  3 "ETS(log(value) ~ season(\"A\"))"     1 1979 Mar  8372.
-#&gt;  4 "ETS(log(value) ~ season(\"A\"))"     1 1979 Apr  8939.
-#&gt;  5 "ETS(log(value) ~ season(\"A\"))"     1 1979 May  9510.
-#&gt;  6 "ETS(log(value) ~ season(\"A\"))"     1 1979 Jun  9986.
-#&gt;  7 "ETS(log(value) ~ season(\"A\"))"     1 1979 Jul 10889.
-#&gt;  8 "ETS(log(value) ~ season(\"A\"))"     1 1979 Aug  9909.
-#&gt;  9 "ETS(log(value) ~ season(\"A\"))"     1 1979 Sep  8936.
-#&gt; 10 "ETS(log(value) ~ season(\"A\"))"     1 1979 Oct  8727.
-#&gt; # … with 2,390 more rows</div><div class='input'>
+  <span class='fu'>model</span>(<span class='kw'>lm</span> <span class='kw'>=</span> <span class='fu'><a href='TSLM.html'>TSLM</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Log'>log</a></span>(<span class='no'>value</span>) ~ <span class='fu'>trend</span>() + <span class='fu'>season</span>())) <span class='kw'>%&gt;%</span>
+  <span class='fu'>generate</span>()</div><div class='output co'>#&gt; # A tsibble: 24 x 4 [1M]
+#&gt; # Key:       .model, .rep [1]
+#&gt;    .model  .rep    index   .sim
+#&gt;    &lt;chr&gt;  &lt;int&gt;    &lt;mth&gt;  &lt;dbl&gt;
+#&gt;  1 lm         1 1979 Jan  7619.
+#&gt;  2 lm         1 1979 Feb  6889.
+#&gt;  3 lm         1 1979 Mar  7688.
+#&gt;  4 lm         1 1979 Apr  7777.
+#&gt;  5 lm         1 1979 May  8675.
+#&gt;  6 lm         1 1979 Jun  9043.
+#&gt;  7 lm         1 1979 Jul 10005.
+#&gt;  8 lm         1 1979 Aug  9283.
+#&gt;  9 lm         1 1979 Sep  8165.
+#&gt; 10 lm         1 1979 Oct  8469.
+#&gt; # … with 14 more rows</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

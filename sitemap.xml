@@ -28,6 +28,9 @@
     <loc>https://fable.tidyverts.org/reference/common_xregs.html</loc>
   </url>
   <url>
+    <loc>https://fable.tidyverts.org/reference/components.ETS.html</loc>
+  </url>
+  <url>
     <loc>https://fable.tidyverts.org/reference/fable-package.html</loc>
   </url>
   <url>
@@ -91,6 +94,24 @@
     <loc>https://fable.tidyverts.org/reference/glance.ARIMA.html</loc>
   </url>
   <url>
+    <loc>https://fable.tidyverts.org/reference/glance.ETS.html</loc>
+  </url>
+  <url>
+    <loc>https://fable.tidyverts.org/reference/glance.NNETAR.html</loc>
+  </url>
+  <url>
+    <loc>https://fable.tidyverts.org/reference/glance.RW.html</loc>
+  </url>
+  <url>
+    <loc>https://fable.tidyverts.org/reference/glance.TSLM.html</loc>
+  </url>
+  <url>
+    <loc>https://fable.tidyverts.org/reference/glance.VAR.html</loc>
+  </url>
+  <url>
+    <loc>https://fable.tidyverts.org/reference/glance.model_mean.html</loc>
+  </url>
+  <url>
     <loc>https://fable.tidyverts.org/reference/interpolate.ARIMA.html</loc>
   </url>
   <url>
@@ -131,6 +152,24 @@
   </url>
   <url>
     <loc>https://fable.tidyverts.org/reference/tidy.ARIMA.html</loc>
+  </url>
+  <url>
+    <loc>https://fable.tidyverts.org/reference/tidy.ETS.html</loc>
+  </url>
+  <url>
+    <loc>https://fable.tidyverts.org/reference/tidy.NNETAR.html</loc>
+  </url>
+  <url>
+    <loc>https://fable.tidyverts.org/reference/tidy.RW.html</loc>
+  </url>
+  <url>
+    <loc>https://fable.tidyverts.org/reference/tidy.TSLM.html</loc>
+  </url>
+  <url>
+    <loc>https://fable.tidyverts.org/reference/tidy.VAR.html</loc>
+  </url>
+  <url>
+    <loc>https://fable.tidyverts.org/reference/tidy.model_mean.html</loc>
   </url>
   <url>
     <loc>https://fable.tidyverts.org/reference/unitroot_options.html</loc>

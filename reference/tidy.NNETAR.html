@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract fitted values from a fable model — fitted.model_mean • fable</title>
+<title>Tidy a fable model — tidy.NNETAR • fable</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,9 +37,9 @@
 
 
 
-<meta property="og:title" content="Extract fitted values from a fable model — fitted.model_mean" />
+<meta property="og:title" content="Tidy a fable model — tidy.NNETAR" />
 
-<meta property="og:description" content="Extracts the fitted values." />
+<meta property="og:description" content="Returns the coefficients from the model in a tibble format." />
 
 <meta property="og:image" content="https://fable.tidyverts.org/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -133,57 +133,43 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Extract fitted values from a fable model</h1>
+    <h1>Tidy a fable model</h1>
     
-    <div class="hidden name"><code>fitted.model_mean.Rd</code></div>
+    <div class="hidden name"><code>tidy.NNETAR.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Extracts the fitted values.</p>
+    <p>Returns the coefficients from the model in a <code>tibble</code> format.</p>
     
     </div>
 
-    <pre class="usage"><span class='co'># S3 method for model_mean</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/fitted.values'>fitted</a></span>(<span class='no'>object</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='co'># S3 method for NNETAR</span>
+<span class='fu'>tidy</span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>object</th>
-      <td><p>The time series model used to produce the forecasts</p></td>
+      <th>x</th>
+      <td><p>An object to be converted into a tidy <code><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble::tibble()</a></code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Additional arguments for forecast model methods.</p></td>
+      <td><p>Additional arguments to tidying method.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A vector of fitted values.</p>
+    <p>The model's coefficients in a <code>tibble</code>.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>tsibbledata</span>)
-<span class='no'>vic_elec</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='kw'>avg</span> <span class='kw'>=</span> <span class='fu'><a href='MEAN.html'>MEAN</a></span>(<span class='no'>Demand</span>)) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/fitted.values'>fitted</a></span>()</div><div class='output co'>#&gt; # A tsibble: 52,608 x 3 [30m] &lt;UTC&gt;
-#&gt; # Key:       .model [1]
-#&gt;    .model Time                .fitted
-#&gt;    &lt;chr&gt;  &lt;dttm&gt;                &lt;dbl&gt;
-#&gt;  1 avg    2012-01-01 00:00:00   4665.
-#&gt;  2 avg    2012-01-01 00:30:00   4665.
-#&gt;  3 avg    2012-01-01 01:00:00   4665.
-#&gt;  4 avg    2012-01-01 01:30:00   4665.
-#&gt;  5 avg    2012-01-01 02:00:00   4665.
-#&gt;  6 avg    2012-01-01 02:30:00   4665.
-#&gt;  7 avg    2012-01-01 03:00:00   4665.
-#&gt;  8 avg    2012-01-01 03:30:00   4665.
-#&gt;  9 avg    2012-01-01 04:00:00   4665.
-#&gt; 10 avg    2012-01-01 04:30:00   4665.
-#&gt; # … with 52,598 more rows</div><div class='input'>  
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='no'>airmiles</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'>model</span>(<span class='kw'>nn</span> <span class='kw'>=</span> <span class='fu'><a href='NNETAR.html'>NNETAR</a></span>(<span class='fu'>box_cox</span>(<span class='no'>value</span>, <span class='fl'>0.15</span>))) <span class='kw'>%&gt;%</span>
+  <span class='fu'>tidy</span>()</div><div class='output co'>#&gt; # A tibble: 0 x 1
+#&gt; # … with 1 variable: .model &lt;chr&gt;</div><div class='input'>  
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

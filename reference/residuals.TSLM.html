@@ -82,7 +82,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9100</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -160,13 +160,40 @@
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
+    <p>A vector of fitted residuals.</p>
+    
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='no'>USAccDeaths</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'>model</span>(<span class='kw'>lm</span> <span class='kw'>=</span> <span class='fu'><a href='TSLM.html'>TSLM</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Log'>log</a></span>(<span class='no'>value</span>) ~ <span class='fu'>trend</span>() + <span class='fu'>season</span>())) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/residuals'>residuals</a></span>()</div><div class='output co'>#&gt; # A tsibble: 72 x 3 [1M]
+#&gt; # Key:       .model [1]
+#&gt;    .model    index .resid
+#&gt;    &lt;chr&gt;     &lt;mth&gt;  &lt;dbl&gt;
+#&gt;  1 lm     1973 Jan 0.0759
+#&gt;  2 lm     1973 Feb 0.0699
+#&gt;  3 lm     1973 Mar 0.0646
+#&gt;  4 lm     1973 Apr 0.0616
+#&gt;  5 lm     1973 May 0.0559
+#&gt;  6 lm     1973 Jun 0.0838
+#&gt;  7 lm     1973 Jul 0.0416
+#&gt;  8 lm     1973 Aug 0.0598
+#&gt;  9 lm     1973 Sep 0.0735
+#&gt; 10 lm     1973 Oct 0.0630
+#&gt; # … with 62 more rows</div><div class='input'>  
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+      
+      <li><a href="#value">Value</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

@@ -82,7 +82,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9100</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -161,7 +161,7 @@
     </tr>
     <tr>
       <th>specials</th>
-      <td><p>(passed by <code><a href='https://www.rdocumentation.org/packages/fabletools/topics/forecast'>fabletools::forecast.mdl_df()</a></code>).</p></td>
+      <td><p>(passed by <code><a href='https://fabletools.tidyverts.org/reference/forecast.html'>fabletools::forecast.mdl_df()</a></code>).</p></td>
     </tr>
     <tr>
       <th>bootstrap</th>
@@ -177,13 +177,40 @@
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
+    <p>A list of forecasts.</p>
+    
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='no'>USAccDeaths</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'>model</span>(<span class='kw'>lm</span> <span class='kw'>=</span> <span class='fu'><a href='TSLM.html'>TSLM</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Log'>log</a></span>(<span class='no'>value</span>) ~ <span class='fu'>trend</span>() + <span class='fu'>season</span>())) <span class='kw'>%&gt;%</span>
+  <span class='fu'>forecast</span>()</div><div class='output co'>#&gt; # A fable: 24 x 4 [1M]
+#&gt; # Key:     .model [1]
+#&gt;    .model    index value .distribution   
+#&gt;    &lt;chr&gt;     &lt;mth&gt; &lt;dbl&gt; &lt;dist&gt;          
+#&gt;  1 lm     1979 Jan 7620. t(N(8.9, 0.003))
+#&gt;  2 lm     1979 Feb 6899. t(N(8.8, 0.003))
+#&gt;  3 lm     1979 Mar 7639. t(N(8.9, 0.003))
+#&gt;  4 lm     1979 Apr 7841. t(N(9.0, 0.003))
+#&gt;  5 lm     1979 May 8645. t(N(9.1, 0.003))
+#&gt;  6 lm     1979 Jun 9087. t(N(9.1, 0.003))
+#&gt;  7 lm     1979 Jul 9908. t(N(9.2, 0.003))
+#&gt;  8 lm     1979 Aug 9237. t(N(9.1, 0.003))
+#&gt;  9 lm     1979 Sep 8237. t(N(9.0, 0.003))
+#&gt; 10 lm     1979 Oct 8516. t(N(9.0, 0.003))
+#&gt; # … with 14 more rows</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+      
+      <li><a href="#value">Value</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

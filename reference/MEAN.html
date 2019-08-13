@@ -82,7 +82,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9100</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -159,6 +159,10 @@
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>A model specification.</p>
+    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The model does not use any specials, and so everything on the formula's
@@ -177,8 +181,8 @@ right-hand-side will be ignored.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>tsibbledata</span>)
 <span class='no'>vic_elec</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='kw'>rw</span> <span class='kw'>=</span> <span class='fu'>MEAN</span>(<span class='no'>Demand</span>))</div><div class='output co'>#&gt; # A mable: 1 x 1
-#&gt;   rw     
+  <span class='fu'>model</span>(<span class='kw'>avg</span> <span class='kw'>=</span> <span class='fu'>MEAN</span>(<span class='no'>Demand</span>))</div><div class='output co'>#&gt; # A mable: 1 x 1
+#&gt;   avg    
 #&gt;   &lt;model&gt;
 #&gt; 1 &lt;MEAN&gt; </div><div class='input'>
 </div></pre>
@@ -188,6 +192,8 @@ right-hand-side will be ignored.</p>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
+      <li><a href="#value">Value</a></li>
+
       <li><a href="#details">Details</a></li>
 
       <li><a href="#specials">Specials</a></li>

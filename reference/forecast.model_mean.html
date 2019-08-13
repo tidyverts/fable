@@ -82,7 +82,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9100</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -161,7 +161,7 @@
     </tr>
     <tr>
       <th>specials</th>
-      <td><p>(passed by <code><a href='https://www.rdocumentation.org/packages/fabletools/topics/forecast'>fabletools::forecast.mdl_df()</a></code>).</p></td>
+      <td><p>(passed by <code><a href='https://fabletools.tidyverts.org/reference/forecast.html'>fabletools::forecast.mdl_df()</a></code>).</p></td>
     </tr>
     <tr>
       <th>bootstrap</th>
@@ -177,13 +177,34 @@
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
+    <p>A list of forecasts.</p>
+    
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>tsibbledata</span>)
+<span class='no'>vic_elec</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'>model</span>(<span class='kw'>avg</span> <span class='kw'>=</span> <span class='fu'><a href='MEAN.html'>MEAN</a></span>(<span class='no'>Demand</span>)) <span class='kw'>%&gt;%</span>
+  <span class='fu'>forecast</span>()</div><div class='output co'>#&gt; # A fable: 4 x 4 [30m] &lt;UTC&gt;
+#&gt; # Key:     .model [1]
+#&gt;   .model Time                Demand .distribution  
+#&gt;   &lt;chr&gt;  &lt;dttm&gt;               &lt;dbl&gt; &lt;dist&gt;         
+#&gt; 1 avg    2015-01-01 00:00:00  4665. N(4665, 764373)
+#&gt; 2 avg    2015-01-01 00:30:00  4665. N(4665, 764373)
+#&gt; 3 avg    2015-01-01 01:00:00  4665. N(4665, 764373)
+#&gt; 4 avg    2015-01-01 01:30:00  4665. N(4665, 764373)</div><div class='input'>   
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+      
+      <li><a href="#value">Value</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>
