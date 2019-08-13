@@ -1,5 +1,7 @@
 check_gaps <- function(x){
-  if (any(has_gaps(x)$.gaps)) {
+  idx <- x[[index_var(x)]]
+  gaps <- map_lgl(key_data(x)[[".rows"]], function(x) length(unique(diff(idx[x]))) > 1)
+  if (any(gaps)) {
     abort(sprintf("%s contains implicit gaps in time. You should check your data and convert implicit gaps into explicit missing values using `tsibble::fill_gaps()` if required.", deparse(substitute(x))))
   }
 }
