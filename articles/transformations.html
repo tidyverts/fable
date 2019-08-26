@@ -13,8 +13,9 @@
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="Forecasting with transformations">
 <meta property="og:description" content="">
 <meta property="og:image" content="https://fable.tidyverts.org/logo.png">
@@ -90,6 +91,7 @@
 <!--/.navbar -->
 
       
+
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
@@ -105,11 +107,11 @@
     
     
 <p>All fable models with formula-based model specification support a highly flexible specification of transformations. Specified transformations are automatically back-transformed and bias adjusted to produce forecast means and fitted values on the original scale of the data.</p>
-<p>The transformation used for the model is defined on the left of the tilde (<code>~</code>) in the formula. For example, when forecasting Melbourne <code>Trips</code> from the <code><a href="https://tsibble.tidyverts.org/reference/tourism.html">tsibble::tourism</a></code> dataset, a square root transformation can applied using <code><a href="https://www.rdocumentation.org/packages/base/topics/MathFun">sqrt(Trips)</a></code>.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(fable)</a>
+<p>The transformation used for the model is defined on the left of the tilde (<code>~</code>) in the formula. For example, when forecasting Melbourne <code>Trips</code> from the <code><a href="https://tsibble.tidyverts.org/reference/tourism.html">tsibble::tourism</a></code> dataset, a square root transformation can applied using <code><a href="https://rdrr.io/r/base/MathFun.html">sqrt(Trips)</a></code>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(fable)</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2"><span class="co">#&gt; Loading required package: fabletools</span></a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tsibble)</a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(dplyr)</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(tsibble)</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(dplyr)</a>
 <a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co">#&gt; Attaching package: 'dplyr'</span></a>
 <a class="sourceLine" id="cb1-7" data-line-number="7"><span class="co">#&gt; The following object is masked from 'package:tsibble':</span></a>
@@ -123,7 +125,7 @@
 <a class="sourceLine" id="cb1-15" data-line-number="15"><span class="co">#&gt;     intersect, setdiff, setequal, union</span></a>
 <a class="sourceLine" id="cb1-16" data-line-number="16">tourism <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb1-17" data-line-number="17"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(Region <span class="op">==</span><span class="st"> "Melbourne"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb1-18" data-line-number="18"><span class="st">  </span><span class="kw">model</span>(<span class="kw"><a href="../reference/ETS.html">ETS</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/MathFun">sqrt</a></span>(Trips)))</a>
+<a class="sourceLine" id="cb1-18" data-line-number="18"><span class="st">  </span><span class="kw">model</span>(<span class="kw"><a href="../reference/ETS.html">ETS</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span>(Trips)))</a>
 <a class="sourceLine" id="cb1-19" data-line-number="19"><span class="co">#&gt; # A mable: 4 x 4</span></a>
 <a class="sourceLine" id="cb1-20" data-line-number="20"><span class="co">#&gt; # Key:     Region, State, Purpose [4]</span></a>
 <a class="sourceLine" id="cb1-21" data-line-number="21"><span class="co">#&gt;   Region    State    Purpose  `ETS(sqrt(Trips))`</span></a>
@@ -137,10 +139,10 @@
 <a href="#combining-transformations" class="anchor"></a>Combining transformations</h2>
 <p>Multiple transformations can be combined using this interface, allowing more complicated transformations to be used. A simple example of a combined transformation is <span class="math inline">\(f(x) = log(x+1)\)</span>, as it involves both a <code>log</code> transformation, and a <code>+1</code> transformation. This transformation is commonly used to overcome a limitation of using log transformations to preserve non-negativity, on data which contains zeroes.</p>
 <p>Simple combined transformations and backtransformations can be constructed automatically.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tsibble)</a>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(tsibble)</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2">tourism <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb2-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(Region <span class="op">==</span><span class="st"> "Melbourne"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="st">  </span><span class="kw">model</span>(<span class="kw"><a href="../reference/ETS.html">ETS</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Log">log</a></span>(Trips <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)))</a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="st">  </span><span class="kw">model</span>(<span class="kw"><a href="../reference/ETS.html">ETS</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/Log.html">log</a></span>(Trips <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)))</a>
 <a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#&gt; # A mable: 4 x 4</span></a>
 <a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt; # Key:     Region, State, Purpose [4]</span></a>
 <a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt;   Region    State    Purpose  `ETS(log(Trips + 1))`</span></a>
@@ -159,14 +161,14 @@
 <p>Inverting this transformation gives the appropriate back-transformation of:</p>
 <p><span class="math display">\[f^{-1}(x) = \dfrac{a + be^x}{1 + e^x} = \dfrac{(b-a)e^x}{1 + e^x} + a\]</span> To use this transformation for modelling, we can pair the transformation with its back transformation using the <code>new_transformation</code> function from <code>fabletools</code>. This function which accepts two inputs: first the transformation, and second the back-transformation.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">scaled_logit &lt;-<span class="st"> </span><span class="cf">function</span>(x, <span class="dt">lower=</span><span class="dv">0</span>, <span class="dt">upper=</span><span class="dv">1</span>){</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Log">log</a></span>((x<span class="op">-</span>lower)<span class="op">/</span>(upper<span class="op">-</span>x))</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">  <span class="kw"><a href="https://rdrr.io/r/base/Log.html">log</a></span>((x<span class="op">-</span>lower)<span class="op">/</span>(upper<span class="op">-</span>x))</a>
 <a class="sourceLine" id="cb3-3" data-line-number="3">}</a>
 <a class="sourceLine" id="cb3-4" data-line-number="4">inv_scaled_logit &lt;-<span class="st"> </span><span class="cf">function</span>(x, <span class="dt">lower=</span><span class="dv">0</span>, <span class="dt">upper=</span><span class="dv">1</span>){</a>
-<a class="sourceLine" id="cb3-5" data-line-number="5">  (upper<span class="op">-</span>lower)<span class="op">*</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Log">exp</a></span>(x)<span class="op">/</span>(<span class="dv">1</span><span class="op">+</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Log">exp</a></span>(x)) <span class="op">+</span><span class="st"> </span>lower</a>
+<a class="sourceLine" id="cb3-5" data-line-number="5">  (upper<span class="op">-</span>lower)<span class="op">*</span><span class="kw"><a href="https://rdrr.io/r/base/Log.html">exp</a></span>(x)<span class="op">/</span>(<span class="dv">1</span><span class="op">+</span><span class="kw"><a href="https://rdrr.io/r/base/Log.html">exp</a></span>(x)) <span class="op">+</span><span class="st"> </span>lower</a>
 <a class="sourceLine" id="cb3-6" data-line-number="6">}</a>
 <a class="sourceLine" id="cb3-7" data-line-number="7">my_scaled_logit &lt;-<span class="st"> </span><span class="kw">new_transformation</span>(scaled_logit, inv_scaled_logit)</a></code></pre></div>
 <p>Once you define your transformation as above, it is ready to use anywhere you would normally use a transformation.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">cbind</a></span>(mdeaths, fdeaths) <span class="op">%&gt;%</span></a>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span>(mdeaths, fdeaths) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb4-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://tsibble.tidyverts.org/reference/as-tsibble.html">as_tsibble</a></span>(<span class="dt">pivot_longer =</span> <span class="ot">FALSE</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb4-3" data-line-number="3"><span class="st">  </span><span class="kw">model</span>(<span class="kw"><a href="../reference/ETS.html">ETS</a></span>(<span class="kw">my_scaled_logit</span>(mdeaths, <span class="dv">750</span>, <span class="dv">3000</span>) <span class="op">~</span></a>
 <a class="sourceLine" id="cb4-4" data-line-number="4"><span class="st">              </span><span class="kw">error</span>(<span class="st">"A"</span>) <span class="op">+</span><span class="st"> </span><span class="kw">trend</span>(<span class="st">"N"</span>) <span class="op">+</span><span class="st"> </span><span class="kw">season</span>(<span class="st">"A"</span>))) <span class="op">%&gt;%</span></a>
@@ -214,17 +216,20 @@
 </div>
 
 
+
       <footer><div class="copyright">
   <p>Developed by <a href="https://mitchelloharawild.com">Mitchell O'Hara-Wild</a>, <a href="http://robjhyndman.com">Rob Hyndman</a>, <a href="https://earo.me">Earo Wang</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
 </div>
+
       </footer>
 </div>
 
   
+
 
   </body>
 </html>
