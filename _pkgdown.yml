@@ -57,6 +57,7 @@ reference:
     - generate.ETS
     - fitted.ETS
     - residuals.ETS
+    - components.ETS
 - title: TSLM
   desc: >
     Time series linear models.
