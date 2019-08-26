@@ -17,7 +17,7 @@ if (Sys.getenv("BUILD_PKGDOWN") != "" && ci()$get_branch() == "master") {
       prepare_call = remotes::install_github("r-lib/pkgbuild")
     ) %>%
     add_code_step(
-      pkgdown::build_favicon(),
+      pkgdown::build_favicons(),
       prepare_call = install.packages("magick")
     ) %>%
     add_step(step_build_pkgdown(run_dont_run = TRUE)) %>%
