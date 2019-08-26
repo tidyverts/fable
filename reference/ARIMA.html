@@ -211,15 +211,15 @@ selection of <code>d</code> and <code>D</code>. See <code><a href='unitroot_opti
 The <code>pdq</code> special is used to specify non-seasonal components of the model.
 <pre>
 pdq(p = 0:5, d = 0:2, q = 0:5,
-    start.p = 2, start.q = 2)
+    p_init = 2, q_init = 2)
 </pre>
 
 <table class='table'>
 <tr><td><code>p</code></td><td>The order of the non-seasonal auto-regressive (AR) terms. If multiple values are provided, the one which minimises <code>ic</code> will be chosen.</td></tr>
 <tr><td><code>d</code></td><td>The order of integration for non-seasonal differencing. If multiple values are provided, one of the values will be selected via repeated KPSS tests.</td></tr>
 <tr><td><code>q</code></td><td>The order of the non-seasonal moving average (MA) terms. If multiple values are provided, the one which minimises <code>ic</code> will be chosen.</td></tr>
-<tr><td><code>start.p</code></td><td>If <code>stepwise = TRUE</code>, <code>start.p</code> provides the initial value for <code>p</code> for the stepwise search procedure.</td></tr>
-<tr><td><code>start.q</code></td><td>If <code>stepwise = TRUE</code>, <code>start.q</code> provides the initial value for <code>q</code> for the stepwise search procedure.</td></tr>
+<tr><td><code>p_init</code></td><td>If <code>stepwise = TRUE</code>, <code>p_init</code> provides the initial value for <code>p</code> for the stepwise search procedure.</td></tr>
+<tr><td><code>q_init</code></td><td>If <code>stepwise = TRUE</code>, <code>q_init</code> provides the initial value for <code>q</code> for the stepwise search procedure.</td></tr>
 </table>
 
 
@@ -229,7 +229,7 @@ pdq(p = 0:5, d = 0:2, q = 0:5,
 The <code>PDQ</code> special is used to specify seasonal components of the model.
 <pre>
 PDQ(P = 0:2, D = 0:1, Q = 0:2, period = NULL,
-    start.P = 1, start.Q = 1)
+    P_init = 1, Q_init = 1)
 </pre>
 
 <table class='table'>
@@ -237,8 +237,8 @@ PDQ(P = 0:2, D = 0:1, Q = 0:2, period = NULL,
 <tr><td><code>D</code></td><td>The order of integration for seasonal differencing. If multiple values are provided, one of the values will be selected via repeated heuristic tests (based on strength of seasonality from an STL decomposition).</td></tr>
 <tr><td><code>Q</code></td><td>The order of the seasonal moving average (SMA) terms. If multiple values are provided, the one which minimises <code>ic</code> will be chosen.</td></tr>
 <tr><td><code>period</code></td><td>The periodic nature of the seasonality. This can be either a number indicating the number of observations in each seasonal period, or text to indicate the duration of the seasonal window (for example, annual seasonality would be "1 year").</td></tr>
-<tr><td><code>start.P</code></td><td>If <code>stepwise = TRUE</code>, <code>start.P</code> provides the initial value for <code>P</code> for the stepwise search procedure.</td></tr>
-<tr><td><code>start.Q</code></td><td>If <code>stepwise = TRUE</code>, <code>start.Q</code> provides the initial value for <code>Q</code> for the stepwise search procedure.</td></tr>
+<tr><td><code>P_init</code></td><td>If <code>stepwise = TRUE</code>, <code>P_init</code> provides the initial value for <code>P</code> for the stepwise search procedure.</td></tr>
+<tr><td><code>Q_init</code></td><td>If <code>stepwise = TRUE</code>, <code>Q_init</code> provides the initial value for <code>Q</code> for the stepwise search procedure.</td></tr>
 </table>
 
 
