@@ -10,7 +10,7 @@ train_arima <- function(.data, specials,  ic = "aicc",
   }
   
   # Get args
-  p <- d <- q <- P <- D <- Q <- period <- start.p <- start.q <- start.P <- start.Q <- NULL 
+  p <- d <- q <- P <- D <- Q <- period <- p_init <- q_init <- P_init <- Q_init <- NULL 
   assignSpecials(specials[c("pdq", "PDQ")])
 
   
@@ -206,7 +206,7 @@ This is generally discouraged, consider removing the constant or reducing the nu
     best_ic <- Inf
     
     # Initial 4 models
-    initial_opts <- list(start = c(start.p, d, start.q, start.P, D, start.Q, constant[1]),
+    initial_opts <- list(start = c(p_init, d, q_init, P_init, D, Q_init, constant[1]),
                          null = c(0, d, 0, 0, D, 0, constant[1]),
                          ar = c(max(p) > 0, d, 0, max(P) > 0, D, 0, constant[1]),
                          ma = c(0, d, max(q) > 0, 0, D, max(Q) > 0, constant[1]))
@@ -325,15 +325,15 @@ This is generally discouraged, consider removing the constant or reducing the nu
 
 specials_arima <- new_specials(
   pdq = function(p = 0:5, d = 0:2, q = 0:5,
-                 start.p = 2, start.q = 2){
+                 p_init = 2, q_init = 2){
     p <- p[p <= floor(NROW(self$data) / 3)]
     q <- q[q <= floor(NROW(self$data) / 3)]
-    start.p <- p[which.min(abs(p - start.p))]
-    start.q <- q[which.min(abs(q - start.q))]
+    p_init <- p[which.min(abs(p - p_init))]
+    q_init <- q[which.min(abs(q - q_init))]
     as.list(environment())
   },
   PDQ = function(P = 0:2, D = 0:1, Q = 0:2, period = NULL,
-                 start.P = 1, start.Q = 1){
+                 P_init = 1, Q_init = 1){
     period <- get_frequencies(period, self$data, .auto = "smallest")
     if(period == 1){
       # Not seasonal
@@ -345,8 +345,8 @@ specials_arima <- new_specials(
       P <- P[P <= floor(NROW(self$data) / 3 / period)]
       Q <- Q[Q <= floor(NROW(self$data) / 3 / period)]
     }
-    start.P <- P[which.min(abs(P - start.P))]
-    start.Q <- Q[which.min(abs(Q - start.Q))]
+    P_init <- P[which.min(abs(P - P_init))]
+    Q_init <- Q[which.min(abs(Q - Q_init))]
     as.list(environment())
   },
   common_xregs,
@@ -408,15 +408,15 @@ specials_arima <- new_specials(
 #' The `pdq` special is used to specify non-seasonal components of the model.
 #' \preformatted{
 #' pdq(p = 0:5, d = 0:2, q = 0:5,
-#'     start.p = 2, start.q = 2)
+#'     p_init = 2, q_init = 2)
 #' }
 #'
 #' \tabular{ll}{
 #'   `p`        \tab The order of the non-seasonal auto-regressive (AR) terms. If multiple values are provided, the one which minimises `ic` will be chosen. \cr
 #'   `d`        \tab The order of integration for non-seasonal differencing. If multiple values are provided, one of the values will be selected via repeated KPSS tests. \cr
 #'   `q`        \tab The order of the non-seasonal moving average (MA) terms. If multiple values are provided, the one which minimises `ic` will be chosen. \cr
-#'   `start.p`  \tab If `stepwise = TRUE`, `start.p` provides the initial value for `p` for the stepwise search procedure. \cr
-#'   `start.q`  \tab If `stepwise = TRUE`, `start.q` provides the initial value for `q` for the stepwise search procedure.
+#'   `p_init`  \tab If `stepwise = TRUE`, `p_init` provides the initial value for `p` for the stepwise search procedure. \cr
+#'   `q_init`  \tab If `stepwise = TRUE`, `q_init` provides the initial value for `q` for the stepwise search procedure.
 #' }
 #' }
 #' 
@@ -424,7 +424,7 @@ specials_arima <- new_specials(
 #' The `PDQ` special is used to specify seasonal components of the model.
 #' \preformatted{
 #' PDQ(P = 0:2, D = 0:1, Q = 0:2, period = NULL,
-#'     start.P = 1, start.Q = 1)
+#'     P_init = 1, Q_init = 1)
 #' }
 #'
 #' \tabular{ll}{
@@ -432,8 +432,8 @@ specials_arima <- new_specials(
 #'   `D`        \tab The order of integration for seasonal differencing. If multiple values are provided, one of the values will be selected via repeated heuristic tests (based on strength of seasonality from an STL decomposition). \cr
 #'   `Q`        \tab The order of the seasonal moving average (SMA) terms. If multiple values are provided, the one which minimises `ic` will be chosen. \cr
 #'   `period`   \tab The periodic nature of the seasonality. This can be either a number indicating the number of observations in each seasonal period, or text to indicate the duration of the seasonal window (for example, annual seasonality would be "1 year").  \cr
-#'   `start.P`  \tab If `stepwise = TRUE`, `start.P` provides the initial value for `P` for the stepwise search procedure. \cr
-#'   `start.Q`  \tab If `stepwise = TRUE`, `start.Q` provides the initial value for `Q` for the stepwise search procedure.
+#'   `P_init`  \tab If `stepwise = TRUE`, `P_init` provides the initial value for `P` for the stepwise search procedure. \cr
+#'   `Q_init`  \tab If `stepwise = TRUE`, `Q_init` provides the initial value for `Q` for the stepwise search procedure.
 #' }
 #' }
 #' 

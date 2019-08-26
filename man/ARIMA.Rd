@@ -44,15 +44,15 @@ framework.
 The \code{pdq} special is used to specify non-seasonal components of the model.
 \preformatted{
 pdq(p = 0:5, d = 0:2, q = 0:5,
-    start.p = 2, start.q = 2)
+    p_init = 2, q_init = 2)
 }
 
 \tabular{ll}{
 \code{p}        \tab The order of the non-seasonal auto-regressive (AR) terms. If multiple values are provided, the one which minimises \code{ic} will be chosen. \cr
 \code{d}        \tab The order of integration for non-seasonal differencing. If multiple values are provided, one of the values will be selected via repeated KPSS tests. \cr
 \code{q}        \tab The order of the non-seasonal moving average (MA) terms. If multiple values are provided, the one which minimises \code{ic} will be chosen. \cr
-\code{start.p}  \tab If \code{stepwise = TRUE}, \code{start.p} provides the initial value for \code{p} for the stepwise search procedure. \cr
-\code{start.q}  \tab If \code{stepwise = TRUE}, \code{start.q} provides the initial value for \code{q} for the stepwise search procedure.
+\code{p_init}  \tab If \code{stepwise = TRUE}, \code{p_init} provides the initial value for \code{p} for the stepwise search procedure. \cr
+\code{q_init}  \tab If \code{stepwise = TRUE}, \code{q_init} provides the initial value for \code{q} for the stepwise search procedure.
 }
 }
 
@@ -60,7 +60,7 @@ pdq(p = 0:5, d = 0:2, q = 0:5,
 The \code{PDQ} special is used to specify seasonal components of the model.
 \preformatted{
 PDQ(P = 0:2, D = 0:1, Q = 0:2, period = NULL,
-    start.P = 1, start.Q = 1)
+    P_init = 1, Q_init = 1)
 }
 
 \tabular{ll}{
@@ -68,8 +68,8 @@ PDQ(P = 0:2, D = 0:1, Q = 0:2, period = NULL,
 \code{D}        \tab The order of integration for seasonal differencing. If multiple values are provided, one of the values will be selected via repeated heuristic tests (based on strength of seasonality from an STL decomposition). \cr
 \code{Q}        \tab The order of the seasonal moving average (SMA) terms. If multiple values are provided, the one which minimises \code{ic} will be chosen. \cr
 \code{period}   \tab The periodic nature of the seasonality. This can be either a number indicating the number of observations in each seasonal period, or text to indicate the duration of the seasonal window (for example, annual seasonality would be "1 year").  \cr
-\code{start.P}  \tab If \code{stepwise = TRUE}, \code{start.P} provides the initial value for \code{P} for the stepwise search procedure. \cr
-\code{start.Q}  \tab If \code{stepwise = TRUE}, \code{start.Q} provides the initial value for \code{Q} for the stepwise search procedure.
+\code{P_init}  \tab If \code{stepwise = TRUE}, \code{P_init} provides the initial value for \code{P} for the stepwise search procedure. \cr
+\code{Q_init}  \tab If \code{stepwise = TRUE}, \code{Q_init} provides the initial value for \code{Q} for the stepwise search procedure.
 }
 }
 
