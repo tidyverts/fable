@@ -135,22 +135,19 @@ specials_ets <- new_specials(
     }
 
     m <- get_frequencies(period, self$data, .auto = "smallest")
-    if (m < 1 || NROW(self$data) <= m) {
-      method <- "N"
-    }
-    if (m == 1) {
-      if (!is.element("N", method)) {
-        abort("Nonseasonal data")
-      }
-      method <- "N"
+    if (m <= 1 || NROW(self$data) <= m) {
+      method <- intersect("N", method)
     }
     if (m > 24) {
       if (!is.element("N", method)) {
-        abort("Frequency too high for seasonal period")
+        abort("Seasonal periods (`period`) of length greather than 24 are not supported by ETS.")
       } else if (length(method) > 1) {
-        warn("I can't handle data with frequency greater than 24. Seasonality will be ignored.")
+        warn("Seasonal periods (`period`) of length greather than 24 are not supported by ETS. Seasonality will be ignored.")
         method <- "N"
       }
+    }
+    if(is_empty(method)){
+      abort("A seasonal ETS model cannot be used for this data.")
     }
     list(method = method, gamma = gamma, gamma_range = gamma_range, period = m)
   },
