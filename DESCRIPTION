@@ -49,8 +49,7 @@ Remotes:
     tidyverts/feasts
 Additional_repositories: https://tidyverts.org/
 LinkingTo:
-    Rcpp (>= 0.11.0),
-    RcppArmadillo (>= 0.2.3)
+    Rcpp (>= 0.11.0)
 VignetteBuilder: 
     knitr
 ByteCompile: true
