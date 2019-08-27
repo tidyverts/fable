@@ -1,5 +1,7 @@
 #include <cmath>
 #include <R.h>
+#include <Rcpp.h>
+using namespace Rcpp;
 
 //for isnan, math.h is needed
 //#include <math.h>
@@ -263,7 +265,7 @@ bool EtsTargetFunction::admissible() {
 
 	else if(m > 1) //Seasonal model
 	{
-
+	  
 		if(!optBeta && !givenBeta) beta = 0;
 
 
@@ -277,36 +279,31 @@ bool EtsTargetFunction::admissible() {
 
 		// End of easy tests. Now use characteristic equation
 
-		std::vector<double> opr;
-		opr.push_back(1);
-		opr.push_back(alpha+beta-phi);
-
-		for(int i=0;i<m-2;i++) opr.push_back(alpha+beta-alpha*phi);
-
-		opr.push_back(alpha+beta-alpha*phi+gamma-1);
-		opr.push_back(phi*(1-alpha-gamma));
-
-		int degree = opr.size()-1;
-
-		std::vector<double> opi;
-		opi.resize(opr.size(),0);
-
-		std::vector<double> zeror(degree);
-		std::vector<double> zeroi(degree);
-
-		Rboolean fail;
-
-		cpolyroot(&opr[0], &opi[0], &degree, &zeror[0], &zeroi[0], &fail);
-
-		double max = 0;
-		for(int i=0;i<zeror.size();i++) {
-		  double abs_val = sqrt(zeror[i]*zeror[i] + zeroi[i]*zeroi[i]);
-		  if(abs_val>max) max = abs_val;
-		}
+		std::vector<double> op_new(m+2, alpha+beta-alpha*phi);
+		// P <- c(phi*(1-alpha-gamma),alpha+beta-alpha*phi+gamma-1,rep(alpha+beta-alpha*phi,m-2),(alpha+beta-phi),1)
+		op_new[0] = phi*(1-alpha-gamma);
+		op_new[1] = phi*(alpha+beta-alpha*phi+gamma-1);
+		op_new[m] = alpha+beta-phi;
+		op_new[m+1] = 1;
+		
+		Environment base("package:base"); 
+		Function polyroot = base["polyroot"];
+		Function abs = base["abs"];
+		NumericVector res = abs(polyroot(op_new));
+		
+// 		Rprintf("alpha = %f, beta = %f, gamma = %f, phi = %f, m = %i\n",
+//           alpha, beta, gamma, phi, m);
+// 		Rprintf("C: c(");
+// 		for(int i=0;i<opr.size();i++) {
+// 		  Rprintf("%f, ", opr[i]);
+// 		}
+// 		Rprintf(")\n");
+// 		Rprintf("C_new: c(");
 
 		//Rprintf("maxpolyroot: %f\n", max);
-
-		if(max > 1+1e-10) return(false);
+		
+		double max_root = max(res);
+		if(max_root > 1+1e-10) return(false);
 
 		// P <- c(phi*(1-alpha-gamma),alpha+beta-alpha*phi+gamma-1,rep(alpha+beta-alpha*phi,m-2),(alpha+beta-phi),1)
 		// roots <- polyroot(P)

@@ -34,8 +34,6 @@ Authors:
 Other contributors:
 \itemize{
   \item Gabriel Caceres (NNETAR implementation) [contributor]
-  \item R Core Team (cpoly implementation) [contributor, copyright holder]
-  \item Ross Ihaka (cpoly implementation) [contributor, copyright holder]
 }
 
 }
