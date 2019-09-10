@@ -327,13 +327,13 @@ generate.NNETAR <- function(x, new_data, specials = NULL, bootstrap = FALSE, ...
     }
   }
   
-  if(is.null(new_data[[".innov"]])){
+  if(!(".innov" %in% new_data)){ 
     if(bootstrap){
       res <- stats::na.omit(x$est[[".resid"]] - mean(x$est[[".resid"]], na.rm = TRUE))
       if (!is.null(x$scales$y)) {
         res <- res / x$scales$y$scale
       }
-      new_data[[".innov"]] <- sample(res, NROW(new_data), replace = TRUE)
+      new_data$.innov <- sample(res, NROW(new_data), replace = TRUE)
     }
     else{
       if (!is.null(x$scales$y)) {
@@ -342,7 +342,7 @@ generate.NNETAR <- function(x, new_data, specials = NULL, bootstrap = FALSE, ...
       else{
         sigma <- x$fit$sigma
       }
-      new_data[[".innov"]] <- stats::rnorm(NROW(new_data), sd = sigma)
+      new_data$.innov <- stats::rnorm(NROW(new_data), sd = sigma)
     }
   }
   else{

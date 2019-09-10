@@ -323,15 +323,15 @@ generate.TSLM <- function(x, new_data, specials, bootstrap = FALSE, ...){
   piv <- x$model$qr$pivot[seq_len(x$model$rank)]
   pred <- xreg[, piv, drop = FALSE] %*% coef[piv]
   
-  if(is.null(new_data[[".innov"]])){
+  if(!(".innov" %in% new_data)){
     if(bootstrap){
       res <- residuals(x)
-      new_data[[".innov"]] <- sample(na.omit(res) - mean(res, na.rm = TRUE),
+      new_data$.innov <- sample(na.omit(res) - mean(res, na.rm = TRUE),
                                      NROW(new_data), replace = TRUE)
     }
     else{
       vars <- x$fit$sigma2/x$fit$df.residual
-      new_data[[".innov"]] <- stats::rnorm(length(pred), sd = sqrt(vars))
+      new_data$.innov <- stats::rnorm(length(pred), sd = sqrt(vars))
     }
   }
   

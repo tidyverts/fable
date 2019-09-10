@@ -119,13 +119,13 @@ generate.model_mean <- function(x, new_data, bootstrap = FALSE, ...){
   res <- residuals(x)
   f <- x$par$estimate
   
-  if(is.null(new_data[[".innov"]])){
+  if(!(".innov" %in% new_data)){
     if(bootstrap){
-      new_data[[".innov"]] <- sample(na.omit(res) - mean(res, na.rm = TRUE),
+      new_data$.innov <- sample(na.omit(res) - mean(res, na.rm = TRUE),
                                      NROW(new_data), replace = TRUE)
     }
     else{
-      new_data[[".innov"]] <- stats::rnorm(NROW(new_data), 
+      new_data$.innov <- stats::rnorm(NROW(new_data), 
                                            sd = sqrt(x$fit$sigma2))
     }
   }
