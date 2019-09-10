@@ -723,7 +723,7 @@ interpolate.ARIMA <- function(object, new_data, specials, ...){
   # Update data
   i <- (miss_val-1)%%NROW(new_data) + 1
   j <- (miss_val-1)%/%NROW(new_data) + 1
-  idx_pos <- match(as_string(index(new_data)), colnames(new_data))
+  idx_pos <- match(index_var(new_data), colnames(new_data))
   j <- ifelse(j>=idx_pos, j + 1, j)
   pos <- split(i, j)
   for (i in seq_along(pos)){

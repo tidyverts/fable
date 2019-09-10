@@ -21,7 +21,7 @@ trend <- function(x, knots = NULL, origin = NULL){
 }
 
 trend.tbl_ts <- function(x, knots = NULL, origin = NULL){
-  idx_num <- x[[expr_text(tsibble::index(x))]] %>% units_since
+  idx_num <- x[[index_var(x)]] %>% units_since
   knots_num <- if(is.null(knots)){NULL} else {knots %>% units_since}
   index_interval <- interval(x) %>% time_unit()
   idx_num <- idx_num/index_interval
@@ -51,7 +51,7 @@ season <- function(x, period){
 }
 
 season.tbl_ts <- function(x, period){
-  idx_num <- x[[expr_text(tsibble::index(x))]] %>% units_since
+  idx_num <- x[[index_var(x)]] %>% units_since
   index_interval <- interval(x) %>% time_unit()
   idx_num <- idx_num/index_interval
   period <- get_frequencies(period, x, .auto = "smallest")
@@ -71,7 +71,7 @@ fourier <- function(x, period, K, origin = NULL){
 }
 
 fourier.tbl_ts <- function(x, period, K, origin = NULL){
-  idx_num <- x[[expr_text(tsibble::index(x))]] %>% units_since
+  idx_num <- x[[index_var(x)]] %>% units_since
   index_interval <- interval(x) %>% time_unit()
   idx_num <- idx_num/index_interval
   if(!is.null(origin)){
@@ -160,7 +160,7 @@ common_xregs <- list(
   trend = function(knots = NULL, origin = NULL){
     if(is.null(origin)){
       if(is.null(self$origin)){
-        self$origin <- self$data[[expr_text(index(self$data))]][[1]]
+        self$origin <- self$data[[index_var(self$data)]][[1]]
       }
       origin <- self$origin
     }
@@ -172,7 +172,7 @@ common_xregs <- list(
   fourier = function(period = NULL, K, origin = NULL){
     if(is.null(origin)){
       if(is.null(self$origin)){
-        self$origin <- self$data[[expr_text(index(self$data))]][[1]]
+        self$origin <- self$data[[index_var(self$data)]][[1]]
       }
       origin <- self$origin
     }

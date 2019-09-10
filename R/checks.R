@@ -15,7 +15,7 @@ check_regular <- function(x){
 check_ordered <- function(x){
   if (!is_ordered(x)) {
     abort(sprintf("%s is an unordered time series. To use this model, you first must sort the data in time order using `dplyr::arrange(%s, %s)`",
-                  deparse(substitute(x)), paste(c(deparse(substitute(x)), key_vars(x)), collapse = ", "), as_string(index(x))))
+                  deparse(substitute(x)), paste(c(deparse(substitute(x)), key_vars(x)), collapse = ", "), index_var(x)))
   }
 }
 

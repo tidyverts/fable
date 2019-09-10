@@ -11,7 +11,7 @@ train_ets <- function(.data, specials, opt_crit,
 
   # Get response
   y <- unclass(.data)[[measured_vars(.data)]]
-  idx <- unclass(.data)[[expr_text(index(.data))]]
+  idx <- unclass(.data)[[index_var(.data)]]
 
   if(any(is.na(y))){
     abort("ETS does not support missing values.")
@@ -87,7 +87,7 @@ train_ets <- function(.data, specials, opt_crit,
       states = tsibble(
         !!!set_names(list(seq(idx[[1]] - time_unit(interval(.data)),
                               by = time_unit(interval(.data)),
-                              length.out = NROW(best$states))), expr_text(index(.data))),
+                              length.out = NROW(best$states))), index_var(.data)),
         !!!set_names(split(best$states, col(best$states)), colnames(best$states)),
         index = !!index(.data)
       ),
@@ -433,7 +433,7 @@ refit.ETS <- function(object, new_data, specials = NULL, reestimate = FALSE, rei
     transmute(
       !!parse_expr(measured_vars(object$est)[1])
     )
-  idx <- unclass(y)[[expr_text(index(y))]]
+  idx <- unclass(y)[[index_var(y)]]
   y <- unclass(y)[[measured_vars(y)]]
 
   best <- if(reinitialise){
@@ -471,7 +471,7 @@ refit.ETS <- function(object, new_data, specials = NULL, reestimate = FALSE, rei
       states = tsibble(
         !!!set_names(list(seq(idx[[1]] - time_unit(interval(new_data)),
                               by = time_unit(interval(new_data)),
-                              length.out = NROW(best$states))), expr_text(index(new_data))),
+                              length.out = NROW(best$states))), index_var(new_data)),
         !!!set_names(split(best$states, col(best$states)), colnames(best$states)),
         index = !!index(new_data)
       ),
@@ -559,10 +559,10 @@ components.ETS <- function(object, ...){
 
   cmp <- match(c(expr_text(idx), "l", "b", "s1"), colnames(object$states))
   out <- object$states[,stats::na.exclude(cmp)]
-  colnames(out) <- c(expr_text(index(object$states)), "level", "slope", "season")[!is.na(cmp)]
+  colnames(out) <- c(index_var(object$states), "level", "slope", "season")[!is.na(cmp)]
   if(spec$seasontype != "N"){
     seasonal_init <- tsibble(
-      !!expr_text(idx) := object$states[[index(object$states)]][[1]] - rev(seq_len(m-1))*time_unit(interval(object$states)),
+      !!expr_text(idx) := object$states[[index_var(object$states)]][[1]] - rev(seq_len(m-1))*time_unit(interval(object$states)),
       season = rev(as.numeric(object$states[1,paste0("s", seq_len(m-1) + 1)])),
       index = !!idx
     )
@@ -579,7 +579,7 @@ components.ETS <- function(object, ...){
       remainder = !!sym(".resid")
     )
 
-  out <- left_join(out, est_vars, by = expr_text(index(object$states)))
+  out <- left_join(out, est_vars, by = index_var(object$states))
   out <- select(out, intersect(c(expr_text(idx), response, "level", "slope", "season", "remainder"), colnames(out)))
 
   eqn <- expr(lag(!!sym("level"), 1))
