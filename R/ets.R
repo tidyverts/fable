@@ -346,8 +346,8 @@ generate.ETS <- function(x, new_data, specials, bootstrap = FALSE, ...){
     abort("Simulation new_data must be regularly spaced")
   }
 
-  start_idx <- min(new_data[[expr_text(index(new_data))]])
-  start_pos <- match(start_idx - time_unit(interval(new_data)), x$states[[index(x$states)]])
+  start_idx <- min(new_data[[index_var(new_data)]])
+  start_pos <- match(start_idx - time_unit(interval(new_data)), x$states[[index_var(x$states)]])
 
   if(is.na(start_pos)){
     abort("The first observation index of simulation data must be within the model's training set.")
@@ -355,13 +355,13 @@ generate.ETS <- function(x, new_data, specials, bootstrap = FALSE, ...){
 
   initstate <- as.numeric(x$states[start_pos, measured_vars(x$states)])
 
-  if(is.null(new_data[[".innov"]])){
+  if(!(".innov" %in% new_data)){
     if(bootstrap){
-      new_data[[".innov"]] <- sample(stats::na.omit(residuals(x) - mean(residuals(x), na.rm = TRUE)),
+      new_data$.innov <- sample(stats::na.omit(residuals(x) - mean(residuals(x), na.rm = TRUE)),
                                      NROW(new_data), replace = TRUE)
     }
     else{
-      new_data[[".innov"]] <- stats::rnorm(NROW(new_data), sd = sqrt(x$fit$sigma2))
+      new_data$.innov <- stats::rnorm(NROW(new_data), sd = sqrt(x$fit$sigma2))
     }
   }
 
