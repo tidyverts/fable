@@ -129,21 +129,21 @@
 <a class="sourceLine" id="cb3-2" data-line-number="2"><span class="st">  </span><span class="kw">autoplot</span>(Trips)</a></code></pre></div>
 <p><img src="fable_files/figure-html/plot-1.png" width="672"></p>
 <p>Two widely used models available in this package are ETS and ARIMA. These models are specified using a compact formula representation (much like cross-sectional linear models using <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code>). The response variable (<code>Trips</code>) and any transformations are included on the left, while the model specification is on the right of the formula. When a model is not fully specified (or if the formula’s right side is missing completely), the unspecified components will be chosen automatically.</p>
-<p>Suppose we think that the ETS model must have an additive trend, and want the other elements to be chosen automatically. This model would be specified using <code><a href="../reference/ETS.html">ETS(Trips ~ trend("A"))</a></code>. Similarly, a completely automatic ARIMA model (much like <code>auto.arima()</code> from the <code>forecast</code> package) can be specified using <code><a href="../reference/ARIMA.html">ARIMA(Trips)</a></code>. The <code>model()</code> function is used to estimate these model specifications on a particular dataset, and will return a “mable” (model table).</p>
+<p>Suppose we think that the ETS model must have an additive trend, and want the other elements to be chosen automatically. This model would be specified using <code><a href="https://fable.tidyverts.org/reference/ETS.html">ETS(Trips ~ trend("A"))</a></code>. Similarly, a completely automatic ARIMA model (much like <code>auto.arima()</code> from the <code>forecast</code> package) can be specified using <code><a href="https://fable.tidyverts.org/reference/ARIMA.html">ARIMA(Trips)</a></code>. The <code>model()</code> function is used to estimate these model specifications on a particular dataset, and will return a “mable” (model table).</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">fit &lt;-<span class="st"> </span>tourism_melb <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb4-2" data-line-number="2"><span class="st">  </span><span class="kw">model</span>(</a>
-<a class="sourceLine" id="cb4-3" data-line-number="3">    <span class="dt">ets =</span> <span class="kw"><a href="../reference/ETS.html">ETS</a></span>(Trips <span class="op">~</span><span class="st"> </span><span class="kw">trend</span>(<span class="st">"A"</span>)),</a>
-<a class="sourceLine" id="cb4-4" data-line-number="4">    <span class="dt">arima =</span> <span class="kw"><a href="../reference/ARIMA.html">ARIMA</a></span>(Trips)</a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">    <span class="dt">ets =</span> <span class="kw"><a href="https://fable.tidyverts.org/reference/ETS.html">ETS</a></span>(Trips <span class="op">~</span><span class="st"> </span><span class="kw">trend</span>(<span class="st">"A"</span>)),</a>
+<a class="sourceLine" id="cb4-4" data-line-number="4">    <span class="dt">arima =</span> <span class="kw"><a href="https://fable.tidyverts.org/reference/ARIMA.html">ARIMA</a></span>(Trips)</a>
 <a class="sourceLine" id="cb4-5" data-line-number="5">  )</a>
 <a class="sourceLine" id="cb4-6" data-line-number="6">fit</a>
 <a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#&gt; # A mable: 4 x 5</span></a>
 <a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#&gt; # Key:     Region, State, Purpose [4]</span></a>
-<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt;   Region    State    Purpose  ets          arima                           </span></a>
-<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">#&gt;   &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;    &lt;model&gt;      &lt;model&gt;                         </span></a>
-<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co">#&gt; 1 Melbourne Victoria Business &lt;ETS(A,A,A)&gt; &lt;ARIMA(0,1,2)(1,0,1)[4] w/ drif…</span></a>
-<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">#&gt; 2 Melbourne Victoria Holiday  &lt;ETS(M,A,A)&gt; &lt;ARIMA(0,1,1) w/ drift&gt;         </span></a>
-<a class="sourceLine" id="cb4-13" data-line-number="13"><span class="co">#&gt; 3 Melbourne Victoria Other    &lt;ETS(A,A,N)&gt; &lt;ARIMA(0,1,1) w/ drift&gt;         </span></a>
-<a class="sourceLine" id="cb4-14" data-line-number="14"><span class="co">#&gt; 4 Melbourne Victoria Visiting &lt;ETS(M,A,A)&gt; &lt;ARIMA(0,1,1)(1,0,2)[4]&gt;</span></a></code></pre></div>
+<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt;   Region    State    Purpose          ets                             arima</span></a>
+<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">#&gt;   &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;        &lt;model&gt;                           &lt;model&gt;</span></a>
+<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co">#&gt; 1 Melbourne Victoria Busine… &lt;ETS(A,A,A)&gt; &lt;ARIMA(0,1,2)(1,0,1)[4] w/ drift&gt;</span></a>
+<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">#&gt; 2 Melbourne Victoria Holiday &lt;ETS(M,A,A)&gt;           &lt;ARIMA(0,1,1) w/ drift&gt;</span></a>
+<a class="sourceLine" id="cb4-13" data-line-number="13"><span class="co">#&gt; 3 Melbourne Victoria Other   &lt;ETS(A,A,N)&gt;           &lt;ARIMA(0,1,1) w/ drift&gt;</span></a>
+<a class="sourceLine" id="cb4-14" data-line-number="14"><span class="co">#&gt; 4 Melbourne Victoria Visiti… &lt;ETS(M,A,A)&gt;          &lt;ARIMA(0,1,1)(1,0,2)[4]&gt;</span></a></code></pre></div>
 <p>A mable contains a row for each time series (uniquely identified by the key variables), and a column for each model specification. A model is contained within the cells of each model column. In the example above we can see that the all four ETS models have an additive trend, and the error and seasonality have been chosen automatically. Similarly, the ARIMA model varies between time series as it has been automatically selected.</p>
 <p>The <code><a href="https://rdrr.io/r/stats/coef.html">coef()</a></code> or <code>tidy()</code> function is used to extract the coefficients from the models. It’s possible to use <code><a href="https://dplyr.tidyverse.org/reference/select.html">select()</a></code> and other verbs to focus on the coefficients from a particular model.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">fit <span class="op">%&gt;%</span></a>
@@ -311,6 +311,7 @@ fc %>%
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+
       </div>
 
 </div>
@@ -322,7 +323,7 @@ fc %>%
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.9000.</p>
 </div>
 
       </footer>

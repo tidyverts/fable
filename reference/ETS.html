@@ -15,10 +15,12 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
@@ -39,12 +41,12 @@
 
 
 
+
 <meta property="og:title" content="Exponential smoothing state space model — ETS" />
-
 <meta property="og:description" content="Returns ETS model specified by the formula." />
-
 <meta property="og:image" content="https://fable.tidyverts.org/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -113,7 +115,6 @@
   </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://docs.google.com/forms/d/e/1FAIpQLSfc66U8e8e-x_7TeWpuBAtxqdJD4UXozdkLgmBI3mlRuKPkzA/viewform?usp=sf_link">Feedback</a>
@@ -143,15 +144,13 @@
     </div>
 
     <div class="ref-description">
-    
     <p>Returns ETS model specified by the formula.</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>ETS</span>(<span class='no'>formula</span>, <span class='kw'>opt_crit</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"lik"</span>, <span class='st'>"amse"</span>, <span class='st'>"mse"</span>, <span class='st'>"sigma"</span>, <span class='st'>"mae"</span>),
   <span class='kw'>nmse</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>bounds</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"both"</span>, <span class='st'>"usual"</span>, <span class='st'>"admissible"</span>), <span class='kw'>ic</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"aicc"</span>,
   <span class='st'>"aic"</span>, <span class='st'>"bic"</span>), <span class='kw'>restrict</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -192,27 +191,23 @@ be allowed.</p></td>
       <td><p>Other arguments</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A model specification.</p>
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Based on the classification of methods as described in Hyndman et al (2008).</p>
 <p>The methodology is fully automatic. The model is chosen automatically if not
 specified. This methodology performed extremely well on the M3-competition
 data. (See Hyndman, et al, 2002, below.)</p>
-    
     <h2 class="hasAnchor" id="specials"><a class="anchor" href="#specials"></a>Specials</h2>
 
     
 
 
 <h3>error</h3>
-
-The <code>error</code> special is used to specify the form of the error term.
-<pre>
+<p>The <code>error</code> special is used to specify the form of the error term.</p><pre>
 error(method = c("A", "M"))
 </pre>
 
@@ -223,9 +218,7 @@ error(method = c("A", "M"))
 
 
 <h3>trend</h3>
-
-The <code>trend</code> special is used to specify the form of the trend term and associated parameters.
-<pre>
+<p>The <code>trend</code> special is used to specify the form of the trend term and associated parameters.</p><pre>
 trend(method = c("N", "A", "Ad"),
       alpha = NULL, alpha_range = c(1e-04, 0.9999),
       beta = NULL, beta_range = c(1e-04, 0.9999),
@@ -245,9 +238,7 @@ trend(method = c("N", "A", "Ad"),
 
 
 <h3>season</h3>
-
-The <code>season</code> special is used to specify the form of the seasonal term and associated parameters.
-<pre>
+<p>The <code>season</code> special is used to specify the form of the seasonal term and associated parameters.</p><pre>
 season(method = c("N", "A", "M"), period = NULL,
        gamma = NULL, gamma_range = c(1e-04, 0.9999))
 </pre>
@@ -261,7 +252,6 @@ season(method = c("N", "A", "M"), period = NULL,
 
 
 
-    
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Hyndman, R.J., Koehler, A.B., Snyder, R.D., and Grose, S. (2002)
@@ -274,35 +264,27 @@ Statistical Mathematics</em>, <b>60</b>(2), 407--426.</p>
 <p>Hyndman, R.J., Koehler, A.B., Ord, J.K., and Snyder, R.D. (2008)
 <em>Forecasting with exponential smoothing: the state space approach</em>,
 Springer-Verlag. <a href='http://www.exponentialsmoothing.net'>http://www.exponentialsmoothing.net</a>.</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><a href='https://otexts.com/fpp3/expsmooth.html'>Forecasting: Principles and Practices, Exponential smoothing (chapter 8)</a></p></div>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='no'>USAccDeaths</span>) <span class='kw'>%&gt;%</span>
+    <pre class="examples"><div class='input'><span class='fu'>as_tsibble</span>(<span class='no'>USAccDeaths</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>model</span>(<span class='fu'>ETS</span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>value</span>) ~ <span class='fu'>season</span>(<span class='st'>"A"</span>)))</div><div class='output co'>#&gt; # A mable: 1 x 1
 #&gt;   `ETS(log(value) ~ season("A"))`
-#&gt;   &lt;model&gt;                        
-#&gt; 1 &lt;ETS(A,A,A)&gt;                   </div><div class='input'>
+#&gt;                           &lt;model&gt;
+#&gt; 1                    &lt;ETS(A,A,A)&gt;</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#details">Details</a></li>
-
       <li><a href="#specials">Specials</a></li>
-
       <li><a href="#references">References</a></li>
-
       <li><a href="#see-also">See also</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
@@ -316,7 +298,7 @@ Springer-Verlag. <a href='http://www.exponentialsmoothing.net'>http://www.expone
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.9000.</p>
 </div>
 
       </footer>

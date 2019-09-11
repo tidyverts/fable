@@ -1,6 +1,6 @@
 pandoc: '2.2'
-pkgdown: 1.3.0.9100
-pkgdown_sha: 2bdfe25535d6fa9b05ed70dbb59859fba9ce3918
+pkgdown: 1.4.0.9000
+pkgdown_sha: b6eec62574f1a0087c70eeb6574d6af0435828ff
 articles:
   fable: fable.html
   transformations: transformations.html

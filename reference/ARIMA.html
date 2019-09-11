@@ -15,10 +15,12 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
@@ -39,15 +41,15 @@
 
 
 
-<meta property="og:title" content="Estimate an ARIMA model — ARIMA" />
 
+<meta property="og:title" content="Estimate an ARIMA model — ARIMA" />
 <meta property="og:description" content="Searches through the model space specified in the specials to identify the
 best ARIMA model which has lowest AIC, AICc or BIC value. It is implemented
 using stats::arima() and allows ARIMA models to be used in the fable
 framework." />
-
 <meta property="og:image" content="https://fable.tidyverts.org/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -116,7 +118,6 @@ framework." />
   </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://docs.google.com/forms/d/e/1FAIpQLSfc66U8e8e-x_7TeWpuBAtxqdJD4UXozdkLgmBI3mlRuKPkzA/viewform?usp=sf_link">Feedback</a>
@@ -146,18 +147,16 @@ framework." />
     </div>
 
     <div class="ref-description">
-    
     <p>Searches through the model space specified in the specials to identify the
 best ARIMA model which has lowest AIC, AICc or BIC value. It is implemented
 using <code><a href='https://rdrr.io/r/stats/arima.html'>stats::arima()</a></code> and allows ARIMA models to be used in the fable
 framework.</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>ARIMA</span>(<span class='no'>formula</span>, <span class='kw'>ic</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"aicc"</span>, <span class='st'>"aic"</span>, <span class='st'>"bic"</span>), <span class='kw'>stepwise</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>greedy</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>approximation</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>order_constraint</span> <span class='kw'>=</span> <span class='no'>p</span> + <span class='no'>q</span> + <span class='no'>P</span> +
-  <span class='no'>Q</span> <span class='kw'>&lt;=</span> <span class='fl'>6</span>, <span class='kw'>unitroot_spec</span> <span class='kw'>=</span> <span class='fu'><a href='unitroot_options.html'>unitroot_options</a></span>(), <span class='no'>...</span>)</pre>
-    
+  <span class='no'>Q</span> <span class='kw'>&lt;=</span> <span class='fl'>6</span>, <span class='kw'>unitroot_spec</span> <span class='kw'>=</span> <span class='fu'>unitroot_options</span>(), <span class='no'>...</span>)</pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -189,27 +188,24 @@ framework.</p>
     <tr>
       <th>unitroot_spec</th>
       <td><p>A specification of unit root tests to use in the
-selection of <code>d</code> and <code>D</code>. See <code><a href='unitroot_options.html'>unitroot_options()</a></code> for more details.</p></td>
+selection of <code>d</code> and <code>D</code>. See <code>unitroot_options()</code> for more details.</p></td>
     </tr>
     <tr>
       <th>...</th>
       <td><p>Further arguments for <code><a href='https://rdrr.io/r/stats/arima.html'>stats::arima()</a></code></p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A model specification.</p>
-    
     <h2 class="hasAnchor" id="specials"><a class="anchor" href="#specials"></a>Specials</h2>
 
     
 
 
 <h3>pdq</h3>
-
-The <code>pdq</code> special is used to specify non-seasonal components of the model.
-<pre>
+<p>The <code>pdq</code> special is used to specify non-seasonal components of the model.</p><pre>
 pdq(p = 0:5, d = 0:2, q = 0:5,
     p_init = 2, q_init = 2)
 </pre>
@@ -225,9 +221,7 @@ pdq(p = 0:5, d = 0:2, q = 0:5,
 
 
 <h3>PDQ</h3>
-
-The <code>PDQ</code> special is used to specify seasonal components of the model.
-<pre>
+<p>The <code>PDQ</code> special is used to specify seasonal components of the model.</p><pre>
 PDQ(P = 0:2, D = 0:1, Q = 0:2, period = NULL,
     P_init = 1, Q_init = 1)
 </pre>
@@ -244,11 +238,8 @@ PDQ(P = 0:2, D = 0:1, Q = 0:2, period = NULL,
 
 
 <h3>xreg</h3>
-
-Exogenous regressors can be included in an ARIMA model without explicitly using the <code>xreg()</code> special. Common exogenous regressor specials as specified in <code><a href='common_xregs.html'>common_xregs</a></code> can also be used. These regressors are handled using <code><a href='https://rdrr.io/r/stats/model.frame.html'>stats::model.frame()</a></code>, and so interactions and other functionality behaves similarly to <code><a href='https://rdrr.io/r/stats/lm.html'>stats::lm()</a></code>.
-
-The inclusion of a constant in the model follows the similar rules to <code><a href='https://rdrr.io/r/stats/lm.html'>stats::lm()</a></code>, where including <code>1</code> will add a constant and <code>0</code> or <code>-1</code> will remove the constant. If left out, the inclusion of a constant will be determined by minimising <code>ic</code>.
-
+<p>Exogenous regressors can be included in an ARIMA model without explicitly using the <code>xreg()</code> special. Common exogenous regressor specials as specified in <code>common_xregs</code> can also be used. These regressors are handled using <code><a href='https://rdrr.io/r/stats/model.frame.html'>stats::model.frame()</a></code>, and so interactions and other functionality behaves similarly to <code><a href='https://rdrr.io/r/stats/lm.html'>stats::lm()</a></code>.</p>
+<p>The inclusion of a constant in the model follows the similar rules to <code><a href='https://rdrr.io/r/stats/lm.html'>stats::lm()</a></code>, where including <code>1</code> will add a constant and <code>0</code> or <code>-1</code> will remove the constant. If left out, the inclusion of a constant will be determined by minimising <code>ic</code>.</p>
 <pre>
 xreg(...)
 </pre>
@@ -259,20 +250,18 @@ xreg(...)
 
 
 
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><a href='https://otexts.com/fpp3/arima.html'>Forecasting: Principles and Practices, ARIMA models (chapter 9)</a>
 <a href='https://otexts.com/fpp3/dynamic.html'>Forecasting: Principles and Practices, Dynamic regression models (chapter 10)</a></p></div>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Manual ARIMA specification</span>
 <span class='no'>USAccDeaths</span> <span class='kw'>%&gt;%</span>
   <span class='no'>as_tsibble</span> <span class='kw'>%&gt;%</span>
   <span class='fu'>model</span>(<span class='kw'>arima</span> <span class='kw'>=</span> <span class='fu'>ARIMA</span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>value</span>) ~ <span class='fu'>pdq</span>(<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>1</span>) + <span class='fu'>PDQ</span>(<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>1</span>)))</div><div class='output co'>#&gt; # A mable: 1 x 1
-#&gt;   arima                    
-#&gt;   &lt;model&gt;                  
+#&gt;                       arima
+#&gt;                     &lt;model&gt;
 #&gt; 1 &lt;ARIMA(0,1,1)(0,1,1)[12]&gt;</div><div class='input'>
 <span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span>(<span class='st'>"feasts"</span>, <span class='kw'>quietly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)) {
 <span class='co'># Automatic ARIMA specification</span>
@@ -284,30 +273,24 @@ xreg(...)
 }</div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>Attaching package: ‘dplyr’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:tsibble’:</span>
 #&gt; <span class='message'></span>
-#&gt; <span class='message'>    id</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:testthat’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    matches</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:stats’:</span>
+#&gt; <span class='message'>    id</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:stats’:</span>
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    filter, lag</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    intersect, setdiff, setequal, union</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NaNs produced</span></div><div class='output co'>#&gt; # A mable: 1 x 2
 #&gt; # Key:     Country [1]
 #&gt;   Country   `ARIMA(log(GDP) ~ Population)`
-#&gt;   &lt;fct&gt;     &lt;model&gt;                       
-#&gt; 1 Australia &lt;LM w/ ARIMA(2,0,0) errors&gt;   </div><div class='input'>
+#&gt;   &lt;fct&gt;                            &lt;model&gt;
+#&gt; 1 Australia    &lt;LM w/ ARIMA(2,0,0) errors&gt;</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#specials">Specials</a></li>
-
       <li><a href="#see-also">See also</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
@@ -321,7 +304,7 @@ xreg(...)
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.9000.</p>
 </div>
 
       </footer>
