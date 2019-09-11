@@ -7,10 +7,9 @@
 
 ## R CMD check results
 
-0 errors | 0 warnings | 2 notes
+0 errors | 0 warnings | 1 note
 
 * This is a new release.
-* Package suggested but not available for checking: 'feasts' (included in Additional_repositories and also awaiting CRAN acceptance).
 
 ## Re-submission
 
@@ -19,9 +18,10 @@
 * Updated description to use '' for package names.
 * Improved detail in package description to provide examples of included models.
 * Removed author field from docs.
-* Added Gabriel Caceres as ctb, Ross Ihaka as cph and R Core Team as cph.
+* Added Gabriel Caceres as ctb.
 * Added \value to documentation for model functions and methods.
 * Added more examples to model method documentation.
+* Clarified models with their acryonyms in the Description.
 
 > If there are references describing the (theoretical background of)
 methods in your package, please add these in the Description field of
