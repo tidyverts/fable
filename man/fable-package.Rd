@@ -10,9 +10,10 @@
 
 Provides a collection of commonly used univariate and multivariate
     time series forecasting models including automatically selected exponential 
-    smoothing and ARIMA models. These models work within the 'fable' framework
-    provided by the 'fabletools' package, which provides the tools to evaluate,
-    visualise, and combine models in a workflow consistent with the tidyverse.
+    smoothing (ETS) and autoregressive integrated moving average (ARIMA) models.
+    These models work within the 'fable' framework provided by the 'fabletools'
+    package, which provides the tools to evaluate, visualise, and combine models 
+    in a workflow consistent with the tidyverse.
 }
 \seealso{
 Useful links:
