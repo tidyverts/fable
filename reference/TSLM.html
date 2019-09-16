@@ -193,9 +193,9 @@ xreg(...)
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>as_tsibble</span>(<span class='no'>USAccDeaths</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>model</span>(<span class='kw'>lm</span> <span class='kw'>=</span> <span class='fu'>TSLM</span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>value</span>) ~ <span class='fu'>trend</span>() + <span class='fu'>season</span>()))</div><div class='output co'>#&gt; # A mable: 1 x 1
-#&gt;        lm
+#&gt;   lm     
 #&gt;   &lt;model&gt;
-#&gt; 1  &lt;TSLM&gt;</div><div class='input'>
+#&gt; 1 &lt;TSLM&gt; </div><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibbledata</span>)
 <span class='no'>olympic_running</span> <span class='kw'>%&gt;%</span>
   <span class='fu'>model</span>(<span class='fu'>TSLM</span>(<span class='no'>Time</span> ~ <span class='fu'>trend</span>())) <span class='kw'>%&gt;%</span>

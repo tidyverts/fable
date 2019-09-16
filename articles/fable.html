@@ -138,12 +138,12 @@
 <a class="sourceLine" id="cb4-6" data-line-number="6">fit</a>
 <a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#&gt; # A mable: 4 x 5</span></a>
 <a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#&gt; # Key:     Region, State, Purpose [4]</span></a>
-<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt;   Region    State    Purpose          ets                             arima</span></a>
-<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">#&gt;   &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;        &lt;model&gt;                           &lt;model&gt;</span></a>
-<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co">#&gt; 1 Melbourne Victoria Busine… &lt;ETS(A,A,A)&gt; &lt;ARIMA(0,1,2)(1,0,1)[4] w/ drift&gt;</span></a>
-<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">#&gt; 2 Melbourne Victoria Holiday &lt;ETS(M,A,A)&gt;           &lt;ARIMA(0,1,1) w/ drift&gt;</span></a>
-<a class="sourceLine" id="cb4-13" data-line-number="13"><span class="co">#&gt; 3 Melbourne Victoria Other   &lt;ETS(A,A,N)&gt;           &lt;ARIMA(0,1,1) w/ drift&gt;</span></a>
-<a class="sourceLine" id="cb4-14" data-line-number="14"><span class="co">#&gt; 4 Melbourne Victoria Visiti… &lt;ETS(M,A,A)&gt;          &lt;ARIMA(0,1,1)(1,0,2)[4]&gt;</span></a></code></pre></div>
+<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt;   Region    State    Purpose  ets          arima                           </span></a>
+<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">#&gt;   &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;    &lt;model&gt;      &lt;model&gt;                         </span></a>
+<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co">#&gt; 1 Melbourne Victoria Business &lt;ETS(A,A,A)&gt; &lt;ARIMA(0,1,2)(1,0,1)[4] w/ drif…</span></a>
+<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">#&gt; 2 Melbourne Victoria Holiday  &lt;ETS(M,A,A)&gt; &lt;ARIMA(0,1,1) w/ drift&gt;         </span></a>
+<a class="sourceLine" id="cb4-13" data-line-number="13"><span class="co">#&gt; 3 Melbourne Victoria Other    &lt;ETS(A,A,N)&gt; &lt;ARIMA(0,1,1) w/ drift&gt;         </span></a>
+<a class="sourceLine" id="cb4-14" data-line-number="14"><span class="co">#&gt; 4 Melbourne Victoria Visiting &lt;ETS(M,A,A)&gt; &lt;ARIMA(0,1,1)(1,0,2)[4]&gt;</span></a></code></pre></div>
 <p>A mable contains a row for each time series (uniquely identified by the key variables), and a column for each model specification. A model is contained within the cells of each model column. In the example above we can see that the all four ETS models have an additive trend, and the error and seasonality have been chosen automatically. Similarly, the ARIMA model varies between time series as it has been automatically selected.</p>
 <p>The <code><a href="https://rdrr.io/r/stats/coef.html">coef()</a></code> or <code>tidy()</code> function is used to extract the coefficients from the models. It’s possible to use <code><a href="https://dplyr.tidyverse.org/reference/select.html">select()</a></code> and other verbs to focus on the coefficients from a particular model.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">fit <span class="op">%&gt;%</span></a>

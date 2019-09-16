@@ -224,20 +224,20 @@ drift(drift = TRUE)
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibbledata</span>)
 <span class='no'>aus_production</span> <span class='kw'>%&gt;%</span>
   <span class='fu'>model</span>(<span class='kw'>rw</span> <span class='kw'>=</span> <span class='fu'>RW</span>(<span class='no'>Beer</span> ~ <span class='fu'>drift</span>()))</div><div class='output co'>#&gt; # A mable: 1 x 1
-#&gt;              rw
-#&gt;         &lt;model&gt;
+#&gt;   rw           
+#&gt;   &lt;model&gt;      
 #&gt; 1 &lt;RW w/ drift&gt;</div><div class='input'>
 
 <span class='fu'>as_tsibble</span>(<span class='no'>Nile</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>model</span>(<span class='fu'>NAIVE</span>(<span class='no'>value</span>))</div><div class='output co'>#&gt; # A mable: 1 x 1
 #&gt;   `NAIVE(value)`
-#&gt;          &lt;model&gt;
-#&gt; 1        &lt;NAIVE&gt;</div><div class='input'>
+#&gt;   &lt;model&gt;       
+#&gt; 1 &lt;NAIVE&gt;       </div><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibbledata</span>)
 <span class='no'>aus_production</span> <span class='kw'>%&gt;%</span>
   <span class='fu'>model</span>(<span class='kw'>snaive</span> <span class='kw'>=</span> <span class='fu'>SNAIVE</span>(<span class='no'>Beer</span> ~ <span class='fu'><a href='https://rdrr.io/r/stats/lag.html'>lag</a></span>(<span class='st'>"year"</span>)))</div><div class='output co'>#&gt; # A mable: 1 x 1
-#&gt;     snaive
-#&gt;    &lt;model&gt;
+#&gt;   snaive  
+#&gt;   &lt;model&gt; 
 #&gt; 1 &lt;SNAIVE&gt;</div><div class='input'>
 </div></pre>
   </div>

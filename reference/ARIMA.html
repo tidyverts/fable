@@ -260,28 +260,25 @@ xreg(...)
 <span class='no'>USAccDeaths</span> <span class='kw'>%&gt;%</span>
   <span class='no'>as_tsibble</span> <span class='kw'>%&gt;%</span>
   <span class='fu'>model</span>(<span class='kw'>arima</span> <span class='kw'>=</span> <span class='fu'>ARIMA</span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>value</span>) ~ <span class='fu'>pdq</span>(<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>1</span>) + <span class='fu'>PDQ</span>(<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>1</span>)))</div><div class='output co'>#&gt; # A mable: 1 x 1
-#&gt;                       arima
-#&gt;                     &lt;model&gt;
+#&gt;   arima                    
+#&gt;   &lt;model&gt;                  
 #&gt; 1 &lt;ARIMA(0,1,1)(0,1,1)[12]&gt;</div><div class='input'>
-<span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span>(<span class='st'>"feasts"</span>, <span class='kw'>quietly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)) {
 <span class='co'># Automatic ARIMA specification</span>
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibble</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
-<span class='kw pkg'>tsibbledata</span><span class='kw ns'>::</span><span class='no'><a href='https://tsibbledata.tidyverts.org/reference/global_economy.html'>global_economy</a></span> <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>Country</span> <span class='kw'>==</span> <span class='st'>"Australia"</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='fu'>ARIMA</span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>GDP</span>) ~ <span class='no'>Population</span>))
-}</div><div class='output co'>#&gt; <span class='message'></span>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)</div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>Attaching package: ‘dplyr’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:tsibble’:</span>
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    id</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:stats’:</span>
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    filter, lag</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
 #&gt; <span class='message'></span>
-#&gt; <span class='message'>    intersect, setdiff, setequal, union</span></div><div class='output co'>#&gt; <span class='warning'>Warning: NaNs produced</span></div><div class='output co'>#&gt; # A mable: 1 x 2
+#&gt; <span class='message'>    intersect, setdiff, setequal, union</span></div><div class='input'><span class='kw pkg'>tsibbledata</span><span class='kw ns'>::</span><span class='no'><a href='https://tsibbledata.tidyverts.org/reference/global_economy.html'>global_economy</a></span> <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>Country</span> <span class='kw'>==</span> <span class='st'>"Australia"</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'>model</span>(<span class='fu'>ARIMA</span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>GDP</span>) ~ <span class='no'>Population</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: NaNs produced</span></div><div class='output co'>#&gt; # A mable: 1 x 2
 #&gt; # Key:     Country [1]
 #&gt;   Country   `ARIMA(log(GDP) ~ Population)`
-#&gt;   &lt;fct&gt;                            &lt;model&gt;
-#&gt; 1 Australia    &lt;LM w/ ARIMA(2,0,0) errors&gt;</div><div class='input'>
+#&gt;   &lt;fct&gt;     &lt;model&gt;                       
+#&gt; 1 Australia &lt;LM w/ ARIMA(2,0,0) errors&gt;   </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
