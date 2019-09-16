@@ -463,14 +463,12 @@ specials_arima <- new_specials(
 #'   as_tsibble %>% 
 #'   model(arima = ARIMA(log(value) ~ pdq(0,1,1) + PDQ(0,1,1)))
 #' 
-#' if (requireNamespace("feasts", quietly = TRUE)) {
 #' # Automatic ARIMA specification
 #' library(tsibble)
 #' library(dplyr)
 #' tsibbledata::global_economy %>% 
 #'   filter(Country == "Australia") %>%
 #'   model(ARIMA(log(GDP) ~ Population))
-#' }
 #' 
 #' @importFrom stats model.matrix
 #' @export
@@ -703,13 +701,11 @@ refit.ARIMA <- function(object, new_data, specials = NULL, reestimate = FALSE, .
 #' @return A tibble of the same dimension of `new_data` with missing values interpolated.
 #' 
 #' @examples 
-#' if (requireNamespace("feasts", quietly = TRUE)) {
 #' library(tsibbledata)
 #' 
 #' olympic_running %>% 
 #'   model(arima = ARIMA(Time ~ trend())) %>% 
 #'   interpolate(olympic_running)
-#' }
 #' 
 #' @importFrom stats formula residuals
 #' @export

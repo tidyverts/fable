@@ -22,12 +22,10 @@ A tibble of the same dimension of \code{new_data} with missing values interpolat
 Applies a model specific estimation technique to predict the values of missing values in a \code{tsibble}, and replace them.
 }
 \examples{
-if (requireNamespace("feasts", quietly = TRUE)) {
 library(tsibbledata)
 
 olympic_running \%>\% 
   model(arima = ARIMA(Time ~ trend())) \%>\% 
   interpolate(olympic_running)
-}
 
 }

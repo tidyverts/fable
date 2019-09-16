@@ -14,7 +14,7 @@
 ## Re-submission
 
 * Fixed URL in vignette.
-* Updated tests and examples to conditionally depend on feasts.
+* The 'feasts' package is now available on CRAN.
 * Updated description to use '' for package names.
 * Improved detail in package description to provide examples of included models.
 * Removed author field from docs.
