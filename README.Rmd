@@ -24,10 +24,10 @@ The R package *fable* provides a collection of commonly used univariate and mult
 
 ## Installation
 
-The v0.1.0 pre-release can be installed using:
+The can install the **stable** version from [CRAN](https://cran.r-project.org/package=fable):
 
-```{r prerelease-installation, eval = FALSE}
-install.packages("fable", repos = "https://tidyverts.org/")
+```{r cran-installation, eval = FALSE}
+install.packages("fable")
 ```
 
 You can install the **development** version from
@@ -66,7 +66,7 @@ aus_retail %>%
 
 - The pkgdown site describes all models provided by fable, and how they are used: http://fable.tidyverts.org/
 - The forecasting principles and practices online textbook provides an introduction to time series forecasting using fable: https://otexts.com/fpp3/ (WIP)
-- A quick start functionality guide can be found here: https://tidyverts.github.io/tidy-forecasting-principles/ (WIP)
+<!-- - A quick start functionality guide can be found here: https://tidyverts.github.io/tidy-forecasting-principles/ (WIP) -->
 
 ## Getting help
 
