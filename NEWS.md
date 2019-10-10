@@ -1,5 +1,9 @@
 # fable (development version)
 
+## Improvements
+
+* Added interpolation method for `MEAN()` model (#203).
+
 # fable 0.1.0
 
 * First release.

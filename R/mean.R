@@ -135,6 +135,23 @@ generate.model_mean <- function(x, new_data, bootstrap = FALSE, ...){
     transmute(".sim" := f + !!sym(".innov"))
 }
 
+#' @inherit interpolate.ARIMA
+#' 
+#' @examples 
+#' library(tsibbledata)
+#' 
+#' olympic_running %>% 
+#'   model(mean = MEAN(Time)) %>% 
+#'   interpolate(olympic_running)
+#'   
+#' @export
+interpolate.model_mean <- function(object, new_data, specials, ...){
+  # Get inputs
+  miss_val <- is.na(new_data[[measured_vars(new_data)]])
+  new_data[[measured_vars(new_data)]][miss_val] <- object[["par"]][["estimate"]]
+  new_data
+}
+
 #' @inherit fitted.ARIMA
 #' 
 #' @examples 
