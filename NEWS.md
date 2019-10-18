@@ -3,6 +3,7 @@
 ## Improvements
 
 * Added interpolation method for `MEAN()` model (#203).
+* Added rolling mean option for `MEAN()` model (#204).
 
 # fable 0.1.0
 

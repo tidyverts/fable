@@ -25,7 +25,16 @@ right-hand-side will be ignored.
 \section{Specials}{
 
 
-This model does not support usage of any specials. It only computes the mean!
+\subsection{window}{
+The \code{window} special is used to specify a rolling window for the mean.
+\preformatted{
+window(size = NULL)
+}
+
+\tabular{ll}{
+\code{size}     \tab The size (number of observations) for the rolling window. If NULL (default), a rolling window will not be used.
+}
+}
 }
 
 \examples{

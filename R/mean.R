@@ -11,10 +11,19 @@ train_mean <- function(.data, specials, ...){
   }
   
   n <- length(y)
-  y_mean <- mean(y, na.rm = TRUE)
-  fits <- rep(y_mean, n)
+  window_size <- specials$window[[1]]
+  if (is.null(window_size)) {
+    y_mean <- mean(y, na.rm = TRUE)
+    fits <- rep(y_mean, n)
+  }
+  else {
+    fits <- slide_dbl(y, mean,  na.rm = TRUE,
+                      .size = window_size, .partial = TRUE)
+    y_mean <- fits[length(fits)]
+    fits <- dplyr::lag(fits)
+  }
   res <- y - fits
-  sigma <- sd(y, na.rm = TRUE)
+  sigma <- sd(res, na.rm = TRUE)
   
   structure(
     list(
@@ -27,11 +36,18 @@ train_mean <- function(.data, specials, ...){
         ),
       est = tibble(.fitted = fits, .resid = res),
       fit = tibble(sigma2 = sigma^2),
-      spec = tibble()
+      spec = tibble(window_size = window_size %||% NA)
     ),
     class = "model_mean"
   )
 }
+
+specials_mean <- new_specials(
+  window = function(size = NULL){
+    size
+  },
+  .required_specials = "window"
+)
 
 #' Mean models
 #' 
@@ -47,7 +63,16 @@ train_mean <- function(.data, specials, ...){
 #' 
 #' @section Specials:
 #' 
-#' This model does not support usage of any specials. It only computes the mean!
+#' \subsection{window}{
+#' The `window` special is used to specify a rolling window for the mean.
+#' \preformatted{
+#' window(size = NULL)
+#' }
+#'
+#' \tabular{ll}{
+#'   `size`     \tab The size (number of observations) for the rolling window. If NULL (default), a rolling window will not be used.
+#' }
+#' }
 #' 
 #' @return A model specification.
 #' 
@@ -61,7 +86,8 @@ train_mean <- function(.data, specials, ...){
 #' 
 #' @export
 MEAN <- function(formula, ...){
-  mean_model <- new_model_class("mean", train = train_mean, specials = NULL)
+  mean_model <- new_model_class("mean", train = train_mean, 
+                                specials = specials_mean)
   new_model_definition(mean_model, !!enquo(formula), ...)
 }
 
@@ -116,11 +142,11 @@ forecast.model_mean <- function(object, new_data, specials = NULL, bootstrap = F
 #'   
 #' @export
 generate.model_mean <- function(x, new_data, bootstrap = FALSE, ...){
-  res <- residuals(x)
   f <- x$par$estimate
   
   if(!(".innov" %in% new_data)){
     if(bootstrap){
+      res <- residuals(x)
       new_data$.innov <- sample(na.omit(res) - mean(res, na.rm = TRUE),
                                      NROW(new_data), replace = TRUE)
     }
@@ -147,8 +173,20 @@ generate.model_mean <- function(x, new_data, bootstrap = FALSE, ...){
 #' @export
 interpolate.model_mean <- function(object, new_data, specials, ...){
   # Get inputs
-  miss_val <- is.na(new_data[[measured_vars(new_data)]])
-  new_data[[measured_vars(new_data)]][miss_val] <- object[["par"]][["estimate"]]
+  y <- new_data[[measured_vars(new_data)]]
+  window_size <- object[["spec"]][["window_size"]]
+  miss_val <- is.na(y)
+  
+  if(!is.na(window_size)){
+    fits <- dplyr::lag(
+      slide_dbl(y, mean,  na.rm = TRUE, .size = window_size, .partial = TRUE)
+    )[miss_val]
+  }
+  else{
+    fits <- object[["par"]][["estimate"]]
+  }
+  
+  new_data[[measured_vars(new_data)]][miss_val] <- fits
   new_data
 }
 
