@@ -223,11 +223,8 @@ forecast.RW <- function(object, new_data, specials = NULL, bootstrap = FALSE, ti
   }  else {
     mse <- mean(residuals(object)^2, na.rm=TRUE)
     if(is.nan(mse)) mse <- NA
-    se  <- sqrt(mse*steps + (steps*b.se)^2)
     # Adjust prediction intervals to allow for drift coefficient standard error
-    if (object$spec$drift) {
-      se <- sqrt(se^2 + (seq(h) * b.se)^2)
-    }
+    se  <- sqrt(mse*steps + (steps*b.se)^2)
     dist <- dist_normal(fc, se)
   }
   construct_fc(fc, se, dist)
