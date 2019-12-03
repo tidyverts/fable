@@ -4,8 +4,7 @@
 \alias{residuals.ARIMA}
 \title{Extract residuals values from a fable model}
 \usage{
-\method{residuals}{ARIMA}(object, type = c("innovation", "regression"),
-  ...)
+\method{residuals}{ARIMA}(object, type = c("innovation", "regression"), ...)
 }
 \arguments{
 \item{object}{The time series model used to produce the forecasts}

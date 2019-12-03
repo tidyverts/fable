@@ -5,9 +5,15 @@
 \alias{report.ETS}
 \title{Exponential smoothing state space model}
 \usage{
-ETS(formula, opt_crit = c("lik", "amse", "mse", "sigma", "mae"),
-  nmse = 3, bounds = c("both", "usual", "admissible"), ic = c("aicc",
-  "aic", "bic"), restrict = TRUE, ...)
+ETS(
+  formula,
+  opt_crit = c("lik", "amse", "mse", "sigma", "mae"),
+  nmse = 3,
+  bounds = c("both", "usual", "admissible"),
+  ic = c("aicc", "aic", "bic"),
+  restrict = TRUE,
+  ...
+)
 }
 \arguments{
 \item{formula}{Model specification (see "Specials" section).}
@@ -18,7 +24,7 @@ ETS(formula, opt_crit = c("lik", "amse", "mse", "sigma", "mae"),
 deviation of residuals), or \code{"mae"} (Mean Absolute Error).}
 
 \item{nmse}{If \code{opt_crit == "amse"}, \code{nmse} provides the number of steps for
-average multistep MSE (\code{1<=nmse<=30}).}
+average multistep MSE (\verb{1<=nmse<=30}).}
 
 \item{bounds}{Type of parameter space to impose: \code{"usual"} indicates
 all parameters must lie between specified lower and upper bounds;

@@ -4,8 +4,14 @@
 \alias{forecast.VAR}
 \title{Forecast a model from the fable package}
 \usage{
-\method{forecast}{VAR}(object, new_data = NULL, specials = NULL,
-  bootstrap = FALSE, times = 5000, ...)
+\method{forecast}{VAR}(
+  object,
+  new_data = NULL,
+  specials = NULL,
+  bootstrap = FALSE,
+  times = 5000,
+  ...
+)
 }
 \arguments{
 \item{object}{The time series model used to produce the forecasts}

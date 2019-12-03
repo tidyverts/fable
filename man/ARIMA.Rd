@@ -5,9 +5,16 @@
 \alias{report.ARIMA}
 \title{Estimate an ARIMA model}
 \usage{
-ARIMA(formula, ic = c("aicc", "aic", "bic"), stepwise = TRUE,
-  greedy = TRUE, approximation = NULL, order_constraint = p + q + P +
-  Q <= 6, unitroot_spec = unitroot_options(), ...)
+ARIMA(
+  formula,
+  ic = c("aicc", "aic", "bic"),
+  stepwise = TRUE,
+  greedy = TRUE,
+  approximation = NULL,
+  order_constraint = p + q + P + Q <= 6,
+  unitroot_spec = unitroot_options(),
+  ...
+)
 }
 \arguments{
 \item{formula}{Model specification (see "Specials" section).}

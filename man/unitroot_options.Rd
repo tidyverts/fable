@@ -4,9 +4,12 @@
 \alias{unitroot_options}
 \title{Options for the unit root tests for order of integration}
 \usage{
-unitroot_options(ndiffs_alpha = 0.05, nsdiffs_alpha = 0.05,
+unitroot_options(
+  ndiffs_alpha = 0.05,
+  nsdiffs_alpha = 0.05,
   ndiffs_pvalue = ~feasts::unitroot_kpss(.)["kpss_pvalue"],
-  nsdiffs_pvalue = ~feasts::feat_stl(., .period)[2] < 0.64)
+  nsdiffs_pvalue = ~feasts::feat_stl(., .period)[2] < 0.64
+)
 }
 \arguments{
 \item{ndiffs_alpha, nsdiffs_alpha}{The level for the test specified in the \code{pval} functions As long as \code{pval < alpha}, differences will be added.}

@@ -4,8 +4,7 @@
 \alias{generate.NNETAR}
 \title{Generate new data from a fable model}
 \usage{
-\method{generate}{NNETAR}(x, new_data, specials = NULL,
-  bootstrap = FALSE, ...)
+\method{generate}{NNETAR}(x, new_data, specials = NULL, bootstrap = FALSE, ...)
 }
 \arguments{
 \item{x}{A fitted model.}

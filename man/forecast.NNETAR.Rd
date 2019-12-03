@@ -4,8 +4,15 @@
 \alias{forecast.NNETAR}
 \title{Forecast a model from the fable package}
 \usage{
-\method{forecast}{NNETAR}(object, new_data, specials = NULL,
-  simulate = TRUE, bootstrap = FALSE, times = 1000, ...)
+\method{forecast}{NNETAR}(
+  object,
+  new_data,
+  specials = NULL,
+  simulate = TRUE,
+  bootstrap = FALSE,
+  times = 1000,
+  ...
+)
 }
 \arguments{
 \item{object}{The time series model used to produce the forecasts}

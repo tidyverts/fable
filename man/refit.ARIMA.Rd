@@ -4,8 +4,7 @@
 \alias{refit.ARIMA}
 \title{Refit an ARIMA model}
 \usage{
-\method{refit}{ARIMA}(object, new_data, specials = NULL,
-  reestimate = FALSE, ...)
+\method{refit}{ARIMA}(object, new_data, specials = NULL, reestimate = FALSE, ...)
 }
 \arguments{
 \item{object}{The time series model used to produce the forecasts}
