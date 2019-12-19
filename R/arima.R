@@ -292,7 +292,7 @@ This is generally discouraged, consider removing the constant or reducing the nu
     xreg <- cbind(xreg, constant = arima_constant(length(y), d, D, period))
   }
   if (!is.null(xreg)) {
-    reg_resid - xreg %*% as.matrix(best$coef[(sum(best$arma[1:4]) + 1):length(best$coef)])
+    reg_resid <- reg_resid - xreg %*% as.matrix(best$coef[(sum(best$arma[1:4]) + 1):length(best$coef)])
   }
   
   # Output model
