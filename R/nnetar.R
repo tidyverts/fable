@@ -111,16 +111,19 @@ train_nnetar <- function(.data, specials, n_nodes, n_networks, scale_inputs, ...
   nn_models <- map(seq_len(n_networks),
                    function(.) wrap_nnet(x_lags, x, size = n_nodes, ...))
   
-  # Construct model output
-  fits <- map(nn_models, predict) %>% 
+  # Calculate fitted values
+  pred <- map(nn_models, predict) %>% 
     transpose %>% 
     map_dbl(function(x) mean(unlist(x)))
-  fits <- c(rep(NA_real_, maxlag), fits)
+  fits <- rep(NA_real_, length(y))
+  fits_idx <- c(rep(FALSE, maxlag), j)
+  fits[fits_idx] <- pred
   if(scale_inputs){
     fits <- fits * y_scale$scale + y_scale$center
   }
   res <- y - fits
   
+  # Construct model output
   structure(
     list(
       model = nn_models,

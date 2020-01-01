@@ -1,5 +1,9 @@
 # fable (development version)
 
+## Bug fixes
+
+* Fixed NNETAR handling of missing values (#215).
+
 # fable 0.1.1
 
 ## Improvements
