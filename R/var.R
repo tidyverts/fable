@@ -34,9 +34,11 @@ estimate_var <- function(y, p, xreg, constant){
     y <- y[-seq_len(p),, drop = FALSE]
   }
   dm <- cbind(y_lag, xreg)
-  fit <- stats::lm.fit(as.matrix(dm), y)
+  j <- complete.cases(dm, y)
+  fit <- stats::lm.fit(as.matrix(dm)[j,,drop = FALSE], y[j,,drop = FALSE])
   
-  resid <- as.matrix(fit$residuals)
+  resid <- matrix(NA_real_, nrow = nrow(y), ncol = ncol(y))
+  resid[j, ] <- fit$residuals
   if(is_empty(fit$coefficients)){
     coef <- matrix(nrow = 0, ncol = NCOL(y))
   }
@@ -50,7 +52,7 @@ estimate_var <- function(y, p, xreg, constant){
   sig <- crossprod(fit$residuals)
   sig_det <- det(sig/nr)
   loglik <- -(nr * nc/2) * log(2 * pi) - (nr/2) * log(sig_det) - 
-    (1/2) * sum(diag(resid %*% solve(sig/nr) %*% t(resid)))
+    (1/2) * sum(diag(resid %*% solve(sig/nr) %*% t(resid)), na.rm = TRUE)
   
   npar <- (length(fit$coef) + nc^2)
   aic <- -2*loglik + 2*npar

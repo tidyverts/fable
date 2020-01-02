@@ -2,7 +2,7 @@
 
 ## Bug fixes
 
-* Fixed NNETAR handling of missing values (#215).
+* Fixed NNETAR & VAR handling of missing values (#215).
 
 # fable 0.1.1
 
