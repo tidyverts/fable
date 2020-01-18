@@ -135,7 +135,7 @@ specials_ets <- new_specials(
     }
 
     m <- get_frequencies(period, self$data, .auto = "smallest")
-    if (m <= 1 || NROW(self$data) <= m) {
+    if (m <= 1 || (NROW(self$data) <= m && self$stage %in% c("estimate", "refit"))) {
       method <- intersect("N", method)
     }
     if (m > 24) {

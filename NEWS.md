@@ -3,6 +3,7 @@
 ## Bug fixes
 
 * Fixed NNETAR & VAR handling of missing values (#215).
+* Fix ETS forecasting with forecast horizons less than the seasonal period (#219).
 
 # fable 0.1.1
 
