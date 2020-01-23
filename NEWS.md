@@ -4,6 +4,7 @@
 
 * Fixed NNETAR & VAR handling of missing values (#215).
 * Fix ETS forecasting with forecast horizons less than the seasonal period (#219).
+* Fixed season() special for non-seasonally based time indices (#220)
 
 # fable 0.1.1
 
