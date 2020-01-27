@@ -60,7 +60,7 @@ The `coef()` or `tidy()` function is used to extract the coefficients from the m
 
 ```{r coef}
 fit %>%
-  select(arima) %>%
+  select(Region, State, Purpose, arima) %>%
   coef()
 ```
 
