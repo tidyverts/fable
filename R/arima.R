@@ -182,10 +182,13 @@ train_arima <- function(.data, specials,  ic = "aicc",
     (new[[ic]]%||%Inf)
   }
   
+  mostly_specified <- length(p) + length(d) + length(q) + length(P) + length(D) + length(Q) == 6
+  mostly_specified_msg <- "It looks like you're trying to fully specify your ARIMA model but have not said if a constant should be included.\nYou can include a constant using `ARIMA(y~1)` to the formula or exclude it by adding `ARIMA(y~0)`."
   model_opts <- expand.grid(p = p, d = d, q = q, P = P, D = D, Q = Q, constant = constant)
   if(NROW(model_opts) > 1){
     model_opts <- filter(model_opts, !!enexpr(order_constraint), (d + D < 2) | !constant)
     if(NROW(model_opts) == 0){
+      if(mostly_specified) warn(mostly_specified_msg)
       abort("There are no ARIMA models to choose from after imposing the `order_constraint`, please consider allowing more models.")
     }
     wrap_arima <- possibly(quietly(stats::arima), NULL)
@@ -267,7 +270,8 @@ This is generally discouraged, consider removing the constant or reducing the nu
   }
   
   if(is.null(best)){
-    abort("Could not find an appropriate ARIMA model.")
+    if(mostly_specified) warn(mostly_specified_msg)
+    abort("Could not find an appropriate ARIMA model.\nThis is likely because automatic selection does not select models with characteristic roots that may be numerically unstable.\nFor more details, refer to https://otexts.com/fpp3/arima-r.html#plotting-the-characteristic-roots")
   }
   
   # Compute ARMA roots
@@ -461,7 +465,8 @@ specials_arima <- new_specials(
 #' # Manual ARIMA specification
 #' USAccDeaths %>% 
 #'   as_tsibble %>% 
-#'   model(arima = ARIMA(log(value) ~ pdq(0,1,1) + PDQ(0,1,1)))
+#'   model(arima = ARIMA(log(value) ~ 0 + pdq(0,1,1) + PDQ(0,1,1))) %>% 
+#'   report()
 #' 
 #' # Automatic ARIMA specification
 #' library(tsibble)

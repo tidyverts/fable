@@ -99,7 +99,8 @@ xreg(...)
 # Manual ARIMA specification
 USAccDeaths \%>\% 
   as_tsibble \%>\% 
-  model(arima = ARIMA(log(value) ~ pdq(0,1,1) + PDQ(0,1,1)))
+  model(arima = ARIMA(log(value) ~ 0 + pdq(0,1,1) + PDQ(0,1,1))) \%>\% 
+  report()
 
 # Automatic ARIMA specification
 library(tsibble)
