@@ -306,7 +306,7 @@ forecast.ETS <- function(object, new_data, specials = NULL, simulate = FALSE, bo
       as.integer(object$spec$period),
       as.integer(switch(trendtype, "N" = 0, "A" = 1, "M" = 2)),
       as.integer(switch(seasontype, "N" = 0, "A" = 1, "M" = 2)),
-      as.double(ifelse(damped, object$par[["estimate"]][[object$term == "phi"]], 1)),
+      as.double(ifelse(damped, object$par[["estimate"]][object$par[["term"]] == "phi"], 1)),
       as.integer(NROW(new_data)),
       as.double(numeric(NROW(new_data))),
       PACKAGE = "fable"
