@@ -1,0 +1,10 @@
+pandoc: 2.7.3
+pkgdown: 1.4.1.9000
+pkgdown_sha: 732fb5b9ccc0ef87a73dfd0772ae661a4039b2a8
+articles:
+  fable: fable.html
+  transformations: transformations.html
+urls:
+  reference: https://fable.tidyverts.org/reference
+  article: https://fable.tidyverts.org/articles
+
