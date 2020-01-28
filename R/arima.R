@@ -412,7 +412,7 @@ specials_arima <- new_specials(
 #' to [`stats::arima()`] and [`forecast::Arima()`]. While the parameterisations
 #' are equivalent, the coefficients for the constant/mean will differ.
 #' 
-#' In fable, the parametisation used is:
+#' In fable, the parameterisation used is:
 #' 
 #' \deqn{(1-\phi_1B - \cdots - \phi_p B^p)(1-B)^d y_t = c + (1 + \theta_1 B + \cdots + \theta_q B^q)\varepsilon_t}{(1-φ₁B - ⋯ - φₚ Bᵖ)(1-B)ᵈ yₜ = c + (1 + θ₁ B + ⋯ + θ_q B^q)εₜ}
 #' 

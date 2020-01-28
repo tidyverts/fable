@@ -94,6 +94,14 @@ reference:
     - generate.NNETAR
     - fitted.NNETAR
     - residuals.NNETAR
+- title: Croston's method
+  desc: >
+    Croston's (1972) method for intermittent demand forecasting
+  contents:
+    - CROSTON
+    - forecast.croston
+    - fitted.croston
+    - residuals.croston
 - title: Vector autoregression
   desc: >
     Estimates a VAR(p) model with support for exogenous regressors.
