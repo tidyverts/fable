@@ -180,7 +180,8 @@ specials_ets <- new_specials(
 #' `"both"` (default) takes the intersection of these regions.
 #' @param ic The information criterion used in selecting the model.
 #' @param restrict If TRUE (default), the models with infinite variance will not
-#' be allowed.
+#' be allowed. These restricted model components are AMM, AAM, AMA, and MMA.
+#' 
 #' @param ... Other arguments
 #'
 #' @section Specials:
@@ -192,7 +193,7 @@ specials_ets <- new_specials(
 #' }
 #'
 #' \tabular{ll}{
-#'   `method`     \tab The form of the error term: either additive ("A") or multiplicative ("M").
+#'   `method`     \tab The form of the error term: either additive ("A") or multiplicative ("M"). If the error is multiplicative, the data must be non-negative.
 #' }
 #' }
 #'

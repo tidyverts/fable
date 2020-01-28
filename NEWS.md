@@ -1,5 +1,9 @@
 # fable (development version)
 
+## Improvements
+* Added `CROSTON()` for Croston's method of intermittent demand forecasting.
+* Documentation improvements
+
 ## Bug fixes
 
 * Fixed NNETAR & VAR handling of missing values (#215).

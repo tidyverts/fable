@@ -34,7 +34,7 @@ all parameters must lie between specified lower and upper bounds;
 \item{ic}{The information criterion used in selecting the model.}
 
 \item{restrict}{If TRUE (default), the models with infinite variance will not
-be allowed.}
+be allowed. These restricted model components are AMM, AAM, AMA, and MMA.}
 
 \item{...}{Other arguments}
 }
@@ -61,7 +61,7 @@ error(method = c("A", "M"))
 }
 
 \tabular{ll}{
-\code{method}     \tab The form of the error term: either additive ("A") or multiplicative ("M").
+\code{method}     \tab The form of the error term: either additive ("A") or multiplicative ("M"). If the error is multiplicative, the data must be non-negative.
 }
 }
 
