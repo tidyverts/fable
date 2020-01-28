@@ -3,10 +3,8 @@
 
 # fable <a href='https://fable.tidyverts.org'><img src='man/figures/logo.png' align="right" height="138.5" /></a>
 
-[![Travis build
-status](https://travis-ci.org/tidyverts/fable.svg?branch=master)](https://travis-ci.org/tidyverts/fable)
-[![AppVeyor Build
-Status](https://ci.appveyor.com/api/projects/status/github/tidyverts/fable?branch=master&svg=true)](https://ci.appveyor.com/project/tidyverts/fable)
+[![R build
+status](https://github.com/tidyverts/fable/workflows/R-CMD-check/badge.svg)](https://github.com/tidyverts/fable/actions?workflow=R-CMD-check)
 [![Coverage
 status](https://codecov.io/gh/tidyverts/fable/branch/master/graph/badge.svg)](https://codecov.io/github/tidyverts/fable?branch=master)
 [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/fable)](https://cran.r-project.org/package=fable)
