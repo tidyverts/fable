@@ -157,6 +157,10 @@
       <td><p>Model specification (see "Specials" section).</p></td>
     </tr>
     <tr>
+      <th>opt_crit</th>
+      <td><p>The optimisation criterion used to optimise the parameters.</p></td>
+    </tr>
+    <tr>
       <th>...</th>
       <td><p>Not used.</p></td>
     </tr>
@@ -210,8 +214,9 @@ selection". <em>International Journal of Production Economics</em>, <b>156</b>,
 180-190. <a href='http://dx.doi.org/10.1016/j.ijpe.2014.06.007'>http://dx.doi.org/10.1016/j.ijpe.2014.06.007</a>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>poisson</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tsibble</span><span class='kw ns'>::</span><span class='fu'><a href='https://tsibble.tidyverts.org/reference/tsibble.html'>tsibble</a></span>(
-  <span class='kw'>time</span> <span class='kw'>=</span> <span class='fu'>yearmonth</span>(<span class='st'>"2012 Dec"</span>) + <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq_len</a></span>(<span class='fl'>24</span>),
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibble</span>)
+<span class='no'>poisson</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://tsibble.tidyverts.org/reference/tsibble.html'>tsibble</a></span>(
+  <span class='kw'>time</span> <span class='kw'>=</span> <span class='fu'><a href='https://tsibble.tidyverts.org/reference/period.html'>yearmonth</a></span>(<span class='st'>"2012 Dec"</span>) + <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq_len</a></span>(<span class='fl'>24</span>),
   <span class='kw'>count</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Poisson.html'>rpois</a></span>(<span class='fl'>24</span>, <span class='kw'>lambda</span> <span class='kw'>=</span> <span class='fl'>0.3</span>)
 )</div><div class='output co'>#&gt; <span class='message'>Using `time` as index variable.</span></div><div class='input'>
 <span class='no'>poisson</span> <span class='kw'>%&gt;%</span>
