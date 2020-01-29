@@ -174,9 +174,15 @@
   <span class='kw'>count</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Poisson.html'>rpois</a></span>(<span class='fl'>24</span>, <span class='kw'>lambda</span> <span class='kw'>=</span> <span class='fl'>0.3</span>)
 )</div><div class='output co'>#&gt; <span class='message'>Using `time` as index variable.</span></div><div class='input'>
 <span class='no'>poisson</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='fu'>croston</span>(<span class='no'>count</span>)) <span class='kw'>%&gt;%</span>
-  <span class='fu'>tidy</span>()</div><div class='output co'>#&gt; <span class='error'>Error in croston(count): could not find function "croston"</span></div><div class='input'>  
-</div></pre>
+  <span class='fu'>model</span>(<span class='fu'><a href='CROSTON.html'>CROSTON</a></span>(<span class='no'>count</span>)) <span class='kw'>%&gt;%</span>
+  <span class='fu'>tidy</span>()</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 4 x 3</span><span>
+#&gt;   .model         term          estimate
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>            </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span> CROSTON(count) demand_init      0.500
+#&gt; </span><span style='color: #555555;'>2</span><span> CROSTON(count) demand_par       1    
+#&gt; </span><span style='color: #555555;'>3</span><span> CROSTON(count) interval_init    5.00 
+#&gt; </span><span style='color: #555555;'>4</span><span> CROSTON(count) interval_par     0    </div><div class='input'>  
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

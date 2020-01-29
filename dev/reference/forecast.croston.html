@@ -182,9 +182,9 @@
   <span class='kw'>count</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Poisson.html'>rpois</a></span>(<span class='fl'>24</span>, <span class='kw'>lambda</span> <span class='kw'>=</span> <span class='fl'>0.3</span>)
 )</div><div class='output co'>#&gt; <span class='message'>Using `time` as index variable.</span></div><div class='input'>
 <span class='no'>poisson</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='fu'>croston</span>(<span class='no'>count</span>)) <span class='kw'>%&gt;%</span>
+  <span class='fu'>model</span>(<span class='fu'><a href='CROSTON.html'>CROSTON</a></span>(<span class='no'>count</span>)) <span class='kw'>%&gt;%</span>
   <span class='fu'>tidy</span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'>forecast</span>()</div><div class='output co'>#&gt; <span class='error'>Error in croston(count): could not find function "croston"</span></div><div class='input'>
+  <span class='fu'>forecast</span>()</div><div class='output co'>#&gt; <span class='error'>Error in UseMethod("forecast"): no applicable method for 'forecast' applied to an object of class "c('tbl_df', 'tbl', 'data.frame')"</span></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
