@@ -52,18 +52,18 @@ interval(initial = NULL, param = NULL)
 
 \examples{
 library(tsibble)
-poisson <- tsibble(
+sim_poisson <- tsibble(
   time = yearmonth("2012 Dec") + seq_len(24),
   count = rpois(24, lambda = 0.3)
 )
 
-poisson \%>\% 
+sim_poisson \%>\% 
   autoplot(count)
 
-poisson \%>\% 
+sim_poisson \%>\% 
   model(CROSTON(count)) \%>\% 
   forecast(h = "2 years") \%>\% 
-  autoplot(poisson)
+  autoplot(sim_poisson)
 
 }
 \references{

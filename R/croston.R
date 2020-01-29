@@ -50,18 +50,18 @@
 #' 
 #' @examples 
 #' library(tsibble)
-#' poisson <- tsibble(
+#' sim_poisson <- tsibble(
 #'   time = yearmonth("2012 Dec") + seq_len(24),
 #'   count = rpois(24, lambda = 0.3)
 #' )
 #' 
-#' poisson %>% 
+#' sim_poisson %>% 
 #'   autoplot(count)
 #' 
-#' poisson %>% 
+#' sim_poisson %>% 
 #'   model(CROSTON(count)) %>% 
 #'   forecast(h = "2 years") %>% 
-#'   autoplot(poisson)
+#'   autoplot(sim_poisson)
 #' 
 #' @importFrom stats model.matrix
 #' @export
@@ -123,24 +123,36 @@ train_croston <- function(.data, specials, opt_crit = "mse", ...){
   y_interval <- c(non_zero[1], diff(non_zero))
   
   # Initialise parameters
+  par_est <- logical(4)
   if(is.null(demand$initial)){
     demand$initial <- y_demand[1]
+    par_est[1] <- TRUE
   }
   if(is.null(interval$initial)){
     interval$initial <- switch(interval$method, mean = mean(y_interval), naive = y_interval[1])
+    par_est[2] <- TRUE
+  }
+  if(is.null(demand$param)){
+    demand$param <- 0.05
+    par_est[3] <- TRUE
+  }
+  if(is.null(interval$param)){
+    interval$param <- 0.05
+    par_est[4] <- TRUE
   }
   
   # Optimise parameters
-  # Smoothing params init at 0.05
-  # par <- c(demand$initial, interval$initial, demand$param, interval$param)
-  par <- c(demand$initial, interval$initial, 0.05, 0.05)
-  par <- stats::optim(
-    par=par, optim_croston, demand = demand, interval = interval,
-    y = y, y_demand = y_demand, y_interval = y_interval, 
-    non_zero = non_zero, n = length(y), opt_crit = opt_crit,
-    lower = c(0, 1, 0, 0), upper = c(max(y_demand), max(y_interval), 1, 1),
-    method="L-BFGS-B", control = list(maxit=2000)
-  )$par
+  par <- c(demand$initial, interval$initial, demand$param, interval$param)
+  if(any(par_est)){
+    par[par_est] <- stats::optim(
+      par = par[par_est], optim_croston, par_est = par_est,
+      demand = demand, interval = interval,
+      y = y, y_demand = y_demand, y_interval = y_interval, 
+      non_zero = non_zero, n = length(y), opt_crit = opt_crit,
+      lower = c(0, 1, 0, 0)[par_est], upper = c(max(y_demand), max(y_interval), 1, 1)[par_est],
+      method="L-BFGS-B", control = list(maxit=2000)
+    )$par
+  }
   
   demand$initial <- par[1]
   interval$initial <- par[2]
@@ -163,11 +175,13 @@ train_croston <- function(.data, specials, opt_crit = "mse", ...){
   )
 }
 
-optim_croston <- function(par, demand, interval, y, opt_crit, ...){
-  demand$initial <- par[1]
-  interval$initial <- par[2]
-  demand$param <- par[3]
-  interval$param <- par[4]
+optim_croston <- function(par, par_est,
+                          demand, interval, y, opt_crit, ...){
+  par_which <- cumsum(par_est)
+  if(par_est[1]) demand$initial <- par[par_which[1]]
+  if(par_est[2]) interval$initial <- par[par_which[2]]
+  if(par_est[3]) demand$param <- par[par_which[3]]
+  if(par_est[4]) interval$param <- par[par_which[4]]
   
   frc.in <- estimate_croston(..., demand = demand, interval = interval)
   resid <- y - frc.in
@@ -202,12 +216,12 @@ estimate_croston <- function(y_demand, y_interval, demand, interval, non_zero, n
 #'
 #' @examples 
 #' library(tsibble)
-#' poisson <- tsibble(
+#' sim_poisson <- tsibble(
 #'   time = yearmonth("2012 Dec") + seq_len(24),
 #'   count = rpois(24, lambda = 0.3)
 #' )
 #' 
-#' poisson %>% 
+#' sim_poisson %>% 
 #'   model(CROSTON(count)) %>% 
 #'   forecast()
 #'
@@ -222,12 +236,12 @@ forecast.croston <- function(object, new_data, specials = NULL, ...){
 #' 
 #' @examples 
 #' library(tsibble)
-#' poisson <- tsibble(
+#' sim_poisson <- tsibble(
 #'   time = yearmonth("2012 Dec") + seq_len(24),
 #'   count = rpois(24, lambda = 0.3)
 #' )
 #' 
-#' poisson %>% 
+#' sim_poisson %>% 
 #'   model(CROSTON(count)) %>% 
 #'   tidy()
 #' @export
@@ -240,12 +254,12 @@ fitted.croston <- function(object, ...){
 #' 
 #' @examples 
 #' library(tsibble)
-#' poisson <- tsibble(
+#' sim_poisson <- tsibble(
 #'   time = yearmonth("2012 Dec") + seq_len(24),
 #'   count = rpois(24, lambda = 0.3)
 #' )
 #' 
-#' poisson %>% 
+#' sim_poisson %>% 
 #'   model(CROSTON(count)) %>% 
 #'   residuals()
 #' @export
@@ -257,12 +271,12 @@ residuals.croston <- function(object, ...){
 #' 
 #' @examples 
 #' library(tsibble)
-#' poisson <- tsibble(
+#' sim_poisson <- tsibble(
 #'   time = yearmonth("2012 Dec") + seq_len(24),
 #'   count = rpois(24, lambda = 0.3)
 #' )
 #' 
-#' poisson %>% 
+#' sim_poisson %>% 
 #'   model(CROSTON(count)) %>% 
 #'   tidy()
 #'   
