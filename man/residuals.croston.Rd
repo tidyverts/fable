@@ -2,21 +2,24 @@
 % Please edit documentation in R/croston.R
 \name{residuals.croston}
 \alias{residuals.croston}
-\title{Tidy a fable model}
+\title{Extract residuals values from a fable model}
 \usage{
 \method{residuals}{croston}(object, ...)
 }
 \arguments{
-\item{...}{Additional arguments to tidying method.}
+\item{object}{The time series model used to produce the forecasts}
+
+\item{...}{Additional arguments for forecast model methods.}
 }
 \value{
-The model's coefficients in a \code{tibble}.
+A vector of fitted residuals.
 }
 \description{
-Returns the coefficients from the model in a \code{tibble} format.
+Extracts the residuals.
 }
 \examples{
-poisson <- tsibble::tsibble(
+library(tsibble)
+poisson <- tsibble(
   time = yearmonth("2012 Dec") + seq_len(24),
   count = rpois(24, lambda = 0.3)
 )

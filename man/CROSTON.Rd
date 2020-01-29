@@ -9,6 +9,8 @@ CROSTON(formula, opt_crit = c("mse", "mae"), ...)
 \arguments{
 \item{formula}{Model specification (see "Specials" section).}
 
+\item{opt_crit}{The optimisation criterion used to optimise the parameters.}
+
 \item{...}{Not used.}
 }
 \value{
@@ -49,7 +51,8 @@ interval(initial = NULL, param = NULL)
 }
 
 \examples{
-poisson <- tsibble::tsibble(
+library(tsibble)
+poisson <- tsibble(
   time = yearmonth("2012 Dec") + seq_len(24),
   count = rpois(24, lambda = 0.3)
 )

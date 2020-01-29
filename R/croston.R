@@ -5,6 +5,7 @@
 #' Note that forecast distributions are not computed as Croston's method has no underlying stochastic model. In a later update, we plan to support distributions via the equivalent stochastic models that underly Croston's method (Shenstone and Hyndman, 2005)
 #' 
 #' @param formula Model specification (see "Specials" section).
+#' @param opt_crit The optimisation criterion used to optimise the parameters.
 #' @param ... Not used.
 #' 
 #' @section Specials:
@@ -48,7 +49,8 @@
 #' 180-190. \url{http://dx.doi.org/10.1016/j.ijpe.2014.06.007}.
 #' 
 #' @examples 
-#' poisson <- tsibble::tsibble(
+#' library(tsibble)
+#' poisson <- tsibble(
 #'   time = yearmonth("2012 Dec") + seq_len(24),
 #'   count = rpois(24, lambda = 0.3)
 #' )
@@ -132,11 +134,13 @@ train_croston <- function(.data, specials, opt_crit = "mse", ...){
   # Smoothing params init at 0.05
   # par <- c(demand$initial, interval$initial, demand$param, interval$param)
   par <- c(demand$initial, interval$initial, 0.05, 0.05)
-  par <- optim(par=par, optim_croston, demand = demand, interval = interval,
-               y = y, y_demand = y_demand, y_interval = y_interval, 
-               non_zero = non_zero, n = length(y), opt_crit = opt_crit,
-               lower = c(0, 1, 0, 0), upper = c(max(y_demand), max(y_interval), 1, 1),
-               method="L-BFGS-B", control = list(maxit=2000))$par
+  par <- stats::optim(
+    par=par, optim_croston, demand = demand, interval = interval,
+    y = y, y_demand = y_demand, y_interval = y_interval, 
+    non_zero = non_zero, n = length(y), opt_crit = opt_crit,
+    lower = c(0, 1, 0, 0), upper = c(max(y_demand), max(y_interval), 1, 1),
+    method="L-BFGS-B", control = list(maxit=2000)
+  )$par
   
   demand$initial <- par[1]
   interval$initial <- par[2]
@@ -197,7 +201,8 @@ estimate_croston <- function(y_demand, y_interval, demand, interval, non_zero, n
 #' @inherit forecast.ARIMA
 #'
 #' @examples 
-#' poisson <- tsibble::tsibble(
+#' library(tsibble)
+#' poisson <- tsibble(
 #'   time = yearmonth("2012 Dec") + seq_len(24),
 #'   count = rpois(24, lambda = 0.3)
 #' )
@@ -231,10 +236,11 @@ fitted.croston <- function(object, ...){
 }
 
 
-#' @inherit tidy.ARIMA
+#' @inherit residuals.ARIMA
 #' 
 #' @examples 
-#' poisson <- tsibble::tsibble(
+#' library(tsibble)
+#' poisson <- tsibble(
 #'   time = yearmonth("2012 Dec") + seq_len(24),
 #'   count = rpois(24, lambda = 0.3)
 #' )
@@ -250,7 +256,8 @@ residuals.croston <- function(object, ...){
 #' @inherit tidy.ARIMA
 #' 
 #' @examples 
-#' poisson <- tsibble::tsibble(
+#' library(tsibble)
+#' poisson <- tsibble(
 #'   time = yearmonth("2012 Dec") + seq_len(24),
 #'   count = rpois(24, lambda = 0.3)
 #' )

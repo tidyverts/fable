@@ -22,7 +22,8 @@ A list of forecasts.
 Produces forecasts from a trained model.
 }
 \examples{
-poisson <- tsibble::tsibble(
+library(tsibble)
+poisson <- tsibble(
   time = yearmonth("2012 Dec") + seq_len(24),
   count = rpois(24, lambda = 0.3)
 )
