@@ -25,6 +25,6 @@ poisson <- tsibble(
 )
 
 poisson \%>\% 
-  model(croston(count)) \%>\% 
+  model(CROSTON(count)) \%>\% 
   residuals()
 }

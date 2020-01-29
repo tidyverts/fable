@@ -61,7 +61,7 @@ poisson \%>\%
   autoplot(count)
 
 poisson \%>\% 
-  model(croston(count)) \%>\% 
+  model(CROSTON(count)) \%>\% 
   forecast(h = "2 years") \%>\% 
   autoplot(poisson)
 

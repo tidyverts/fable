@@ -29,8 +29,7 @@ poisson <- tsibble(
 )
 
 poisson \%>\% 
-  model(croston(count)) \%>\% 
-  tidy() \%>\% 
+  model(CROSTON(count)) \%>\% 
   forecast()
 
 }

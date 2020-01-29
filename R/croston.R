@@ -59,7 +59,7 @@
 #'   autoplot(count)
 #' 
 #' poisson %>% 
-#'   model(croston(count)) %>% 
+#'   model(CROSTON(count)) %>% 
 #'   forecast(h = "2 years") %>% 
 #'   autoplot(poisson)
 #' 
@@ -208,8 +208,7 @@ estimate_croston <- function(y_demand, y_interval, demand, interval, non_zero, n
 #' )
 #' 
 #' poisson %>% 
-#'   model(croston(count)) %>% 
-#'   tidy() %>% 
+#'   model(CROSTON(count)) %>% 
 #'   forecast()
 #'
 #' @export
@@ -222,13 +221,14 @@ forecast.croston <- function(object, new_data, specials = NULL, ...){
 #' @inherit fitted.ARIMA
 #' 
 #' @examples 
-#' poisson <- tsibble::tsibble(
+#' library(tsibble)
+#' poisson <- tsibble(
 #'   time = yearmonth("2012 Dec") + seq_len(24),
 #'   count = rpois(24, lambda = 0.3)
 #' )
 #' 
 #' poisson %>% 
-#'   model(croston(count)) %>% 
+#'   model(CROSTON(count)) %>% 
 #'   tidy()
 #' @export
 fitted.croston <- function(object, ...){
@@ -246,7 +246,7 @@ fitted.croston <- function(object, ...){
 #' )
 #' 
 #' poisson %>% 
-#'   model(croston(count)) %>% 
+#'   model(CROSTON(count)) %>% 
 #'   residuals()
 #' @export
 residuals.croston <- function(object, ...){
@@ -263,7 +263,7 @@ residuals.croston <- function(object, ...){
 #' )
 #' 
 #' poisson %>% 
-#'   model(croston(count)) %>% 
+#'   model(CROSTON(count)) %>% 
 #'   tidy()
 #'   
 #' @export

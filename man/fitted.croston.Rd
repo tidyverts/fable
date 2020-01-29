@@ -18,12 +18,13 @@ A vector of fitted values.
 Extracts the fitted values.
 }
 \examples{
-poisson <- tsibble::tsibble(
+library(tsibble)
+poisson <- tsibble(
   time = yearmonth("2012 Dec") + seq_len(24),
   count = rpois(24, lambda = 0.3)
 )
 
 poisson \%>\% 
-  model(croston(count)) \%>\% 
+  model(CROSTON(count)) \%>\% 
   tidy()
 }
