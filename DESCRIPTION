@@ -27,7 +27,7 @@ URL: https://fable.tidyverts.org
 BugReports: https://github.com/tidyverts/fable/issues
 Depends:
     R (>= 3.4.0),
-    fabletools
+    fabletools (>= 0.1.2)
 Imports:
     Rcpp (>= 0.11.0),
     rlang (>= 0.2.0),
