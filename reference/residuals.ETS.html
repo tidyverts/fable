@@ -87,7 +87,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
       </span>
     </div>
 
@@ -168,24 +168,24 @@
     <p>A vector of fitted residuals.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>as_tsibble</span>(<span class='no'>USAccDeaths</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='kw'>ets</span> <span class='kw'>=</span> <span class='fu'>ETS</span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>value</span>) ~ <span class='fu'>season</span>(<span class='st'>"A"</span>))) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/r/stats/residuals.html'>residuals</a></span>()</div><div class='output co'>#&gt; # A tsibble: 72 x 3 [1M]
-#&gt; # Key:       .model [1]
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='no'>USAccDeaths</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'>model</span>(<span class='kw'>ets</span> <span class='kw'>=</span> <span class='fu'><a href='ETS.html'>ETS</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>value</span>) ~ <span class='fu'>season</span>(<span class='st'>"A"</span>))) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/stats/residuals.html'>residuals</a></span>()</div><div class='output co'>#&gt; <span style='color: #555555;'># A tsibble: 72 x 3 [1M]</span><span>
+#&gt; </span><span style='color: #555555;'># Key:       .model [1]</span><span>
 #&gt;    .model    index   .resid
-#&gt;    &lt;chr&gt;     &lt;mth&gt;    &lt;dbl&gt;
-#&gt;  1 ets    1973 Jan  0.00461
-#&gt;  2 ets    1973 Feb -0.00109
-#&gt;  3 ets    1973 Mar -0.00538
-#&gt;  4 ets    1973 Apr -0.00496
-#&gt;  5 ets    1973 May -0.00587
-#&gt;  6 ets    1973 Jun  0.0270 
-#&gt;  7 ets    1973 Jul -0.0269 
-#&gt;  8 ets    1973 Aug  0.00863
-#&gt;  9 ets    1973 Sep  0.0196 
-#&gt; 10 ets    1973 Oct  0.00108
-#&gt; # … with 62 more rows</div><div class='input'>  
-</div></pre>
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;mth&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> ets    1973 Jan  0.004</span><span style='text-decoration: underline;'>61</span><span>
+#&gt; </span><span style='color: #555555;'> 2</span><span> ets    1973 Feb -</span><span style='color: #BB0000;'>0.001</span><span style='color: #BB0000;text-decoration: underline;'>09</span><span>
+#&gt; </span><span style='color: #555555;'> 3</span><span> ets    1973 Mar -</span><span style='color: #BB0000;'>0.005</span><span style='color: #BB0000;text-decoration: underline;'>38</span><span>
+#&gt; </span><span style='color: #555555;'> 4</span><span> ets    1973 Apr -</span><span style='color: #BB0000;'>0.004</span><span style='color: #BB0000;text-decoration: underline;'>96</span><span>
+#&gt; </span><span style='color: #555555;'> 5</span><span> ets    1973 May -</span><span style='color: #BB0000;'>0.005</span><span style='color: #BB0000;text-decoration: underline;'>87</span><span>
+#&gt; </span><span style='color: #555555;'> 6</span><span> ets    1973 Jun  0.027</span><span style='text-decoration: underline;'>0</span><span> 
+#&gt; </span><span style='color: #555555;'> 7</span><span> ets    1973 Jul -</span><span style='color: #BB0000;'>0.026</span><span style='color: #BB0000;text-decoration: underline;'>9</span><span> 
+#&gt; </span><span style='color: #555555;'> 8</span><span> ets    1973 Aug  0.008</span><span style='text-decoration: underline;'>63</span><span>
+#&gt; </span><span style='color: #555555;'> 9</span><span> ets    1973 Sep  0.019</span><span style='text-decoration: underline;'>6</span><span> 
+#&gt; </span><span style='color: #555555;'>10</span><span> ets    1973 Oct  0.001</span><span style='text-decoration: underline;'>08</span><span>
+#&gt; </span><span style='color: #555555;'># … with 62 more rows</span><span></div><div class='input'>  
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -205,7 +205,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
 </div>
 
       </footer>

@@ -90,7 +90,7 @@ contains the .innov column, those values will be treated as innovations." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
       </span>
     </div>
 
@@ -182,29 +182,29 @@ contains the <code>.innov</code> column, those values will be treated as innovat
     <div class='dont-index'><p><code><a href='https://fabletools.tidyverts.org/reference/generate.mdl_df.html'>fabletools::generate.mdl_df</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>as_tsibble</span>(<span class='no'>Nile</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='fu'>NAIVE</span>(<span class='no'>value</span>)) <span class='kw'>%&gt;%</span>
-  <span class='fu'>generate</span>()</div><div class='output co'>#&gt; # A tsibble: 2 x 4 [1Y]
-#&gt; # Key:       .model, .rep [1]
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='no'>Nile</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'>model</span>(<span class='fu'><a href='RW.html'>NAIVE</a></span>(<span class='no'>value</span>)) <span class='kw'>%&gt;%</span>
+  <span class='fu'>generate</span>()</div><div class='output co'>#&gt; <span style='color: #555555;'># A tsibble: 2 x 4 [1Y]</span><span>
+#&gt; </span><span style='color: #555555;'># Key:       .model, .rep [1]</span><span>
 #&gt;   .model        .rep index  .sim
-#&gt;   &lt;chr&gt;        &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt;
-#&gt; 1 NAIVE(value)     1  1971  926.
-#&gt; 2 NAIVE(value)     1  1972  759.</div><div class='input'>
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span> NAIVE(value)     1  </span><span style='text-decoration: underline;'>1</span><span>971  953.
+#&gt; </span><span style='color: #555555;'>2</span><span> NAIVE(value)     1  </span><span style='text-decoration: underline;'>1</span><span>972  735.</div><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibbledata</span>)
 <span class='no'>aus_production</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='kw'>snaive</span> <span class='kw'>=</span> <span class='fu'>SNAIVE</span>(<span class='no'>Beer</span> ~ <span class='fu'><a href='https://rdrr.io/r/stats/lag.html'>lag</a></span>(<span class='st'>"year"</span>))) <span class='kw'>%&gt;%</span>
-  <span class='fu'>generate</span>()</div><div class='output co'>#&gt; # A tsibble: 8 x 4 [1Q]
-#&gt; # Key:       .model, .rep [1]
+  <span class='fu'>model</span>(<span class='kw'>snaive</span> <span class='kw'>=</span> <span class='fu'><a href='RW.html'>SNAIVE</a></span>(<span class='no'>Beer</span> ~ <span class='fu'><a href='https://rdrr.io/r/stats/lag.html'>lag</a></span>(<span class='st'>"year"</span>))) <span class='kw'>%&gt;%</span>
+  <span class='fu'>generate</span>()</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tsibble: 8 x 4 [1Q]</span><span>
+#&gt; </span><span style='color: #555555;'># Key:       .model, .rep [1]</span><span>
 #&gt;   .model  .rep Quarter  .sim
-#&gt;   &lt;chr&gt;  &lt;int&gt;   &lt;qtr&gt; &lt;dbl&gt;
-#&gt; 1 snaive     1 2010 Q3  456.
-#&gt; 2 snaive     1 2010 Q4  477.
-#&gt; 3 snaive     1 2011 Q1  420.
-#&gt; 4 snaive     1 2011 Q2  408.
-#&gt; 5 snaive     1 2011 Q3  480.
-#&gt; 6 snaive     1 2011 Q4  466.
-#&gt; 7 snaive     1 2012 Q1  414.
-#&gt; 8 snaive     1 2012 Q2  410.</div></pre>
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;qtr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span> snaive     1 2010 Q3  422.
+#&gt; </span><span style='color: #555555;'>2</span><span> snaive     1 2010 Q4  486.
+#&gt; </span><span style='color: #555555;'>3</span><span> snaive     1 2011 Q1  412.
+#&gt; </span><span style='color: #555555;'>4</span><span> snaive     1 2011 Q2  377.
+#&gt; </span><span style='color: #555555;'>5</span><span> snaive     1 2011 Q3  433.
+#&gt; </span><span style='color: #555555;'>6</span><span> snaive     1 2011 Q4  503.
+#&gt; </span><span style='color: #555555;'>7</span><span> snaive     1 2012 Q1  408.
+#&gt; </span><span style='color: #555555;'>8</span><span> snaive     1 2012 Q2  376.</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -224,7 +224,7 @@ contains the <code>.innov</code> column, those values will be treated as innovat
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
 </div>
 
       </footer>

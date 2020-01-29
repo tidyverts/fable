@@ -87,7 +87,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
       </span>
     </div>
 
@@ -173,15 +173,15 @@ and information criterion (<code>AIC</code>, <code>AICc</code>, <code>BIC</code>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>lung_deaths</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span>(<span class='no'>mdeaths</span>, <span class='no'>fdeaths</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>as_tsibble</span>(<span class='kw'>pivot_longer</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+  <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='kw'>pivot_longer</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='no'>lung_deaths</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='fu'>VAR</span>(<span class='fu'>vars</span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>mdeaths</span>), <span class='no'>fdeaths</span>) ~ <span class='fu'>AR</span>(<span class='fl'>3</span>))) <span class='kw'>%&gt;%</span>
-  <span class='fu'>glance</span>()</div><div class='output co'>#&gt; # A tibble: 1 x 6
+  <span class='fu'>model</span>(<span class='fu'><a href='VAR.html'>VAR</a></span>(<span class='fu'>vars</span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>mdeaths</span>), <span class='no'>fdeaths</span>) ~ <span class='fu'>AR</span>(<span class='fl'>3</span>))) <span class='kw'>%&gt;%</span>
+  <span class='fu'>glance</span>()</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 1 x 6</span><span>
 #&gt;   .model                               sigma2          log_lik   AIC  AICc   BIC
-#&gt;   &lt;chr&gt;                                &lt;list&gt;            &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-#&gt; 1 VAR(vars(log(mdeaths), fdeaths) ~ A… &lt;dbl[,2] [2 × …   -317.  670.  684.  710.</div><div class='input'>  
-</div></pre>
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                                </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span>            </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span> VAR(vars(log(mdeaths), fdeaths) ~ A… </span><span style='color: #555555;'>&lt;dbl[,2] [2 × </span><span>…   -</span><span style='color: #BB0000;'>317.</span><span>  670.  684.  710.</div><div class='input'>  
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -202,7 +202,7 @@ and information criterion (<code>AIC</code>, <code>AICc</code>, <code>BIC</code>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
 </div>
 
       </footer>

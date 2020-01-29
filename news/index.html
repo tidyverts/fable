@@ -86,7 +86,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
       </span>
     </div>
 
@@ -141,9 +141,53 @@
       
     </div>
 
-    <div id="fable-0-1-0" class="section level1">
+    <div id="fable-012" class="section level1">
 <h1 class="page-header">
-<a href="#fable-0-1-0" class="anchor"></a>fable 0.1.0</h1>
+<a href="#fable-012" class="anchor"></a>fable 0.1.2<small> Unreleased </small>
+</h1>
+<div id="improvements" class="section level2">
+<h2 class="hasAnchor">
+<a href="#improvements" class="anchor"></a>Improvements</h2>
+<ul>
+<li>Added <code><a href="../reference/CROSTON.html">CROSTON()</a></code> for Croston’s method of intermittent demand forecasting.</li>
+<li>Documentation improvements</li>
+</ul>
+</div>
+<div id="bug-fixes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes" class="anchor"></a>Bug fixes</h2>
+<ul>
+<li>Fixed NNETAR &amp; VAR handling of missing values (#215).</li>
+<li>Fix ETS forecasting with forecast horizons less than the seasonal period (#219).</li>
+<li>Fixed season() special for non-seasonally based time indices (#220)</li>
+<li>Fix issue with simulation forecasting from damped ETS models.</li>
+</ul>
+</div>
+</div>
+    <div id="fable-011" class="section level1">
+<h1 class="page-header">
+<a href="#fable-011" class="anchor"></a>fable 0.1.1<small> 2019-12-06 </small>
+</h1>
+<div id="improvements-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#improvements-1" class="anchor"></a>Improvements</h2>
+<ul>
+<li>Added interpolation method for <code><a href="../reference/MEAN.html">MEAN()</a></code> model (#203).</li>
+<li>Added rolling mean option for <code><a href="../reference/MEAN.html">MEAN()</a></code> model (#204).</li>
+</ul>
+</div>
+<div id="bug-fixes-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes-1" class="anchor"></a>Bug fixes</h2>
+<ul>
+<li>Corrected forecast standard error for drift models.</li>
+</ul>
+</div>
+</div>
+    <div id="fable-010" class="section level1">
+<h1 class="page-header">
+<a href="#fable-010" class="anchor"></a>fable 0.1.0<small> 2019-09-23 </small>
+</h1>
 <ul>
 <li>First release.</li>
 </ul>
@@ -161,7 +205,9 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="#fable-0-1-0">0.1.0</a></li>
+        <li><a href="#fable-012">0.1.2</a></li>
+        <li><a href="#fable-011">0.1.1</a></li>
+        <li><a href="#fable-010">0.1.0</a></li>
       </ul>
     </div>
   </div>
@@ -175,7 +221,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
 </div>
 
       </footer>

@@ -87,7 +87,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
       </span>
     </div>
 
@@ -170,23 +170,23 @@
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibbledata</span>)
 <span class='no'>vic_elec</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='kw'>avg</span> <span class='kw'>=</span> <span class='fu'>MEAN</span>(<span class='no'>Demand</span>)) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/r/stats/fitted.values.html'>fitted</a></span>()</div><div class='output co'>#&gt; # A tsibble: 52,608 x 3 [30m] &lt;UTC&gt;
-#&gt; # Key:       .model [1]
+  <span class='fu'>model</span>(<span class='kw'>avg</span> <span class='kw'>=</span> <span class='fu'><a href='MEAN.html'>MEAN</a></span>(<span class='no'>Demand</span>)) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/stats/fitted.values.html'>fitted</a></span>()</div><div class='output co'>#&gt; <span style='color: #555555;'># A tsibble: 52,608 x 3 [30m] &lt;UTC&gt;</span><span>
+#&gt; </span><span style='color: #555555;'># Key:       .model [1]</span><span>
 #&gt;    .model Time                .fitted
-#&gt;    &lt;chr&gt;  &lt;dttm&gt;                &lt;dbl&gt;
-#&gt;  1 avg    2012-01-01 00:00:00   4665.
-#&gt;  2 avg    2012-01-01 00:30:00   4665.
-#&gt;  3 avg    2012-01-01 01:00:00   4665.
-#&gt;  4 avg    2012-01-01 01:30:00   4665.
-#&gt;  5 avg    2012-01-01 02:00:00   4665.
-#&gt;  6 avg    2012-01-01 02:30:00   4665.
-#&gt;  7 avg    2012-01-01 03:00:00   4665.
-#&gt;  8 avg    2012-01-01 03:30:00   4665.
-#&gt;  9 avg    2012-01-01 04:00:00   4665.
-#&gt; 10 avg    2012-01-01 04:30:00   4665.
-#&gt; # … with 52,598 more rows</div><div class='input'>  
-</div></pre>
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>                </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> avg    2012-01-01 </span><span style='color: #555555;'>00:00:00</span><span>   </span><span style='text-decoration: underline;'>4</span><span>665.
+#&gt; </span><span style='color: #555555;'> 2</span><span> avg    2012-01-01 </span><span style='color: #555555;'>00:30:00</span><span>   </span><span style='text-decoration: underline;'>4</span><span>665.
+#&gt; </span><span style='color: #555555;'> 3</span><span> avg    2012-01-01 </span><span style='color: #555555;'>01:00:00</span><span>   </span><span style='text-decoration: underline;'>4</span><span>665.
+#&gt; </span><span style='color: #555555;'> 4</span><span> avg    2012-01-01 </span><span style='color: #555555;'>01:30:00</span><span>   </span><span style='text-decoration: underline;'>4</span><span>665.
+#&gt; </span><span style='color: #555555;'> 5</span><span> avg    2012-01-01 </span><span style='color: #555555;'>02:00:00</span><span>   </span><span style='text-decoration: underline;'>4</span><span>665.
+#&gt; </span><span style='color: #555555;'> 6</span><span> avg    2012-01-01 </span><span style='color: #555555;'>02:30:00</span><span>   </span><span style='text-decoration: underline;'>4</span><span>665.
+#&gt; </span><span style='color: #555555;'> 7</span><span> avg    2012-01-01 </span><span style='color: #555555;'>03:00:00</span><span>   </span><span style='text-decoration: underline;'>4</span><span>665.
+#&gt; </span><span style='color: #555555;'> 8</span><span> avg    2012-01-01 </span><span style='color: #555555;'>03:30:00</span><span>   </span><span style='text-decoration: underline;'>4</span><span>665.
+#&gt; </span><span style='color: #555555;'> 9</span><span> avg    2012-01-01 </span><span style='color: #555555;'>04:00:00</span><span>   </span><span style='text-decoration: underline;'>4</span><span>665.
+#&gt; </span><span style='color: #555555;'>10</span><span> avg    2012-01-01 </span><span style='color: #555555;'>04:30:00</span><span>   </span><span style='text-decoration: underline;'>4</span><span>665.
+#&gt; </span><span style='color: #555555;'># … with 52,598 more rows</span><span></div><div class='input'>  
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -206,7 +206,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
 </div>
 
       </footer>

@@ -87,7 +87,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
       </span>
     </div>
 
@@ -169,26 +169,26 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>lung_deaths</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span>(<span class='no'>mdeaths</span>, <span class='no'>fdeaths</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>as_tsibble</span>(<span class='kw'>pivot_longer</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+  <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='kw'>pivot_longer</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='no'>lung_deaths</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='fu'>VAR</span>(<span class='fu'>vars</span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>mdeaths</span>), <span class='no'>fdeaths</span>) ~ <span class='fu'>AR</span>(<span class='fl'>3</span>))) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/r/stats/residuals.html'>residuals</a></span>()</div><div class='output co'>#&gt; # A tsibble: 72 x 4 [1M]
-#&gt; # Key:       .model [1]
+  <span class='fu'>model</span>(<span class='fu'><a href='VAR.html'>VAR</a></span>(<span class='fu'>vars</span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>mdeaths</span>), <span class='no'>fdeaths</span>) ~ <span class='fu'>AR</span>(<span class='fl'>3</span>))) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/stats/residuals.html'>residuals</a></span>()</div><div class='output co'>#&gt; <span style='color: #555555;'># A tsibble: 72 x 4 [1M]</span><span>
+#&gt; </span><span style='color: #555555;'># Key:       .model [1]</span><span>
 #&gt;    .model                                      index  mdeaths fdeaths
-#&gt;    &lt;chr&gt;                                       &lt;mth&gt;    &lt;dbl&gt;   &lt;dbl&gt;
-#&gt;  1 VAR(vars(log(mdeaths), fdeaths) ~ AR(3)) 1974 Jan NA          NA  
-#&gt;  2 VAR(vars(log(mdeaths), fdeaths) ~ AR(3)) 1974 Feb NA          NA  
-#&gt;  3 VAR(vars(log(mdeaths), fdeaths) ~ AR(3)) 1974 Mar NA          NA  
-#&gt;  4 VAR(vars(log(mdeaths), fdeaths) ~ AR(3)) 1974 Apr  0.113      10.5
-#&gt;  5 VAR(vars(log(mdeaths), fdeaths) ~ AR(3)) 1974 May -0.0398    -69.3
-#&gt;  6 VAR(vars(log(mdeaths), fdeaths) ~ AR(3)) 1974 Jun -0.0993   -104. 
-#&gt;  7 VAR(vars(log(mdeaths), fdeaths) ~ AR(3)) 1974 Jul  0.0687     28.0
-#&gt;  8 VAR(vars(log(mdeaths), fdeaths) ~ AR(3)) 1974 Aug -0.177    -105. 
-#&gt;  9 VAR(vars(log(mdeaths), fdeaths) ~ AR(3)) 1974 Sep -0.00927   -69.9
-#&gt; 10 VAR(vars(log(mdeaths), fdeaths) ~ AR(3)) 1974 Oct  0.138     106. 
-#&gt; # … with 62 more rows</div><div class='input'>  
-</div></pre>
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                                       </span><span style='color: #555555;font-style: italic;'>&lt;mth&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> VAR(vars(log(mdeaths), fdeaths) ~ AR(3)) 1974 Jan </span><span style='color: #BB0000;'>NA</span><span>          </span><span style='color: #BB0000;'>NA</span><span>  
+#&gt; </span><span style='color: #555555;'> 2</span><span> VAR(vars(log(mdeaths), fdeaths) ~ AR(3)) 1974 Feb </span><span style='color: #BB0000;'>NA</span><span>          </span><span style='color: #BB0000;'>NA</span><span>  
+#&gt; </span><span style='color: #555555;'> 3</span><span> VAR(vars(log(mdeaths), fdeaths) ~ AR(3)) 1974 Mar </span><span style='color: #BB0000;'>NA</span><span>          </span><span style='color: #BB0000;'>NA</span><span>  
+#&gt; </span><span style='color: #555555;'> 4</span><span> VAR(vars(log(mdeaths), fdeaths) ~ AR(3)) 1974 Apr  0.113      10.5
+#&gt; </span><span style='color: #555555;'> 5</span><span> VAR(vars(log(mdeaths), fdeaths) ~ AR(3)) 1974 May -</span><span style='color: #BB0000;'>0.039</span><span style='color: #BB0000;text-decoration: underline;'>8</span><span>    -</span><span style='color: #BB0000;'>69.3</span><span>
+#&gt; </span><span style='color: #555555;'> 6</span><span> VAR(vars(log(mdeaths), fdeaths) ~ AR(3)) 1974 Jun -</span><span style='color: #BB0000;'>0.099</span><span style='color: #BB0000;text-decoration: underline;'>3</span><span>   -</span><span style='color: #BB0000;'>104.</span><span> 
+#&gt; </span><span style='color: #555555;'> 7</span><span> VAR(vars(log(mdeaths), fdeaths) ~ AR(3)) 1974 Jul  0.068</span><span style='text-decoration: underline;'>7</span><span>     28.0
+#&gt; </span><span style='color: #555555;'> 8</span><span> VAR(vars(log(mdeaths), fdeaths) ~ AR(3)) 1974 Aug -</span><span style='color: #BB0000;'>0.177</span><span>    -</span><span style='color: #BB0000;'>105.</span><span> 
+#&gt; </span><span style='color: #555555;'> 9</span><span> VAR(vars(log(mdeaths), fdeaths) ~ AR(3)) 1974 Sep -</span><span style='color: #BB0000;'>0.009</span><span style='color: #BB0000;text-decoration: underline;'>27</span><span>   -</span><span style='color: #BB0000;'>69.9</span><span>
+#&gt; </span><span style='color: #555555;'>10</span><span> VAR(vars(log(mdeaths), fdeaths) ~ AR(3)) 1974 Oct  0.138     106. 
+#&gt; </span><span style='color: #555555;'># … with 62 more rows</span><span></div><div class='input'>  
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -208,7 +208,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
 </div>
 
       </footer>

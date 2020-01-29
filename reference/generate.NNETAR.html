@@ -90,7 +90,7 @@ contains the .innov column, those values will be treated as innovations." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
       </span>
     </div>
 
@@ -154,8 +154,7 @@ contains the <code>.innov</code> column, those values will be treated as innovat
     </div>
 
     <pre class="usage"><span class='co'># S3 method for NNETAR</span>
-<span class='fu'>generate</span>(<span class='no'>x</span>, <span class='no'>new_data</span>, <span class='kw'>specials</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>bootstrap</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>generate</span>(<span class='no'>x</span>, <span class='no'>new_data</span>, <span class='kw'>specials</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>bootstrap</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -187,15 +186,15 @@ contains the <code>.innov</code> column, those values will be treated as innovat
     <div class='dont-index'><p><code><a href='https://fabletools.tidyverts.org/reference/generate.mdl_df.html'>fabletools::generate.mdl_df</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>as_tsibble</span>(<span class='no'>airmiles</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='kw'>nn</span> <span class='kw'>=</span> <span class='fu'>NNETAR</span>(<span class='fu'>box_cox</span>(<span class='no'>value</span>, <span class='fl'>0.15</span>))) <span class='kw'>%&gt;%</span>
-  <span class='fu'>generate</span>()</div><div class='output co'>#&gt; # A tsibble: 2 x 4 [1Y]
-#&gt; # Key:       .model, .rep [1]
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='no'>airmiles</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'>model</span>(<span class='kw'>nn</span> <span class='kw'>=</span> <span class='fu'><a href='NNETAR.html'>NNETAR</a></span>(<span class='fu'>box_cox</span>(<span class='no'>value</span>, <span class='fl'>0.15</span>))) <span class='kw'>%&gt;%</span>
+  <span class='fu'>generate</span>()</div><div class='output co'>#&gt; <span style='color: #555555;'># A tsibble: 2 x 4 [1Y]</span><span>
+#&gt; </span><span style='color: #555555;'># Key:       .model, .rep [1]</span><span>
 #&gt;   .model  .rep index   .sim
-#&gt;   &lt;chr&gt;  &lt;int&gt; &lt;dbl&gt;  &lt;dbl&gt;
-#&gt; 1 nn         1  1961 32471.
-#&gt; 2 nn         1  1962 33257.</div><div class='input'>  
-</div></pre>
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span> nn         1  </span><span style='text-decoration: underline;'>1</span><span>961 </span><span style='text-decoration: underline;'>33</span><span>189.
+#&gt; </span><span style='color: #555555;'>2</span><span> nn         1  </span><span style='text-decoration: underline;'>1</span><span>962 </span><span style='text-decoration: underline;'>37</span><span>001.</div><div class='input'>  
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -215,7 +214,7 @@ contains the <code>.innov</code> column, those values will be treated as innovat
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
 </div>
 
       </footer>

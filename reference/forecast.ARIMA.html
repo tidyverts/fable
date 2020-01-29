@@ -87,7 +87,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
       </span>
     </div>
 
@@ -148,8 +148,14 @@
     </div>
 
     <pre class="usage"><span class='co'># S3 method for ARIMA</span>
-<span class='fu'>forecast</span>(<span class='no'>object</span>, <span class='kw'>new_data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>specials</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>bootstrap</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>times</span> <span class='kw'>=</span> <span class='fl'>5000</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>forecast</span>(
+  <span class='no'>object</span>,
+  <span class='kw'>new_data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>specials</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>bootstrap</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>times</span> <span class='kw'>=</span> <span class='fl'>5000</span>,
+  <span class='no'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -187,23 +193,23 @@
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>USAccDeaths</span> <span class='kw'>%&gt;%</span>
   <span class='no'>as_tsibble</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='kw'>arima</span> <span class='kw'>=</span> <span class='fu'>ARIMA</span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>value</span>) ~ <span class='fu'>pdq</span>(<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>1</span>) + <span class='fu'>PDQ</span>(<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>1</span>))) <span class='kw'>%&gt;%</span>
-  <span class='fu'>forecast</span>()</div><div class='output co'>#&gt; # A fable: 24 x 4 [1M]
-#&gt; # Key:     .model [1]
+  <span class='fu'>model</span>(<span class='kw'>arima</span> <span class='kw'>=</span> <span class='fu'><a href='ARIMA.html'>ARIMA</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>value</span>) ~ <span class='fu'>pdq</span>(<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>1</span>) + <span class='fu'>PDQ</span>(<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>1</span>))) <span class='kw'>%&gt;%</span>
+  <span class='fu'>forecast</span>()</div><div class='output co'>#&gt; <span style='color: #555555;'># A fable: 24 x 4 [1M]</span><span>
+#&gt; </span><span style='color: #555555;'># Key:     .model [1]</span><span>
 #&gt;    .model    index  value .distribution    
-#&gt;    &lt;chr&gt;     &lt;mth&gt;  &lt;dbl&gt; &lt;dist&gt;           
-#&gt;  1 arima  1979 Jan  8290. t(N(9.0, 0.0014))
-#&gt;  2 arima  1979 Feb  7453. t(N(8.9, 0.0018))
-#&gt;  3 arima  1979 Mar  8276. t(N(9.0, 0.0022))
-#&gt;  4 arima  1979 Apr  8584. t(N(9.1, 0.0025))
-#&gt;  5 arima  1979 May  9499. t(N(9.2, 0.0029))
-#&gt;  6 arima  1979 Jun  9900. t(N(9.2, 0.0033))
-#&gt;  7 arima  1979 Jul 10988. t(N(9.3, 0.0037))
-#&gt;  8 arima  1979 Aug 10132. t(N(9.2, 0.0041))
-#&gt;  9 arima  1979 Sep  9138. t(N(9.1, 0.0045))
-#&gt; 10 arima  1979 Oct  9391. t(N(9.1, 0.0049))
-#&gt; # … with 14 more rows</div><div class='input'>
-</div></pre>
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;mth&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dist&gt;</span><span>           
+#&gt; </span><span style='color: #555555;'> 1</span><span> arima  1979 Jan  </span><span style='text-decoration: underline;'>8</span><span>290. t(N(9.0, 0.0014))
+#&gt; </span><span style='color: #555555;'> 2</span><span> arima  1979 Feb  </span><span style='text-decoration: underline;'>7</span><span>453. t(N(8.9, 0.0018))
+#&gt; </span><span style='color: #555555;'> 3</span><span> arima  1979 Mar  </span><span style='text-decoration: underline;'>8</span><span>276. t(N(9.0, 0.0022))
+#&gt; </span><span style='color: #555555;'> 4</span><span> arima  1979 Apr  </span><span style='text-decoration: underline;'>8</span><span>584. t(N(9.1, 0.0025))
+#&gt; </span><span style='color: #555555;'> 5</span><span> arima  1979 May  </span><span style='text-decoration: underline;'>9</span><span>499. t(N(9.2, 0.0029))
+#&gt; </span><span style='color: #555555;'> 6</span><span> arima  1979 Jun  </span><span style='text-decoration: underline;'>9</span><span>900. t(N(9.2, 0.0033))
+#&gt; </span><span style='color: #555555;'> 7</span><span> arima  1979 Jul </span><span style='text-decoration: underline;'>10</span><span>988. t(N(9.3, 0.0037))
+#&gt; </span><span style='color: #555555;'> 8</span><span> arima  1979 Aug </span><span style='text-decoration: underline;'>10</span><span>132. t(N(9.2, 0.0041))
+#&gt; </span><span style='color: #555555;'> 9</span><span> arima  1979 Sep  </span><span style='text-decoration: underline;'>9</span><span>138. t(N(9.1, 0.0045))
+#&gt; </span><span style='color: #555555;'>10</span><span> arima  1979 Oct  </span><span style='text-decoration: underline;'>9</span><span>391. t(N(9.1, 0.0049))
+#&gt; </span><span style='color: #555555;'># … with 14 more rows</span><span></div><div class='input'>
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -223,7 +229,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
 </div>
 
       </footer>

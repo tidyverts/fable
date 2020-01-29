@@ -91,7 +91,7 @@ and fourier()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
       </span>
     </div>
 
@@ -151,7 +151,7 @@ and fourier()." />
     <p>The model formula will be handled using <code><a href='https://rdrr.io/r/stats/model.matrix.html'>stats::model.matrix()</a></code>, and so
 the the same approach to include interactions in <code><a href='https://rdrr.io/r/stats/lm.html'>stats::lm()</a></code> applies when
 specifying the <code>formula</code>. In addition to <code><a href='https://rdrr.io/r/stats/lm.html'>stats::lm()</a></code>, it is possible to
-include <code>common_xregs</code> in the model formula, such as <code>trend()</code>, <code>season()</code>,
+include <code><a href='common_xregs.html'>common_xregs</a></code> in the model formula, such as <code>trend()</code>, <code>season()</code>,
 and <code>fourier()</code>.</p>
     </div>
 
@@ -175,7 +175,7 @@ and <code>fourier()</code>.</p>
 
 
 <h3>xreg</h3>
-<p>Exogenous regressors can be included in an ARIMA model without explicitly using the <code>xreg()</code> special. Common exogenous regressor specials as specified in <code>common_xregs</code> can also be used. These regressors are handled using <code><a href='https://rdrr.io/r/stats/model.frame.html'>stats::model.frame()</a></code>, and so interactions and other functionality behaves similarly to <code><a href='https://rdrr.io/r/stats/lm.html'>stats::lm()</a></code>.</p><pre>
+<p>Exogenous regressors can be included in an ARIMA model without explicitly using the <code>xreg()</code> special. Common exogenous regressor specials as specified in <code><a href='common_xregs.html'>common_xregs</a></code> can also be used. These regressors are handled using <code><a href='https://rdrr.io/r/stats/model.frame.html'>stats::model.frame()</a></code>, and so interactions and other functionality behaves similarly to <code><a href='https://rdrr.io/r/stats/lm.html'>stats::lm()</a></code>.</p><pre>
 xreg(...)
 </pre>
 
@@ -191,30 +191,30 @@ xreg(...)
 <a href='https://otexts.com/fpp3/regression.html'>Forecasting: Principles and Practices, Time series regression models (chapter 6)</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>as_tsibble</span>(<span class='no'>USAccDeaths</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='kw'>lm</span> <span class='kw'>=</span> <span class='fu'>TSLM</span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>value</span>) ~ <span class='fu'>trend</span>() + <span class='fu'>season</span>()))</div><div class='output co'>#&gt; # A mable: 1 x 1
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='no'>USAccDeaths</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'>model</span>(<span class='kw'>lm</span> <span class='kw'>=</span> <span class='fu'>TSLM</span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>value</span>) ~ <span class='fu'>trend</span>() + <span class='fu'>season</span>()))</div><div class='output co'>#&gt; <span style='color: #555555;'># A mable: 1 x 1</span><span>
 #&gt;   lm     
-#&gt;   &lt;model&gt;
-#&gt; 1 &lt;TSLM&gt; </div><div class='input'>
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;model&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span> </span><span style='color: #555555;'>&lt;TSLM&gt;</span><span> </div><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibbledata</span>)
 <span class='no'>olympic_running</span> <span class='kw'>%&gt;%</span>
   <span class='fu'>model</span>(<span class='fu'>TSLM</span>(<span class='no'>Time</span> ~ <span class='fu'>trend</span>())) <span class='kw'>%&gt;%</span>
-  <span class='fu'>interpolate</span>(<span class='no'>olympic_running</span>)</div><div class='output co'>#&gt; # A tsibble: 312 x 4 [4Y]
-#&gt; # Key:       Length, Sex [14]
+  <span class='fu'>interpolate</span>(<span class='no'>olympic_running</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tsibble: 312 x 4 [4Y]</span><span>
+#&gt; </span><span style='color: #555555;'># Key:       Length, Sex [14]</span><span>
 #&gt;    Length Sex    Year  Time
-#&gt;     &lt;int&gt; &lt;chr&gt; &lt;int&gt; &lt;dbl&gt;
-#&gt;  1    100 men    1896  12  
-#&gt;  2    100 men    1900  11  
-#&gt;  3    100 men    1904  11  
-#&gt;  4    100 men    1908  10.8
-#&gt;  5    100 men    1912  10.8
-#&gt;  6    100 men    1916  10.8
-#&gt;  7    100 men    1920  10.8
-#&gt;  8    100 men    1924  10.6
-#&gt;  9    100 men    1928  10.8
-#&gt; 10    100 men    1932  10.3
-#&gt; # … with 302 more rows</div><div class='input'>
-</div></pre>
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> 100m   men    </span><span style='text-decoration: underline;'>1</span><span>896  12  
+#&gt; </span><span style='color: #555555;'> 2</span><span> 100m   men    </span><span style='text-decoration: underline;'>1</span><span>900  11  
+#&gt; </span><span style='color: #555555;'> 3</span><span> 100m   men    </span><span style='text-decoration: underline;'>1</span><span>904  11  
+#&gt; </span><span style='color: #555555;'> 4</span><span> 100m   men    </span><span style='text-decoration: underline;'>1</span><span>908  10.8
+#&gt; </span><span style='color: #555555;'> 5</span><span> 100m   men    </span><span style='text-decoration: underline;'>1</span><span>912  10.8
+#&gt; </span><span style='color: #555555;'> 6</span><span> 100m   men    </span><span style='text-decoration: underline;'>1</span><span>916  10.8
+#&gt; </span><span style='color: #555555;'> 7</span><span> 100m   men    </span><span style='text-decoration: underline;'>1</span><span>920  10.8
+#&gt; </span><span style='color: #555555;'> 8</span><span> 100m   men    </span><span style='text-decoration: underline;'>1</span><span>924  10.6
+#&gt; </span><span style='color: #555555;'> 9</span><span> 100m   men    </span><span style='text-decoration: underline;'>1</span><span>928  10.8
+#&gt; </span><span style='color: #555555;'>10</span><span> 100m   men    </span><span style='text-decoration: underline;'>1</span><span>932  10.3
+#&gt; </span><span style='color: #555555;'># … with 302 more rows</span><span></div><div class='input'>
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -236,7 +236,7 @@ xreg(...)
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
 </div>
 
       </footer>

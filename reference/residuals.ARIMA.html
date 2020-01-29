@@ -87,7 +87,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
       </span>
     </div>
 
@@ -148,8 +148,7 @@
     </div>
 
     <pre class="usage"><span class='co'># S3 method for ARIMA</span>
-<span class='fu'><a href='https://rdrr.io/r/stats/residuals.html'>residuals</a></span>(<span class='no'>object</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"innovation"</span>, <span class='st'>"regression"</span>),
-  <span class='no'>...</span>)</pre>
+<span class='fu'><a href='https://rdrr.io/r/stats/residuals.html'>residuals</a></span>(<span class='no'>object</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"innovation"</span>, <span class='st'>"regression"</span>), <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -175,23 +174,23 @@
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>USAccDeaths</span> <span class='kw'>%&gt;%</span>
   <span class='no'>as_tsibble</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='kw'>arima</span> <span class='kw'>=</span> <span class='fu'>ARIMA</span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>value</span>) ~ <span class='fu'>pdq</span>(<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>1</span>) + <span class='fu'>PDQ</span>(<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>1</span>))) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/r/stats/residuals.html'>residuals</a></span>()</div><div class='output co'>#&gt; # A tsibble: 72 x 3 [1M]
-#&gt; # Key:       .model [1]
+  <span class='fu'>model</span>(<span class='kw'>arima</span> <span class='kw'>=</span> <span class='fu'><a href='ARIMA.html'>ARIMA</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>value</span>) ~ <span class='fu'>pdq</span>(<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>1</span>) + <span class='fu'>PDQ</span>(<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>1</span>))) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/stats/residuals.html'>residuals</a></span>()</div><div class='output co'>#&gt; <span style='color: #555555;'># A tsibble: 72 x 3 [1M]</span><span>
+#&gt; </span><span style='color: #555555;'># Key:       .model [1]</span><span>
 #&gt;    .model    index   .resid
-#&gt;    &lt;chr&gt;     &lt;mth&gt;    &lt;dbl&gt;
-#&gt;  1 arima  1973 Jan 0.00526 
-#&gt;  2 arima  1973 Feb 0.00227 
-#&gt;  3 arima  1973 Mar 0.00157 
-#&gt;  4 arima  1973 Apr 0.00119 
-#&gt;  5 arima  1973 May 0.00103 
-#&gt;  6 arima  1973 Jun 0.000930
-#&gt;  7 arima  1973 Jul 0.000837
-#&gt;  8 arima  1973 Aug 0.000683
-#&gt;  9 arima  1973 Sep 0.000512
-#&gt; 10 arima  1973 Oct 0.000482
-#&gt; # … with 62 more rows</div><div class='input'>
-</div></pre>
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;mth&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> arima  1973 Jan 0.005</span><span style='text-decoration: underline;'>26</span><span> 
+#&gt; </span><span style='color: #555555;'> 2</span><span> arima  1973 Feb 0.002</span><span style='text-decoration: underline;'>27</span><span> 
+#&gt; </span><span style='color: #555555;'> 3</span><span> arima  1973 Mar 0.001</span><span style='text-decoration: underline;'>57</span><span> 
+#&gt; </span><span style='color: #555555;'> 4</span><span> arima  1973 Apr 0.001</span><span style='text-decoration: underline;'>19</span><span> 
+#&gt; </span><span style='color: #555555;'> 5</span><span> arima  1973 May 0.001</span><span style='text-decoration: underline;'>03</span><span> 
+#&gt; </span><span style='color: #555555;'> 6</span><span> arima  1973 Jun 0.000</span><span style='text-decoration: underline;'>930</span><span>
+#&gt; </span><span style='color: #555555;'> 7</span><span> arima  1973 Jul 0.000</span><span style='text-decoration: underline;'>837</span><span>
+#&gt; </span><span style='color: #555555;'> 8</span><span> arima  1973 Aug 0.000</span><span style='text-decoration: underline;'>683</span><span>
+#&gt; </span><span style='color: #555555;'> 9</span><span> arima  1973 Sep 0.000</span><span style='text-decoration: underline;'>512</span><span>
+#&gt; </span><span style='color: #555555;'>10</span><span> arima  1973 Oct 0.000</span><span style='text-decoration: underline;'>482</span><span>
+#&gt; </span><span style='color: #555555;'># … with 62 more rows</span><span></div><div class='input'>
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -211,7 +210,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
 </div>
 
       </footer>

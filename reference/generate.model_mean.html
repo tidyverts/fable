@@ -90,7 +90,7 @@ contains the .innov column, those values will be treated as innovations." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
       </span>
     </div>
 
@@ -184,16 +184,16 @@ contains the <code>.innov</code> column, those values will be treated as innovat
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibbledata</span>)
 <span class='no'>vic_elec</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='kw'>avg</span> <span class='kw'>=</span> <span class='fu'>MEAN</span>(<span class='no'>Demand</span>)) <span class='kw'>%&gt;%</span>
-  <span class='fu'>generate</span>()</div><div class='output co'>#&gt; # A tsibble: 4 x 4 [30m] &lt;UTC&gt;
-#&gt; # Key:       .model, .rep [1]
+  <span class='fu'>model</span>(<span class='kw'>avg</span> <span class='kw'>=</span> <span class='fu'><a href='MEAN.html'>MEAN</a></span>(<span class='no'>Demand</span>)) <span class='kw'>%&gt;%</span>
+  <span class='fu'>generate</span>()</div><div class='output co'>#&gt; <span style='color: #555555;'># A tsibble: 4 x 4 [30m] &lt;UTC&gt;</span><span>
+#&gt; </span><span style='color: #555555;'># Key:       .model, .rep [1]</span><span>
 #&gt;   .model  .rep Time                 .sim
-#&gt;   &lt;chr&gt;  &lt;int&gt; &lt;dttm&gt;              &lt;dbl&gt;
-#&gt; 1 avg        1 2015-01-01 00:00:00 5061.
-#&gt; 2 avg        1 2015-01-01 00:30:00 5441.
-#&gt; 3 avg        1 2015-01-01 01:00:00 5771.
-#&gt; 4 avg        1 2015-01-01 01:30:00 3536.</div><div class='input'>  
-</div></pre>
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span> avg        1 2015-01-01 </span><span style='color: #555555;'>00:00:00</span><span> </span><span style='text-decoration: underline;'>3</span><span>080.
+#&gt; </span><span style='color: #555555;'>2</span><span> avg        1 2015-01-01 </span><span style='color: #555555;'>00:30:00</span><span> </span><span style='text-decoration: underline;'>4</span><span>029.
+#&gt; </span><span style='color: #555555;'>3</span><span> avg        1 2015-01-01 </span><span style='color: #555555;'>01:00:00</span><span> </span><span style='text-decoration: underline;'>4</span><span>383.
+#&gt; </span><span style='color: #555555;'>4</span><span> avg        1 2015-01-01 </span><span style='color: #555555;'>01:30:00</span><span> </span><span style='text-decoration: underline;'>4</span><span>769.</div><div class='input'>  
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -213,7 +213,7 @@ contains the <code>.innov</code> column, those values will be treated as innovat
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
 </div>
 
       </footer>

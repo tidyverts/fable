@@ -87,7 +87,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
       </span>
     </div>
 
@@ -148,8 +148,14 @@
     </div>
 
     <pre class="usage"><span class='co'># S3 method for ETS</span>
-<span class='fu'>refit</span>(<span class='no'>object</span>, <span class='no'>new_data</span>, <span class='kw'>specials</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>reestimate</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>reinitialise</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>refit</span>(
+  <span class='no'>object</span>,
+  <span class='no'>new_data</span>,
+  <span class='kw'>specials</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>reestimate</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>reinitialise</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='no'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -182,11 +188,11 @@
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>lung_deaths_male</span> <span class='kw'>&lt;-</span> <span class='fu'>as_tsibble</span>(<span class='no'>mdeaths</span>)
-<span class='no'>lung_deaths_female</span> <span class='kw'>&lt;-</span> <span class='fu'>as_tsibble</span>(<span class='no'>fdeaths</span>)
+    <pre class="examples"><div class='input'><span class='no'>lung_deaths_male</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='no'>mdeaths</span>)
+<span class='no'>lung_deaths_female</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='no'>fdeaths</span>)
 
 <span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='no'>lung_deaths_male</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='fu'>ETS</span>(<span class='no'>value</span>))
+  <span class='fu'>model</span>(<span class='fu'><a href='ETS.html'>ETS</a></span>(<span class='no'>value</span>))
 
 <span class='fu'>report</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; Series: value 
 #&gt; Model: ETS(M,A,A) 
@@ -243,7 +249,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
 </div>
 
       </footer>

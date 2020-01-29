@@ -88,7 +88,7 @@ has lowest AIC, AICc or BIC value. It is implemented using OLS per equation." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
       </span>
     </div>
 
@@ -173,7 +173,7 @@ has lowest AIC, AICc or BIC value. It is implemented using OLS per equation.</p>
     <p>A model specification.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Exogenous regressors and <code>common_xregs</code> can be specified in the model
+    <p>Exogenous regressors and <code><a href='common_xregs.html'>common_xregs</a></code> can be specified in the model
 formula.</p>
     <h2 class="hasAnchor" id="specials"><a class="anchor" href="#specials"></a>Specials</h2>
 
@@ -192,7 +192,7 @@ AR(p = 0:5)
 
 
 <h3>xreg</h3>
-<p>Exogenous regressors can be included in an ARIMA model without explicitly using the <code>xreg()</code> special. Common exogenous regressor specials as specified in <code>common_xregs</code> can also be used. These regressors are handled using <code><a href='https://rdrr.io/r/stats/model.frame.html'>stats::model.frame()</a></code>, and so interactions and other functionality behaves similarly to <code><a href='https://rdrr.io/r/stats/lm.html'>stats::lm()</a></code>.</p>
+<p>Exogenous regressors can be included in an ARIMA model without explicitly using the <code>xreg()</code> special. Common exogenous regressor specials as specified in <code><a href='common_xregs.html'>common_xregs</a></code> can also be used. These regressors are handled using <code><a href='https://rdrr.io/r/stats/model.frame.html'>stats::model.frame()</a></code>, and so interactions and other functionality behaves similarly to <code><a href='https://rdrr.io/r/stats/lm.html'>stats::lm()</a></code>.</p>
 <p>The inclusion of a constant in the model follows the similar rules to <code><a href='https://rdrr.io/r/stats/lm.html'>stats::lm()</a></code>, where including <code>1</code> will add a constant and <code>0</code> or <code>-1</code> will remove the constant. If left out, the inclusion of a constant will be determined by minimising <code>ic</code>.</p>
 <pre>
 xreg(...)
@@ -211,7 +211,7 @@ xreg(...)
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
 <span class='no'>lung_deaths</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span>(<span class='no'>mdeaths</span>, <span class='no'>fdeaths</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>as_tsibble</span>(<span class='kw'>pivot_longer</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+  <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='kw'>pivot_longer</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='no'>lung_deaths</span> <span class='kw'>%&gt;%</span>
   <span class='fu'>model</span>(<span class='fu'>VAR</span>(<span class='fu'>vars</span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>mdeaths</span>), <span class='no'>fdeaths</span>) ~ <span class='fu'>AR</span>(<span class='fl'>3</span>)))
@@ -268,7 +268,7 @@ xreg(...)
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
 </div>
 
       </footer>

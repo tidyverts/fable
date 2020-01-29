@@ -87,7 +87,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
       </span>
     </div>
 
@@ -179,23 +179,23 @@
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibbledata</span>)
 
 <span class='no'>olympic_running</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='kw'>lm</span> <span class='kw'>=</span> <span class='fu'>TSLM</span>(<span class='no'>Time</span> ~ <span class='fu'>trend</span>())) <span class='kw'>%&gt;%</span>
-  <span class='fu'>interpolate</span>(<span class='no'>olympic_running</span>)</div><div class='output co'>#&gt; # A tsibble: 312 x 4 [4Y]
-#&gt; # Key:       Length, Sex [14]
+  <span class='fu'>model</span>(<span class='kw'>lm</span> <span class='kw'>=</span> <span class='fu'><a href='TSLM.html'>TSLM</a></span>(<span class='no'>Time</span> ~ <span class='fu'>trend</span>())) <span class='kw'>%&gt;%</span>
+  <span class='fu'>interpolate</span>(<span class='no'>olympic_running</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tsibble: 312 x 4 [4Y]</span><span>
+#&gt; </span><span style='color: #555555;'># Key:       Length, Sex [14]</span><span>
 #&gt;    Length Sex    Year  Time
-#&gt;     &lt;int&gt; &lt;chr&gt; &lt;int&gt; &lt;dbl&gt;
-#&gt;  1    100 men    1896  12  
-#&gt;  2    100 men    1900  11  
-#&gt;  3    100 men    1904  11  
-#&gt;  4    100 men    1908  10.8
-#&gt;  5    100 men    1912  10.8
-#&gt;  6    100 men    1916  10.8
-#&gt;  7    100 men    1920  10.8
-#&gt;  8    100 men    1924  10.6
-#&gt;  9    100 men    1928  10.8
-#&gt; 10    100 men    1932  10.3
-#&gt; # … with 302 more rows</div><div class='input'>  
-</div></pre>
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> 100m   men    </span><span style='text-decoration: underline;'>1</span><span>896  12  
+#&gt; </span><span style='color: #555555;'> 2</span><span> 100m   men    </span><span style='text-decoration: underline;'>1</span><span>900  11  
+#&gt; </span><span style='color: #555555;'> 3</span><span> 100m   men    </span><span style='text-decoration: underline;'>1</span><span>904  11  
+#&gt; </span><span style='color: #555555;'> 4</span><span> 100m   men    </span><span style='text-decoration: underline;'>1</span><span>908  10.8
+#&gt; </span><span style='color: #555555;'> 5</span><span> 100m   men    </span><span style='text-decoration: underline;'>1</span><span>912  10.8
+#&gt; </span><span style='color: #555555;'> 6</span><span> 100m   men    </span><span style='text-decoration: underline;'>1</span><span>916  10.8
+#&gt; </span><span style='color: #555555;'> 7</span><span> 100m   men    </span><span style='text-decoration: underline;'>1</span><span>920  10.8
+#&gt; </span><span style='color: #555555;'> 8</span><span> 100m   men    </span><span style='text-decoration: underline;'>1</span><span>924  10.6
+#&gt; </span><span style='color: #555555;'> 9</span><span> 100m   men    </span><span style='text-decoration: underline;'>1</span><span>928  10.8
+#&gt; </span><span style='color: #555555;'>10</span><span> 100m   men    </span><span style='text-decoration: underline;'>1</span><span>932  10.3
+#&gt; </span><span style='color: #555555;'># … with 302 more rows</span><span></div><div class='input'>  
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -215,7 +215,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
 </div>
 
       </footer>

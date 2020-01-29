@@ -87,7 +87,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
       </span>
     </div>
 
@@ -147,9 +147,12 @@
     <p>Options for the unit root tests for order of integration</p>
     </div>
 
-    <pre class="usage"><span class='fu'>unitroot_options</span>(<span class='kw'>ndiffs_alpha</span> <span class='kw'>=</span> <span class='fl'>0.05</span>, <span class='kw'>nsdiffs_alpha</span> <span class='kw'>=</span> <span class='fl'>0.05</span>,
+    <pre class="usage"><span class='fu'>unitroot_options</span>(
+  <span class='kw'>ndiffs_alpha</span> <span class='kw'>=</span> <span class='fl'>0.05</span>,
+  <span class='kw'>nsdiffs_alpha</span> <span class='kw'>=</span> <span class='fl'>0.05</span>,
   <span class='kw'>ndiffs_pvalue</span> <span class='kw'>=</span> ~<span class='kw pkg'>feasts</span><span class='kw ns'>::</span><span class='fu'><a href='https://feasts.tidyverts.org/reference/unitroot.html'>unitroot_kpss</a></span>(<span class='no'>.</span>)[<span class='st'>"kpss_pvalue"</span>],
-  <span class='kw'>nsdiffs_pvalue</span> <span class='kw'>=</span> ~<span class='kw pkg'>feasts</span><span class='kw ns'>::</span><span class='fu'><a href='https://feasts.tidyverts.org/reference/feat_stl.html'>feat_stl</a></span>(<span class='no'>.</span>, <span class='no'>.period</span>)[<span class='fl'>2</span>] <span class='kw'>&lt;</span> <span class='fl'>0.64</span>)</pre>
+  <span class='kw'>nsdiffs_pvalue</span> <span class='kw'>=</span> ~<span class='kw pkg'>feasts</span><span class='kw ns'>::</span><span class='fu'><a href='https://feasts.tidyverts.org/reference/feat_stl.html'>feat_stl</a></span>(<span class='no'>.</span>, <span class='no'>.period</span>)[<span class='fl'>2</span>] <span class='kw'>&lt;</span> <span class='fl'>0.64</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -188,7 +191,7 @@ A vector of data to test is available as <code>.</code> or <code>.x</code>.</p><
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
 </div>
 
       </footer>

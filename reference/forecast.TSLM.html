@@ -87,7 +87,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
       </span>
     </div>
 
@@ -148,8 +148,14 @@
     </div>
 
     <pre class="usage"><span class='co'># S3 method for TSLM</span>
-<span class='fu'>forecast</span>(<span class='no'>object</span>, <span class='no'>new_data</span>, <span class='kw'>specials</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>bootstrap</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>times</span> <span class='kw'>=</span> <span class='fl'>5000</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>forecast</span>(
+  <span class='no'>object</span>,
+  <span class='no'>new_data</span>,
+  <span class='kw'>specials</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>bootstrap</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>times</span> <span class='kw'>=</span> <span class='fl'>5000</span>,
+  <span class='no'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -185,24 +191,24 @@
     <p>A list of forecasts.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>as_tsibble</span>(<span class='no'>USAccDeaths</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='kw'>lm</span> <span class='kw'>=</span> <span class='fu'>TSLM</span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>value</span>) ~ <span class='fu'>trend</span>() + <span class='fu'>season</span>())) <span class='kw'>%&gt;%</span>
-  <span class='fu'>forecast</span>()</div><div class='output co'>#&gt; # A fable: 24 x 4 [1M]
-#&gt; # Key:     .model [1]
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='no'>USAccDeaths</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'>model</span>(<span class='kw'>lm</span> <span class='kw'>=</span> <span class='fu'><a href='TSLM.html'>TSLM</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>value</span>) ~ <span class='fu'>trend</span>() + <span class='fu'>season</span>())) <span class='kw'>%&gt;%</span>
+  <span class='fu'>forecast</span>()</div><div class='output co'>#&gt; <span style='color: #555555;'># A fable: 24 x 4 [1M]</span><span>
+#&gt; </span><span style='color: #555555;'># Key:     .model [1]</span><span>
 #&gt;    .model    index value .distribution   
-#&gt;    &lt;chr&gt;     &lt;mth&gt; &lt;dbl&gt; &lt;dist&gt;          
-#&gt;  1 lm     1979 Jan 7620. t(N(8.9, 0.003))
-#&gt;  2 lm     1979 Feb 6899. t(N(8.8, 0.003))
-#&gt;  3 lm     1979 Mar 7639. t(N(8.9, 0.003))
-#&gt;  4 lm     1979 Apr 7841. t(N(9.0, 0.003))
-#&gt;  5 lm     1979 May 8645. t(N(9.1, 0.003))
-#&gt;  6 lm     1979 Jun 9087. t(N(9.1, 0.003))
-#&gt;  7 lm     1979 Jul 9908. t(N(9.2, 0.003))
-#&gt;  8 lm     1979 Aug 9237. t(N(9.1, 0.003))
-#&gt;  9 lm     1979 Sep 8237. t(N(9.0, 0.003))
-#&gt; 10 lm     1979 Oct 8516. t(N(9.0, 0.003))
-#&gt; # … with 14 more rows</div><div class='input'>
-</div></pre>
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;mth&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dist&gt;</span><span>          
+#&gt; </span><span style='color: #555555;'> 1</span><span> lm     1979 Jan </span><span style='text-decoration: underline;'>7</span><span>620. t(N(8.9, 0.003))
+#&gt; </span><span style='color: #555555;'> 2</span><span> lm     1979 Feb </span><span style='text-decoration: underline;'>6</span><span>899. t(N(8.8, 0.003))
+#&gt; </span><span style='color: #555555;'> 3</span><span> lm     1979 Mar </span><span style='text-decoration: underline;'>7</span><span>639. t(N(8.9, 0.003))
+#&gt; </span><span style='color: #555555;'> 4</span><span> lm     1979 Apr </span><span style='text-decoration: underline;'>7</span><span>841. t(N(9.0, 0.003))
+#&gt; </span><span style='color: #555555;'> 5</span><span> lm     1979 May </span><span style='text-decoration: underline;'>8</span><span>645. t(N(9.1, 0.003))
+#&gt; </span><span style='color: #555555;'> 6</span><span> lm     1979 Jun </span><span style='text-decoration: underline;'>9</span><span>087. t(N(9.1, 0.003))
+#&gt; </span><span style='color: #555555;'> 7</span><span> lm     1979 Jul </span><span style='text-decoration: underline;'>9</span><span>908. t(N(9.2, 0.003))
+#&gt; </span><span style='color: #555555;'> 8</span><span> lm     1979 Aug </span><span style='text-decoration: underline;'>9</span><span>237. t(N(9.1, 0.003))
+#&gt; </span><span style='color: #555555;'> 9</span><span> lm     1979 Sep </span><span style='text-decoration: underline;'>8</span><span>237. t(N(9.0, 0.003))
+#&gt; </span><span style='color: #555555;'>10</span><span> lm     1979 Oct </span><span style='text-decoration: underline;'>8</span><span>516. t(N(9.0, 0.003))
+#&gt; </span><span style='color: #555555;'># … with 14 more rows</span><span></div><div class='input'>
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -222,7 +228,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
 </div>
 
       </footer>

@@ -87,7 +87,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
       </span>
     </div>
 
@@ -170,23 +170,23 @@
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>USAccDeaths</span> <span class='kw'>%&gt;%</span>
   <span class='no'>as_tsibble</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='kw'>arima</span> <span class='kw'>=</span> <span class='fu'>ARIMA</span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>value</span>) ~ <span class='fu'>pdq</span>(<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>1</span>) + <span class='fu'>PDQ</span>(<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>1</span>))) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/r/stats/fitted.values.html'>fitted</a></span>()</div><div class='output co'>#&gt; # A tsibble: 72 x 3 [1M]
-#&gt; # Key:       .model [1]
+  <span class='fu'>model</span>(<span class='kw'>arima</span> <span class='kw'>=</span> <span class='fu'><a href='ARIMA.html'>ARIMA</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>value</span>) ~ <span class='fu'>pdq</span>(<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>1</span>) + <span class='fu'>PDQ</span>(<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>1</span>))) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/stats/fitted.values.html'>fitted</a></span>()</div><div class='output co'>#&gt; <span style='color: #555555;'># A tsibble: 72 x 3 [1M]</span><span>
+#&gt; </span><span style='color: #555555;'># Key:       .model [1]</span><span>
 #&gt;    .model    index .fitted
-#&gt;    &lt;chr&gt;     &lt;mth&gt;   &lt;dbl&gt;
-#&gt;  1 arima  1973 Jan   8960.
-#&gt;  2 arima  1973 Feb   8088.
-#&gt;  3 arima  1973 Mar   8914.
-#&gt;  4 arima  1973 Apr   9126.
-#&gt;  5 arima  1973 May  10007.
-#&gt;  6 arima  1973 Jun  10816.
-#&gt;  7 arima  1973 Jul  11308.
-#&gt;  8 arima  1973 Aug  10737.
-#&gt;  9 arima  1973 Sep   9708.
-#&gt; 10 arima  1973 Oct   9933.
-#&gt; # … with 62 more rows</div><div class='input'>  
-</div></pre>
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;mth&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> arima  1973 Jan   </span><span style='text-decoration: underline;'>8</span><span>960.
+#&gt; </span><span style='color: #555555;'> 2</span><span> arima  1973 Feb   </span><span style='text-decoration: underline;'>8</span><span>088.
+#&gt; </span><span style='color: #555555;'> 3</span><span> arima  1973 Mar   </span><span style='text-decoration: underline;'>8</span><span>914.
+#&gt; </span><span style='color: #555555;'> 4</span><span> arima  1973 Apr   </span><span style='text-decoration: underline;'>9</span><span>126.
+#&gt; </span><span style='color: #555555;'> 5</span><span> arima  1973 May  </span><span style='text-decoration: underline;'>10</span><span>007.
+#&gt; </span><span style='color: #555555;'> 6</span><span> arima  1973 Jun  </span><span style='text-decoration: underline;'>10</span><span>816.
+#&gt; </span><span style='color: #555555;'> 7</span><span> arima  1973 Jul  </span><span style='text-decoration: underline;'>11</span><span>308.
+#&gt; </span><span style='color: #555555;'> 8</span><span> arima  1973 Aug  </span><span style='text-decoration: underline;'>10</span><span>737.
+#&gt; </span><span style='color: #555555;'> 9</span><span> arima  1973 Sep   </span><span style='text-decoration: underline;'>9</span><span>708.
+#&gt; </span><span style='color: #555555;'>10</span><span> arima  1973 Oct   </span><span style='text-decoration: underline;'>9</span><span>933.
+#&gt; </span><span style='color: #555555;'># … with 62 more rows</span><span></div><div class='input'>  
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -206,7 +206,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
 </div>
 
       </footer>

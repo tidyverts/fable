@@ -87,7 +87,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
       </span>
     </div>
 
@@ -168,41 +168,41 @@
     <p>A vector of fitted residuals.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>as_tsibble</span>(<span class='no'>Nile</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='fu'>NAIVE</span>(<span class='no'>value</span>)) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/r/stats/residuals.html'>residuals</a></span>()</div><div class='output co'>#&gt; # A tsibble: 100 x 3 [1Y]
-#&gt; # Key:       .model [1]
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='no'>Nile</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'>model</span>(<span class='fu'><a href='RW.html'>NAIVE</a></span>(<span class='no'>value</span>)) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/stats/residuals.html'>residuals</a></span>()</div><div class='output co'>#&gt; <span style='color: #555555;'># A tsibble: 100 x 3 [1Y]</span><span>
+#&gt; </span><span style='color: #555555;'># Key:       .model [1]</span><span>
 #&gt;    .model       index .resid
-#&gt;    &lt;chr&gt;        &lt;dbl&gt;  &lt;dbl&gt;
-#&gt;  1 NAIVE(value)  1871     NA
-#&gt;  2 NAIVE(value)  1872     40
-#&gt;  3 NAIVE(value)  1873   -197
-#&gt;  4 NAIVE(value)  1874    247
-#&gt;  5 NAIVE(value)  1875    -50
-#&gt;  6 NAIVE(value)  1876      0
-#&gt;  7 NAIVE(value)  1877   -347
-#&gt;  8 NAIVE(value)  1878    417
-#&gt;  9 NAIVE(value)  1879    140
-#&gt; 10 NAIVE(value)  1880   -230
-#&gt; # … with 90 more rows</div><div class='input'>
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> NAIVE(value)  </span><span style='text-decoration: underline;'>1</span><span>871     </span><span style='color: #BB0000;'>NA</span><span>
+#&gt; </span><span style='color: #555555;'> 2</span><span> NAIVE(value)  </span><span style='text-decoration: underline;'>1</span><span>872     40
+#&gt; </span><span style='color: #555555;'> 3</span><span> NAIVE(value)  </span><span style='text-decoration: underline;'>1</span><span>873   -</span><span style='color: #BB0000;'>197</span><span>
+#&gt; </span><span style='color: #555555;'> 4</span><span> NAIVE(value)  </span><span style='text-decoration: underline;'>1</span><span>874    247
+#&gt; </span><span style='color: #555555;'> 5</span><span> NAIVE(value)  </span><span style='text-decoration: underline;'>1</span><span>875    -</span><span style='color: #BB0000;'>50</span><span>
+#&gt; </span><span style='color: #555555;'> 6</span><span> NAIVE(value)  </span><span style='text-decoration: underline;'>1</span><span>876      0
+#&gt; </span><span style='color: #555555;'> 7</span><span> NAIVE(value)  </span><span style='text-decoration: underline;'>1</span><span>877   -</span><span style='color: #BB0000;'>347</span><span>
+#&gt; </span><span style='color: #555555;'> 8</span><span> NAIVE(value)  </span><span style='text-decoration: underline;'>1</span><span>878    417
+#&gt; </span><span style='color: #555555;'> 9</span><span> NAIVE(value)  </span><span style='text-decoration: underline;'>1</span><span>879    140
+#&gt; </span><span style='color: #555555;'>10</span><span> NAIVE(value)  </span><span style='text-decoration: underline;'>1</span><span>880   -</span><span style='color: #BB0000;'>230</span><span>
+#&gt; </span><span style='color: #555555;'># … with 90 more rows</span><span></div><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibbledata</span>)
 <span class='no'>aus_production</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='kw'>snaive</span> <span class='kw'>=</span> <span class='fu'>SNAIVE</span>(<span class='no'>Beer</span> ~ <span class='fu'><a href='https://rdrr.io/r/stats/lag.html'>lag</a></span>(<span class='st'>"year"</span>))) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/r/stats/residuals.html'>residuals</a></span>()</div><div class='output co'>#&gt; # A tsibble: 218 x 3 [1Q]
-#&gt; # Key:       .model [1]
+  <span class='fu'>model</span>(<span class='kw'>snaive</span> <span class='kw'>=</span> <span class='fu'><a href='RW.html'>SNAIVE</a></span>(<span class='no'>Beer</span> ~ <span class='fu'><a href='https://rdrr.io/r/stats/lag.html'>lag</a></span>(<span class='st'>"year"</span>))) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/stats/residuals.html'>residuals</a></span>()</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tsibble: 218 x 3 [1Q]</span><span>
+#&gt; </span><span style='color: #555555;'># Key:       .model [1]</span><span>
 #&gt;    .model Quarter .resid
-#&gt;    &lt;chr&gt;    &lt;qtr&gt;  &lt;dbl&gt;
-#&gt;  1 snaive 1956 Q1     NA
-#&gt;  2 snaive 1956 Q2     NA
-#&gt;  3 snaive 1956 Q3     NA
-#&gt;  4 snaive 1956 Q4     NA
-#&gt;  5 snaive 1957 Q1    -22
-#&gt;  6 snaive 1957 Q2     15
-#&gt;  7 snaive 1957 Q3      9
-#&gt;  8 snaive 1957 Q4     12
-#&gt;  9 snaive 1958 Q1     10
-#&gt; 10 snaive 1958 Q2      5
-#&gt; # … with 208 more rows</div></pre>
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;qtr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> snaive 1956 Q1     </span><span style='color: #BB0000;'>NA</span><span>
+#&gt; </span><span style='color: #555555;'> 2</span><span> snaive 1956 Q2     </span><span style='color: #BB0000;'>NA</span><span>
+#&gt; </span><span style='color: #555555;'> 3</span><span> snaive 1956 Q3     </span><span style='color: #BB0000;'>NA</span><span>
+#&gt; </span><span style='color: #555555;'> 4</span><span> snaive 1956 Q4     </span><span style='color: #BB0000;'>NA</span><span>
+#&gt; </span><span style='color: #555555;'> 5</span><span> snaive 1957 Q1    -</span><span style='color: #BB0000;'>22</span><span>
+#&gt; </span><span style='color: #555555;'> 6</span><span> snaive 1957 Q2     15
+#&gt; </span><span style='color: #555555;'> 7</span><span> snaive 1957 Q3      9
+#&gt; </span><span style='color: #555555;'> 8</span><span> snaive 1957 Q4     12
+#&gt; </span><span style='color: #555555;'> 9</span><span> snaive 1958 Q1     10
+#&gt; </span><span style='color: #555555;'>10</span><span> snaive 1958 Q2      5
+#&gt; </span><span style='color: #555555;'># … with 208 more rows</span><span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -222,7 +222,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
 </div>
 
       </footer>

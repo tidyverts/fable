@@ -87,7 +87,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
       </span>
     </div>
 
@@ -147,9 +147,15 @@
     <p>Returns ETS model specified by the formula.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ETS</span>(<span class='no'>formula</span>, <span class='kw'>opt_crit</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"lik"</span>, <span class='st'>"amse"</span>, <span class='st'>"mse"</span>, <span class='st'>"sigma"</span>, <span class='st'>"mae"</span>),
-  <span class='kw'>nmse</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>bounds</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"both"</span>, <span class='st'>"usual"</span>, <span class='st'>"admissible"</span>), <span class='kw'>ic</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"aicc"</span>,
-  <span class='st'>"aic"</span>, <span class='st'>"bic"</span>), <span class='kw'>restrict</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>ETS</span>(
+  <span class='no'>formula</span>,
+  <span class='kw'>opt_crit</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"lik"</span>, <span class='st'>"amse"</span>, <span class='st'>"mse"</span>, <span class='st'>"sigma"</span>, <span class='st'>"mae"</span>),
+  <span class='kw'>nmse</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+  <span class='kw'>bounds</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"both"</span>, <span class='st'>"usual"</span>, <span class='st'>"admissible"</span>),
+  <span class='kw'>ic</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"aicc"</span>, <span class='st'>"aic"</span>, <span class='st'>"bic"</span>),
+  <span class='kw'>restrict</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='no'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -184,7 +190,7 @@ all parameters must lie between specified lower and upper bounds;
     <tr>
       <th>restrict</th>
       <td><p>If TRUE (default), the models with infinite variance will not
-be allowed.</p></td>
+be allowed. These restricted model components are AMM, AAM, AMA, and MMA.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -212,7 +218,7 @@ error(method = c("A", "M"))
 </pre>
 
 <table class='table'>
-<tr><td><code>method</code></td><td>The form of the error term: either additive ("A") or multiplicative ("M").</td></tr>
+<tr><td><code>method</code></td><td>The form of the error term: either additive ("A") or multiplicative ("M"). If the error is multiplicative, the data must be non-negative.</td></tr>
 </table>
 
 
@@ -269,12 +275,12 @@ Springer-Verlag. <a href='http://www.exponentialsmoothing.net'>http://www.expone
     <div class='dont-index'><p><a href='https://otexts.com/fpp3/expsmooth.html'>Forecasting: Principles and Practices, Exponential smoothing (chapter 8)</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>as_tsibble</span>(<span class='no'>USAccDeaths</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='fu'>ETS</span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>value</span>) ~ <span class='fu'>season</span>(<span class='st'>"A"</span>)))</div><div class='output co'>#&gt; # A mable: 1 x 1
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='no'>USAccDeaths</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'>model</span>(<span class='fu'>ETS</span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>value</span>) ~ <span class='fu'>season</span>(<span class='st'>"A"</span>)))</div><div class='output co'>#&gt; <span style='color: #555555;'># A mable: 1 x 1</span><span>
 #&gt;   `ETS(log(value) ~ season("A"))`
-#&gt;   &lt;model&gt;                        
-#&gt; 1 &lt;ETS(A,A,A)&gt;                   </div><div class='input'>
-</div></pre>
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;model&gt;</span><span>                        
+#&gt; </span><span style='color: #555555;'>1</span><span> </span><span style='color: #555555;'>&lt;ETS(A,A,A)&gt;</span><span>                   </div><div class='input'>
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -298,7 +304,7 @@ Springer-Verlag. <a href='http://www.exponentialsmoothing.net'>http://www.expone
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
 </div>
 
       </footer>

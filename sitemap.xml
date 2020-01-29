@@ -7,6 +7,9 @@
     <loc>https://fable.tidyverts.org/reference/ARIMA.html</loc>
   </url>
   <url>
+    <loc>https://fable.tidyverts.org/reference/CROSTON.html</loc>
+  </url>
+  <url>
     <loc>https://fable.tidyverts.org/reference/ETS.html</loc>
   </url>
   <url>
@@ -52,6 +55,9 @@
     <loc>https://fable.tidyverts.org/reference/fitted.VAR.html</loc>
   </url>
   <url>
+    <loc>https://fable.tidyverts.org/reference/fitted.croston.html</loc>
+  </url>
+  <url>
     <loc>https://fable.tidyverts.org/reference/fitted.model_mean.html</loc>
   </url>
   <url>
@@ -71,6 +77,9 @@
   </url>
   <url>
     <loc>https://fable.tidyverts.org/reference/forecast.VAR.html</loc>
+  </url>
+  <url>
+    <loc>https://fable.tidyverts.org/reference/forecast.croston.html</loc>
   </url>
   <url>
     <loc>https://fable.tidyverts.org/reference/forecast.model_mean.html</loc>
@@ -118,6 +127,9 @@
     <loc>https://fable.tidyverts.org/reference/interpolate.TSLM.html</loc>
   </url>
   <url>
+    <loc>https://fable.tidyverts.org/reference/interpolate.model_mean.html</loc>
+  </url>
+  <url>
     <loc>https://fable.tidyverts.org/reference/reexports.html</loc>
   </url>
   <url>
@@ -148,6 +160,9 @@
     <loc>https://fable.tidyverts.org/reference/residuals.VAR.html</loc>
   </url>
   <url>
+    <loc>https://fable.tidyverts.org/reference/residuals.croston.html</loc>
+  </url>
+  <url>
     <loc>https://fable.tidyverts.org/reference/residuals.model_mean.html</loc>
   </url>
   <url>
@@ -167,6 +182,9 @@
   </url>
   <url>
     <loc>https://fable.tidyverts.org/reference/tidy.VAR.html</loc>
+  </url>
+  <url>
+    <loc>https://fable.tidyverts.org/reference/tidy.croston.html</loc>
   </url>
   <url>
     <loc>https://fable.tidyverts.org/reference/tidy.model_mean.html</loc>

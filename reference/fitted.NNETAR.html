@@ -87,7 +87,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
       </span>
     </div>
 
@@ -168,24 +168,24 @@
     <p>A vector of fitted values.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>as_tsibble</span>(<span class='no'>airmiles</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='kw'>nn</span> <span class='kw'>=</span> <span class='fu'>NNETAR</span>(<span class='fu'>box_cox</span>(<span class='no'>value</span>, <span class='fl'>0.15</span>))) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/r/stats/fitted.values.html'>fitted</a></span>()</div><div class='output co'>#&gt; # A tsibble: 24 x 3 [1Y]
-#&gt; # Key:       .model [1]
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='no'>airmiles</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'>model</span>(<span class='kw'>nn</span> <span class='kw'>=</span> <span class='fu'><a href='NNETAR.html'>NNETAR</a></span>(<span class='fu'>box_cox</span>(<span class='no'>value</span>, <span class='fl'>0.15</span>))) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/stats/fitted.values.html'>fitted</a></span>()</div><div class='output co'>#&gt; <span style='color: #555555;'># A tsibble: 24 x 3 [1Y]</span><span>
+#&gt; </span><span style='color: #555555;'># Key:       .model [1]</span><span>
 #&gt;    .model index .fitted
-#&gt;    &lt;chr&gt;  &lt;dbl&gt;   &lt;dbl&gt;
-#&gt;  1 nn      1937     NA 
-#&gt;  2 nn      1938    571.
-#&gt;  3 nn      1939    655.
-#&gt;  4 nn      1940    906.
-#&gt;  5 nn      1941   1359.
-#&gt;  6 nn      1942   1768.
-#&gt;  7 nn      1943   1809.
-#&gt;  8 nn      1944   2074.
-#&gt;  9 nn      1945   2740.
-#&gt; 10 nn      1946   4184.
-#&gt; # … with 14 more rows</div><div class='input'>  
-</div></pre>
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>937     </span><span style='color: #BB0000;'>NA</span><span> 
+#&gt; </span><span style='color: #555555;'> 2</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>938    571.
+#&gt; </span><span style='color: #555555;'> 3</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>939    655.
+#&gt; </span><span style='color: #555555;'> 4</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>940    906.
+#&gt; </span><span style='color: #555555;'> 5</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>941   </span><span style='text-decoration: underline;'>1</span><span>359.
+#&gt; </span><span style='color: #555555;'> 6</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>942   </span><span style='text-decoration: underline;'>1</span><span>768.
+#&gt; </span><span style='color: #555555;'> 7</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>943   </span><span style='text-decoration: underline;'>1</span><span>808.
+#&gt; </span><span style='color: #555555;'> 8</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>944   </span><span style='text-decoration: underline;'>2</span><span>073.
+#&gt; </span><span style='color: #555555;'> 9</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>945   </span><span style='text-decoration: underline;'>2</span><span>740.
+#&gt; </span><span style='color: #555555;'>10</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>946   </span><span style='text-decoration: underline;'>4</span><span>183.
+#&gt; </span><span style='color: #555555;'># … with 14 more rows</span><span></div><div class='input'>  
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -205,7 +205,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
 </div>
 
       </footer>
