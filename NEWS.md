@@ -1,4 +1,4 @@
-# fable (development version)
+# fable 0.1.2
 
 ## Improvements
 * Added `CROSTON()` for Croston's method of intermittent demand forecasting.
