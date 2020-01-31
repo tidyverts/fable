@@ -19,6 +19,7 @@ Provides a collection of commonly used univariate and multivariate
 Useful links:
 \itemize{
   \item \url{https://fable.tidyverts.org}
+  \item \url{https://github.com/tidyverts/fable}
   \item Report bugs at \url{https://github.com/tidyverts/fable/issues}
 }
 
