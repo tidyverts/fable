@@ -44,7 +44,7 @@ train_arima <- function(.data, specials,  ic = "aicc",
       }
       
       # Now check if it is rank deficient
-      qr <- qr(if(all(constant)) cbind(rep(1, NROW(xreg)), xreg) else xreg)
+      qr <- qr(na.omit(if(all(constant)) cbind(rep(1, NROW(xreg)), xreg) else xreg))
       num_regressors <- length(qr$qraux)
       if (qr$rank < num_regressors) {
         bad_regressors <- qr$pivot[(qr$rank+1):num_regressors]
