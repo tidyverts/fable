@@ -86,7 +86,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.1.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.2.9000</span>
       </span>
     </div>
 
@@ -138,7 +138,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
       <h1>Changelog <small></small></h1>
-      
+      <small>Source: <a href='https://github.com/tidyverts/fable/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
     <div id="fable-development-version" class="section level1">
@@ -149,6 +149,18 @@
 <h2 class="hasAnchor">
 <a href="#improvements" class="anchor"></a>Improvements</h2>
 <ul>
+<li>Better handling of rank deficiency in <code><a href="../reference/ARIMA.html">ARIMA()</a></code>.</li>
+</ul>
+</div>
+</div>
+    <div id="fable-012" class="section level1">
+<h1 class="page-header">
+<a href="#fable-012" class="anchor"></a>fable 0.1.2<small> 2020-01-29 </small>
+</h1>
+<div id="improvements-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#improvements-1" class="anchor"></a>Improvements</h2>
+<ul>
 <li>Added <code><a href="../reference/CROSTON.html">CROSTON()</a></code> for Croston’s method of intermittent demand forecasting.</li>
 <li>Documentation improvements</li>
 </ul>
@@ -157,9 +169,9 @@
 <h2 class="hasAnchor">
 <a href="#bug-fixes" class="anchor"></a>Bug fixes</h2>
 <ul>
-<li>Fixed NNETAR &amp; VAR handling of missing values (#215).</li>
-<li>Fix ETS forecasting with forecast horizons less than the seasonal period (#219).</li>
-<li>Fixed season() special for non-seasonally based time indices (#220)</li>
+<li>Fixed NNETAR &amp; VAR handling of missing values (<a href='https://github.com/tidyverts/fable/issues/215'>#215</a>).</li>
+<li>Fix ETS forecasting with forecast horizons less than the seasonal period (<a href='https://github.com/tidyverts/fable/issues/219'>#219</a>).</li>
+<li>Fixed season() special for non-seasonally based time indices (<a href='https://github.com/tidyverts/fable/issues/220'>#220</a>)</li>
 <li>Fix issue with simulation forecasting from damped ETS models.</li>
 </ul>
 </div>
@@ -168,12 +180,12 @@
 <h1 class="page-header">
 <a href="#fable-011" class="anchor"></a>fable 0.1.1<small> 2019-12-06 </small>
 </h1>
-<div id="improvements-1" class="section level2">
+<div id="improvements-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#improvements-1" class="anchor"></a>Improvements</h2>
+<a href="#improvements-2" class="anchor"></a>Improvements</h2>
 <ul>
-<li>Added interpolation method for <code><a href="../reference/MEAN.html">MEAN()</a></code> model (#203).</li>
-<li>Added rolling mean option for <code><a href="../reference/MEAN.html">MEAN()</a></code> model (#204).</li>
+<li>Added interpolation method for <code><a href="../reference/MEAN.html">MEAN()</a></code> model (<a href='https://github.com/tidyverts/fable/issues/203'>#203</a>).</li>
+<li>Added rolling mean option for <code><a href="../reference/MEAN.html">MEAN()</a></code> model (<a href='https://github.com/tidyverts/fable/issues/204'>#204</a>).</li>
 </ul>
 </div>
 <div id="bug-fixes-1" class="section level2">
@@ -206,6 +218,7 @@
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
         <li><a href="#fable-development-version">development version</a></li>
+        <li><a href="#fable-012">0.1.2</a></li>
         <li><a href="#fable-011">0.1.1</a></li>
         <li><a href="#fable-010">0.1.0</a></li>
       </ul>
