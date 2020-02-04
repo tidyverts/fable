@@ -232,7 +232,7 @@ report.TSLM <- function(object, digits = max(3, getOption("digits") - 3), ...){
   rdf <- glance$df.residual
   if (rdf > 5L) {
     res <- residuals(object)
-    res_qt <- zapsmall(stats::quantile(res))
+    res_qt <- zapsmall(stats::quantile(res, na.rm = TRUE))
     names(res_qt) <- c("Min", "1Q", "Median", "3Q", "Max")
     print(res_qt, digits = digits, ...)
   }
