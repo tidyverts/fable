@@ -210,7 +210,9 @@ tidy.TSLM <- function(x, ...){
   rank <- x$model$rank
   
   R <- chol2inv(x$model$qr$qr[seq_len(rank), seq_len(rank), drop = FALSE])
-  se <- map(resvar, function(resvar) sqrt(diag(R) * resvar))
+  
+  se <- rep(NA_real_, nrow(x$coef))
+  se[!is.na(x$coef)] <- sqrt(diag(R) * resvar) #map(resvar, function(resvar) sqrt(diag(R) * resvar)) #for multiple response tslm
   
   out <- dplyr::as_tibble(x$coef, rownames = "term") %>% 
     tidyr::gather(".response", "estimate", !!!syms(colnames(x$coef)))
