@@ -1,8 +1,13 @@
 # fable (development version)
 
+## Improvements
+
+* Better handling of rank deficiency in `ARIMA()`.
+
 # fable 0.1.2
 
 ## Improvements
+
 * Added `CROSTON()` for Croston's method of intermittent demand forecasting.
 * Documentation improvements
 

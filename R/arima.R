@@ -40,13 +40,18 @@ train_arima <- function(.data, specials,  ic = "aicc",
     }
     else{
       if (any(constant_columns)) {
-        xreg <- xreg[, -which(constant_columns)]
+        xreg <- xreg[, -which(constant_columns), drop = FALSE]
       }
       
       # Now check if it is rank deficient
-      sv <- svd(stats::na.omit(if(all(constant)) cbind(rep(1, NROW(xreg)), xreg) else xreg))$d
-      if (min(sv) / sum(sv) < .Machine$double.eps) {
-        stop("xreg is rank deficient")
+      qr <- qr(if(all(constant)) cbind(rep(1, NROW(xreg)), xreg) else xreg)
+      num_regressors <- length(qr$qraux)
+      if (qr$rank < num_regressors) {
+        bad_regressors <- qr$pivot[(qr$rank+1):num_regressors]
+        warn(sprintf("Provided exogenous regressors are rank deficient, removing regressors: %s",
+                     paste("`", colnames(xreg)[bad_regressors], "`", sep = "", collapse = ", ")))
+        
+        xreg <- xreg[, -bad_regressors]
       }
       
       # Finally find residuals from regression in order
