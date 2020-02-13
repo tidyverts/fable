@@ -8,7 +8,7 @@ train_arima <- function(.data, specials,  ic = "aicc",
   if(length(measured_vars(.data)) > 1){
     abort("Only univariate responses are supported by ARIMA.")
   }
-  
+   
   # Get args
   p <- d <- q <- P <- D <- Q <- period <- p_init <- q_init <- P_init <- Q_init <- NULL 
   assignSpecials(specials[c("pdq", "PDQ")])
@@ -461,6 +461,8 @@ specials_arima <- new_specials(
 #'   `Q_init`  \tab If `stepwise = TRUE`, `Q_init` provides the initial value for `Q` for the stepwise search procedure.
 #' }
 #' }
+#' 
+#' If the RHS of `formula` is left blank, `ARIMA` will use a default search space of `pdq() + PDQ()`, ie, fit a model with seasonal and nonseasonal terms (plus a mean). Note that a seasonal model requires at least 2 full seasons' worth of data; if this is not available, `ARIMA` will revert to a nonseasonal model with a warning.
 #' 
 #' \subsection{xreg}{
 #' Exogenous regressors can be included in an ARIMA model without explicitly using the `xreg()` special. Common exogenous regressor specials as specified in [`common_xregs`] can also be used. These regressors are handled using [stats::model.frame()], and so interactions and other functionality behaves similarly to [stats::lm()].

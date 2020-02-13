@@ -99,6 +99,8 @@ PDQ(P = 0:2, D = 0:1, Q = 0:2, period = NULL,
 }
 }
 
+If the RHS of \code{formula} is left blank, \code{ARIMA} will use a default search space of \code{pdq() + PDQ()}, ie, fit a model with seasonal and nonseasonal terms (plus a mean). Note that a seasonal model requires at least 2 full seasons' worth of data; if this is not available, \code{ARIMA} will revert to a nonseasonal model with a warning.
+
 \subsection{xreg}{
 Exogenous regressors can be included in an ARIMA model without explicitly using the \code{xreg()} special. Common exogenous regressor specials as specified in \code{\link{common_xregs}} can also be used. These regressors are handled using \code{\link[stats:model.frame]{stats::model.frame()}}, and so interactions and other functionality behaves similarly to \code{\link[stats:lm]{stats::lm()}}.
 
