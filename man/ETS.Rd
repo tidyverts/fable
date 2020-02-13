@@ -57,7 +57,7 @@ data. (See Hyndman, et al, 2002, below.)
 \subsection{error}{
 The \code{error} special is used to specify the form of the error term.
 \preformatted{
-error(method = c("A", "M"))
+error(method)
 }
 
 \tabular{ll}{
@@ -68,7 +68,7 @@ error(method = c("A", "M"))
 \subsection{trend}{
 The \code{trend} special is used to specify the form of the trend term and associated parameters.
 \preformatted{
-trend(method = c("N", "A", "Ad"),
+trend(method,
       alpha = NULL, alpha_range = c(1e-04, 0.9999),
       beta = NULL, beta_range = c(1e-04, 0.9999),
       phi = NULL, phi_range = c(0.8, 0.98))
@@ -88,7 +88,7 @@ trend(method = c("N", "A", "Ad"),
 \subsection{season}{
 The \code{season} special is used to specify the form of the seasonal term and associated parameters.
 \preformatted{
-season(method = c("N", "A", "M"), period = NULL,
+season(method, period = NULL,
        gamma = NULL, gamma_range = c(1e-04, 0.9999))
 }
 

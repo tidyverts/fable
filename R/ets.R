@@ -189,7 +189,7 @@ specials_ets <- new_specials(
 #' \subsection{error}{
 #' The `error` special is used to specify the form of the error term.
 #' \preformatted{
-#' error(method = c("A", "M"))
+#' error(method)
 #' }
 #'
 #' \tabular{ll}{
@@ -200,7 +200,7 @@ specials_ets <- new_specials(
 #' \subsection{trend}{
 #' The `trend` special is used to specify the form of the trend term and associated parameters.
 #' \preformatted{
-#' trend(method = c("N", "A", "Ad"),
+#' trend(method,
 #'       alpha = NULL, alpha_range = c(1e-04, 0.9999),
 #'       beta = NULL, beta_range = c(1e-04, 0.9999),
 #'       phi = NULL, phi_range = c(0.8, 0.98))
@@ -220,7 +220,7 @@ specials_ets <- new_specials(
 #' \subsection{season}{
 #' The `season` special is used to specify the form of the seasonal term and associated parameters.
 #' \preformatted{
-#' season(method = c("N", "A", "M"), period = NULL,
+#' season(method, period = NULL,
 #'        gamma = NULL, gamma_range = c(1e-04, 0.9999))
 #' }
 #'
