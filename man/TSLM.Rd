@@ -36,14 +36,13 @@ xreg(...)
 }
 
 \examples{
-as_tsibble(USAccDeaths) \%>\% 
+as_tsibble(USAccDeaths) \%>\%
   model(lm = TSLM(log(value) ~ trend() + season()))
 
 library(tsibbledata)
-olympic_running \%>\% 
-  model(TSLM(Time ~ trend())) \%>\% 
+olympic_running \%>\%
+  model(TSLM(Time ~ trend())) \%>\%
   interpolate(olympic_running)
-
 }
 \seealso{
 \code{\link[stats:lm]{stats::lm()}}, \code{\link[stats:model.matrix]{stats::model.matrix()}}

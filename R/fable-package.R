@@ -8,6 +8,6 @@ globalVariables(".")
 #' @import fabletools
 #' @import Rcpp
 #' @importFrom dplyr mutate transmute filter lag left_join select
-#' 
+#'
 #' @useDynLib fable, .registration = TRUE
 NULL

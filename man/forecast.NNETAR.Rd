@@ -37,7 +37,6 @@ Produces forecasts from a trained model.
 }
 \examples{
 as_tsibble(airmiles) \%>\%
-  model(nn = NNETAR(box_cox(value, 0.15))) \%>\% 
+  model(nn = NNETAR(box_cox(value, 0.15))) \%>\%
   forecast(times = 10)
-
 }

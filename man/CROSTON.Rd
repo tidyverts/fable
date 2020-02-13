@@ -57,14 +57,13 @@ sim_poisson <- tsibble(
   count = rpois(24, lambda = 0.3)
 )
 
-sim_poisson \%>\% 
+sim_poisson \%>\%
   autoplot(count)
 
-sim_poisson \%>\% 
-  model(CROSTON(count)) \%>\% 
-  forecast(h = "2 years") \%>\% 
+sim_poisson \%>\%
+  model(CROSTON(count)) \%>\%
+  forecast(h = "2 years") \%>\%
   autoplot(sim_poisson)
-
 }
 \references{
 Croston, J. (1972) "Forecasting and stock control for

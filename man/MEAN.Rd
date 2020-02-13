@@ -39,9 +39,8 @@ window(size = NULL)
 
 \examples{
 library(tsibbledata)
-vic_elec \%>\% 
+vic_elec \%>\%
   model(avg = MEAN(Demand))
-
 }
 \seealso{
 \href{https://otexts.com/fpp3/simple-methods.html}{Forecasting: Principles and Practices, Some simple forecasting methods (section 3.2)}

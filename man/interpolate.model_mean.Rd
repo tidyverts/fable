@@ -24,8 +24,7 @@ Applies a model specific estimation technique to predict the values of missing v
 \examples{
 library(tsibbledata)
 
-olympic_running \%>\% 
-  model(mean = MEAN(Time)) \%>\% 
+olympic_running \%>\%
+  model(mean = MEAN(Time)) \%>\%
   interpolate(olympic_running)
-  
 }

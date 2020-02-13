@@ -19,7 +19,6 @@ Extract estimated states from an ETS model.
 }
 \examples{
 as_tsibble(USAccDeaths) \%>\%
-  model(ets = ETS(log(value) ~ season("A"))) \%>\% 
+  model(ets = ETS(log(value) ~ season("A"))) \%>\%
   components()
-
 }

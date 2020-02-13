@@ -19,12 +19,11 @@ Extracts the fitted values.
 }
 \examples{
 as_tsibble(Nile) \%>\%
-  model(NAIVE(value)) \%>\% 
+  model(NAIVE(value)) \%>\%
   fitted()
 
 library(tsibbledata)
-aus_production \%>\% 
-  model(snaive = SNAIVE(Beer ~ lag("year"))) \%>\% 
+aus_production \%>\%
+  model(snaive = SNAIVE(Beer ~ lag("year"))) \%>\%
   fitted()
-  
 }

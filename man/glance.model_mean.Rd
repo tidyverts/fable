@@ -22,8 +22,7 @@ Contains the variance of residuals (\code{sigma2}).
 }
 \examples{
 library(tsibbledata)
-vic_elec \%>\% 
-  model(avg = MEAN(Demand)) \%>\% 
+vic_elec \%>\%
+  model(avg = MEAN(Demand)) \%>\%
   glance()
-
 }

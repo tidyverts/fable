@@ -1,51 +1,59 @@
 train_ets <- function(.data, specials, opt_crit,
-                      nmse, bounds, ic, restrict = TRUE, ...){
-  if(length(measured_vars(.data)) > 1){
+                      nmse, bounds, ic, restrict = TRUE, ...) {
+  if (length(measured_vars(.data)) > 1) {
     abort("Only univariate responses are supported by ETS.")
   }
 
   # Rebuild `ets` arguments
   ets_spec <- specials[c("error", "trend", "season")]
-  ets_spec %>% map(function(.x){if(length(.x) > 1) {abort("Only one special of each type is allowed for ETS.")}})
+  ets_spec %>% map(function(.x) {
+    if (length(.x) > 1) {
+      abort("Only one special of each type is allowed for ETS.")
+    }
+  })
   ets_spec <- unlist(ets_spec, recursive = FALSE)
 
   # Get response
   y <- unclass(.data)[[measured_vars(.data)]]
   idx <- unclass(.data)[[index_var(.data)]]
 
-  if(any(is.na(y))){
+  if (any(is.na(y))) {
     abort("ETS does not support missing values.")
   }
 
   # Build possible models
-  model_opts <- expand.grid(errortype = ets_spec$error$method,
-                            trendtype = ets_spec$trend$method,
-                            seasontype = ets_spec$season$method,
-                            stringsAsFactors = FALSE)
+  model_opts <- expand.grid(
+    errortype = ets_spec$error$method,
+    trendtype = ets_spec$trend$method,
+    seasontype = ets_spec$season$method,
+    stringsAsFactors = FALSE
+  )
   model_opts$damped <- nchar(model_opts$trendtype) > 1
   model_opts$trendtype <- substr(model_opts$trendtype, 1, 1)
 
   # Remove bad models
-  if(NROW(model_opts) > 1){
-    if(min(y) <= 0){
-      model_opts <- model_opts[model_opts$errortype != "M",]
+  if (NROW(model_opts) > 1) {
+    if (min(y) <= 0) {
+      model_opts <- model_opts[model_opts$errortype != "M", ]
     }
-    if(restrict){
-      restricted <- with(model_opts,
-                         (errortype == "A" & (trendtype == "M" | seasontype == "M")) | # AMM, AAM, AMA
-                           (errortype == "M" & trendtype == "M" & seasontype == "A"))    # MMA
-      model_opts <- model_opts[!restricted,]
+    if (restrict) {
+      restricted <- with(
+        model_opts,
+        (errortype == "A" & (trendtype == "M" | seasontype == "M")) | # AMM, AAM, AMA
+          (errortype == "M" & trendtype == "M" & seasontype == "A")
+      ) # MMA
+      model_opts <- model_opts[!restricted, ]
     }
   }
 
-  if(NROW(model_opts) == 0){
+  if (NROW(model_opts) == 0) {
     abort("No valid ETS models have been allowed. Consider allowing different (more stable) models, or enabling the restricted models with `restrict = FALSE`.")
   }
 
   # Find best model
   best <- NULL
   last_error <- NULL
-  compare_ets <- function(errortype, trendtype, seasontype, damped){
+  compare_ets <- function(errortype, trendtype, seasontype, damped) {
     new <- safely(quietly(etsmodel))(
       y, m = ets_spec$season$period,
       errortype = errortype, trendtype = trendtype, seasontype = seasontype, damped = damped,
@@ -54,23 +62,23 @@ train_ets <- function(.data, specials, opt_crit,
       phi = ets_spec$trend$phi, phirange = ets_spec$trend$phi_range,
       gamma = ets_spec$season$gamma, gammarange = ets_spec$season$gamma_range,
       opt.crit = opt_crit, nmse = nmse, bounds = bounds, ...)
-    if(!is.null(new$error)){
+    if (!is.null(new$error)) {
       last_error <<- new$error
     }
     new <- new$result
 
-    if((new[[ic]]%||%Inf) < (best[[ic]]%||%Inf) && is.finite(new[[ic]]) || is.null(best)){
+    if ((new[[ic]] %||% Inf) < (best[[ic]] %||% Inf) && is.finite(new[[ic]]) || is.null(best)) {
       best <<- new
     }
-    new[[ic]]%||%Inf
+    new[[ic]] %||% Inf
   }
   ic <- pmap_dbl(model_opts, compare_ets)
 
-  if(is.null(best)){
+  if (is.null(best)) {
     abort(last_error$message)
   }
 
-  best_spec <- model_opts[which.min(ic),]
+  best_spec <- model_opts[which.min(ic), ]
   best_spec$period <- ets_spec$season$period
 
   structure(
@@ -81,13 +89,16 @@ train_ets <- function(.data, specials, opt_crit,
           .fitted = best$fitted,
           .resid = best$residuals
         ),
-      fit = tibble(sigma2 = sum(best$residuals^2, na.rm = TRUE) / (length(y) - length(best$par)),
-                   log_ik = best$loglik, AIC = best$aic, AICc = best$aicc, BIC = best$bic,
-                   MSE = best$mse, AMSE = best$amse, MAE = best$mae),
+      fit = tibble(
+        sigma2 = sum(best$residuals^2, na.rm = TRUE) / (length(y) - length(best$par)),
+        log_ik = best$loglik, AIC = best$aic, AICc = best$aicc, BIC = best$bic,
+        MSE = best$mse, AMSE = best$amse, MAE = best$mae
+      ),
       states = tsibble(
         !!!set_names(list(seq(idx[[1]] - time_unit(interval(.data)),
-                              by = time_unit(interval(.data)),
-                              length.out = NROW(best$states))), index_var(.data)),
+          by = time_unit(interval(.data)),
+          length.out = NROW(best$states)
+        )), index_var(.data)),
         !!!set_names(split(best$states, col(best$states)), colnames(best$states)),
         index = !!index(.data)
       ),
@@ -98,7 +109,7 @@ train_ets <- function(.data, specials, opt_crit,
 }
 
 specials_ets <- new_specials(
-  error = function(method = c("A", "M")){
+  error = function(method = c("A", "M")) {
     if (!all(is.element(method, c("A", "M")))) {
       stop("Invalid error type")
     }
@@ -107,30 +118,32 @@ specials_ets <- new_specials(
   trend = function(method = c("N", "A", "Ad"),
                    alpha = NULL, alpha_range = c(1e-04, 0.9999),
                    beta = NULL, beta_range = c(1e-04, 0.9999),
-                   phi = NULL, phi_range = c(0.8, 0.98)){
+                   phi = NULL, phi_range = c(0.8, 0.98)) {
     if (!all(is.element(method, c("N", "A", "Ad", "M", "Md")))) {
       stop("Invalid trend type")
     }
-    if(alpha_range[1]>alpha_range[2]){
+    if (alpha_range[1] > alpha_range[2]) {
       abort("Lower alpha limits must be less than upper limits")
     }
-    if(beta_range[1]>beta_range[2]){
+    if (beta_range[1] > beta_range[2]) {
       abort("Lower beta limits must be less than upper limits")
     }
-    if(phi_range[1]>phi_range[2]){
+    if (phi_range[1] > phi_range[2]) {
       abort("Lower phi limits must be less than upper limits")
     }
-    list(method = method,
-         alpha = alpha, alpha_range = alpha_range,
-         beta = beta, beta_range = beta_range,
-         phi = phi, phi_range = phi_range)
+    list(
+      method = method,
+      alpha = alpha, alpha_range = alpha_range,
+      beta = beta, beta_range = beta_range,
+      phi = phi, phi_range = phi_range
+    )
   },
   season = function(method = c("N", "A", "M"), period = NULL,
-                    gamma = NULL, gamma_range = c(1e-04, 0.9999)){
+                    gamma = NULL, gamma_range = c(1e-04, 0.9999)) {
     if (!all(is.element(method, c("N", "A", "M")))) {
       abort("Invalid season type")
     }
-    if(gamma_range[1]>gamma_range[2]){
+    if (gamma_range[1] > gamma_range[2]) {
       abort("Lower gamma limits must be less than upper limits")
     }
 
@@ -146,7 +159,7 @@ specials_ets <- new_specials(
         method <- "N"
       }
     }
-    if(is_empty(method)){
+    if (is_empty(method)) {
       abort("A seasonal ETS model cannot be used for this data.")
     }
     list(method = method, gamma = gamma, gamma_range = gamma_range, period = m)
@@ -181,7 +194,7 @@ specials_ets <- new_specials(
 #' @param ic The information criterion used in selecting the model.
 #' @param restrict If TRUE (default), the models with infinite variance will not
 #' be allowed. These restricted model components are AMM, AAM, AMA, and MMA.
-#' 
+#'
 #' @param ... Other arguments
 #'
 #' @section Specials:
@@ -233,15 +246,14 @@ specials_ets <- new_specials(
 #' }
 #'
 #' @return A model specification.
-#' 
+#'
 #' @examples
 #' as_tsibble(USAccDeaths) %>%
 #'   model(ETS(log(value) ~ season("A")))
-#' 
 #' @seealso
 #' [Forecasting: Principles and Practices, Exponential smoothing (chapter 8)](https://otexts.com/fpp3/expsmooth.html)
 #'
-#' 
+#'
 #' @references Hyndman, R.J., Koehler, A.B., Snyder, R.D., and Grose, S. (2002)
 #' "A state space framework for automatic forecasting using exponential
 #' smoothing methods", \emph{International J. Forecasting}, \bold{18}(3),
@@ -254,19 +266,22 @@ specials_ets <- new_specials(
 #' Hyndman, R.J., Koehler, A.B., Ord, J.K., and Snyder, R.D. (2008)
 #' \emph{Forecasting with exponential smoothing: the state space approach},
 #' Springer-Verlag. \url{http://www.exponentialsmoothing.net}.
-#'   
+#'
 #' @export
 ETS <- function(formula, opt_crit = c("lik", "amse", "mse", "sigma", "mae"),
                 nmse = 3, bounds = c("both", "usual", "admissible"),
-                ic = c("aicc", "aic", "bic"), restrict = TRUE, ...){
+                ic = c("aicc", "aic", "bic"), restrict = TRUE, ...) {
   opt_crit <- match.arg(opt_crit)
   bounds <- match.arg(bounds)
   ic <- match.arg(ic)
 
-  ets_model <- new_model_class("ETS", train = train_ets, specials = specials_ets,
-                               check = all_tsbl_checks)
-  new_model_definition(ets_model, !!enquo(formula), opt_crit = opt_crit, nmse = nmse,
-                       bounds = bounds, ic = ic, restrict = restrict, ...
+  ets_model <- new_model_class("ETS",
+    train = train_ets, specials = specials_ets,
+    check = all_tsbl_checks
+  )
+  new_model_definition(ets_model, !!enquo(formula),
+    opt_crit = opt_crit, nmse = nmse,
+    bounds = bounds, ic = ic, restrict = restrict, ...
   )
 }
 
@@ -275,18 +290,17 @@ ETS <- function(formula, opt_crit = c("lik", "amse", "mse", "sigma", "mae"),
 #' @param simulate If `TRUE`, prediction intervals are produced by simulation rather than using analytic formulae.
 #' @param times The number of sample paths to use in estimating the forecast distribution if simulated intervals are used.
 #'
-#' @examples 
+#' @examples
 #' as_tsibble(USAccDeaths) %>%
-#'   model(ets = ETS(log(value) ~ season("A"))) %>% 
+#'   model(ets = ETS(log(value) ~ season("A"))) %>%
 #'   forecast()
-#'
 #' @export
-forecast.ETS <- function(object, new_data, specials = NULL, simulate = FALSE, bootstrap = FALSE, times = 5000, ...){
+forecast.ETS <- function(object, new_data, specials = NULL, simulate = FALSE, bootstrap = FALSE, times = 5000, ...) {
   errortype <- object$spec$errortype
   trendtype <- object$spec$trendtype
   seasontype <- object$spec$seasontype
   damped <- object$spec$damped
-  laststate <- as.numeric(object$states[NROW(object$states),measured_vars(object$states)])
+  laststate <- as.numeric(object$states[NROW(object$states), measured_vars(object$states)])
 
   fc_class <- if (errortype == "A" && trendtype %in% c("A", "N") && seasontype %in% c("N", "A")) {
     ets_fc_class1
@@ -297,9 +311,9 @@ forecast.ETS <- function(object, new_data, specials = NULL, simulate = FALSE, bo
   } else {
     simulate <- TRUE
   }
-  if(simulate || bootstrap){
+  if (simulate || bootstrap) {
     sim <- map(seq_len(times), function(x) generate(object, new_data, times = times, bootstrap = bootstrap)[[".sim"]]) %>%
-      transpose %>%
+      transpose() %>%
       map(as.numeric)
     pred <- .C(
       "etsforecast",
@@ -315,11 +329,13 @@ forecast.ETS <- function(object, new_data, specials = NULL, simulate = FALSE, bo
 
     construct_fc(pred, map_dbl(sim, stats::sd), dist_sim(sim))
   }
-  else{
-    fc <- fc_class(h = NROW(new_data),
-                   last.state = laststate,
-                   trendtype, seasontype, damped, object$spec$period, object$fit$sigma2,
-                   set_names(object$par$estimate, object$par$term))
+  else {
+    fc <- fc_class(
+      h = NROW(new_data),
+      last.state = laststate,
+      trendtype, seasontype, damped, object$spec$period, object$fit$sigma2,
+      set_names(object$par$estimate, object$par$term)
+    )
     construct_fc(fc$mu, sqrt(fc$var), dist_normal(fc$mu, sqrt(fc$var)))
   }
 }
@@ -338,30 +354,31 @@ forecast.ETS <- function(object, new_data, specials = NULL, simulate = FALSE, bo
 #' as_tsibble(USAccDeaths) %>%
 #'   model(ETS(log(value) ~ season("A"))) %>%
 #'   generate(times = 100)
-#'
 #' @seealso [`fabletools::generate.mdl_df`]
 #'
 #' @export
-generate.ETS <- function(x, new_data, specials, bootstrap = FALSE, ...){
-  if(!is_regular(new_data)){
+generate.ETS <- function(x, new_data, specials, bootstrap = FALSE, ...) {
+  if (!is_regular(new_data)) {
     abort("Simulation new_data must be regularly spaced")
   }
 
   start_idx <- min(new_data[[index_var(new_data)]])
   start_pos <- match(start_idx - time_unit(interval(new_data)), x$states[[index_var(x$states)]])
 
-  if(is.na(start_pos)){
+  if (is.na(start_pos)) {
     abort("The first observation index of simulation data must be within the model's training set.")
   }
 
   initstate <- as.numeric(x$states[start_pos, measured_vars(x$states)])
 
-  if(!(".innov" %in% new_data)){
-    if(bootstrap){
+  if (!(".innov" %in% new_data)) {
+    if (bootstrap) {
       new_data$.innov <- sample(stats::na.omit(residuals(x) - mean(residuals(x), na.rm = TRUE)),
-                                     NROW(new_data), replace = TRUE)
+        NROW(new_data),
+        replace = TRUE
+      )
     }
-    else{
+    else {
       new_data$.innov <- stats::rnorm(NROW(new_data), sd = sqrt(x$fit$sigma2))
     }
   }
@@ -370,7 +387,9 @@ generate.ETS <- function(x, new_data, specials, bootstrap = FALSE, ...){
     new_data[[".innov"]] <- pmax(-1, new_data[[".innov"]])
   }
 
-  get_par <- function(par){x$par$estimate[x$par$term==par]}
+  get_par <- function(par) {
+    x$par$estimate[x$par$term == par]
+  }
 
   result <- new_data %>%
     group_by_key() %>%
@@ -416,14 +435,13 @@ generate.ETS <- function(x, new_data, specials, bootstrap = FALSE, ...){
 #' report(fit)
 #'
 #' fit %>%
-#'  refit(lung_deaths_female, reinitialise = TRUE) %>%
-#'  report()
-#'
+#'   refit(lung_deaths_female, reinitialise = TRUE) %>%
+#'   report()
 #' @importFrom stats formula residuals
 #' @export
-refit.ETS <- function(object, new_data, specials = NULL, reestimate = FALSE, reinitialise = TRUE, ...){
-  est_par <- function(par){
-    if(any(pos <- object$par$term==par) && !reestimate){
+refit.ETS <- function(object, new_data, specials = NULL, reestimate = FALSE, reinitialise = TRUE, ...) {
+  est_par <- function(par) {
+    if (any(pos <- object$par$term == par) && !reestimate) {
       object$par$estimate[pos]
     } else {
       NULL
@@ -437,25 +455,29 @@ refit.ETS <- function(object, new_data, specials = NULL, reestimate = FALSE, rei
   idx <- unclass(y)[[index_var(y)]]
   y <- unclass(y)[[measured_vars(y)]]
 
-  best <- if(reinitialise){
+  best <- if (reinitialise) {
     etsmodel(
-      y, m = object$spec$period,
+      y,
+      m = object$spec$period,
       errortype = object$spec$errortype, trendtype = object$spec$trendtype,
       seasontype = object$spec$seasontype, damped = object$spec$damped,
       alpha = est_par("alpha"), beta = est_par("beta"), phi = est_par("phi"), gamma = est_par("gamma"),
       alpharange = c(1e-04, 0.9999), betarange = c(1e-04, 0.9999),
       gammarange = c(1e-04, 0.9999), phirange = c(0.8, 0.98),
-      opt.crit = "lik", nmse = 3, bounds = "both")
+      opt.crit = "lik", nmse = 3, bounds = "both"
+    )
   }
   else {
     init.par <- set_names(object$par$estimate, object$par$term)
     estimate_ets(
-      y, m = object$spec$period,
+      y,
+      m = object$spec$period,
       init.state = init.par[setdiff(names(init.par), c("alpha", "beta", "gamma", "phi"))],
       errortype = object$spec$errortype, trendtype = object$spec$trendtype,
       seasontype = object$spec$seasontype, damped = object$spec$damped,
       alpha = est_par("alpha"), beta = est_par("beta"), phi = est_par("phi"), gamma = est_par("gamma"),
-      nmse = 3, np = NROW(object$par))
+      nmse = 3, np = NROW(object$par)
+    )
   }
 
   structure(
@@ -466,13 +488,16 @@ refit.ETS <- function(object, new_data, specials = NULL, reestimate = FALSE, rei
           .fitted = best$fitted,
           .resid = best$residuals
         ),
-      fit = tibble(sigma2 = sum(best$residuals^2, na.rm = TRUE) / (length(y) - length(best$par)),
-                   log_lik = best$loglik, AIC = best$aic, AICc = best$aicc, BIC = best$bic,
-                   MSE = best$mse, AMSE = best$amse, MAE = best$mae),
+      fit = tibble(
+        sigma2 = sum(best$residuals^2, na.rm = TRUE) / (length(y) - length(best$par)),
+        log_lik = best$loglik, AIC = best$aic, AICc = best$aicc, BIC = best$bic,
+        MSE = best$mse, AMSE = best$amse, MAE = best$mae
+      ),
       states = tsibble(
         !!!set_names(list(seq(idx[[1]] - time_unit(interval(new_data)),
-                              by = time_unit(interval(new_data)),
-                              length.out = NROW(best$states))), index_var(new_data)),
+          by = time_unit(interval(new_data)),
+          length.out = NROW(best$states)
+        )), index_var(new_data)),
         !!!set_names(split(best$states, col(best$states)), colnames(best$states)),
         index = !!index(new_data)
       ),
@@ -483,94 +508,89 @@ refit.ETS <- function(object, new_data, specials = NULL, reestimate = FALSE, rei
 }
 
 #' @inherit fitted.ARIMA
-#' 
-#' @examples 
+#'
+#' @examples
 #' as_tsibble(USAccDeaths) %>%
-#'   model(ets = ETS(log(value) ~ season("A"))) %>% 
+#'   model(ets = ETS(log(value) ~ season("A"))) %>%
 #'   fitted()
-#'   
 #' @export
-fitted.ETS <- function(object, ...){
+fitted.ETS <- function(object, ...) {
   object$est[[".fitted"]]
 }
 
 #' @inherit residuals.ARIMA
-#' 
-#' @examples 
+#'
+#' @examples
 #' as_tsibble(USAccDeaths) %>%
-#'   model(ets = ETS(log(value) ~ season("A"))) %>% 
+#'   model(ets = ETS(log(value) ~ season("A"))) %>%
 #'   residuals()
-#'   
 #' @export
-residuals.ETS <- function(object, ...){
+residuals.ETS <- function(object, ...) {
   object$est[[".resid"]]
 }
 
 #' Glance an ETS model
-#' 
+#'
 #' Construct a single row summary of the ETS model.
-#' 
+#'
 #' Contains the variance of residuals (`sigma2`), the log-likelihood (`log_lik`),
 #' and information criterion (`AIC`, `AICc`, `BIC`).
-#' 
+#'
 #' @inheritParams generics::glance
-#' 
+#'
 #' @return A one row tibble summarising the model's fit.
-#' 
-#' @examples 
+#'
+#' @examples
 #' as_tsibble(USAccDeaths) %>%
-#'   model(ets = ETS(log(value) ~ season("A"))) %>% 
+#'   model(ets = ETS(log(value) ~ season("A"))) %>%
 #'   glance()
-#' 
 #' @export
-glance.ETS <- function(x, ...){
+glance.ETS <- function(x, ...) {
   x$fit
 }
 
 #' @inherit tidy.ARIMA
-#' 
-#' @examples 
+#'
+#' @examples
 #' as_tsibble(USAccDeaths) %>%
-#'   model(ets = ETS(log(value) ~ season("A"))) %>% 
+#'   model(ets = ETS(log(value) ~ season("A"))) %>%
 #'   tidy()
-#'   
 #' @export
-tidy.ETS <- function(x, ...){
+tidy.ETS <- function(x, ...) {
   x$par
 }
 
 #' Extract estimated states from an ETS model.
-#' 
+#'
 #' @param object An estimated model.
 #' @param ... Unused.
-#' 
+#'
 #' @return A [fabletools::dable()] containing estimated states.
-#' 
-#' @examples 
+#'
+#' @examples
 #' as_tsibble(USAccDeaths) %>%
-#'   model(ets = ETS(log(value) ~ season("A"))) %>% 
+#'   model(ets = ETS(log(value) ~ season("A"))) %>%
 #'   components()
-#' 
 #' @export
-components.ETS <- function(object, ...){
+components.ETS <- function(object, ...) {
   spec <- object$spec
   m <- spec$period
   idx <- index(object$states)
   response <- measured_vars(object$est)[[1]]
 
   cmp <- match(c(expr_text(idx), "l", "b", "s1"), colnames(object$states))
-  out <- object$states[,stats::na.exclude(cmp)]
+  out <- object$states[, stats::na.exclude(cmp)]
   colnames(out) <- c(index_var(object$states), "level", "slope", "season")[!is.na(cmp)]
-  if(spec$seasontype != "N"){
+  if (spec$seasontype != "N") {
     seasonal_init <- tsibble(
-      !!expr_text(idx) := object$states[[index_var(object$states)]][[1]] - rev(seq_len(m-1))*time_unit(interval(object$states)),
-      season = rev(as.numeric(object$states[1,paste0("s", seq_len(m-1) + 1)])),
+      !!expr_text(idx) := object$states[[index_var(object$states)]][[1]] - rev(seq_len(m - 1)) * time_unit(interval(object$states)),
+      season = rev(as.numeric(object$states[1, paste0("s", seq_len(m - 1) + 1)])),
       index = !!idx
     )
     out <- rbind(seasonal_init, out)
     seasonalities <- list(season = list(period = m, base = NA_real_))
   }
-  else{
+  else {
     seasonalities <- list()
   }
 
@@ -584,40 +604,42 @@ components.ETS <- function(object, ...){
   out <- select(out, intersect(c(expr_text(idx), response, "level", "slope", "season", "remainder"), colnames(out)))
 
   eqn <- expr(lag(!!sym("level"), 1))
-  if(spec$trendtype == "A"){
-    if(spec$damped){
-      phi <- object$par$estimate[object$par$term=="phi"]
+  if (spec$trendtype == "A") {
+    if (spec$damped) {
+      phi <- object$par$estimate[object$par$term == "phi"]
       eqn <- expr(!!eqn + !!phi * lag(!!sym("slope"), 1))
     }
-    else{
+    else {
       eqn <- expr(!!eqn + lag(!!sym("slope"), 1))
     }
-  } else if(spec$trendtype == "M"){
-    if(spec$damped){
-      phi <- object$par$estimate[object$par$term=="phi"]
+  } else if (spec$trendtype == "M") {
+    if (spec$damped) {
+      phi <- object$par$estimate[object$par$term == "phi"]
       eqn <- expr(!!eqn * lag(!!sym("slope"), 1)^!!phi)
     }
-    else{
+    else {
       eqn <- expr(!!eqn * lag(!!sym("slope"), 1))
     }
   }
-  if(spec$seasontype == "A"){
+  if (spec$seasontype == "A") {
     eqn <- expr(!!eqn + lag(!!sym("season"), !!m))
-  } else if(spec$seasontype == "M"){
+  } else if (spec$seasontype == "M") {
     eqn <- expr((!!eqn) * lag(!!sym("season"), !!m))
   }
-  if(spec$errortype == "A"){
+  if (spec$errortype == "A") {
     eqn <- expr(!!eqn + !!sym("remainder"))
   } else {
-    eqn <- expr((!!eqn)*(1 + !!sym("remainder")))
+    eqn <- expr((!!eqn) * (1 + !!sym("remainder")))
   }
 
-  fabletools::as_dable(out, resp = !!sym(response), method = model_sum(object),
-                      seasons = seasonalities, aliases = list2(!!response := eqn))
+  fabletools::as_dable(out,
+    resp = !!sym(response), method = model_sum(object),
+    seasons = seasonalities, aliases = list2(!!response := eqn)
+  )
 }
 
 #' @export
-model_sum.ETS <- function(x){
+model_sum.ETS <- function(x) {
   with(x$spec, paste("ETS(", errortype, ",", trendtype, ifelse(damped, "d", ""), ",", seasontype, ")", sep = ""))
 }
 
@@ -625,7 +647,9 @@ model_sum.ETS <- function(x){
 report.ETS <- function(object, ...) {
   ncoef <- length(measured_vars(object$states))
 
-  get_par <- function(par){object$par$estimate[object$par$term==par]}
+  get_par <- function(par) {
+    object$par$estimate[object$par$term == par]
+  }
 
   cat("  Smoothing parameters:\n")
   cat(paste("    alpha =", format(get_par("alpha")), "\n"))
@@ -640,7 +664,7 @@ report.ETS <- function(object, ...) {
   }
 
   cat("\n  Initial states:\n")
-  print.data.frame(object$states[1,measured_vars(object$states)], row.names = FALSE)
+  print.data.frame(object$states[1, measured_vars(object$states)], row.names = FALSE)
 
   cat("\n  sigma^2:  ")
   cat(round(object$fit$sigma2, 4))

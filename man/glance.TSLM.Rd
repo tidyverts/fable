@@ -22,8 +22,7 @@ Contains the R squared (\code{r_squared}), variance of residuals (\code{sigma2})
 the log-likelihood (\code{log_lik}), and information criterion (\code{AIC}, \code{AICc}, \code{BIC}).
 }
 \examples{
-as_tsibble(USAccDeaths) \%>\% 
-  model(lm = TSLM(log(value) ~ trend() + season())) \%>\% 
+as_tsibble(USAccDeaths) \%>\%
+  model(lm = TSLM(log(value) ~ trend() + season())) \%>\%
   glance()
-
 }

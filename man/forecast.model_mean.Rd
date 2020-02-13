@@ -34,8 +34,7 @@ Produces forecasts from a trained model.
 }
 \examples{
 library(tsibbledata)
-vic_elec \%>\% 
-  model(avg = MEAN(Demand)) \%>\% 
+vic_elec \%>\%
+  model(avg = MEAN(Demand)) \%>\%
   forecast()
-   
 }

@@ -70,17 +70,14 @@ drift(drift = TRUE)
 
 \examples{
 library(tsibbledata)
-aus_production \%>\% 
+aus_production \%>\%
   model(rw = RW(Beer ~ drift()))
 
-
-as_tsibble(Nile) \%>\% 
+as_tsibble(Nile) \%>\%
   model(NAIVE(value))
-
 library(tsibbledata)
-aus_production \%>\% 
+aus_production \%>\%
   model(snaive = SNAIVE(Beer ~ lag("year")))
-
 }
 \seealso{
 \href{https://otexts.com/fpp3/simple-methods.html}{Forecasting: Principles and Practices, Some simple forecasting methods (section 3.2)}

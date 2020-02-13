@@ -18,9 +18,8 @@ Returns the coefficients from the model in a \code{tibble} format.
 \examples{
 lung_deaths <- cbind(mdeaths, fdeaths) \%>\%
   as_tsibble(pivot_longer = FALSE)
-  
-lung_deaths \%>\%
-  model(VAR(vars(log(mdeaths), fdeaths) ~ AR(3))) \%>\% 
-  tidy()
 
+lung_deaths \%>\%
+  model(VAR(vars(log(mdeaths), fdeaths) ~ AR(3))) \%>\%
+  tidy()
 }

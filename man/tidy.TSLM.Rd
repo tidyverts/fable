@@ -18,8 +18,7 @@ The model's coefficients in a \code{tibble}.
 Returns the coefficients from the model in a \code{tibble} format.
 }
 \examples{
-as_tsibble(USAccDeaths) \%>\% 
-  model(lm = TSLM(log(value) ~ trend() + season())) \%>\% 
+as_tsibble(USAccDeaths) \%>\%
+  model(lm = TSLM(log(value) ~ trend() + season())) \%>\%
   tidy()
-
 }

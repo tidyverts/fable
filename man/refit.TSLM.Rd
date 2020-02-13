@@ -24,13 +24,12 @@ Applies a fitted \code{TSLM} to a new dataset.
 lung_deaths_male <- as_tsibble(mdeaths)
 lung_deaths_female <- as_tsibble(fdeaths)
 
-fit <- lung_deaths_male \%>\% 
+fit <- lung_deaths_male \%>\%
   model(TSLM(value ~ trend() + season()))
-  
+
 report(fit)
 
-fit \%>\% 
- refit(lung_deaths_female) \%>\% 
- report()
-
+fit \%>\%
+  refit(lung_deaths_female) \%>\%
+  report()
 }

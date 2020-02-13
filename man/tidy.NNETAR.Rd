@@ -19,7 +19,6 @@ Returns the coefficients from the model in a \code{tibble} format.
 }
 \examples{
 as_tsibble(airmiles) \%>\%
-  model(nn = NNETAR(box_cox(value, 0.15))) \%>\% 
+  model(nn = NNETAR(box_cox(value, 0.15))) \%>\%
   tidy()
-  
 }

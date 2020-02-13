@@ -39,7 +39,6 @@ fit <- lung_deaths_male \%>\%
 report(fit)
 
 fit \%>\%
- refit(lung_deaths_female, reinitialise = TRUE) \%>\%
- report()
-
+  refit(lung_deaths_female, reinitialise = TRUE) \%>\%
+  report()
 }

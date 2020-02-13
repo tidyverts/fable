@@ -81,7 +81,6 @@ xreg(...)
 \examples{
 as_tsibble(airmiles) \%>\%
   model(nn = NNETAR(box_cox(value, 0.15)))
-
 }
 \seealso{
 \href{https://otexts.com/fpp2/nnetar.html}{Forecasting: Principles and Practices, Neural network models (section 11.3)}

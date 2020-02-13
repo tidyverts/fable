@@ -19,11 +19,11 @@ Returns the coefficients from the model in a \code{tibble} format.
 }
 \examples{
 as_tsibble(Nile) \%>\%
-  model(NAIVE(value)) \%>\% 
+  model(NAIVE(value)) \%>\%
   tidy()
 
 library(tsibbledata)
-aus_production \%>\% 
-  model(snaive = SNAIVE(Beer ~ lag("year"))) \%>\% 
+aus_production \%>\%
+  model(snaive = SNAIVE(Beer ~ lag("year"))) \%>\%
   tidy()
 }

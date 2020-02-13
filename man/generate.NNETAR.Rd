@@ -25,9 +25,8 @@ contains the \code{.innov} column, those values will be treated as innovations.
 }
 \examples{
 as_tsibble(airmiles) \%>\%
-  model(nn = NNETAR(box_cox(value, 0.15))) \%>\% 
+  model(nn = NNETAR(box_cox(value, 0.15))) \%>\%
   generate()
-  
 }
 \seealso{
 \code{\link[fabletools:generate.mdl_df]{fabletools::generate.mdl_df}}

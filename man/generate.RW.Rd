@@ -23,12 +23,12 @@ contains the \code{.innov} column, those values will be treated as innovations.
 }
 \examples{
 as_tsibble(Nile) \%>\%
-  model(NAIVE(value)) \%>\% 
+  model(NAIVE(value)) \%>\%
   generate()
 
 library(tsibbledata)
-aus_production \%>\% 
-  model(snaive = SNAIVE(Beer ~ lag("year"))) \%>\% 
+aus_production \%>\%
+  model(snaive = SNAIVE(Beer ~ lag("year"))) \%>\%
   generate()
 }
 \seealso{
