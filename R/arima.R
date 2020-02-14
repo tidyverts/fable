@@ -429,6 +429,8 @@ specials_arima <- new_specials(
 #' 
 #' @section Specials:
 #' 
+#' The _specials_ define the space over which `ARIMA` will search for the model that best fits the data. If the RHS of `formula` is left blank, the default search space is given by `pdq() + PDQ()`: ie, fit a model with seasonal and nonseasonal terms, but no exogenous regressors (other than a mean). Note that a seasonal model requires at least 2 full seasons' worth of data; if this is not available, `ARIMA` will revert to a nonseasonal model with a warning.
+#' 
 #' \subsection{pdq}{
 #' The `pdq` special is used to specify non-seasonal components of the model.
 #' \preformatted{
@@ -446,7 +448,7 @@ specials_arima <- new_specials(
 #' }
 #' 
 #' \subsection{PDQ}{
-#' The `PDQ` special is used to specify seasonal components of the model.
+#' The `PDQ` special is used to specify seasonal components of the model. To force a nonseasonal fit, specify `PDQ(0, 0, 0)` in the RHS of the model formula. Note that simply omitting `PDQ` will _not_ result in a nonseasonal fit.
 #' \preformatted{
 #' PDQ(P = 0:2, D = 0:1, Q = 0:2, period = NULL,
 #'     P_init = 1, Q_init = 1)
@@ -461,8 +463,6 @@ specials_arima <- new_specials(
 #'   `Q_init`  \tab If `stepwise = TRUE`, `Q_init` provides the initial value for `Q` for the stepwise search procedure.
 #' }
 #' }
-#' 
-#' If the RHS of `formula` is left blank, `ARIMA` will use a default search space of `pdq() + PDQ()`, ie, fit a model with seasonal and nonseasonal terms (plus a mean). Note that a seasonal model requires at least 2 full seasons' worth of data; if this is not available, `ARIMA` will revert to a nonseasonal model with a warning.
 #' 
 #' \subsection{xreg}{
 #' Exogenous regressors can be included in an ARIMA model without explicitly using the `xreg()` special. Common exogenous regressor specials as specified in [`common_xregs`] can also be used. These regressors are handled using [stats::model.frame()], and so interactions and other functionality behaves similarly to [stats::lm()].
