@@ -23,9 +23,8 @@ information criterion (\code{AIC}, \code{AICc}, \code{BIC}) and the characterist
 (\code{ar_roots} and \code{ma_roots}).
 }
 \examples{
-USAccDeaths \%>\% 
-  as_tsibble \%>\% 
-  model(arima = ARIMA(log(value) ~ pdq(0,1,1) + PDQ(0,1,1))) \%>\% 
+USAccDeaths \%>\%
+  as_tsibble() \%>\%
+  model(arima = ARIMA(log(value) ~ pdq(0, 1, 1) + PDQ(0, 1, 1))) \%>\%
   glance()
-
 }

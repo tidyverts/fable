@@ -18,9 +18,8 @@ The model's coefficients in a \code{tibble}.
 Returns the coefficients from the model in a \code{tibble} format.
 }
 \examples{
-USAccDeaths \%>\% 
-  as_tsibble \%>\% 
-  model(arima = ARIMA(log(value) ~ pdq(0,1,1) + PDQ(0,1,1))) \%>\% 
+USAccDeaths \%>\%
+  as_tsibble() \%>\%
+  model(arima = ARIMA(log(value) ~ pdq(0, 1, 1) + PDQ(0, 1, 1))) \%>\%
   tidy()
-
 }

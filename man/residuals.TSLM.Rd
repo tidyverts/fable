@@ -18,8 +18,7 @@ A vector of fitted residuals.
 Extracts the residuals.
 }
 \examples{
-as_tsibble(USAccDeaths) \%>\% 
-  model(lm = TSLM(log(value) ~ trend() + season())) \%>\% 
+as_tsibble(USAccDeaths) \%>\%
+  model(lm = TSLM(log(value) ~ trend() + season())) \%>\%
   residuals()
-  
 }

@@ -19,8 +19,7 @@ Extracts the residuals.
 }
 \examples{
 library(tsibbledata)
-vic_elec \%>\% 
-  model(avg = MEAN(Demand)) \%>\% 
+vic_elec \%>\%
+  model(avg = MEAN(Demand)) \%>\%
   residuals()
-  
 }

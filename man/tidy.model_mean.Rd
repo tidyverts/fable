@@ -19,8 +19,7 @@ Returns the coefficients from the model in a \code{tibble} format.
 }
 \examples{
 library(tsibbledata)
-vic_elec \%>\% 
-  model(avg = MEAN(Demand)) \%>\% 
+vic_elec \%>\%
+  model(avg = MEAN(Demand)) \%>\%
   tidy()
-
 }

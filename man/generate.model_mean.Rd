@@ -23,10 +23,9 @@ contains the \code{.innov} column, those values will be treated as innovations.
 }
 \examples{
 library(tsibbledata)
-vic_elec \%>\% 
-  model(avg = MEAN(Demand)) \%>\% 
+vic_elec \%>\%
+  model(avg = MEAN(Demand)) \%>\%
   generate()
-  
 }
 \seealso{
 \code{\link[fabletools:generate.mdl_df]{fabletools::generate.mdl_df}}

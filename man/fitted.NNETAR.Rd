@@ -19,7 +19,6 @@ Extracts the fitted values.
 }
 \examples{
 as_tsibble(airmiles) \%>\%
-  model(nn = NNETAR(box_cox(value, 0.15))) \%>\% 
+  model(nn = NNETAR(box_cox(value, 0.15))) \%>\%
   fitted()
-  
 }

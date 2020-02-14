@@ -24,7 +24,7 @@ sim_poisson <- tsibble(
   count = rpois(24, lambda = 0.3)
 )
 
-sim_poisson \%>\% 
-  model(CROSTON(count)) \%>\% 
+sim_poisson \%>\%
+  model(CROSTON(count)) \%>\%
   tidy()
 }

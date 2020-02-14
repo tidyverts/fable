@@ -20,7 +20,6 @@ Contains the variance of residuals (\code{sigma2}).
 }
 \examples{
 as_tsibble(airmiles) \%>\%
-  model(nn = NNETAR(box_cox(value, 0.15))) \%>\% 
+  model(nn = NNETAR(box_cox(value, 0.15))) \%>\%
   glance()
-  
 }

@@ -18,8 +18,7 @@ A vector of fitted values.
 Extracts the fitted values.
 }
 \examples{
-as_tsibble(USAccDeaths) \%>\% 
-  model(lm = TSLM(log(value) ~ trend() + season())) \%>\% 
+as_tsibble(USAccDeaths) \%>\%
+  model(lm = TSLM(log(value) ~ trend() + season())) \%>\%
   fitted()
-
 }

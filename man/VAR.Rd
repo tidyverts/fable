@@ -58,16 +58,15 @@ xreg(...)
 
 lung_deaths <- cbind(mdeaths, fdeaths) \%>\%
   as_tsibble(pivot_longer = FALSE)
-  
+
 fit <- lung_deaths \%>\%
   model(VAR(vars(log(mdeaths), fdeaths) ~ AR(3)))
 
 report(fit)
 
-fit \%>\% 
-  forecast() \%>\% 
+fit \%>\%
+  forecast() \%>\%
   autoplot(lung_deaths)
-
 }
 \seealso{
 \href{https://otexts.com/fpp2/VAR.html}{Forecasting: Principles and Practices, Vector autoregressions (section 11.2)}

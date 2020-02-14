@@ -118,18 +118,17 @@ xreg(...)
 
 \examples{
 # Manual ARIMA specification
-USAccDeaths \%>\% 
-  as_tsibble \%>\% 
-  model(arima = ARIMA(log(value) ~ 0 + pdq(0,1,1) + PDQ(0,1,1))) \%>\% 
+USAccDeaths \%>\%
+  as_tsibble() \%>\%
+  model(arima = ARIMA(log(value) ~ 0 + pdq(0, 1, 1) + PDQ(0, 1, 1))) \%>\%
   report()
 
 # Automatic ARIMA specification
 library(tsibble)
 library(dplyr)
-tsibbledata::global_economy \%>\% 
+tsibbledata::global_economy \%>\%
   filter(Country == "Australia") \%>\%
   model(ARIMA(log(GDP) ~ Population))
-
 }
 \seealso{
 \href{https://otexts.com/fpp3/arima.html}{Forecasting: Principles and Practices, ARIMA models (chapter 9)}

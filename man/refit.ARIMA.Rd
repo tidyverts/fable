@@ -27,14 +27,12 @@ Applies a fitted ARIMA model to a new dataset.
 lung_deaths_male <- as_tsibble(mdeaths)
 lung_deaths_female <- as_tsibble(fdeaths)
 
-fit <- lung_deaths_male \%>\% 
-  model(ARIMA(value ~ 1 + pdq(2,0,0) + PDQ(2,1,0)))
-  
+fit <- lung_deaths_male \%>\%
+  model(ARIMA(value ~ 1 + pdq(2, 0, 0) + PDQ(2, 1, 0)))
+
 report(fit)
 
-fit \%>\% 
- refit(lung_deaths_female) \%>\% 
- report()
-
-
+fit \%>\%
+  refit(lung_deaths_female) \%>\%
+  report()
 }

@@ -146,13 +146,17 @@ transpose <- function(.l) {
 
 every <- function(.x, .p, ...) {
   for (i in seq_along(.x)) {
-    if (!rlang::is_true(.p(.x[[i]], ...))) return(FALSE)
+    if (!rlang::is_true(.p(.x[[i]], ...))) {
+      return(FALSE)
+    }
   }
   TRUE
 }
 some <- function(.x, .p, ...) {
   for (i in seq_along(.x)) {
-    if (rlang::is_true(.p(.x[[i]], ...))) return(TRUE)
+    if (rlang::is_true(.p(.x[[i]], ...))) {
+      return(TRUE)
+    }
   }
   FALSE
 }
@@ -177,39 +181,36 @@ accumulate_right <- function(.x, .f, ..., .init) {
   Reduce(f, .x, init = .init, right = TRUE, accumulate = TRUE)
 }
 
-invoke <- function(.f, .x, ..., .env = NULL){
+invoke <- function(.f, .x, ..., .env = NULL) {
   .env <- .env %||% parent.frame()
   args <- c(as.list(.x), list(...))
   do.call(.f, args, envir = .env)
 }
-imap <- function(.x, .f, ...){
+imap <- function(.x, .f, ...) {
   map2(.x, names(.x) %||% seq_along(.x), .f, ...)
 }
 
-capture_error <- function (code, otherwise = NULL, quiet = TRUE) 
-{
+capture_error <- function(code, otherwise = NULL, quiet = TRUE) {
   tryCatch(list(result = code, error = NULL), error = function(e) {
-    if (!quiet) 
+    if (!quiet) {
       message("Error: ", e$message)
+    }
     list(result = otherwise, error = e)
   }, interrupt = function(e) {
     stop("Terminated by user", call. = FALSE)
   })
 }
-safely <- function (.f, otherwise = NULL, quiet = TRUE) 
-{
+safely <- function(.f, otherwise = NULL, quiet = TRUE) {
   function(...) capture_error(.f(...), otherwise, quiet)
 }
-possibly <- function (.f, otherwise, quiet = TRUE) 
-{
+possibly <- function(.f, otherwise, quiet = TRUE) {
   force(otherwise)
   function(...) capture_error(.f(...), otherwise, quiet)$result
 }
-quietly <- function (.f) 
-{
+quietly <- function(.f) {
   function(...) suppressMessages(suppressWarnings(.f(...)))
 }
-compose <- function (...) {
+compose <- function(...) {
   fs <- lapply(list(...), match.fun)
   n <- length(fs)
   last <- fs[[n]]

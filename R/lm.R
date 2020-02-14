@@ -1,79 +1,81 @@
-lm_glance_measures <- function(fit){
+lm_glance_measures <- function(fit) {
   # Set up fit measures
-  res <- fit$residuals[complete.cases(fit$residuals),,drop = FALSE]
+  res <- fit$residuals[complete.cases(fit$residuals), , drop = FALSE]
   n <- length(res)
   rdf <- fit$df.residual
   edf <- n - rdf
   rank <- fit$rank
-  
+
   coef <- fit$coefficients
   intercept <- "(Intercept)" %in% rownames(coef)
 
   mss <- sum((fit$fitted - intercept * mean(fit$fitted))^2)
   rss <- sum(res^2)
-  resvar <- rss/rdf
-  
-  if(NROW(coef) - intercept == 0){
-    r.squared <- adj.r.squared <- 0 
+  resvar <- rss / rdf
+
+  if (NROW(coef) - intercept == 0) {
+    r.squared <- adj.r.squared <- 0
     fstatistic <- NA
     p.value <- NA
   }
-  else{
-    r.squared <- mss/(mss + rss)
-    adj.r.squared <- 1 - (1 - r.squared) * ((n - intercept)/rdf)
-    fstatistic <- (mss/(rank - intercept))/resvar
+  else {
+    r.squared <- mss / (mss + rss)
+    adj.r.squared <- 1 - (1 - r.squared) * ((n - intercept) / rdf)
+    fstatistic <- (mss / (rank - intercept)) / resvar
     p.value <- stats::pf(fstatistic, rank - intercept, rdf, lower.tail = FALSE)
   }
-  
+
   influence <- stats::lm.influence(fit)
-  
-  dev <- n * log(rss/n)
+
+  dev <- n * log(rss / n)
   aic <- dev + 2 * edf + 2
   k <- edf - 1
-  
-  loglik <- 0.5 * (- n * (log(2 * pi) + 1 - log(n) + log(rss)))
-  
+
+  loglik <- 0.5 * (-n * (log(2 * pi) + 1 - log(n) + log(rss)))
+
   list(
-    r_squared = r.squared, adj_r_squared = adj.r.squared, 
+    r_squared = r.squared, adj_r_squared = adj.r.squared,
     sigma2 = resvar, statistic = fstatistic,
     p_value = p.value, df = edf, log_lik = loglik,
     AIC = aic, AICc = aic + 2 * (k + 2) * (k + 3) / (n - k - 3),
     BIC = aic + (k + 2) * (log(n) - 2),
-    CV = mean((res/(1-influence$hat))^2, na.rm = TRUE),
+    CV = mean((res / (1 - influence$hat))^2, na.rm = TRUE),
     deviance = rss, df.residual = rdf, rank = rank
   )
 }
 
-lm_tidy_measures <- function(fit){
-  tibble(term = names(coef(fit))[!is.na(coef(fit))]%||%chr(),
-         !!!as_tibble(`colnames<-`(coef(summary(fit)), c("estimate", "std.error", "statistic", "p.value"))))
+lm_tidy_measures <- function(fit) {
+  tibble(
+    term = names(coef(fit))[!is.na(coef(fit))] %||% chr(),
+    !!!as_tibble(`colnames<-`(coef(summary(fit)), c("estimate", "std.error", "statistic", "p.value")))
+  )
 }
 
-train_tslm <- function(.data, specials, ...){
+train_tslm <- function(.data, specials, ...) {
   y <- invoke(cbind, unclass(.data)[measured_vars(.data)])
   xreg <- specials$xreg[[1]]
-  
+
   keep <- complete.cases(xreg) & complete.cases(y)
-  fit <- stats::lm.fit(xreg[keep,,drop = FALSE], y[keep,,drop = FALSE])
+  fit <- stats::lm.fit(xreg[keep, , drop = FALSE], y[keep, , drop = FALSE])
   resid <- matrix(nrow = nrow(y), ncol = ncol(y))
-  resid[keep,] <- as.matrix(fit$residuals)
+  resid[keep, ] <- as.matrix(fit$residuals)
   fit$residuals <- resid
   fit$fitted <- y - fit$residuals
-  
-  if(is_empty(fit$coefficients)){
+
+  if (is_empty(fit$coefficients)) {
     fit$coefficients <- matrix(nrow = 0, ncol = NCOL(y))
   }
   else {
     fit$coefficients <- as.matrix(fit$coefficients)
   }
   colnames(fit$coefficients) <- colnames(y)
-  
+
   structure(
     list(
       coef = fit$coefficients,
       fits = fit$fitted,
       resid = fit$residuals,
-      fit =  lm_glance_measures(fit),
+      fit = lm_glance_measures(fit),
       model = fit
     ),
     class = "TSLM"
@@ -82,18 +84,18 @@ train_tslm <- function(.data, specials, ...){
 
 specials_tslm <- new_specials(
   common_xregs,
-  xreg = function(...){
+  xreg = function(...) {
     model_formula <- new_formula(
       lhs = NULL,
       rhs = reduce(enexprs(...), function(.x, .y) call2("+", .x, .y))
     )
     env <- parent.frame()
-    if(!exists("list", env)) env <- base_env()
-    
+    if (!exists("list", env)) env <- base_env()
+
     env$lag <- lag # Mask user defined lag to retain history when forecasting
     xreg <- model.frame(model_formula, data = env, na.action = stats::na.pass)
     mm <- model.matrix(terms(xreg), xreg)
-    if(NROW(mm) == 0 && identical(colnames(mm), "(Intercept)")){
+    if (NROW(mm) == 0 && identical(colnames(mm), "(Intercept)")) {
       return(matrix(data = 1, nrow = NROW(self$data), dimnames = list(NULL, "(Intercept)")))
     }
     mm
@@ -103,132 +105,131 @@ specials_tslm <- new_specials(
 )
 
 #' Fit a linear model with time series components
-#' 
-#' The model formula will be handled using [`stats::model.matrix()`], and so 
+#'
+#' The model formula will be handled using [`stats::model.matrix()`], and so
 #' the the same approach to include interactions in [`stats::lm()`] applies when
 #' specifying the `formula`. In addition to [`stats::lm()`], it is possible to
 #' include [`common_xregs`] in the model formula, such as `trend()`, `season()`,
 #' and `fourier()`.
-#' 
+#'
 #' @aliases report.TSLM
-#' 
+#'
 #' @param formula Model specification.
-#' 
+#'
 #' @section Specials:
-#' 
+#'
 #' \subsection{xreg}{
 #' Exogenous regressors can be included in an ARIMA model without explicitly using the `xreg()` special. Common exogenous regressor specials as specified in [`common_xregs`] can also be used. These regressors are handled using [stats::model.frame()], and so interactions and other functionality behaves similarly to [stats::lm()].
 #' \preformatted{
 #' xreg(...)
 #' }
-#' 
+#'
 #' \tabular{ll}{
 #'   `...`      \tab Bare expressions for the exogenous regressors (such as `log(x)`)
 #' }
 #' }
-#' 
+#'
 #' @return A model specification.
-#' 
-#' @seealso 
+#'
+#' @seealso
 #' [`stats::lm()`], [`stats::model.matrix()`]
 #' [Forecasting: Principles and Practices, Time series regression models (chapter 6)](https://otexts.com/fpp3/regression.html)
-#' 
-#' @examples 
-#' as_tsibble(USAccDeaths) %>% 
+#'
+#' @examples
+#' as_tsibble(USAccDeaths) %>%
 #'   model(lm = TSLM(log(value) ~ trend() + season()))
-#' 
+#'
 #' library(tsibbledata)
-#' olympic_running %>% 
-#'   model(TSLM(Time ~ trend())) %>% 
+#' olympic_running %>%
+#'   model(TSLM(Time ~ trend())) %>%
 #'   interpolate(olympic_running)
-#' 
 #' @export
-TSLM <- function(formula){
-  tslm_model <- new_model_class("TSLM", train = train_tslm,
-                                specials = specials_tslm, origin = NULL)
+TSLM <- function(formula) {
+  tslm_model <- new_model_class("TSLM",
+    train = train_tslm,
+    specials = specials_tslm, origin = NULL
+  )
   new_model_definition(tslm_model, !!enquo(formula))
 }
 
 #' @inherit fitted.ARIMA
-#' 
-#' @examples 
-#' as_tsibble(USAccDeaths) %>% 
-#'   model(lm = TSLM(log(value) ~ trend() + season())) %>% 
+#'
+#' @examples
+#' as_tsibble(USAccDeaths) %>%
+#'   model(lm = TSLM(log(value) ~ trend() + season())) %>%
 #'   fitted()
-#' 
 #' @export
-fitted.TSLM <- function(object, ...){
+fitted.TSLM <- function(object, ...) {
   object$fits
 }
 
 #' @inherit residuals.ARIMA
-#' 
-#' @examples 
-#' as_tsibble(USAccDeaths) %>% 
-#'   model(lm = TSLM(log(value) ~ trend() + season())) %>% 
+#'
+#' @examples
+#' as_tsibble(USAccDeaths) %>%
+#'   model(lm = TSLM(log(value) ~ trend() + season())) %>%
 #'   residuals()
-#'   
 #' @export
-residuals.TSLM <- function(object, ...){
+residuals.TSLM <- function(object, ...) {
   object$resid
 }
 
 #' Glance a TSLM
-#' 
+#'
 #' Construct a single row summary of the TSLM model.
-#' 
+#'
 #' Contains the R squared (`r_squared`), variance of residuals (`sigma2`),
 #' the log-likelihood (`log_lik`), and information criterion (`AIC`, `AICc`, `BIC`).
-#' 
+#'
 #' @inheritParams generics::glance
-#' 
+#'
 #' @return A one row tibble summarising the model's fit.
-#' 
-#' @examples 
-#' as_tsibble(USAccDeaths) %>% 
-#'   model(lm = TSLM(log(value) ~ trend() + season())) %>% 
+#'
+#' @examples
+#' as_tsibble(USAccDeaths) %>%
+#'   model(lm = TSLM(log(value) ~ trend() + season())) %>%
 #'   glance()
-#' 
 #' @export
-glance.TSLM <- function(x, ...){
+glance.TSLM <- function(x, ...) {
   as_tibble(x$fit)
 }
 
 #' @inherit tidy.ARIMA
-#' 
-#' @examples 
-#' as_tsibble(USAccDeaths) %>% 
-#'   model(lm = TSLM(log(value) ~ trend() + season())) %>% 
+#'
+#' @examples
+#' as_tsibble(USAccDeaths) %>%
+#'   model(lm = TSLM(log(value) ~ trend() + season())) %>%
 #'   tidy()
-#' 
 #' @export
-tidy.TSLM <- function(x, ...){
+tidy.TSLM <- function(x, ...) {
   rdf <- x$model$df.residual
   res <- split(x$resid, col(x$resid))
   rss <- map_dbl(res, function(resid) sum(resid^2, na.rm = TRUE))
-  resvar <- rss/rdf
+  resvar <- rss / rdf
   rank <- x$model$rank
-  
+
   R <- chol2inv(x$model$qr$qr[seq_len(rank), seq_len(rank), drop = FALSE])
-  
+
   se <- rep(NA_real_, nrow(x$coef))
-  se[!is.na(x$coef)] <- sqrt(diag(R) * resvar) #map(resvar, function(resvar) sqrt(diag(R) * resvar)) #for multiple response tslm
-  
-  out <- dplyr::as_tibble(x$coef, rownames = "term") %>% 
+  se[!is.na(x$coef)] <- sqrt(diag(R) * resvar) # map(resvar, function(resvar) sqrt(diag(R) * resvar)) #for multiple response tslm
+
+  out <- dplyr::as_tibble(x$coef, rownames = "term") %>%
     tidyr::gather(".response", "estimate", !!!syms(colnames(x$coef)))
-  if(NCOL(x$coef) == 1) out[[".response"]] <- NULL
-  out %>% 
-    mutate(std.error = unlist(se),
-           statistic = !!sym("estimate") / !!sym("std.error"),
-           p.value = 2 * stats::pt(abs(!!sym("statistic")), rdf, lower.tail = FALSE))
+  if (NCOL(x$coef) == 1) out[[".response"]] <- NULL
+  out %>%
+    mutate(
+      std.error = unlist(se),
+      statistic = !!sym("estimate") / !!sym("std.error"),
+      p.value = 2 * stats::pt(abs(!!sym("statistic")), rdf, lower.tail = FALSE)
+    )
 }
 
 #' @export
-report.TSLM <- function(object, digits = max(3, getOption("digits") - 3), ...){
+report.TSLM <- function(object, digits = max(3, getOption("digits") - 3), ...) {
   cat("\nResiduals:\n")
   glance <- glance(object)
   intercept <- "(Intercept)" %in% rownames(object$coef)
-  
+
   rdf <- glance$df.residual
   if (rdf > 5L) {
     res <- residuals(object)
@@ -236,185 +237,190 @@ report.TSLM <- function(object, digits = max(3, getOption("digits") - 3), ...){
     names(res_qt) <- c("Min", "1Q", "Median", "3Q", "Max")
     print(res_qt, digits = digits, ...)
   }
-  
+
   cat("\nCoefficients:\n")
   coef <- tidy(object)
-  coef_mat <- as.matrix(coef[ncol(coef)-c(3:0)])
+  coef_mat <- as.matrix(coef[ncol(coef) - c(3:0)])
   colnames(coef_mat) <- c("Estimate", "Std. Error", "t value", "Pr(>|t|)")
   rownames(coef_mat) <- coef$term
-  stats::printCoefmat(coef_mat, digits = digits,
-                      signif.stars = getOption("show.signif.stars"), ...)
-  
-  cat(sprintf("\nResidual standard error: %s on %s degrees of freedom\n",
-              format(signif(sqrt(glance$sigma2), digits)), rdf))
+  stats::printCoefmat(coef_mat,
+    digits = digits,
+    signif.stars = getOption("show.signif.stars"), ...
+  )
+
+  cat(sprintf(
+    "\nResidual standard error: %s on %s degrees of freedom\n",
+    format(signif(sqrt(glance$sigma2), digits)), rdf
+  ))
   if (!is.na(glance$statistic)) {
-    cat(sprintf("Multiple R-squared: %s,\tAdjusted R-squared: %s\nF-statistic: %s on %s and %s DF, p-value: %s\n",
-                formatC(glance$r_squared, digits = digits), 
-                formatC(glance$adj_r_squared, digits = digits),
-                formatC(glance$statistic, digits = digits),
-                format(glance$rank - intercept), format(rdf),
-                format.pval(glance$p_value)))
+    cat(sprintf(
+      "Multiple R-squared: %s,\tAdjusted R-squared: %s\nF-statistic: %s on %s and %s DF, p-value: %s\n",
+      formatC(glance$r_squared, digits = digits),
+      formatC(glance$adj_r_squared, digits = digits),
+      formatC(glance$statistic, digits = digits),
+      format(glance$rank - intercept), format(rdf),
+      format.pval(glance$p_value)
+    ))
   }
   invisible(object)
 }
 
 #' @inherit forecast.ARIMA
 #' @importFrom stats predict
-#' 
-#' @examples 
-#' as_tsibble(USAccDeaths) %>% 
-#'   model(lm = TSLM(log(value) ~ trend() + season())) %>% 
-#'   forecast()
 #'
+#' @examples
+#' as_tsibble(USAccDeaths) %>%
+#'   model(lm = TSLM(log(value) ~ trend() + season())) %>%
+#'   forecast()
 #' @export
-forecast.TSLM <- function(object, new_data, specials = NULL, bootstrap = FALSE, 
-                          times = 5000, ...){
+forecast.TSLM <- function(object, new_data, specials = NULL, bootstrap = FALSE,
+                          times = 5000, ...) {
   coef <- object$coef
   rank <- object$model$rank
   qr <- object$model$qr
   piv <- qr$pivot[seq_len(rank)]
-  
+
   # Get xreg
   xreg <- specials$xreg[[1]]
-  
-  if (rank < ncol(xreg)) 
+
+  if (rank < ncol(xreg)) {
     warn("prediction from a rank-deficient fit may be misleading")
-  
+  }
+
   fc <- xreg[, piv, drop = FALSE] %*% coef[piv]
-  
+
   # Intervals
-  if (bootstrap){ # Compute prediction intervals using simulations
-    sim <- map(seq_len(times), function(x){
+  if (bootstrap) { # Compute prediction intervals using simulations
+    sim <- map(seq_len(times), function(x) {
       generate(object, new_data, specials, bootstrap = TRUE)[[".sim"]]
     }) %>%
-      transpose %>%
+      transpose() %>%
       map(as.numeric)
     se <- map_dbl(sim, stats::sd)
     dist <- dist_sim(sim)
-  }  else {
+  } else {
     resvar <- object$fit$sigma2
-    
+
     if (rank > 0) {
       XRinv <- xreg[, piv] %*% qr.solve(qr.R(qr)[seq_len(rank), seq_len(rank)])
       ip <- drop(XRinv^2 %*% rep(resvar, rank))
     }
-    else{
+    else {
       ip <- rep(0, length(fc))
     }
-    
+
     se <- sqrt(ip + resvar)
     dist <- dist_normal(fc, se)
   }
-  
+
   construct_fc(fc, se, dist)
 }
 
 #' @inherit generate.ETS
-#' 
-#' @examples 
-#' as_tsibble(USAccDeaths) %>% 
-#'   model(lm = TSLM(log(value) ~ trend() + season())) %>% 
+#'
+#' @examples
+#' as_tsibble(USAccDeaths) %>%
+#'   model(lm = TSLM(log(value) ~ trend() + season())) %>%
 #'   generate()
-#' 
 #' @export
-generate.TSLM <- function(x, new_data, specials, bootstrap = FALSE, ...){
+generate.TSLM <- function(x, new_data, specials, bootstrap = FALSE, ...) {
   # Get xreg
   xreg <- specials$xreg[[1]]
 
   coef <- x$coef
   piv <- x$model$qr$pivot[seq_len(x$model$rank)]
   pred <- xreg[, piv, drop = FALSE] %*% coef[piv]
-  
-  if(!(".innov" %in% new_data)){
-    if(bootstrap){
+
+  if (!(".innov" %in% new_data)) {
+    if (bootstrap) {
       res <- residuals(x)
       new_data$.innov <- sample(na.omit(res) - mean(res, na.rm = TRUE),
-                                     NROW(new_data), replace = TRUE)
+        NROW(new_data),
+        replace = TRUE
+      )
     }
-    else{
-      vars <- x$fit$sigma2/x$fit$df.residual
+    else {
+      vars <- x$fit$sigma2 / x$fit$df.residual
       new_data$.innov <- stats::rnorm(length(pred), sd = sqrt(vars))
     }
   }
-  
+
   transmute(new_data, .sim = pred + !!sym(".innov"))
 }
 
 #' @inherit interpolate.ARIMA
-#' 
-#' @examples 
+#'
+#' @examples
 #' library(tsibbledata)
-#' 
-#' olympic_running %>% 
-#'   model(lm = TSLM(Time ~ trend())) %>% 
+#'
+#' olympic_running %>%
+#'   model(lm = TSLM(Time ~ trend())) %>%
 #'   interpolate(olympic_running)
-#'   
 #' @export
-interpolate.TSLM <- function(object, new_data, specials, ...){
+interpolate.TSLM <- function(object, new_data, specials, ...) {
   # Get inputs
   miss_val <- which(is.na(new_data[measured_vars(new_data)]))
   xreg <- specials$xreg[[1]]
-  
+
   # Make predictions
   coef <- object$coef
   piv <- object$model$qr$pivot[seq_len(object$model$rank)]
   pred <- xreg[miss_val, piv, drop = FALSE] %*% coef[piv]
-  
+
   # Update data
-  i <- (miss_val-1)%%NROW(new_data) + 1
-  j <- (miss_val-1)%/%NROW(new_data) + 1
+  i <- (miss_val - 1) %% NROW(new_data) + 1
+  j <- (miss_val - 1) %/% NROW(new_data) + 1
   idx_pos <- match(index_var(new_data), colnames(new_data))
-  j <- ifelse(j>=idx_pos, j + 1, j)
+  j <- ifelse(j >= idx_pos, j + 1, j)
   pos <- split(i, j)
-  for (i in seq_along(pos)){
+  for (i in seq_along(pos)) {
     new_data[[as.numeric(names(pos)[i])]][pos[[i]]] <- pred
   }
   new_data
 }
 
 #' Refit a `TSLM`
-#' 
+#'
 #' Applies a fitted `TSLM` to a new dataset.
-#' 
+#'
 #' @inheritParams refit.ARIMA
-#' 
-#' @examples 
+#'
+#' @examples
 #' lung_deaths_male <- as_tsibble(mdeaths)
 #' lung_deaths_female <- as_tsibble(fdeaths)
-#' 
-#' fit <- lung_deaths_male %>% 
+#'
+#' fit <- lung_deaths_male %>%
 #'   model(TSLM(value ~ trend() + season()))
-#'   
+#'
 #' report(fit)
-#' 
-#' fit %>% 
-#'  refit(lung_deaths_female) %>% 
-#'  report()
-#' 
+#'
+#' fit %>%
+#'   refit(lung_deaths_female) %>%
+#'   report()
 #' @export
-refit.TSLM <- function(object, new_data, specials = NULL, reestimate = FALSE, ...){
+refit.TSLM <- function(object, new_data, specials = NULL, reestimate = FALSE, ...) {
   # Update data for re-evaluation
-  if(reestimate){
+  if (reestimate) {
     return(train_tslm(new_data, specials, ...))
   }
-  
+
   # Get inputs
   y <- invoke(cbind, unclass(new_data)[measured_vars(new_data)])
   xreg <- specials$xreg[[1]]
-  
+
   fit <- object$model
   coef <- object$coef
   fit$qr <- qr(xreg)
   piv <- fit$qr$pivot[seq_len(fit$rank)]
   fit$fitted.values <- xreg[, piv, drop = FALSE] %*% coef[piv]
   fit$residuals <- y - fit$fitted.values
-  
+
   structure(
     list(
       coef = fit$coefficients,
       fits = fit$fitted,
       resid = fit$residuals,
-      fit =  lm_glance_measures(fit),
+      fit = lm_glance_measures(fit),
       model = fit
     ),
     class = "TSLM"
@@ -422,6 +428,6 @@ refit.TSLM <- function(object, new_data, specials = NULL, reestimate = FALSE, ..
 }
 
 #' @export
-model_sum.TSLM <- function(x){
+model_sum.TSLM <- function(x) {
   "TSLM"
 }

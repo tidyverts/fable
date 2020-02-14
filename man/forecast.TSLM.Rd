@@ -33,8 +33,7 @@ A list of forecasts.
 Produces forecasts from a trained model.
 }
 \examples{
-as_tsibble(USAccDeaths) \%>\% 
-  model(lm = TSLM(log(value) ~ trend() + season())) \%>\% 
+as_tsibble(USAccDeaths) \%>\%
+  model(lm = TSLM(log(value) ~ trend() + season())) \%>\%
   forecast()
-
 }
