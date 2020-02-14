@@ -426,7 +426,7 @@ specials_arima <- new_specials(
 #' @param greedy Should the stepwise search move to the next best option immediately?
 #' @param approximation Should CSS (conditional sum of squares) be used during model selection? The default (`NULL`) will use the approximation if there are more than 150 observations or if the seasonal period is greater than 12.
 #' @param order_constraint A logical predicate on the orders of `p`, `d`, `q`,
-#' `P`, `D` and `Q` to consider in the search.
+#' `P`, `D` and `Q` to consider in the search. See "Specials" for the meaning of these terms.
 #' @param unitroot_spec A specification of unit root tests to use in the
 #' selection of `d` and `D`. See [`unitroot_options()`] for more details.
 #' @param ... Further arguments for [`stats::arima()`]
@@ -449,7 +449,7 @@ specials_arima <- new_specials(
 #'
 #' @section Specials:
 #' 
-#' The _specials_ define the space over which `ARIMA` will search for the model that best fits the data. If the RHS of `formula` is left blank, the default search space is given by `pdq() + PDQ()`: ie, fit a model with seasonal and nonseasonal terms, but no exogenous regressors (other than a mean). Note that a seasonal model requires at least 2 full seasons' worth of data; if this is not available, `ARIMA` will revert to a nonseasonal model with a warning.
+#' The _specials_ define the space over which `ARIMA` will search for the model that best fits the data. If the RHS of `formula` is left blank, the default search space is given by `pdq() + PDQ()`: that is, a model with candidate seasonal and nonseasonal terms, but no exogenous regressors (other than a mean). Note that a seasonal model requires at least 2 full seasons' worth of data; if this is not available, `ARIMA` will revert to a nonseasonal model with a warning.
 #' 
 #' \subsection{pdq}{
 #' The `pdq` special is used to specify non-seasonal components of the model.
@@ -468,7 +468,7 @@ specials_arima <- new_specials(
 #' }
 #'
 #' \subsection{PDQ}{
-#' The `PDQ` special is used to specify seasonal components of the model. To force a nonseasonal fit, specify `PDQ(0, 0, 0)` in the RHS of the model formula. Note that simply omitting `PDQ` will _not_ result in a nonseasonal fit.
+#' The `PDQ` special is used to specify seasonal components of the model. To force a nonseasonal fit, specify `PDQ(0, 0, 0)` in the RHS of the model formula. Note that simply omitting `PDQ` from the formula will _not_ result in a nonseasonal fit.
 #' \preformatted{
 #' PDQ(P = 0:2, D = 0:1, Q = 0:2, period = NULL,
 #'     P_init = 1, Q_init = 1)

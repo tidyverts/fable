@@ -28,7 +28,7 @@ ARIMA(
 \item{approximation}{Should CSS (conditional sum of squares) be used during model selection? The default (\code{NULL}) will use the approximation if there are more than 150 observations or if the seasonal period is greater than 12.}
 
 \item{order_constraint}{A logical predicate on the orders of \code{p}, \code{d}, \code{q},
-\code{P}, \code{D} and \code{Q} to consider in the search.}
+\code{P}, \code{D} and \code{Q} to consider in the search. See "Specials" for the meaning of these terms.}
 
 \item{unitroot_spec}{A specification of unit root tests to use in the
 selection of \code{d} and \code{D}. See \code{\link[=unitroot_options]{unitroot_options()}} for more details.}
@@ -66,6 +66,8 @@ where \eqn{\mu} is the mean of \eqn{(1-B)^d y_t}{(1-B)ᵈ yₜ} and \eqn{c = \mu
 \section{Specials}{
 
 
+The \emph{specials} define the space over which \code{ARIMA} will search for the model that best fits the data. If the RHS of \code{formula} is left blank, the default search space is given by \code{pdq() + PDQ()}: that is, a model with candidate seasonal and nonseasonal terms, but no exogenous regressors (other than a mean). Note that a seasonal model requires at least 2 full seasons' worth of data; if this is not available, \code{ARIMA} will revert to a nonseasonal model with a warning.
+
 \subsection{pdq}{
 The \code{pdq} special is used to specify non-seasonal components of the model.
 \preformatted{
@@ -83,7 +85,7 @@ pdq(p = 0:5, d = 0:2, q = 0:5,
 }
 
 \subsection{PDQ}{
-The \code{PDQ} special is used to specify seasonal components of the model.
+The \code{PDQ} special is used to specify seasonal components of the model. To force a nonseasonal fit, specify \code{PDQ(0, 0, 0)} in the RHS of the model formula. Note that simply omitting \code{PDQ} from the formula will \emph{not} result in a nonseasonal fit.
 \preformatted{
 PDQ(P = 0:2, D = 0:1, Q = 0:2, period = NULL,
     P_init = 1, Q_init = 1)
@@ -98,8 +100,6 @@ PDQ(P = 0:2, D = 0:1, Q = 0:2, period = NULL,
 \code{Q_init}  \tab If \code{stepwise = TRUE}, \code{Q_init} provides the initial value for \code{Q} for the stepwise search procedure.
 }
 }
-
-If the RHS of \code{formula} is left blank, \code{ARIMA} will use a default search space of \code{pdq() + PDQ()}, ie, fit a model with seasonal and nonseasonal terms (plus a mean). Note that a seasonal model requires at least 2 full seasons' worth of data; if this is not available, \code{ARIMA} will revert to a nonseasonal model with a warning.
 
 \subsection{xreg}{
 Exogenous regressors can be included in an ARIMA model without explicitly using the \code{xreg()} special. Common exogenous regressor specials as specified in \code{\link{common_xregs}} can also be used. These regressors are handled using \code{\link[stats:model.frame]{stats::model.frame()}}, and so interactions and other functionality behaves similarly to \code{\link[stats:lm]{stats::lm()}}.

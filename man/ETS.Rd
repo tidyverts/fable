@@ -57,25 +57,25 @@ data. (See Hyndman, et al, 2002, below.)
 \subsection{error}{
 The \code{error} special is used to specify the form of the error term.
 \preformatted{
-error(method)
+error(method = c("A", "M"))
 }
 
 \tabular{ll}{
-\code{method}     \tab The form of the error term: either additive ("A") or multiplicative ("M"). If the error is multiplicative, the data must be non-negative.
+\code{method}     \tab The form of the error term: either additive ("A") or multiplicative ("M"). If the error is multiplicative, the data must be non-negative. The default is to choose this from the data.
 }
 }
 
 \subsection{trend}{
 The \code{trend} special is used to specify the form of the trend term and associated parameters.
 \preformatted{
-trend(method,
+trend(method = c("N", "A", "C"),
       alpha = NULL, alpha_range = c(1e-04, 0.9999),
       beta = NULL, beta_range = c(1e-04, 0.9999),
       phi = NULL, phi_range = c(0.8, 0.98))
 }
 
 \tabular{ll}{
-\code{method}     \tab The form of the trend term: either none ("N"), additive ("A"), multiplicative ("M") or damped variants ("Ad", "Md").\cr
+\code{method}     \tab The form of the trend term: either none ("N"), additive ("A"), multiplicative ("M") or damped variants ("Ad", "Md"). The default is to choose this from the data.\cr
 \code{alpha}      \tab The value of the smoothing parameter for the level. If \code{alpha = 0}, the level will not change over time. Conversely, if \code{alpha = 1} the level will update similarly to a random walk process. \cr
 \code{alpha_range} \tab If \code{alpha=NULL}, \code{alpha_range} provides bounds for the optimised value of \code{alpha}.\cr
 \code{beta}       \tab The value of the smoothing parameter for the slope. If \code{beta = 0}, the slope will not change over time. Conversely, if \code{beta = 1} the slope will have no memory of past slopes. \cr
@@ -86,14 +86,14 @@ trend(method,
 }
 
 \subsection{season}{
-The \code{season} special is used to specify the form of the seasonal term and associated parameters.
+The \code{season} special is used to specify the form of the seasonal term and associated parameters. To force a nonseasonal model, do not omit this term; instead use \code{season(method = "N")}.
 \preformatted{
-season(method, period = NULL,
+season(method = c("N", "A", "M"), period = NULL,
        gamma = NULL, gamma_range = c(1e-04, 0.9999))
 }
 
 \tabular{ll}{
-\code{method}     \tab The form of the seasonal term: either none ("N"), additive ("A") or multiplicative ("M").\cr
+\code{method}     \tab The form of the seasonal term: either none ("N"), additive ("A") or multiplicative ("M"). The default is to choose this from the data.\cr
 \code{period}     \tab The periodic nature of the seasonality. This can be either a number indicating the number of observations in each seasonal period, or text to indicate the duration of the seasonal window (for example, annual seasonality would be "1 year").  \cr
 \code{gamma}      \tab The value of the smoothing parameter for the seasonal pattern. If \code{gamma = 0}, the seasonal pattern will not change over time. Conversely, if \code{gamma = 1} the seasonality will have no memory of past seasonal periods. \cr
 \code{gamma_range} \tab If \code{gamma=NULL}, \code{gamma_range} provides bounds for the optimised value of \code{gamma}.

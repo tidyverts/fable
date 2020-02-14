@@ -202,25 +202,25 @@ specials_ets <- new_specials(
 #' \subsection{error}{
 #' The `error` special is used to specify the form of the error term.
 #' \preformatted{
-#' error(method)
+#' error(method = c("A", "M"))
 #' }
 #'
 #' \tabular{ll}{
-#'   `method`     \tab The form of the error term: either additive ("A") or multiplicative ("M"). If the error is multiplicative, the data must be non-negative.
+#'   `method`     \tab The form of the error term: either additive ("A") or multiplicative ("M"). If the error is multiplicative, the data must be non-negative. The default is to choose this from the data.
 #' }
 #' }
 #'
 #' \subsection{trend}{
 #' The `trend` special is used to specify the form of the trend term and associated parameters.
 #' \preformatted{
-#' trend(method,
+#' trend(method = c("N", "A", "C"),
 #'       alpha = NULL, alpha_range = c(1e-04, 0.9999),
 #'       beta = NULL, beta_range = c(1e-04, 0.9999),
 #'       phi = NULL, phi_range = c(0.8, 0.98))
 #' }
 #'
 #' \tabular{ll}{
-#'   `method`     \tab The form of the trend term: either none ("N"), additive ("A"), multiplicative ("M") or damped variants ("Ad", "Md").\cr
+#'   `method`     \tab The form of the trend term: either none ("N"), additive ("A"), multiplicative ("M") or damped variants ("Ad", "Md"). The default is to choose this from the data.\cr
 #'   `alpha`      \tab The value of the smoothing parameter for the level. If `alpha = 0`, the level will not change over time. Conversely, if `alpha = 1` the level will update similarly to a random walk process. \cr
 #'   `alpha_range` \tab If `alpha=NULL`, `alpha_range` provides bounds for the optimised value of `alpha`.\cr
 #'   `beta`       \tab The value of the smoothing parameter for the slope. If `beta = 0`, the slope will not change over time. Conversely, if `beta = 1` the slope will have no memory of past slopes. \cr
@@ -231,14 +231,14 @@ specials_ets <- new_specials(
 #' }
 #'
 #' \subsection{season}{
-#' The `season` special is used to specify the form of the seasonal term and associated parameters.
+#' The `season` special is used to specify the form of the seasonal term and associated parameters. To force a nonseasonal model, do not omit this term; instead use `season(method = "N")`.
 #' \preformatted{
-#' season(method, period = NULL,
+#' season(method = c("N", "A", "M"), period = NULL,
 #'        gamma = NULL, gamma_range = c(1e-04, 0.9999))
 #' }
 #'
 #' \tabular{ll}{
-#'   `method`     \tab The form of the seasonal term: either none ("N"), additive ("A") or multiplicative ("M").\cr
+#'   `method`     \tab The form of the seasonal term: either none ("N"), additive ("A") or multiplicative ("M"). The default is to choose this from the data.\cr
 #'   `period`     \tab The periodic nature of the seasonality. This can be either a number indicating the number of observations in each seasonal period, or text to indicate the duration of the seasonal window (for example, annual seasonality would be "1 year").  \cr
 #'   `gamma`      \tab The value of the smoothing parameter for the seasonal pattern. If `gamma = 0`, the seasonal pattern will not change over time. Conversely, if `gamma = 1` the seasonality will have no memory of past seasonal periods. \cr
 #'   `gamma_range` \tab If `gamma=NULL`, `gamma_range` provides bounds for the optimised value of `gamma`.
