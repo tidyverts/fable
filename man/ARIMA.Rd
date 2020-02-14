@@ -68,6 +68,8 @@ where \eqn{\mu} is the mean of \eqn{(1-B)^d y_t}{(1-B)ᵈ yₜ} and \eqn{c = \mu
 
 The \emph{specials} define the space over which \code{ARIMA} will search for the model that best fits the data. If the RHS of \code{formula} is left blank, the default search space is given by \code{pdq() + PDQ()}: that is, a model with candidate seasonal and nonseasonal terms, but no exogenous regressors (other than a mean). Note that a seasonal model requires at least 2 full seasons' worth of data; if this is not available, \code{ARIMA} will revert to a nonseasonal model with a warning.
 
+To specify a model fully (avoid automatic selection), the intercept and \code{pdq()/PDQ()} values must be specified: for example \code{formula = ~ 1 + pdq(1, 1, 1) + PDQ(1, 0, 0)}.
+
 \subsection{pdq}{
 The \code{pdq} special is used to specify non-seasonal components of the model.
 \preformatted{
