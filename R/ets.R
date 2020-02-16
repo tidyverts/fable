@@ -206,21 +206,21 @@ specials_ets <- new_specials(
 #' }
 #'
 #' \tabular{ll}{
-#'   `method`     \tab The form of the error term: either additive ("A") or multiplicative ("M"). If the error is multiplicative, the data must be non-negative. The default is to choose this from the data.
+#'   `method`     \tab The form of the error term: either additive ("A") or multiplicative ("M"). If the error is multiplicative, the data must be non-negative. All specified forms are tested on the data, and the one that gives the best fit (lowest `ic`) will be kept.
 #' }
 #' }
 #'
 #' \subsection{trend}{
 #' The `trend` special is used to specify the form of the trend term and associated parameters.
 #' \preformatted{
-#' trend(method = c("N", "A", "C"),
+#' trend(method = c("N", "A", "Ad"),
 #'       alpha = NULL, alpha_range = c(1e-04, 0.9999),
 #'       beta = NULL, beta_range = c(1e-04, 0.9999),
 #'       phi = NULL, phi_range = c(0.8, 0.98))
 #' }
 #'
 #' \tabular{ll}{
-#'   `method`     \tab The form of the trend term: either none ("N"), additive ("A"), multiplicative ("M") or damped variants ("Ad", "Md"). The default is to choose this from the data.\cr
+#'   `method`     \tab The form of the trend term: either none ("N"), additive ("A"), multiplicative ("M") or damped variants ("Ad", "Md"). The default is to choose this from the data, from one of the "N", "A" or "Ad" options.\cr
 #'   `alpha`      \tab The value of the smoothing parameter for the level. If `alpha = 0`, the level will not change over time. Conversely, if `alpha = 1` the level will update similarly to a random walk process. \cr
 #'   `alpha_range` \tab If `alpha=NULL`, `alpha_range` provides bounds for the optimised value of `alpha`.\cr
 #'   `beta`       \tab The value of the smoothing parameter for the slope. If `beta = 0`, the slope will not change over time. Conversely, if `beta = 1` the slope will have no memory of past slopes. \cr

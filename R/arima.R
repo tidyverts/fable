@@ -449,9 +449,9 @@ specials_arima <- new_specials(
 #'
 #' @section Specials:
 #' 
-#' The _specials_ define the space over which `ARIMA` will search for the model that best fits the data. If the RHS of `formula` is left blank, the default search space is given by `pdq() + PDQ()`: that is, a model with candidate seasonal and nonseasonal terms, but no exogenous regressors (other than a mean). Note that a seasonal model requires at least 2 full seasons' worth of data; if this is not available, `ARIMA` will revert to a nonseasonal model with a warning.
+#' The _specials_ define the space over which `ARIMA` will search for the model that best fits the data. If the RHS of `formula` is left blank, the default search space is given by `pdq() + PDQ()`: that is, a model with candidate seasonal and nonseasonal terms, but no exogenous regressors. Note that a seasonal model requires at least 2 full seasons' worth of data; if this is not available, `ARIMA` will revert to a nonseasonal model with a warning.
 #'
-#' To specify a model fully (avoid automatic selection), the intercept and `pdq()/PDQ()` values must be specified: for example `formula = ~ 1 + pdq(1, 1, 1) + PDQ(1, 0, 0)`.
+#' To specify a model fully (avoid automatic selection), the intercept and `pdq()/PDQ()` values must be specified: for example `formula = response ~ 1 + pdq(1, 1, 1) + PDQ(1, 0, 0)`.
 #' 
 #' \subsection{pdq}{
 #' The `pdq` special is used to specify non-seasonal components of the model.
