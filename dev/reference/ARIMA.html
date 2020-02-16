@@ -190,7 +190,7 @@ framework.</p>
     <tr>
       <th>order_constraint</th>
       <td><p>A logical predicate on the orders of <code>p</code>, <code>d</code>, <code>q</code>,
-<code>P</code>, <code>D</code> and <code>Q</code> to consider in the search.</p></td>
+<code>P</code>, <code>D</code> and <code>Q</code> to consider in the search. See "Specials" for the meaning of these terms.</p></td>
     </tr>
     <tr>
       <th>unitroot_spec</th>
@@ -224,6 +224,8 @@ are equivalent, the coefficients for the constant/mean will differ.</p>
     
 
 
+<p>The <em>specials</em> define the space over which <code>ARIMA</code> will search for the model that best fits the data. If the RHS of <code>formula</code> is left blank, the default search space is given by <code>pdq() + PDQ()</code>: that is, a model with candidate seasonal and nonseasonal terms, but no exogenous regressors. Note that a seasonal model requires at least 2 full seasons' worth of data; if this is not available, <code>ARIMA</code> will revert to a nonseasonal model with a warning.</p>
+<p>To specify a model fully (avoid automatic selection), the intercept and <code>pdq()/PDQ()</code> values must be specified: for example <code>formula = response ~ 1 + pdq(1, 1, 1) + PDQ(1, 0, 0)</code>.</p>
 <h3>pdq</h3>
 <p>The <code>pdq</code> special is used to specify non-seasonal components of the model.</p><pre>
 pdq(p = 0:5, d = 0:2, q = 0:5,
@@ -241,7 +243,7 @@ pdq(p = 0:5, d = 0:2, q = 0:5,
 
 
 <h3>PDQ</h3>
-<p>The <code>PDQ</code> special is used to specify seasonal components of the model.</p><pre>
+<p>The <code>PDQ</code> special is used to specify seasonal components of the model. To force a nonseasonal fit, specify <code>PDQ(0, 0, 0)</code> in the RHS of the model formula. Note that simply omitting <code>PDQ</code> from the formula will <em>not</em> result in a nonseasonal fit.</p><pre>
 PDQ(P = 0:2, D = 0:1, Q = 0:2, period = NULL,
     P_init = 1, Q_init = 1)
 </pre>
@@ -278,8 +280,8 @@ xreg(...)
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Manual ARIMA specification</span>
 <span class='no'>USAccDeaths</span> <span class='kw'>%&gt;%</span>
-  <span class='no'>as_tsibble</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='kw'>arima</span> <span class='kw'>=</span> <span class='fu'>ARIMA</span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>value</span>) ~ <span class='fl'>0</span> + <span class='fu'>pdq</span>(<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>1</span>) + <span class='fu'>PDQ</span>(<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>1</span>))) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'>model</span>(<span class='kw'>arima</span> <span class='kw'>=</span> <span class='fu'>ARIMA</span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>value</span>) ~ <span class='fl'>0</span> + <span class='fu'>pdq</span>(<span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span>) + <span class='fu'>PDQ</span>(<span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span>))) <span class='kw'>%&gt;%</span>
   <span class='fu'>report</span>()</div><div class='output co'>#&gt; Series: value 
 #&gt; Model: ARIMA(0,1,1)(0,1,1)[12] 
 #&gt; Transformation: log(.x) 
@@ -306,8 +308,7 @@ xreg(...)
 #&gt; </span><span style='color: #555555;'># Key:     Country [1]</span><span>
 #&gt;   Country   `ARIMA(log(GDP) ~ Population)`
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;model&gt;</span><span>                       
-#&gt; </span><span style='color: #555555;'>1</span><span> Australia </span><span style='color: #555555;'>&lt;LM w/ ARIMA(2,0,0) errors&gt;</span><span>   </div><div class='input'>
-</div></span></pre>
+#&gt; </span><span style='color: #555555;'>1</span><span> Australia </span><span style='color: #555555;'>&lt;LM w/ ARIMA(2,0,0) errors&gt;</span><span>   </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
