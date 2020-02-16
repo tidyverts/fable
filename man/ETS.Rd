@@ -54,6 +54,10 @@ data. (See Hyndman, et al, 2002, below.)
 \section{Specials}{
 
 
+The \emph{specials} define the space over which \code{ETS} will search for the model that best fits the data. If the RHS of \code{formula} is left blank, the default search space is given by \code{trend() + season() + error()}: that is, a model with candidate seasonal and nonseasonal terms. To specify a nonseasonal model, include the term \code{season("N")} in the RHS of \code{formula}. Note that a seasonal model requires at least 2 full seasons' worth of data.
+
+\code{ETS} currently does not support exogenous regressors.
+
 \subsection{error}{
 The \code{error} special is used to specify the form of the error term.
 \preformatted{
