@@ -199,9 +199,9 @@ specials_ets <- new_specials(
 #'
 #' @section Specials:
 #'
-#' The _specials_ define the space over which `ETS` will search for the model that best fits the data. If the RHS of `formula` is left blank, the default search space is given by `trend() + season() + error()`: that is, a model with candidate seasonal and nonseasonal terms. To specify a nonseasonal model, include the term `season("N")` in the RHS of `formula`. Note that a seasonal model requires at least 2 full seasons' worth of data.
+#' The _specials_ define the methods and parameters for the components (error, trend, and seasonality) of an ETS model. If more than one method is specified, `ETS` will consider all combinations of the specified models and select the model which best fits the data (minimising `ic`). The method argument for each specials have reasonable defaults, so if a component is not specified an appropriate method will be chosen automatically. To specify a nonseasonal model, include the term `season("N")` in the RHS of `formula`.
 #' 
-#' `ETS` currently does not support exogenous regressors.
+#' An ETS model does not support exogenous regressors.
 #' 
 #' \subsection{error}{
 #' The `error` special is used to specify the form of the error term.
