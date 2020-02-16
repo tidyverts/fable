@@ -199,7 +199,7 @@ specials_ets <- new_specials(
 #'
 #' @section Specials:
 #'
-#' The _specials_ define the methods and parameters for the components (error, trend, and seasonality) of an ETS model. If more than one method is specified, `ETS` will consider all combinations of the specified models and select the model which best fits the data (minimising `ic`). The method argument for each specials have reasonable defaults, so if a component is not specified an appropriate method will be chosen automatically. To specify a nonseasonal model, include the term `season("N")` in the RHS of `formula`.
+#' The _specials_ define the methods and parameters for the components (error, trend, and seasonality) of an ETS model. If more than one method is specified, `ETS` will consider all combinations of the specified models and select the model which best fits the data (minimising `ic`). The method argument for each specials have reasonable defaults, so if a component is not specified an appropriate method will be chosen automatically.
 #' 
 #' An ETS model does not support exogenous regressors.
 #' 
@@ -235,7 +235,7 @@ specials_ets <- new_specials(
 #' }
 #'
 #' \subsection{season}{
-#' The `season` special is used to specify the form of the seasonal term and associated parameters. To force a nonseasonal model, do not omit this term; instead use `season(method = "N")`.
+#' The `season` special is used to specify the form of the seasonal term and associated parameters. To specify a nonseasonal model you would include `season(method = "N")`.
 #' \preformatted{
 #' season(method = c("N", "A", "M"), period = NULL,
 #'        gamma = NULL, gamma_range = c(1e-04, 0.9999))
