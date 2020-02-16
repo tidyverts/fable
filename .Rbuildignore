@@ -15,3 +15,4 @@ Makefile
 ^doc$
 ^Meta$
 ^.github$
+^\.lintr$

@@ -54,6 +54,10 @@ data. (See Hyndman, et al, 2002, below.)
 \section{Specials}{
 
 
+The \emph{specials} define the methods and parameters for the components (error, trend, and seasonality) of an ETS model. If more than one method is specified, \code{ETS} will consider all combinations of the specified models and select the model which best fits the data (minimising \code{ic}). The method argument for each specials have reasonable defaults, so if a component is not specified an appropriate method will be chosen automatically.
+
+An ETS model does not support exogenous regressors.
+
 \subsection{error}{
 The \code{error} special is used to specify the form of the error term.
 \preformatted{
@@ -61,7 +65,7 @@ error(method = c("A", "M"))
 }
 
 \tabular{ll}{
-\code{method}     \tab The form of the error term: either additive ("A") or multiplicative ("M"). If the error is multiplicative, the data must be non-negative.
+\code{method}     \tab The form of the error term: either additive ("A") or multiplicative ("M"). If the error is multiplicative, the data must be non-negative. All specified methods are tested on the data, and the one that gives the best fit (lowest \code{ic}) will be kept.
 }
 }
 
@@ -75,7 +79,7 @@ trend(method = c("N", "A", "Ad"),
 }
 
 \tabular{ll}{
-\code{method}     \tab The form of the trend term: either none ("N"), additive ("A"), multiplicative ("M") or damped variants ("Ad", "Md").\cr
+\code{method}     \tab The form of the trend term: either none ("N"), additive ("A"), multiplicative ("M") or damped variants ("Ad", "Md"). All specified methods are tested on the data, and the one that gives the best fit (lowest \code{ic}) will be kept.\cr
 \code{alpha}      \tab The value of the smoothing parameter for the level. If \code{alpha = 0}, the level will not change over time. Conversely, if \code{alpha = 1} the level will update similarly to a random walk process. \cr
 \code{alpha_range} \tab If \code{alpha=NULL}, \code{alpha_range} provides bounds for the optimised value of \code{alpha}.\cr
 \code{beta}       \tab The value of the smoothing parameter for the slope. If \code{beta = 0}, the slope will not change over time. Conversely, if \code{beta = 1} the slope will have no memory of past slopes. \cr
@@ -86,14 +90,14 @@ trend(method = c("N", "A", "Ad"),
 }
 
 \subsection{season}{
-The \code{season} special is used to specify the form of the seasonal term and associated parameters.
+The \code{season} special is used to specify the form of the seasonal term and associated parameters. To specify a nonseasonal model you would include \code{season(method = "N")}.
 \preformatted{
 season(method = c("N", "A", "M"), period = NULL,
        gamma = NULL, gamma_range = c(1e-04, 0.9999))
 }
 
 \tabular{ll}{
-\code{method}     \tab The form of the seasonal term: either none ("N"), additive ("A") or multiplicative ("M").\cr
+\code{method}     \tab The form of the seasonal term: either none ("N"), additive ("A") or multiplicative ("M"). All specified methods are tested on the data, and the one that gives the best fit (lowest \code{ic}) will be kept.\cr
 \code{period}     \tab The periodic nature of the seasonality. This can be either a number indicating the number of observations in each seasonal period, or text to indicate the duration of the seasonal window (for example, annual seasonality would be "1 year").  \cr
 \code{gamma}      \tab The value of the smoothing parameter for the seasonal pattern. If \code{gamma = 0}, the seasonal pattern will not change over time. Conversely, if \code{gamma = 1} the seasonality will have no memory of past seasonal periods. \cr
 \code{gamma_range} \tab If \code{gamma=NULL}, \code{gamma_range} provides bounds for the optimised value of \code{gamma}.
