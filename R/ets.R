@@ -210,7 +210,7 @@ specials_ets <- new_specials(
 #' }
 #'
 #' \tabular{ll}{
-#'   `method`     \tab The form of the error term: either additive ("A") or multiplicative ("M"). If the error is multiplicative, the data must be non-negative. All specified forms are tested on the data, and the one that gives the best fit (lowest `ic`) will be kept.
+#'   `method`     \tab The form of the error term: either additive ("A") or multiplicative ("M"). If the error is multiplicative, the data must be non-negative. All specified methods are tested on the data, and the one that gives the best fit (lowest `ic`) will be kept.
 #' }
 #' }
 #'
@@ -224,7 +224,7 @@ specials_ets <- new_specials(
 #' }
 #'
 #' \tabular{ll}{
-#'   `method`     \tab The form of the trend term: either none ("N"), additive ("A"), multiplicative ("M") or damped variants ("Ad", "Md"). The default is to choose this from the data, from one of the "N", "A" or "Ad" options.\cr
+#'   `method`     \tab The form of the trend term: either none ("N"), additive ("A"), multiplicative ("M") or damped variants ("Ad", "Md"). All specified methods are tested on the data, and the one that gives the best fit (lowest `ic`) will be kept.\cr
 #'   `alpha`      \tab The value of the smoothing parameter for the level. If `alpha = 0`, the level will not change over time. Conversely, if `alpha = 1` the level will update similarly to a random walk process. \cr
 #'   `alpha_range` \tab If `alpha=NULL`, `alpha_range` provides bounds for the optimised value of `alpha`.\cr
 #'   `beta`       \tab The value of the smoothing parameter for the slope. If `beta = 0`, the slope will not change over time. Conversely, if `beta = 1` the slope will have no memory of past slopes. \cr
@@ -242,7 +242,7 @@ specials_ets <- new_specials(
 #' }
 #'
 #' \tabular{ll}{
-#'   `method`     \tab The form of the seasonal term: either none ("N"), additive ("A") or multiplicative ("M"). The default is to choose this from the data.\cr
+#'   `method`     \tab The form of the seasonal term: either none ("N"), additive ("A") or multiplicative ("M"). All specified methods are tested on the data, and the one that gives the best fit (lowest `ic`) will be kept.\cr
 #'   `period`     \tab The periodic nature of the seasonality. This can be either a number indicating the number of observations in each seasonal period, or text to indicate the duration of the seasonal window (for example, annual seasonality would be "1 year").  \cr
 #'   `gamma`      \tab The value of the smoothing parameter for the seasonal pattern. If `gamma = 0`, the seasonal pattern will not change over time. Conversely, if `gamma = 1` the seasonality will have no memory of past seasonal periods. \cr
 #'   `gamma_range` \tab If `gamma=NULL`, `gamma_range` provides bounds for the optimised value of `gamma`.
