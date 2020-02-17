@@ -59,7 +59,7 @@ The \emph{specials} define the methods and parameters for the components (error,
 There are a couple of points to note about \code{ETS}:
 \itemize{
 \item It does not support exogenous regressors.
-\item It does not support missing values. You replace any missing values in the data with imputed values, eg using \code{tidyr::complete}, before fitting the model.
+\item It does not support missing values. You replace any missing values in the data with imputed values, eg using \code{tidyr::fill}, before fitting the model.
 }
 
 \subsection{error}{
