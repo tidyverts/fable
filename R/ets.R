@@ -204,7 +204,7 @@ specials_ets <- new_specials(
 #' There are a couple of points to note about `ETS`:
 #'
 #' - It does not support exogenous regressors.
-#' - It does not support missing values. You replace any missing values in the data with imputed values, eg using `tidyr::complete`, before fitting the model.
+#' - It does not support missing values. You replace any missing values in the data with imputed values, eg using `tidyr::fill`, before fitting the model.
 #' 
 #' \subsection{error}{
 #' The `error` special is used to specify the form of the error term.
