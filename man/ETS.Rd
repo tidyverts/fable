@@ -56,10 +56,10 @@ data. (See Hyndman, et al, 2002, below.)
 
 The \emph{specials} define the methods and parameters for the components (error, trend, and seasonality) of an ETS model. If more than one method is specified, \code{ETS} will consider all combinations of the specified models and select the model which best fits the data (minimising \code{ic}). The method argument for each specials have reasonable defaults, so if a component is not specified an appropriate method will be chosen automatically.
 
-There are a couple of points to note about \code{ETS}:
+There are a couple of limtations to note about ETS models:
 \itemize{
 \item It does not support exogenous regressors.
-\item It does not support missing values. You replace any missing values in the data with imputed values, eg using \code{tidyr::fill}, before fitting the model.
+\item It does not support missing values. You can complete missing values in the data with imputed values (e.g. using \code{interpolate()} or \code{tidyr::fill}) before fitting the model.
 }
 
 \subsection{error}{
