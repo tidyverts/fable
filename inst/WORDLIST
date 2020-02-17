@@ -9,6 +9,7 @@ backtransformations
 backtransforming
 com
 dfrac
+eg
 fabletools
 fourier
 fpp
@@ -22,6 +23,7 @@ Md
 MMA
 NNAR
 NNETAR
+nonseasonal
 org
 otexts
 parameterisations
