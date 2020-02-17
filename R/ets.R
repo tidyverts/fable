@@ -201,10 +201,10 @@ specials_ets <- new_specials(
 #'
 #' The _specials_ define the methods and parameters for the components (error, trend, and seasonality) of an ETS model. If more than one method is specified, `ETS` will consider all combinations of the specified models and select the model which best fits the data (minimising `ic`). The method argument for each specials have reasonable defaults, so if a component is not specified an appropriate method will be chosen automatically.
 #' 
-#' There are a couple of points to note about `ETS`:
+#' There are a couple of limtations to note about ETS models:
 #'
 #' - It does not support exogenous regressors.
-#' - It does not support missing values. You replace any missing values in the data with imputed values, eg using `tidyr::fill`, before fitting the model.
+#' - It does not support missing values. You can complete missing values in the data with imputed values (e.g. using `interpolate()` or `tidyr::fill`) before fitting the model.
 #' 
 #' \subsection{error}{
 #' The `error` special is used to specify the form of the error term.
