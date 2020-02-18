@@ -825,6 +825,11 @@ arima_constant <- function(n, d, D, period) {
 }
 
 #' Options for the unit root tests for order of integration
+#' 
+#' By default, a kpss test (via [`feasts::unitroot_kpss()`]) will be performed 
+#' for testing the required first order differences, and a test of the seasonal 
+#' strength (via [`feasts::feat_stl()`] seasonal_strength) being above the 0.64 
+#' threshold is used for determining seasonal required differences.
 #'
 #' @param ndiffs_alpha,nsdiffs_alpha The level for the test specified in the `pval` functions As long as `pval < alpha`, differences will be added.
 #' @param ndiffs_pvalue,nsdiffs_pvalue A function (or lambda expression) which returns the probability of the . As long as `pval < alpha`, differences will be added.
@@ -837,6 +842,20 @@ arima_constant <- function(n, d, D, period) {
 #' @export
 unitroot_options <- function(ndiffs_alpha = 0.05, nsdiffs_alpha = 0.05,
                              ndiffs_pvalue = ~ feasts::unitroot_kpss(.)["kpss_pvalue"],
-                             nsdiffs_pvalue = ~ feasts::feat_stl(., .period)[2] < 0.64) {
+                             nsdiffs_pvalue = ur_seasonal_strength(0.64)) {
   as.list(environment())
+}
+
+globalVariables(".period")
+
+ur_seasonal_strength <- function(threshold = 0.64){
+  function(x){
+    features <- feasts::feat_stl(x, .period)
+    seas_strength <- grepl("^seasonal_strength_", names(features))
+    if(!any(seas_strength)){
+      FALSE
+    } else{
+      features[seas_strength] < threshold
+    }
+  }
 }
