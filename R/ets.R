@@ -204,7 +204,7 @@ specials_ets <- new_specials(
 #' There are a couple of limtations to note about ETS models:
 #'
 #' - It does not support exogenous regressors.
-#' - It does not support missing values. You can complete missing values in the data with imputed values (e.g. using `interpolate()` or `tidyr::fill`) before fitting the model.
+#' - It does not support missing values. You can complete missing values in the data with imputed values (e.g. with [tidyr::fill()], or by fitting a different model type and then calling [fabletools::interpolate()]) before fitting the model.
 #' 
 #' \subsection{error}{
 #' The `error` special is used to specify the form of the error term.
