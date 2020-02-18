@@ -43,7 +43,10 @@
 
 
 <meta property="og:title" content="Options for the unit root tests for order of integration — unitroot_options" />
-<meta property="og:description" content="Options for the unit root tests for order of integration" />
+<meta property="og:description" content="By default, a kpss test (via feasts::unitroot_kpss()) will be performed
+for testing the required first order differences, and a test of the seasonal
+strength (via feasts::feat_stl() seasonal_strength) being above the 0.64
+threshold is used for determining seasonal required differences." />
 <meta property="og:image" content="https://fable.tidyverts.org/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -144,14 +147,17 @@
     </div>
 
     <div class="ref-description">
-    <p>Options for the unit root tests for order of integration</p>
+    <p>By default, a kpss test (via <code><a href='https://feasts.tidyverts.org/reference/unitroot.html'>feasts::unitroot_kpss()</a></code>) will be performed
+for testing the required first order differences, and a test of the seasonal
+strength (via <code><a href='https://feasts.tidyverts.org/reference/feat_stl.html'>feasts::feat_stl()</a></code> seasonal_strength) being above the 0.64
+threshold is used for determining seasonal required differences.</p>
     </div>
 
     <pre class="usage"><span class='fu'>unitroot_options</span>(
   <span class='kw'>ndiffs_alpha</span> <span class='kw'>=</span> <span class='fl'>0.05</span>,
   <span class='kw'>nsdiffs_alpha</span> <span class='kw'>=</span> <span class='fl'>0.05</span>,
   <span class='kw'>ndiffs_pvalue</span> <span class='kw'>=</span> ~<span class='kw pkg'>feasts</span><span class='kw ns'>::</span><span class='fu'><a href='https://feasts.tidyverts.org/reference/unitroot.html'>unitroot_kpss</a></span>(<span class='no'>.</span>)[<span class='st'>"kpss_pvalue"</span>],
-  <span class='kw'>nsdiffs_pvalue</span> <span class='kw'>=</span> ~<span class='kw pkg'>feasts</span><span class='kw ns'>::</span><span class='fu'><a href='https://feasts.tidyverts.org/reference/feat_stl.html'>feat_stl</a></span>(<span class='no'>.</span>, <span class='no'>.period</span>)[<span class='fl'>2</span>] <span class='kw'>&lt;</span> <span class='fl'>0.64</span>
+  <span class='kw'>nsdiffs_pvalue</span> <span class='kw'>=</span> <span class='fu'>ur_seasonal_strength</span>(<span class='fl'>0.64</span>)
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>

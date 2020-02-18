@@ -213,7 +213,7 @@ data. (See Hyndman, et al, 2002, below.)</p>
 
 
 <p>The <em>specials</em> define the methods and parameters for the components (error, trend, and seasonality) of an ETS model. If more than one method is specified, <code>ETS</code> will consider all combinations of the specified models and select the model which best fits the data (minimising <code>ic</code>). The method argument for each specials have reasonable defaults, so if a component is not specified an appropriate method will be chosen automatically.</p>
-<p>There are a couple of limtations to note about ETS models:</p><ul>
+<p>There are a couple of limitations to note about ETS models:</p><ul>
 <li><p>It does not support exogenous regressors.</p></li>
 <li><p>It does not support missing values. You can complete missing values in the data with imputed values (e.g. with <code><a href='https://tidyr.tidyverse.org/reference/fill.html'>tidyr::fill()</a></code>, or by fitting a different model type and then calling <code><a href='https://fabletools.tidyverts.org/reference/reexports.html'>fabletools::interpolate()</a></code>) before fitting the model.</p></li>
 </ul>
