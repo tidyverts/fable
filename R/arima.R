@@ -301,7 +301,10 @@ This is generally discouraged, consider removing the constant or reducing the nu
   maroot <- if (is_empty(ma) || !any(abs(ma) > 0)) cpl() else polyroot(c(1, ma[seq_len(max(which(abs(ma) > 1e-8)))]))
 
   fit_coef <- coef(best)
-  fit_se <- sqrt(diag(best$var.coef))
+  
+  fit_se <- set_names(numeric(length(fit_coef)), names(fit_coef))
+  fit_se[colnames(best$var.coef)] <- sqrt(diag(best$var.coef))
+  
   if (is_empty(fit_se)) {
     fit_se <- NULL
   }
