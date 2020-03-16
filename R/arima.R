@@ -674,6 +674,9 @@ forecast.ARIMA <- function(object, new_data = NULL, specials = NULL,
     abort("Bootstrapped forecasts for ARIMA are not yet implemented.")
   }
   xreg <- specials$xreg[[1]]$xreg
+  
+  # Drop unused rank deficient xreg
+  xreg <- xreg[colnames(xreg) %in% names(object$model$coef)]
 
   if (object$spec$constant) {
     intercept <- arima_constant(
