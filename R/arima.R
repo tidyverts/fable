@@ -52,7 +52,7 @@ train_arima <- function(.data, specials, ic = "aicc",
           paste("`", colnames(xreg)[bad_regressors], "`", sep = "", collapse = ", ")
         ))
 
-        xreg <- xreg[, -bad_regressors]
+        xreg <- xreg[, -bad_regressors, drop = FALSE]
       }
 
       # Finally find residuals from regression in order
