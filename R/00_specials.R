@@ -189,5 +189,5 @@ common_xregs <- list(
 )
 
 as_model_matrix <- function(tbl) {
-  stats::model.matrix(~., data = tbl)[, -1, drop = FALSE]
+  stats::model.matrix(~0 + ., data = tbl)#[, -1, drop = FALSE]
 }
