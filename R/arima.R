@@ -676,7 +676,7 @@ forecast.ARIMA <- function(object, new_data = NULL, specials = NULL,
   xreg <- specials$xreg[[1]]$xreg
   
   # Drop unused rank deficient xreg
-  xreg <- xreg[colnames(xreg) %in% names(object$model$coef)]
+  xreg <- xreg[,colnames(xreg) %in% names(object$model$coef), drop = FALSE]
 
   if (object$spec$constant) {
     intercept <- arima_constant(
