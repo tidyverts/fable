@@ -4,15 +4,8 @@
 \alias{forecast.ETS}
 \title{Forecast a model from the fable package}
 \usage{
-\method{forecast}{ETS}(
-  object,
-  new_data,
-  specials = NULL,
-  simulate = FALSE,
-  bootstrap = FALSE,
-  times = 5000,
-  ...
-)
+\method{forecast}{ETS}(object, new_data, specials = NULL,
+  simulate = FALSE, bootstrap = FALSE, times = 5000, ...)
 }
 \arguments{
 \item{object}{The time series model used to produce the forecasts}

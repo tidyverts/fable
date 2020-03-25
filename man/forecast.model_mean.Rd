@@ -4,14 +4,8 @@
 \alias{forecast.model_mean}
 \title{Forecast a model from the fable package}
 \usage{
-\method{forecast}{model_mean}(
-  object,
-  new_data,
-  specials = NULL,
-  bootstrap = FALSE,
-  times = 5000,
-  ...
-)
+\method{forecast}{model_mean}(object, new_data, specials = NULL,
+  bootstrap = FALSE, times = 5000, ...)
 }
 \arguments{
 \item{object}{The time series model used to produce the forecasts}

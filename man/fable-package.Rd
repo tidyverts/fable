@@ -6,7 +6,7 @@
 \alias{fable-package}
 \title{fable: Forecasting Models for Tidy Time Series}
 \description{
-\if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
+\if{html}{\figure{logo.png}{options: align='right'}}
 
 Provides a collection of commonly used univariate and multivariate
     time series forecasting models including automatically selected exponential 

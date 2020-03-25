@@ -5,16 +5,9 @@
 \alias{report.ARIMA}
 \title{Estimate an ARIMA model}
 \usage{
-ARIMA(
-  formula,
-  ic = c("aicc", "aic", "bic"),
-  stepwise = TRUE,
-  greedy = TRUE,
-  approximation = NULL,
-  order_constraint = p + q + P + Q <= 6,
-  unitroot_spec = unitroot_options(),
-  ...
-)
+ARIMA(formula, ic = c("aicc", "aic", "bic"), stepwise = TRUE,
+  greedy = TRUE, approximation = NULL, order_constraint = p + q + P +
+  Q <= 6, unitroot_spec = unitroot_options(), ...)
 }
 \arguments{
 \item{formula}{Model specification (see "Specials" section).}
@@ -60,7 +53,6 @@ In stats and forecast, an ARIMA model is parameterised as:
 \deqn{(1-\phi_1B - \cdots - \phi_p B^p)(y_t' - \mu) = (1 + \theta_1 B + \cdots + \theta_q B^q)\varepsilon_t}{(1-φ₁B - ⋯ - φₚ Bᵖ)(1-B)ᵈ (yₜ - μ tᵈ/d!) = (1 + θ₁ B + ⋯ + θ_q B^q)εₜ}
 
 where \eqn{\mu} is the mean of \eqn{(1-B)^d y_t}{(1-B)ᵈ yₜ} and \eqn{c = \mu(1-\phi_1 - \cdots - \phi_p )}{c = μ(1-φ₁ - ⋯ - φₚ )}.
-
 }
 
 \section{Specials}{

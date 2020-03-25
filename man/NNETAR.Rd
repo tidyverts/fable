@@ -5,7 +5,8 @@
 \alias{report.NNETAR}
 \title{Neural Network Time Series Forecasts}
 \usage{
-NNETAR(formula, n_nodes = NULL, n_networks = 20, scale_inputs = TRUE, ...)
+NNETAR(formula, n_nodes = NULL, n_networks = 20, scale_inputs = TRUE,
+  ...)
 }
 \arguments{
 \item{formula}{Model specification (see "Specials" section).}
@@ -20,7 +21,7 @@ weights. These are then averaged when producing forecasts.}
 means and dividing by their respective standard deviations. Scaling is
 applied after transformations.}
 
-\item{...}{Other arguments passed to \verb{\link[nnet]\{nnet\}}.}
+\item{...}{Other arguments passed to \code{\link[nnet]{nnet}}.}
 }
 \value{
 A model specification.

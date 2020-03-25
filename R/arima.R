@@ -708,6 +708,49 @@ forecast.ARIMA <- function(object, new_data = NULL, specials = NULL,
   construct_fc(fc$pred, fc$se, dist_normal(fc$pred, fc$se))
 }
 
+#' Generate new data from a fable model
+#'
+#' Simulates future paths from a dataset using a fitted model. Innovations are
+#' sampled by the model's assumed error distribution. If `bootstrap` is `TRUE`,
+#' innovations will be sampled from the model's residuals. If `new_data`
+#' contains the `.innov` column, those values will be treated as innovations.
+#'
+#' @inheritParams forecast.ARIMA
+#' @param x A fitted model.
+#'
+#' @examples
+#' as_tsibble(USAccDeaths) %>%
+#'   model(ARIMA(log(value) ~ pdq(0, 1, 1) + PDQ(0, 1, 1))) %>%
+#'   generate(times = 100)
+#' @seealso [`fabletools::generate.mdl_df`]
+#'
+#' @export
+generate.ARIMA <- function(x, new_data, specials, bootstrap = FALSE, ...) {
+  f <- x$est$.fitted[NROW(x$est$.fitted)] #Takes the last value
+  print(f)
+  print(NROW(new_data))
+  if (!(".innov" %in% new_data)) {
+    if (bootstrap) {
+      res <- residuals(x)
+      new_data$.innov <- sample(na.omit(res) - mean(res, na.rm = TRUE),
+                                NROW(new_data),
+                                replace = TRUE
+      )
+    }
+    else {
+      new_data$.innov <- stats::rnorm(NROW(new_data),
+                                      sd = sqrt(x$fit$sigma2)
+      )
+    }
+  }
+  
+  new_data %>%
+    group_by_key() %>%
+    transmute(".sim" := f + !!sym(".innov"))
+  
+
+}
+
 
 #' Refit an ARIMA model
 #'

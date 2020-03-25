@@ -4,14 +4,8 @@
 \alias{refit.ETS}
 \title{Refit an ETS model}
 \usage{
-\method{refit}{ETS}(
-  object,
-  new_data,
-  specials = NULL,
-  reestimate = FALSE,
-  reinitialise = TRUE,
-  ...
-)
+\method{refit}{ETS}(object, new_data, specials = NULL,
+  reestimate = FALSE, reinitialise = TRUE, ...)
 }
 \arguments{
 \item{object}{The time series model used to produce the forecasts}
