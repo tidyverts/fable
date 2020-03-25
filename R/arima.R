@@ -726,12 +726,25 @@ forecast.ARIMA <- function(object, new_data = NULL, specials = NULL,
 #'
 #' @export
 generate.ARIMA <- function(x, new_data, specials, bootstrap = FALSE, ...) {
-  f <- x$est$.fitted[NROW(x$est$.fitted)] #Takes the last value
-  print(f)
-  print(NROW(new_data))
+  
+  f <- x$est$.fitted[NROW(x$est$.fitted)] #Takes the last value eventually remove this
+  
+  #Convert parameterisation from fable storage to Arima storage
+  arma<-x$model$arma
+  # Error check:
+  if (arma[7] < 0) {
+    stop("Value for seasonal difference is < 0. Must be >= 0")
+  }
+  else if ((sum(arma[c(3, 4, 7)]) > 0) && (arma[5] < 2)) {
+    stop("Invalid value for seasonal period")
+  }
+  
+  ###ADD CODE FOR XREG HERE###
+  
+  res <- residuals(x)
   if (!(".innov" %in% new_data)) {
     if (bootstrap) {
-      res <- residuals(x)
+      
       new_data$.innov <- sample(na.omit(res) - mean(res, na.rm = TRUE),
                                 NROW(new_data),
                                 replace = TRUE
@@ -744,6 +757,55 @@ generate.ARIMA <- function(x, new_data, specials, bootstrap = FALSE, ...) {
     }
   }
   
+  # Check for seasonal ARMA components and set flag accordingly. This will be used later in myarima.sim()
+  flag.s.arma <- (sum(arma[c(3, 4)]) > 0)
+  # Check for Seasonality in ARIMA model
+  if (sum(arma[c(3, 4, 7)]) > 0) {
+    
+    if (sum(x$model$model$phi) == 0) {
+      ar <- NULL
+    }
+    else {
+      ar <- as.double(x$model$model$phi)
+    }
+    if (sum(x$model$model$theta) == 0) {
+      ma <- NULL
+    }
+    else {
+      ma <- as.double(x$model$model$theta)
+    }
+    order <- c(length(ar), arma[6], length(ma))
+    model <- list(
+      order = order, ar = ar, ma = ma,  sd = sqrt(x$fit$sigma2), residuals = res,
+      seasonal.difference = arma[7], seasonal.period = arma[5], flag.seasonal.arma = flag.s.arma,
+      seasonal.order = arma[c(3, 7, 4)]
+    )
+  }
+  else {
+    #### Non-Seasonal ARIMA specific code: Set up the model
+    order <- arma[c(1, 6, 2)]
+    if (order[1] > 0) {
+      ar <- x$model$model$phi[1:order[1]]
+    } else {
+      ar <- NULL
+    }
+    if (order[3] > 0) {
+      ma <- x$model$model$theta[1:order[3]]
+    } else {
+      ma <- NULL
+    }
+    if (arma[2] != length(ma)) {
+      stop("MA length wrong")
+    } else if (arma[1] != length(ar)) {
+      stop("AR length wrong")
+    }
+    
+    model <- list(
+      order = arma[c(1, 6, 2)], ar = ar, ma = ma, sd = sqrt(x$fit$sigma2), residuals = res,
+      seasonal.difference = 0, flag.seasonal.arma = flag.s.arma, seasonal.order = c(0, 0, 0), seasonal.period = 1
+    )
+  }
+  print(model)
   new_data %>%
     group_by_key() %>%
     transmute(".sim" := f + !!sym(".innov"))
