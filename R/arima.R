@@ -727,90 +727,58 @@ forecast.ARIMA <- function(object, new_data = NULL, specials = NULL,
 #' @export
 generate.ARIMA <- function(x, new_data, specials, bootstrap = FALSE, ...) {
   
-  f <- x$est$.fitted[NROW(x$est$.fitted)] #Takes the last value eventually remove this
+  #Arguments for forecastpackage_function
   
-  #Convert parameterisation from fable storage to Arima storage
-  arma<-x$model$arma
-  # Error check:
-  if (arma[7] < 0) {
-    stop("Value for seasonal difference is < 0. Must be >= 0")
-  }
-  else if ((sum(arma[c(3, 4, 7)]) > 0) && (arma[5] < 2)) {
-    stop("Invalid value for seasonal period")
-  }
+  object<-x$model #Object, model info as Arima object
   
-  ###ADD CODE FOR XREG HERE###
+  #Build ts object of training data and bind
   
-  res <- residuals(x)
+  train<-x$est$.fitted+x$est$.resid #Training data (Check if robust to including xreg)
+  n_train<-length(train) #Length of training sample
+  start<-new_data$index[1]-n_train #Start of training sample
+  end<-new_data$index[1]-1 #End of training sample
+  suppressMessages({
+    train_tsib<-tsibble(seq(from=start,to=end,by = 1),train) #Create tsibble
+  })
+  train_ts<-as.ts(train_tsib) #Convert to ts
+  
+  
+  object$x<-train_ts #Bind ts object to model object 
+  
+  #Extract number forecasting horizion (input needed for forecast package function)
+  nsim<-length(unique(new_data$index))  
+  
+  #Extract number of replications that are needed
+  reps<-length(unique(new_data$.rep))
+  
+  #
   if (!(".innov" %in% new_data)) {
-    if (bootstrap) {
-      
-      new_data$.innov <- sample(na.omit(res) - mean(res, na.rm = TRUE),
-                                NROW(new_data),
-                                replace = TRUE
-      )
-    }
-    else {
-      new_data$.innov <- stats::rnorm(NROW(new_data),
-                                      sd = sqrt(x$fit$sigma2)
-      )
-    }
+    innov<-NULL
+  }else{
+    innov<-new_data$.innov
   }
   
-  # Check for seasonal ARMA components and set flag accordingly. This will be used later in myarima.sim()
-  flag.s.arma <- (sum(arma[c(3, 4)]) > 0)
-  # Check for Seasonality in ARIMA model
-  if (sum(arma[c(3, 4, 7)]) > 0) {
     
-    if (sum(x$model$model$phi) == 0) {
-      ar <- NULL
-    }
-    else {
-      ar <- as.double(x$model$model$phi)
-    }
-    if (sum(x$model$model$theta) == 0) {
-      ma <- NULL
-    }
-    else {
-      ma <- as.double(x$model$model$theta)
-    }
-    order <- c(length(ar), arma[6], length(ma))
-    model <- list(
-      order = order, ar = ar, ma = ma,  sd = sqrt(x$fit$sigma2), residuals = res,
-      seasonal.difference = arma[7], seasonal.period = arma[5], flag.seasonal.arma = flag.s.arma,
-      seasonal.order = arma[c(3, 7, 4)]
-    )
-  }
-  else {
-    #### Non-Seasonal ARIMA specific code: Set up the model
-    order <- arma[c(1, 6, 2)]
-    if (order[1] > 0) {
-      ar <- x$model$model$phi[1:order[1]]
-    } else {
-      ar <- NULL
-    }
-    if (order[3] > 0) {
-      ma <- x$model$model$theta[1:order[3]]
-    } else {
-      ma <- NULL
-    }
-    if (arma[2] != length(ma)) {
-      stop("MA length wrong")
-    } else if (arma[1] != length(ar)) {
-      stop("AR length wrong")
-    }
-    
-    model <- list(
-      order = arma[c(1, 6, 2)], ar = ar, ma = ma, sd = sqrt(x$fit$sigma2), residuals = res,
-      seasonal.difference = 0, flag.seasonal.arma = flag.s.arma, seasonal.order = c(0, 0, 0), seasonal.period = 1
-    )
-  }
-  print(model)
+  #Simulate future paths
+  
+  forecastpackage_function(object, 
+                           nsim=nsim,  
+                           xreg=NULL,  
+                           bootstrap=bootstrap,                             , 
+                           innov=innov,
+                           lambda=NULL)%>%
+    as.numeric()%>%
+    replicate(reps,.)->out
+  
+  paths<-as.vector(out) #strip out numbers only
+  
+  new_data$.paths<-paths #add to new_data
+
   new_data %>%
     group_by_key() %>%
-    transmute(".sim" := f + !!sym(".innov"))
+    transmute(".sim" := .paths) 
   
-
+  
 }
 
 
@@ -969,4 +937,315 @@ ur_seasonal_strength <- function(threshold = 0.64){
       features[seas_strength] < threshold
     }
   }
+}
+
+# Simulate ARIMA model starting with observed data x
+# This function is identical to one from the forecast package which in turn borrowed
+# from the arima.sim() function in the stats package.
+# Note that myarima.sim() does simulation conditional on the values of observed x, whereas
+# arima.sim() is unconditional on any observed x.
+
+myarima.sim <- function(model, n, x, e, ...) {
+  start.innov <- residuals(model)
+  innov <- e
+  data <- x
+  # Remove initial NAs
+  first.nonmiss <- which(!is.na(x))[1]
+  if (first.nonmiss > 1) {
+    tsp.x <- tsp(x)
+    start.x <- tsp.x[1] + (first.nonmiss - 1) / tsp.x[3]
+    x <- window(x, start = start.x)
+    start.innov <- window(start.innov, start = start.x)
+  }
+  model$x <- x
+  n.start <- length(x)
+  x <- ts(c(start.innov, innov), start = 1 - n.start, frequency = model$seasonal.period)
+  flag.noadjust <- FALSE
+  if (is.null(tsp(data))) {
+    data <- ts(data, frequency = 1, start = 1)
+  }
+  if (!is.list(model)) {
+    stop("'model' must be list")
+  }
+  if (n <= 0L) {
+    stop("'n' must be strictly positive")
+  }
+  p <- length(model$ar)
+  q <- length(model$ma)
+  d <- 0
+  D <- model$seasonal.difference
+  m <- model$seasonal.period
+  if (!is.null(ord <- model$order)) {
+    if (length(ord) != 3L) {
+      stop("'model$order' must be of length 3")
+    }
+    if (p != ord[1L]) {
+      stop("inconsistent specification of 'ar' order")
+    }
+    if (q != ord[3L]) {
+      stop("inconsistent specification of 'ma' order")
+    }
+    d <- ord[2L]
+    if (d != round(d) || d < 0) {
+      stop("number of differences must be a positive integer")
+    }
+  }
+  if (p) {
+    minroots <- min(Mod(polyroot(c(1, -model$ar))))
+    if (minroots <= 1) {
+      stop("'ar' part of model is not stationary")
+    }
+  }
+  if (length(model$ma)) {
+    # MA filtering
+    x <- stats::filter(x, c(1, model$ma), method = "convolution", sides = 1L)
+    x[seq_along(model$ma)] <- 0
+  }
+  ## AR "filtering"
+  len.ar <- length(model$ar)
+  
+  if (length(model$ar) && (len.ar <= length(data))) {
+    if ((D != 0) && (d != 0)) {
+      diff.data <- diff(data, lag = 1, differences = d)
+      diff.data <- diff(diff.data, lag = m, differences = D)
+    }
+    else if ((D != 0) && (d == 0)) {
+      diff.data <- diff(data, lag = model$seasonal.period, differences = D)
+    }
+    else if ((D == 0) && (d != 0)) {
+      diff.data <- diff(data, lag = 1, differences = d)
+    } else {
+      diff.data <- data
+    }
+    
+    x.new.innovations <- x[(length(start.innov) + 1):length(x)]
+    x.with.data <- c(diff.data, x.new.innovations)
+    
+    for (i in (length(diff.data) + 1):length(x.with.data))
+    {
+      lagged.x.values <- x.with.data[(i - len.ar):(i - 1)]
+      ar.coefficients <- model$ar[length(model$ar):1]
+      sum.multiplied.x <- sum((lagged.x.values * ar.coefficients)[abs(ar.coefficients) > .Machine$double.eps])
+      x.with.data[i] <- x.with.data[i] + sum.multiplied.x
+    }
+    
+    x.end <- x.with.data[(length(diff.data) + 1):length(x.with.data)]
+    x <- ts(x.end, start = 1, frequency = model$seasonal.period)
+    flag.noadjust <- TRUE
+  }
+  else if (length(model$ar)) # but data too short
+  {
+    # AR filtering for all other cases where AR is used.
+    x <- stats::filter(x, model$ar, method = "recursive")
+  }
+  if ((d == 0) && (D == 0) && (flag.noadjust == FALSE)) # Adjust to ensure end matches approximately
+  {
+    # Last 20 diffs
+    if (n.start >= 20) {
+      xdiff <- (model$x - x[1:n.start])[n.start - (19:0)]
+    } else {
+      xdiff <- model$x - x[1:n.start]
+    }
+    # If all same sign, choose last
+    if (all(sign(xdiff) == 1) || all(sign(xdiff) == -1)) {
+      xdiff <- xdiff[length(xdiff)]
+    } else { # choose mean.
+      xdiff <- mean(xdiff)
+    }
+    x <- x + xdiff
+  }
+  if ((n.start > 0) && (flag.noadjust == FALSE)) {
+    x <- x[-(1:n.start)]
+  }
+  
+  
+  ######## Undo all differences
+  
+  if ((D > 0) && (d == 0)) {
+    # Seasonal undifferencing, if there is no regular differencing
+    i <- length(data) - D * m + 1
+    seasonal.xi <- data[i:length(data)]
+    length.s.xi <- length(seasonal.xi)
+    x <- diffinv(x, lag = m, differences = D, xi = seasonal.xi)[-(1:length.s.xi)]
+  }
+  else if ((d > 0) && (D == 0)) {
+    # Regular undifferencing, if there is no seasonal differencing
+    x <- diffinv(x, differences = d, xi = data[length(data) - (d:1) + 1])[-(1:d)]
+  }
+  else if ((d > 0) && (D > 0)) {
+    # Undifferencing for where the differencing is both Seasonal and Non-Seasonal
+    # Regular first
+    delta.four <- diff(data, lag = m, differences = D)
+    regular.xi <- delta.four[(length(delta.four) - D):length(delta.four)]
+    x <- diffinv(x, differences = d, xi = regular.xi[length(regular.xi) - (d:1) + 1])[-(1:d)]
+    
+    # Then seasonal
+    i <- length(data) - D * m + 1
+    seasonal.xi <- data[i:length(data)]
+    length.s.xi <- length(seasonal.xi)
+    x <- diffinv(x, lag = m, differences = D, xi = seasonal.xi)
+    x <- x[-(1:length.s.xi)]
+  }
+  
+  x <- ts(x[1:n], frequency = frequency(data), start = tsp(data)[2] + 1 / tsp(data)[3])
+  return(x)
+}
+
+#The following function is a modified version of the forecast::simulate.Arima() function
+#The original function had an arguments 'future' and 'seed', both are kept as their 
+#default here allowing for code to be simplified.
+
+forecastpackage_function <- function(object, nsim=length(object$x),  xreg=NULL,  bootstrap=FALSE, innov=NULL, lambda=NULL,  ...) {
+  # Error check:
+  if (object$arma[7] < 0) {
+    stop("Value for seasonal difference is < 0. Must be >= 0")
+  }
+  else if ((sum(object$arma[c(3, 4, 7)]) > 0) && (object$arma[5] < 2)) {
+    stop("Invalid value for seasonal period")
+  }
+  if (!is.null(xreg)) {
+    xreg <- as.matrix(xreg)
+    nsim <- nrow(xreg)
+  }
+  
+  ####
+  # Random Seed Code
+  if (!is.null(innov)) {
+    nsim <- length(innov)
+  }
+  
+  
+  # Check for seasonal ARMA components and set flag accordingly. This will be used later in myarima.sim()
+  flag.s.arma <- (sum(object$arma[c(3, 4)]) > 0)
+  # Check for Seasonality in ARIMA model
+  if (sum(object$arma[c(3, 4, 7)]) > 0) {
+    if (sum(object$model$phi) == 0) {
+      ar <- NULL
+    }
+    else {
+      ar <- as.double(object$model$phi)
+    }
+    if (sum(object$model$theta) == 0) {
+      ma <- NULL
+    }
+    else {
+      ma <- as.double(object$model$theta)
+    }
+    order <- c(length(ar), object$arma[6], length(ma))
+    
+    model <- list(
+      order = order, ar = ar, ma = ma, sd = sqrt(object$sigma2), residuals = residuals(object),
+      seasonal.difference = object$arma[7], seasonal.period = object$arma[5], flag.seasonal.arma = flag.s.arma,
+      seasonal.order = object$arma[c(3, 7, 4)]
+    )
+    flag.seasonal.diff <- (object$arma[7] > 0)
+  }
+  else {
+    #### Non-Seasonal ARIMA specific code: Set up the model
+    order <- object$arma[c(1, 6, 2)]
+    if (order[1] > 0) {
+      ar <- object$model$phi[1:order[1]]
+    } else {
+      ar <- NULL
+    }
+    if (order[3] > 0) {
+      ma <- object$model$theta[1:order[3]]
+    } else {
+      ma <- NULL
+    }
+    if (object$arma[2] != length(ma)) {
+      stop("MA length wrong")
+    } else if (object$arma[1] != length(ar)) {
+      stop("AR length wrong")
+    }
+    
+    model <- list(
+      order = object$arma[c(1, 6, 2)], ar = ar, ma = ma, sd = sqrt(object$sigma2), residuals = residuals(object),
+      seasonal.difference = 0, flag.seasonal.arma = flag.s.arma, seasonal.order = c(0, 0, 0), seasonal.period = 1
+    )
+    flag.seasonal.diff <- FALSE
+    ### End non-seasonal ARIMA specific code
+  }
+  
+  
+  x <- object$x <- getResponse(object) #CHANGE THIS LINE
+  
+  if (is.null(tsp(x))) {
+    x <- ts(x, frequency = 1, start = 1)
+  }
+  
+  if (!is.null(lambda)) {
+    x <- BoxCox(x, lambda)
+    lambda <- attr(x, "lambda")
+  }
+  
+  n <- length(x)
+  if (bootstrap) {
+    res <- na.omit(c(model$residuals) - mean(model$residuals, na.rm = TRUE))
+    e <- sample(res, nsim, replace = TRUE)
+  }
+  else if (is.null(innov)) {
+    e <- rnorm(nsim, 0, model$sd)
+  } else if (length(innov) == nsim) {
+    e <- innov
+  } else {
+    stop("Length of innov must be equal to nsim")
+  }
+  
+  
+  use.drift <- is.element("drift", names(object$coef))
+  usexreg <- (!is.null(xreg) | use.drift)
+  xm <- oldxm <- 0
+  
+  if (!is.null(xreg)) {
+    xreg <- as.matrix(xreg)
+    if (nrow(xreg) < nsim) {
+      stop("Not enough rows in xreg")
+    } else {
+      xreg <- xreg[1:nsim, ]
+    }
+  }
+  if (use.drift) {
+    # Remove existing drift column
+    if (NCOL(xreg) == 1 && all(diff(xreg)==1)) {
+      xreg <- NULL
+    } else if(!is.null(colnames(xreg))) {
+      xreg <- xreg[, colnames(xreg)!="drift", drop = FALSE]
+    }
+    # Create new drift column for historical simulation
+    dft <- as.matrix(1:nsim)
+    # Adapt if future simulation
+    dft <- dft + n
+    # Add to xreg
+    xreg <- cbind(drift = dft, xreg)
+  }
+  narma <- sum(object$arma[1L:4L])
+  if (length(object$coef) > narma) {
+    if (names(object$coef)[narma + 1L] == "intercept") {
+      xreg <- cbind(intercept = rep(1, nsim), xreg)
+      object$xreg <- cbind(intercept = rep(1, n), object$xreg)
+    }
+    if (!is.null(xreg)) {
+      xm <- if (narma == 0) {
+        drop(as.matrix(xreg) %*% object$coef)
+      } else {
+        drop(as.matrix(xreg) %*% object$coef[-(1L:narma)])
+      }
+      oldxm <- if (narma == 0) {
+        drop(as.matrix(object$xreg) %*% object$coef)
+      } else {
+        drop(as.matrix(object$xreg) %*% object$coef[-(1L:narma)])
+      }
+    }
+  }
+  
+  
+  sim <- myarima.sim(model, nsim, x - oldxm, e = e) + xm
+  
+  if (!is.null(lambda)) {
+    sim <- InvBoxCox(sim, lambda)
+  }
+  
+  
+  return(sim)
 }
