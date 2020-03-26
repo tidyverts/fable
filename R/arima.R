@@ -751,7 +751,7 @@ generate.ARIMA <- function(x, new_data, specials, bootstrap = FALSE, ...) {
   #Extract number of replications that are needed
   reps<-length(unique(new_data$.rep))
   
-  #
+  #Allows user to define innovations
   if (!(".innov" %in% new_data)) {
     innov<-NULL
   }else{
@@ -764,7 +764,7 @@ generate.ARIMA <- function(x, new_data, specials, bootstrap = FALSE, ...) {
   forecastpackage_function(object, 
                            nsim=nsim,  
                            xreg=NULL,  
-                           bootstrap=bootstrap,                             , 
+                           bootstrap=bootstrap, 
                            innov=innov,
                            lambda=NULL)%>%
     as.numeric()%>%
