@@ -323,6 +323,8 @@ This is generally discouraged, consider removing the constant or reducing the nu
   }
 
   # Output model
+  best_spec <- as_tibble(model_opts[which.min(est_ic),])
+  best_spec[["period"]] <- period
   structure(
     list(
       par = tibble(
@@ -347,9 +349,9 @@ This is generally discouraged, consider removing the constant or reducing the nu
         AIC = best$aic, AICc = best$aicc, BIC = best$bic,
         ar_roots = list(arroot), ma_roots = list(maroot)
       ),
-      spec = as_tibble(model_opts[which.min(est_ic), ]) %>% mutate(period = period),
+      spec = best_spec,
       model = best,
-      xreg = xreg
+      tail = y[seq(length(y) - with(best_spec, max(d*2, D*period*2, length(best$model$phi))) + 1, length(y))]
     ),
     class = "ARIMA"
   )
@@ -708,6 +710,96 @@ forecast.ARIMA <- function(object, new_data = NULL, specials = NULL,
   construct_fc(fc$pred, fc$se, dist_normal(fc$pred, fc$se))
 }
 
+#' @inherit generate.ETS
+#' 
+#' @examples 
+#' fable_fit <- as_tsibble(USAccDeaths) %>%
+#'   model(model = ARIMA(value ~ 0 + pdq(0,1,1) + PDQ(0,1,1)))
+#' fable_fit %>% generate(times = 10)
+#' 
+#' @export
+generate.ARIMA <- function(x, new_data, specials, bootstrap = FALSE, ...){
+  # Get xreg
+  xreg <- specials$xreg[[1]]$xreg
+  if(x$spec$constant){
+    intercept <- arima_constant(NROW(x$est) + NROW(new_data),
+                                x$spec$d, x$spec$D,
+                                x$spec$period)[NROW(x$est) + seq_len(NROW(new_data))]
+    
+    xreg <- if(is.null(xreg)){
+      matrix(intercept, dimnames = list(NULL, "constant"))
+    } else {
+      xreg <- cbind(xreg, intercept = intercept)
+    }
+  }
+  
+  if(!(".innov" %in% new_data)){
+    if(bootstrap){
+      res <- residuals(x)
+      new_data$.innov <- sample(na.omit(res) - mean(res, na.rm = TRUE),
+                                NROW(new_data), replace = TRUE)
+    }
+    else{
+      new_data$.innov <- stats::rnorm(nrow(new_data), sd = sqrt(x$fit$sigma2))
+    }
+  }
+  
+  new_data %>% 
+    group_by_key() %>% 
+    transmute(".sim" := conditional_arima_sim(x$model, x$tail, !!sym(".innov"))) 
+}
+
+# Version of stats::arima.sim which conditions on past observations
+conditional_arima_sim <- function(object, x, e){
+  theta <- object$model$theta
+  phi <- object$model$phi
+  m <- object$arma[5L]
+  d <- object$arma[6L]
+  D <- object$arma[7L]
+  
+  past <- residuals(object)
+  y <- ts(c(past, e), frequency = object$arma[5])
+  # MA filtering
+  if (any(theta != 0)) {
+    y <- stats::filter(y, c(1, theta), method = "convolution", sides = 1L)
+    y[seq_along(theta)] <- 0
+  }
+  y <- y[seq(length(past) + 1, length(y))]
+  
+  # AR filtering
+  if (any(phi != 0)) {
+    dx <- x
+    if (d > 0){
+      dx <- diff(dx, lag = 1, differences = d)
+    }
+    if (D > 0){
+      dx <- diff(dx, lag = m, differences = D)
+    }
+    
+    y <- stats::filter(y, phi, method = "recursive", init = rev(dx)[1:length(phi)])
+    # TODO: fill missing init data with zero
+  }
+  # Undo differences
+  if (d > 0){
+    # Regular undifferencing
+    if (D == 0) {
+      # if there is no seasonal differencing
+      y <- diffinv(y, differences = d, xi = x[length(x) - (d:1) + 1])[-(1:d)]
+    } else {
+      # if there is seasonal differencing
+      dx <- diff(x, lag = m, differences = D)
+      dxi <- dx[(length(dx) - D):length(dx)]
+      y <- diffinv(y, differences = d, xi = dxi[length(dxi) - (d:1) + 1])[-(1:d)]
+    }
+  }
+  if (D > 0) {
+    # Seasonal undifferencing
+    i <- length(x) - D * m + 1
+    xi <- x[i:length(x)]
+    y <- diffinv(y, lag = m, differences = D, xi = xi)[-(1:length(xi))]
+  }
+  return(y)
+}
 
 #' Refit an ARIMA model
 #'
