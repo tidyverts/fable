@@ -3,6 +3,8 @@
 ## Improvements
 
 * Better handling of rank deficiency in `ARIMA()`.
+* Added `generate.ARIMA()` method.
+* Documentation improvements.
 
 # fable 0.1.2
 
