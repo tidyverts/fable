@@ -351,7 +351,7 @@ This is generally discouraged, consider removing the constant or reducing the nu
       ),
       spec = best_spec,
       model = best,
-      tail = y[seq(length(y) - with(best_spec, max(d*2, D*period*2, length(best$model$phi))) + 1, length(y))]
+      tail = y[seq(length(y) - with(best_spec, length(best$model$phi) + d + D*(period + 1)) + 1, length(y))]
     ),
     class = "ARIMA"
   )
