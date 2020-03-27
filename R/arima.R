@@ -766,6 +766,7 @@ generate.ARIMA <- function(x, new_data, specials, bootstrap = FALSE, ...){
 }
 
 # Version of stats::arima.sim which conditions on past observations
+#' @importFrom stats diffinv
 conditional_arima_sim <- function(object, x, e){
   theta <- object$model$theta
   phi <- object$model$phi

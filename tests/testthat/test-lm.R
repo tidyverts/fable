@@ -21,8 +21,8 @@ test_that("LM", {
 
   # Model coefs
   expect_equivalent(
-    tidy(fable_fit)$estimate,
-    coef(forecast_fit)
+    tidy(fable_fit) %>% dplyr::filter(term == "trend()") %>% dplyr::pull(estimate),
+    coef(forecast_fit)["trend"]
   )
 
   # Forecast
