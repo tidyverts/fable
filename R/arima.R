@@ -350,8 +350,7 @@ This is generally discouraged, consider removing the constant or reducing the nu
         ar_roots = list(arroot), ma_roots = list(maroot)
       ),
       spec = best_spec,
-      model = best,
-      tail = y[seq(length(y) - with(best_spec, length(best$model$phi) + d + D*(period + 1)) + 1, length(y))]
+      model = best
     ),
     class = "ARIMA"
   )
@@ -693,7 +692,6 @@ forecast.ARIMA <- function(object, new_data = NULL, specials = NULL,
       xreg <- cbind(xreg, intercept = intercept)
     }
   }
-
   # Produce predictions
   # Remove unnecessary warning for xreg
   object$model$call$xreg <- if (!is.null(xreg)) {
@@ -720,11 +718,12 @@ forecast.ARIMA <- function(object, new_data = NULL, specials = NULL,
 #' @export
 generate.ARIMA <- function(x, new_data, specials, bootstrap = FALSE, ...){
   # Get xreg
+  h <- max(map_int(key_data(new_data)[[".rows"]], length))
   xreg <- specials$xreg[[1]]$xreg
   if(x$spec$constant){
-    intercept <- arima_constant(NROW(x$est) + NROW(new_data),
+    intercept <- arima_constant(NROW(x$est) + h,
                                 x$spec$d, x$spec$D,
-                                x$spec$period)[NROW(x$est) + seq_len(NROW(new_data))]
+                                x$spec$period)[NROW(x$est) + seq_len(h)]
     
     xreg <- if(is.null(xreg)){
       matrix(intercept, dimnames = list(NULL, "constant"))
@@ -733,11 +732,20 @@ generate.ARIMA <- function(x, new_data, specials, bootstrap = FALSE, ...){
     }
   }
   
+  if (!is.null(xreg)) {
+    narma <- sum(x$model$arma[1L:4L])
+    coef <- x$model$coef
+    coef <- coef[(narma + 1):length(coef)]
+    xm <- drop(xreg %*% coef)
+  } else {
+    xm <- rep(0, nrow(new_data))
+  }
+  
   if(!(".innov" %in% new_data)){
     if(bootstrap){
       res <- residuals(x)
       new_data$.innov <- sample(na.omit(res) - mean(res, na.rm = TRUE),
-                                NROW(new_data), replace = TRUE)
+                                nrow(new_data), replace = TRUE)
     }
     else{
       new_data$.innov <- stats::rnorm(nrow(new_data), sd = sqrt(x$fit$sigma2))
@@ -746,7 +754,9 @@ generate.ARIMA <- function(x, new_data, specials, bootstrap = FALSE, ...){
   
   new_data %>% 
     group_by_key() %>% 
-    transmute(".sim" := conditional_arima_sim(x$model, x$tail, !!sym(".innov"))) 
+    transmute(".sim" := conditional_arima_sim(x$model, x$est$.regression_resid, !!sym(".innov"))) %>% 
+    dplyr::ungroup() %>% 
+    mutate(".sim" := !!sym(".sim") + xm)
 }
 
 # Version of stats::arima.sim which conditions on past observations
@@ -779,6 +789,7 @@ conditional_arima_sim <- function(object, x, e){
     y <- stats::filter(y, phi, method = "recursive", init = rev(dx)[1:length(phi)])
     # TODO: fill missing init data with zero
   }
+  
   # Undo differences
   if (d > 0){
     # Regular undifferencing
