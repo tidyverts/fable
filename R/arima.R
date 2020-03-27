@@ -10,14 +10,14 @@ train_arima <- function(.data, specials, ic = "aicc",
     abort("Only univariate responses are supported by ARIMA.")
   }
   
-  if(!is.null(fixed)){
-    abort("Fixed coefficients for ARIMA should be specified within the pdq() or PDQ() specials.")
-  }
-  
   # Get args
-  p <- d <- q <- P <- D <- Q <- period <- p_init <- q_init <- P_init <- Q_init <- NULL
-  assignSpecials(specials[c("pdq", "PDQ")])
-  fixed <- c(specials$pdq[[1]]$fixed, specials$PDQ[[1]]$fixed, specials$xreg[[1]]$fixed)
+  if(length(specials$pdq) > 1 || length(specials$PDQ) > 1){
+    warn("Only one special for `pdq()` and `PDQ()` is allowed, defaulting to the first usage")
+  }
+  pdq <- specials$pdq[[1]]
+  PDQ <- specials$PDQ[[1]]
+  period <- PDQ$period
+  special_fixed <- c(specials$pdq[[1]]$fixed, specials$PDQ[[1]]$fixed, specials$xreg[[1]]$fixed)
 
   # Get response
   y <- x <- ts(unclass(.data)[[measured_vars(.data)]], frequency = period)
@@ -79,50 +79,50 @@ train_arima <- function(.data, specials, ic = "aicc",
   }
 
   # Choose seasonal differencing
-  if (length(D) > 1) {
+  if (length(PDQ$D) > 1) {
     require_package("feasts")
     # Valid xregs
 
     if (!is.null(xreg)) {
-      keep <- map_lgl(D, function(.x) {
+      keep <- map_lgl(PDQ$D, function(.x) {
         diff_xreg <- diff(xreg, lag = period, differences = .x)
         !any(apply(diff_xreg, 2, is.constant))
       })
-      D <- D[keep]
+      PDQ$D <- PDQ$D[keep]
     }
-    D <- unname(feasts::unitroot_nsdiffs(stats::na.contiguous(x),
+    PDQ$D <- unname(feasts::unitroot_nsdiffs(stats::na.contiguous(x),
       alpha = unitroot_spec$nsdiffs_alpha,
       unitroot_fn = unitroot_spec$nsdiffs_pvalue,
-      differences = D, .period = period
+      differences = PDQ$D, .period = period
     ))
   }
-  x <- diff(x, lag = period, differences = D)
-  diff_xreg <- diff(xreg, lag = period, differences = D)
-  if (length(d) > 1) {
+  x <- diff(x, lag = period, differences = PDQ$D)
+  diff_xreg <- diff(xreg, lag = period, differences = PDQ$D)
+  if (length(pdq$d) > 1) {
     require_package("feasts")
 
     # Valid xregs
     if (!is.null(xreg)) {
-      keep <- map_lgl(d, function(.x) {
+      keep <- map_lgl(pdq$d, function(.x) {
         diff_xreg <- diff(diff_xreg, differences = .x)
         !any(apply(diff_xreg, 2, is.constant))
       })
-      d <- d[keep]
+      pdq$d <- pdq$d[keep]
     }
 
-    d <- unname(feasts::unitroot_ndiffs(stats::na.contiguous(x),
+    pdq$d <- unname(feasts::unitroot_ndiffs(stats::na.contiguous(x),
       alpha = unitroot_spec$ndiffs_alpha,
       unitroot_fn = unitroot_spec$ndiffs_pvalue,
-      differences = d
+      differences = pdq$d
     ))
   }
 
   # Check number of differences selected
-  if (length(D) != 1) abort("Could not find appropriate number of seasonal differences.")
-  if (length(d) != 1) abort("Could not find appropriate number of non-seasonal differences.")
-  if (D >= 2) {
+  if (length(PDQ$D) != 1) abort("Could not find appropriate number of seasonal differences.")
+  if (length(pdq$d) != 1) abort("Could not find appropriate number of non-seasonal differences.")
+  if (PDQ$D >= 2) {
     warn("Having more than one seasonal differences is not recommended. Please consider using only one seasonal difference.")
-  } else if (D + d > 2) {
+  } else if (PDQ$D + pdq$d > 2) {
     warn("Having 3 or more differencing operations is not recommended. Please consider reducing the total number of differences.")
   }
 
@@ -130,7 +130,7 @@ train_arima <- function(.data, specials, ic = "aicc",
     method <- "CSS"
     offset <- with(
       stats::arima(y,
-        order = c(0, d, 0), xreg = xreg,
+        order = c(0, pdq$d, 0), xreg = xreg,
         include.mean = all(constant)
       ),
       -2 * loglik - NROW(data) * log(sigma2)
@@ -150,18 +150,20 @@ train_arima <- function(.data, specials, ic = "aicc",
         cbind(xreg, intercept = intercept)
       }
     }
-
-    coef_fixed <- rep(NA_real_, p + q + P + Q + ncol(xreg)%||%0)
-    fixed_nm <- c(sprintf("ar%i", seq_len(p)),sprintf("ma%i", seq_len(q)),sprintf("sar%i", seq_len(P)),sprintf("sma%i", seq_len(Q)),colnames(xreg))
-    fixed_nm <- match(fixed_nm, names(fixed))
-    coef_fixed[which(!is.na(fixed_nm))] <- do.call("c", fixed[fixed_nm])
+    
+    if(is_empty(fixed)){
+      fixed <- rep(NA_real_, p + q + P + Q + ncol(xreg)%||%0)
+      fixed_nm <- c(sprintf("ar%i", seq_len(p)),sprintf("ma%i", seq_len(q)),sprintf("sar%i", seq_len(P)),sprintf("sma%i", seq_len(Q)),colnames(xreg))
+      fixed_nm <- match(fixed_nm, names(special_fixed))
+      fixed[which(!is.na(fixed_nm))] <- do.call("c", special_fixed[fixed_nm])
+    }
     
     new <- wrap_arima(
       y,
       order = c(p, d, q),
       seasonal = list(order = c(P, D, Q), period = period),
       xreg = xreg, method = method, ..., include.mean = FALSE,
-      fixed = coef_fixed
+      fixed = fixed
     )
 
     if (!is.null(new)) {
@@ -212,11 +214,11 @@ train_arima <- function(.data, specials, ic = "aicc",
     (new[[ic]] %||% Inf)
   }
 
-  mostly_specified <- length(p) + length(d) + length(q) + length(P) + length(D) + length(Q) == 6
+  mostly_specified <- length(pdq$p) + length(pdq$d) + length(pdq$q) + length(PDQ$P) + length(PDQ$D) + length(PDQ$Q) == 6
   mostly_specified_msg <- "It looks like you're trying to fully specify your ARIMA model but have not said if a constant should be included.\nYou can include a constant using `ARIMA(y~1)` to the formula or exclude it by adding `ARIMA(y~0)`."
-  model_opts <- expand.grid(p = p, d = d, q = q, P = P, D = D, Q = Q, constant = constant)
+  model_opts <- expand.grid(p = pdq$p, d = pdq$d, q = pdq$q, P = PDQ$P, D = PDQ$D, Q = PDQ$Q, constant = constant)
   if (NROW(model_opts) > 1) {
-    model_opts <- filter(model_opts, !!enexpr(order_constraint), (d + D < 2) | !constant)
+    model_opts <- filter(model_opts, !!enexpr(order_constraint), (pdq$d + PDQ$D < 2) | !constant)
     if (NROW(model_opts) == 0) {
       if (mostly_specified) warn(mostly_specified_msg)
       abort("There are no ARIMA models to choose from after imposing the `order_constraint`, please consider allowing more models.")
@@ -240,10 +242,10 @@ This is generally discouraged, consider removing the constant or reducing the nu
 
     # Initial 4 models
     initial_opts <- list(
-      start = c(p_init, d, q_init, P_init, D, Q_init, constant[1]),
-      null = c(0, d, 0, 0, D, 0, constant[1]),
-      ar = c(max(p) > 0, d, 0, max(P) > 0, D, 0, constant[1]),
-      ma = c(0, d, max(q) > 0, 0, D, max(Q) > 0, constant[1])
+      start = c(pdq$p_init, pdq$d, pdq$q_init, PDQ$P_init, PDQ$D, PDQ$Q_init, constant[1]),
+      null = c(0, pdq$d, 0, 0, PDQ$D, 0, constant[1]),
+      ar = c(max(pdq$p) > 0, pdq$d, 0, max(PDQ$P) > 0, PDQ$D, 0, constant[1]),
+      ma = c(0, pdq$d, max(pdq$q) > 0, 0, PDQ$D, max(PDQ$Q) > 0, constant[1])
     )
     step_order <- stats::na.omit(match(initial_opts, lapply(split(model_opts, seq_len(NROW(model_opts))), as.numeric)))
     initial <- TRUE
@@ -328,7 +330,7 @@ This is generally discouraged, consider removing the constant or reducing the nu
   # Compute regression residuals
   reg_resid <- y
   if (model_opts[which.min(est_ic), "constant"]) {
-    xreg <- cbind(xreg, constant = arima_constant(length(y), d, D, period))
+    xreg <- cbind(xreg, constant = arima_constant(length(y), pdq$d, PDQ$D, period))
   }
   if (!is.null(xreg)) {
     reg_resid <- reg_resid - xreg %*% as.matrix(best$coef[(sum(best$arma[1:4]) + 1):length(best$coef)])
@@ -868,14 +870,11 @@ conditional_arima_sim <- function(object, x, e){
 #' @export
 refit.ARIMA <- function(object, new_data, specials = NULL, reestimate = FALSE, ...) {
   # Update data for re-evaluation
-  specials$pdq[[1]] <- set_names(
-    as.list(object$spec[c("p", "d", "q", "p", "q")]),
-    names(specials$pdq[[1]])
-  )
-  specials$PDQ[[1]] <- set_names(
-    as.list(object$spec[c("P", "D", "Q", "period", "P", "Q")]),
-    names(specials$PDQ[[1]])
-  )
+  specials$pdq[[1]][c("p", "d", "q", "p_init", "q_init")] <- 
+    as.list(object$spec[c("p", "d", "q", "p", "q")])
+  specials$PDQ[[1]][c("P", "D", "Q", "period", "P_init", "Q_init")] <-
+    as.list(object$spec[c("P", "D", "Q", "period", "P", "Q")])
+  
   if (reestimate) {
     return(train_arima(new_data, specials, ...))
   }
