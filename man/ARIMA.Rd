@@ -74,15 +74,16 @@ To specify a model fully (avoid automatic selection), the intercept and \code{pd
 The \code{pdq} special is used to specify non-seasonal components of the model.
 \preformatted{
 pdq(p = 0:5, d = 0:2, q = 0:5,
-    p_init = 2, q_init = 2)
+    p_init = 2, q_init = 2, fixed = list())
 }
 
 \tabular{ll}{
-\code{p}        \tab The order of the non-seasonal auto-regressive (AR) terms. If multiple values are provided, the one which minimises \code{ic} will be chosen. \cr
-\code{d}        \tab The order of integration for non-seasonal differencing. If multiple values are provided, one of the values will be selected via repeated KPSS tests. \cr
-\code{q}        \tab The order of the non-seasonal moving average (MA) terms. If multiple values are provided, the one which minimises \code{ic} will be chosen. \cr
-\code{p_init}  \tab If \code{stepwise = TRUE}, \code{p_init} provides the initial value for \code{p} for the stepwise search procedure. \cr
-\code{q_init}  \tab If \code{stepwise = TRUE}, \code{q_init} provides the initial value for \code{q} for the stepwise search procedure.
+\code{p}      \tab The order of the non-seasonal auto-regressive (AR) terms. If multiple values are provided, the one which minimises \code{ic} will be chosen. \cr
+\code{d}      \tab The order of integration for non-seasonal differencing. If multiple values are provided, one of the values will be selected via repeated KPSS tests. \cr
+\code{q}      \tab The order of the non-seasonal moving average (MA) terms. If multiple values are provided, the one which minimises \code{ic} will be chosen. \cr
+\code{p_init} \tab If \code{stepwise = TRUE}, \code{p_init} provides the initial value for \code{p} for the stepwise search procedure. \cr
+\code{q_init} \tab If \code{stepwise = TRUE}, \code{q_init} provides the initial value for \code{q} for the stepwise search procedure. \cr
+\code{fixed}  \tab A named list of fixed parameters for coefficients. The names identify the coefficient, beginning with either \code{ar} or \code{ma}, and then followed by the lag order. For example, \code{fixed = list(ar1 = 0.3, ma2 = 0)}.
 }
 }
 
@@ -90,16 +91,17 @@ pdq(p = 0:5, d = 0:2, q = 0:5,
 The \code{PDQ} special is used to specify seasonal components of the model. To force a nonseasonal fit, specify \code{PDQ(0, 0, 0)} in the RHS of the model formula. Note that simply omitting \code{PDQ} from the formula will \emph{not} result in a nonseasonal fit.
 \preformatted{
 PDQ(P = 0:2, D = 0:1, Q = 0:2, period = NULL,
-    P_init = 1, Q_init = 1)
+    P_init = 1, Q_init = 1, fixed = list())
 }
 
 \tabular{ll}{
-\code{P}        \tab The order of the seasonal auto-regressive (SAR) terms. If multiple values are provided, the one which minimises \code{ic} will be chosen. \cr
-\code{D}        \tab The order of integration for seasonal differencing. If multiple values are provided, one of the values will be selected via repeated heuristic tests (based on strength of seasonality from an STL decomposition). \cr
-\code{Q}        \tab The order of the seasonal moving average (SMA) terms. If multiple values are provided, the one which minimises \code{ic} will be chosen. \cr
-\code{period}   \tab The periodic nature of the seasonality. This can be either a number indicating the number of observations in each seasonal period, or text to indicate the duration of the seasonal window (for example, annual seasonality would be "1 year").  \cr
-\code{P_init}  \tab If \code{stepwise = TRUE}, \code{P_init} provides the initial value for \code{P} for the stepwise search procedure. \cr
-\code{Q_init}  \tab If \code{stepwise = TRUE}, \code{Q_init} provides the initial value for \code{Q} for the stepwise search procedure.
+\code{P}      \tab The order of the seasonal auto-regressive (SAR) terms. If multiple values are provided, the one which minimises \code{ic} will be chosen. \cr
+\code{D}      \tab The order of integration for seasonal differencing. If multiple values are provided, one of the values will be selected via repeated heuristic tests (based on strength of seasonality from an STL decomposition). \cr
+\code{Q}      \tab The order of the seasonal moving average (SMA) terms. If multiple values are provided, the one which minimises \code{ic} will be chosen. \cr
+\code{period} \tab The periodic nature of the seasonality. This can be either a number indicating the number of observations in each seasonal period, or text to indicate the duration of the seasonal window (for example, annual seasonality would be "1 year").  \cr
+\code{P_init} \tab If \code{stepwise = TRUE}, \code{P_init} provides the initial value for \code{P} for the stepwise search procedure. \cr
+\code{Q_init} \tab If \code{stepwise = TRUE}, \code{Q_init} provides the initial value for \code{Q} for the stepwise search procedure. \cr
+\code{fixed}  \tab A named list of fixed parameters for coefficients. The names identify the coefficient, beginning with either \code{sar} or \code{sma}, and then followed by the lag order. For example, \code{fixed = list(sar1 = 0.1)}.
 }
 }
 
@@ -109,11 +111,12 @@ Exogenous regressors can be included in an ARIMA model without explicitly using 
 The inclusion of a constant in the model follows the similar rules to \code{\link[stats:lm]{stats::lm()}}, where including \code{1} will add a constant and \code{0} or \code{-1} will remove the constant. If left out, the inclusion of a constant will be determined by minimising \code{ic}.
 
 \preformatted{
-xreg(...)
+xreg(..., fixed = list())
 }
 
 \tabular{ll}{
 \code{...}      \tab Bare expressions for the exogenous regressors (such as \code{log(x)})
+\code{fixed}    \tab A named list of fixed parameters for coefficients. The names identify the coefficient, and should match the name of the regressor. For example, \code{fixed = list(constant = 20)}.
 }
 }
 }

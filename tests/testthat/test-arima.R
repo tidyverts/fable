@@ -86,6 +86,16 @@ test_that("Manual ARIMA selection", {
   )
 })
 
+test_that("Fixed ARIMA coefficients", {
+  # Manual model selection
+  fable_fit <- USAccDeaths_tbl %>% model(model = ARIMA(value ~ xreg(1, fixed = list(constant = 20)) + pdq(0, 0, 1, fixed = list(ma1 = 0.3)) + PDQ(0, 1, 1, fixed = list(sma1 = 3))))
+  
+  expect_identical(
+    tidy(fable_fit)$estimate,
+    c(0.3, 3, 20)
+  )
+})
+
 test_that("ARIMA with bad inputs", {
   expect_warning(
     UKLungDeaths %>%

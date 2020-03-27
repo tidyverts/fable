@@ -4,6 +4,7 @@
 
 * Better handling of rank deficiency in `ARIMA()`.
 * Added `generate.ARIMA()` method.
+* `ARIMA()` specials now allow specifying fixed coefficients via the `fixed` argument.
 * Documentation improvements.
 
 # fable 0.1.2

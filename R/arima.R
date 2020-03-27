@@ -4,14 +4,20 @@ globalVariables(c("p", "P", "q", "Q"))
 train_arima <- function(.data, specials, ic = "aicc",
                         stepwise = TRUE, greedy = TRUE, approximation = NULL,
                         order_constraint = p + q + P + Q <= 6,
-                        unitroot_spec = unitroot_options(), ...) {
+                        unitroot_spec = unitroot_options(),
+                        fixed = NULL, ...) {
   if (length(measured_vars(.data)) > 1) {
     abort("Only univariate responses are supported by ARIMA.")
   }
+  
+  if(!is.null(fixed)){
+    abort("Fixed coefficients for ARIMA should be specified within the pdq() or PDQ() specials.")
+  }
+  
   # Get args
   p <- d <- q <- P <- D <- Q <- period <- p_init <- q_init <- P_init <- Q_init <- NULL
   assignSpecials(specials[c("pdq", "PDQ")])
-
+  fixed <- c(specials$pdq[[1]]$fixed, specials$PDQ[[1]]$fixed, specials$xreg[[1]]$fixed)
 
   # Get response
   y <- x <- ts(unclass(.data)[[measured_vars(.data)]], frequency = period)
@@ -145,11 +151,17 @@ train_arima <- function(.data, specials, ic = "aicc",
       }
     }
 
+    coef_fixed <- rep(NA_real_, p + q + P + Q + ncol(xreg)%||%0)
+    fixed_nm <- c(sprintf("ar%i", seq_len(p)),sprintf("ma%i", seq_len(q)),sprintf("sar%i", seq_len(P)),sprintf("sma%i", seq_len(Q)),colnames(xreg))
+    fixed_nm <- match(fixed_nm, names(fixed))
+    coef_fixed[which(!is.na(fixed_nm))] <- do.call("c", fixed[fixed_nm])
+    
     new <- wrap_arima(
       y,
       order = c(p, d, q),
       seasonal = list(order = c(P, D, Q), period = period),
-      xreg = xreg, method = method, ..., include.mean = FALSE
+      xreg = xreg, method = method, ..., include.mean = FALSE,
+      fixed = coef_fixed
     )
 
     if (!is.null(new)) {
@@ -358,15 +370,20 @@ This is generally discouraged, consider removing the constant or reducing the nu
 
 specials_arima <- new_specials(
   pdq = function(p = 0:5, d = 0:2, q = 0:5,
-                 p_init = 2, q_init = 2) {
+                 p_init = 2, q_init = 2,
+                 fixed = list()) {
     p <- p[p <= floor(NROW(self$data) / 3)]
     q <- q[q <= floor(NROW(self$data) / 3)]
     p_init <- p[which.min(abs(p - p_init))]
     q_init <- q[which.min(abs(q - q_init))]
+    if(!all(grepl("^(ma|ar)\\d+", names(fixed)))){
+      abort("The 'fixed' coefficients for pdq() must begin with ar or ma, followed by a lag number.")
+    }
     as.list(environment())
   },
   PDQ = function(P = 0:2, D = 0:1, Q = 0:2, period = NULL,
-                 P_init = 1, Q_init = 1) {
+                 P_init = 1, Q_init = 1,
+                 fixed = list()) {
     period <- get_frequencies(period, self$data, .auto = "smallest")
     if (period == 1) {
       # Not seasonal
@@ -380,10 +397,13 @@ specials_arima <- new_specials(
     }
     P_init <- P[which.min(abs(P - P_init))]
     Q_init <- Q[which.min(abs(Q - Q_init))]
+    if(!all(grepl("^(sma|sar)\\d+", names(fixed)))){
+      abort("The 'fixed' coefficients for PDQ() must begin with sar or sma, followed by a lag number.")
+    }
     as.list(environment())
   },
   common_xregs,
-  xreg = function(...) {
+  xreg = function(..., fixed = list()) {
     dots <- enexprs(...)
     env <- map(enquos(...), get_env)
     env[map_lgl(env, compose(is_empty, env_parents))] <- NULL
@@ -408,7 +428,8 @@ specials_arima <- new_specials(
 
     list(
       constant = if (constant_given) constant else c(TRUE, FALSE),
-      xreg = if (NCOL(xreg) == 0) NULL else xreg
+      xreg = if (NCOL(xreg) == 0) NULL else xreg,
+      fixed = fixed
     )
   },
   .required_specials = c("pdq", "PDQ"),
@@ -461,15 +482,16 @@ specials_arima <- new_specials(
 #' The `pdq` special is used to specify non-seasonal components of the model.
 #' \preformatted{
 #' pdq(p = 0:5, d = 0:2, q = 0:5,
-#'     p_init = 2, q_init = 2)
+#'     p_init = 2, q_init = 2, fixed = list())
 #' }
 #'
 #' \tabular{ll}{
-#'   `p`        \tab The order of the non-seasonal auto-regressive (AR) terms. If multiple values are provided, the one which minimises `ic` will be chosen. \cr
-#'   `d`        \tab The order of integration for non-seasonal differencing. If multiple values are provided, one of the values will be selected via repeated KPSS tests. \cr
-#'   `q`        \tab The order of the non-seasonal moving average (MA) terms. If multiple values are provided, the one which minimises `ic` will be chosen. \cr
-#'   `p_init`  \tab If `stepwise = TRUE`, `p_init` provides the initial value for `p` for the stepwise search procedure. \cr
-#'   `q_init`  \tab If `stepwise = TRUE`, `q_init` provides the initial value for `q` for the stepwise search procedure.
+#'   `p`      \tab The order of the non-seasonal auto-regressive (AR) terms. If multiple values are provided, the one which minimises `ic` will be chosen. \cr
+#'   `d`      \tab The order of integration for non-seasonal differencing. If multiple values are provided, one of the values will be selected via repeated KPSS tests. \cr
+#'   `q`      \tab The order of the non-seasonal moving average (MA) terms. If multiple values are provided, the one which minimises `ic` will be chosen. \cr
+#'   `p_init` \tab If `stepwise = TRUE`, `p_init` provides the initial value for `p` for the stepwise search procedure. \cr
+#'   `q_init` \tab If `stepwise = TRUE`, `q_init` provides the initial value for `q` for the stepwise search procedure. \cr
+#'   `fixed`  \tab A named list of fixed parameters for coefficients. The names identify the coefficient, beginning with either `ar` or `ma`, and then followed by the lag order. For example, `fixed = list(ar1 = 0.3, ma2 = 0)`.
 #' }
 #' }
 #'
@@ -477,16 +499,17 @@ specials_arima <- new_specials(
 #' The `PDQ` special is used to specify seasonal components of the model. To force a nonseasonal fit, specify `PDQ(0, 0, 0)` in the RHS of the model formula. Note that simply omitting `PDQ` from the formula will _not_ result in a nonseasonal fit.
 #' \preformatted{
 #' PDQ(P = 0:2, D = 0:1, Q = 0:2, period = NULL,
-#'     P_init = 1, Q_init = 1)
+#'     P_init = 1, Q_init = 1, fixed = list())
 #' }
 #'
 #' \tabular{ll}{
-#'   `P`        \tab The order of the seasonal auto-regressive (SAR) terms. If multiple values are provided, the one which minimises `ic` will be chosen. \cr
-#'   `D`        \tab The order of integration for seasonal differencing. If multiple values are provided, one of the values will be selected via repeated heuristic tests (based on strength of seasonality from an STL decomposition). \cr
-#'   `Q`        \tab The order of the seasonal moving average (SMA) terms. If multiple values are provided, the one which minimises `ic` will be chosen. \cr
-#'   `period`   \tab The periodic nature of the seasonality. This can be either a number indicating the number of observations in each seasonal period, or text to indicate the duration of the seasonal window (for example, annual seasonality would be "1 year").  \cr
-#'   `P_init`  \tab If `stepwise = TRUE`, `P_init` provides the initial value for `P` for the stepwise search procedure. \cr
-#'   `Q_init`  \tab If `stepwise = TRUE`, `Q_init` provides the initial value for `Q` for the stepwise search procedure.
+#'   `P`      \tab The order of the seasonal auto-regressive (SAR) terms. If multiple values are provided, the one which minimises `ic` will be chosen. \cr
+#'   `D`      \tab The order of integration for seasonal differencing. If multiple values are provided, one of the values will be selected via repeated heuristic tests (based on strength of seasonality from an STL decomposition). \cr
+#'   `Q`      \tab The order of the seasonal moving average (SMA) terms. If multiple values are provided, the one which minimises `ic` will be chosen. \cr
+#'   `period` \tab The periodic nature of the seasonality. This can be either a number indicating the number of observations in each seasonal period, or text to indicate the duration of the seasonal window (for example, annual seasonality would be "1 year").  \cr
+#'   `P_init` \tab If `stepwise = TRUE`, `P_init` provides the initial value for `P` for the stepwise search procedure. \cr
+#'   `Q_init` \tab If `stepwise = TRUE`, `Q_init` provides the initial value for `Q` for the stepwise search procedure. \cr
+#'   `fixed`  \tab A named list of fixed parameters for coefficients. The names identify the coefficient, beginning with either `sar` or `sma`, and then followed by the lag order. For example, `fixed = list(sar1 = 0.1)`.
 #' }
 #' }
 #'
@@ -496,11 +519,12 @@ specials_arima <- new_specials(
 #' The inclusion of a constant in the model follows the similar rules to [`stats::lm()`], where including `1` will add a constant and `0` or `-1` will remove the constant. If left out, the inclusion of a constant will be determined by minimising `ic`.
 #'
 #' \preformatted{
-#' xreg(...)
+#' xreg(..., fixed = list())
 #' }
 #'
 #' \tabular{ll}{
 #'   `...`      \tab Bare expressions for the exogenous regressors (such as `log(x)`)
+#'   `fixed`    \tab A named list of fixed parameters for coefficients. The names identify the coefficient, and should match the name of the regressor. For example, `fixed = list(constant = 20)`.
 #' }
 #' }
 #'
