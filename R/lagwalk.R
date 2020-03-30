@@ -256,7 +256,7 @@ generate.RW <- function(x, new_data, bootstrap = FALSE, ...) {
   fits <- c(x$.fitted, x$future)
 
   start_idx <- min(new_data[[index_var(new_data)]])
-  start_pos <- match(start_idx, seq(x$time$start, by = time_unit(x$time$interval), length.out = length(fits)))
+  start_pos <- match(start_idx, seq(x$time$start, by = default_time_units(x$time$interval), length.out = length(fits)))
 
   future <- fits[start_pos + seq_len(lag) - 1]
 

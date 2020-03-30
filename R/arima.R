@@ -328,7 +328,7 @@ This is generally discouraged, consider removing the constant or reducing the nu
   }
 
   # Compute regression residuals
-  reg_resid <- y
+  reg_resid <- as.numeric(y)
   if (model_opts[which.min(est_ic), "constant"]) {
     xreg <- cbind(xreg, constant = arima_constant(length(y), pdq$d, PDQ$D, period))
   }

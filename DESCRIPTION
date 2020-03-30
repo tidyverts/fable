@@ -34,7 +34,8 @@ Imports:
     stats,
     dplyr (>= 0.8.0),
     tsibble (>= 0.8.0),
-    tidyr
+    tidyr,
+    utils
 Suggests:
     covr,
     feasts,
