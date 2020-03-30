@@ -229,7 +229,7 @@ are equivalent, the coefficients for the constant/mean will differ.</p>
 <h3>pdq</h3>
 <p>The <code>pdq</code> special is used to specify non-seasonal components of the model.</p><pre>
 pdq(p = 0:5, d = 0:2, q = 0:5,
-    p_init = 2, q_init = 2)
+    p_init = 2, q_init = 2, fixed = list())
 </pre>
 
 <table class='table'>
@@ -238,6 +238,7 @@ pdq(p = 0:5, d = 0:2, q = 0:5,
 <tr><td><code>q</code></td><td>The order of the non-seasonal moving average (MA) terms. If multiple values are provided, the one which minimises <code>ic</code> will be chosen.</td></tr>
 <tr><td><code>p_init</code></td><td>If <code>stepwise = TRUE</code>, <code>p_init</code> provides the initial value for <code>p</code> for the stepwise search procedure.</td></tr>
 <tr><td><code>q_init</code></td><td>If <code>stepwise = TRUE</code>, <code>q_init</code> provides the initial value for <code>q</code> for the stepwise search procedure.</td></tr>
+<tr><td><code>fixed</code></td><td>A named list of fixed parameters for coefficients. The names identify the coefficient, beginning with either <code>ar</code> or <code>ma</code>, and then followed by the lag order. For example, <code>fixed = list(ar1 = 0.3, ma2 = 0)</code>.</td></tr>
 </table>
 
 
@@ -245,7 +246,7 @@ pdq(p = 0:5, d = 0:2, q = 0:5,
 <h3>PDQ</h3>
 <p>The <code>PDQ</code> special is used to specify seasonal components of the model. To force a nonseasonal fit, specify <code>PDQ(0, 0, 0)</code> in the RHS of the model formula. Note that simply omitting <code>PDQ</code> from the formula will <em>not</em> result in a nonseasonal fit.</p><pre>
 PDQ(P = 0:2, D = 0:1, Q = 0:2, period = NULL,
-    P_init = 1, Q_init = 1)
+    P_init = 1, Q_init = 1, fixed = list())
 </pre>
 
 <table class='table'>
@@ -255,6 +256,7 @@ PDQ(P = 0:2, D = 0:1, Q = 0:2, period = NULL,
 <tr><td><code>period</code></td><td>The periodic nature of the seasonality. This can be either a number indicating the number of observations in each seasonal period, or text to indicate the duration of the seasonal window (for example, annual seasonality would be "1 year").</td></tr>
 <tr><td><code>P_init</code></td><td>If <code>stepwise = TRUE</code>, <code>P_init</code> provides the initial value for <code>P</code> for the stepwise search procedure.</td></tr>
 <tr><td><code>Q_init</code></td><td>If <code>stepwise = TRUE</code>, <code>Q_init</code> provides the initial value for <code>Q</code> for the stepwise search procedure.</td></tr>
+<tr><td><code>fixed</code></td><td>A named list of fixed parameters for coefficients. The names identify the coefficient, beginning with either <code>sar</code> or <code>sma</code>, and then followed by the lag order. For example, <code>fixed = list(sar1 = 0.1)</code>.</td></tr>
 </table>
 
 
@@ -263,11 +265,12 @@ PDQ(P = 0:2, D = 0:1, Q = 0:2, period = NULL,
 <p>Exogenous regressors can be included in an ARIMA model without explicitly using the <code>xreg()</code> special. Common exogenous regressor specials as specified in <code><a href='common_xregs.html'>common_xregs</a></code> can also be used. These regressors are handled using <code><a href='https://rdrr.io/r/stats/model.frame.html'>stats::model.frame()</a></code>, and so interactions and other functionality behaves similarly to <code><a href='https://rdrr.io/r/stats/lm.html'>stats::lm()</a></code>.</p>
 <p>The inclusion of a constant in the model follows the similar rules to <code><a href='https://rdrr.io/r/stats/lm.html'>stats::lm()</a></code>, where including <code>1</code> will add a constant and <code>0</code> or <code>-1</code> will remove the constant. If left out, the inclusion of a constant will be determined by minimising <code>ic</code>.</p>
 <pre>
-xreg(...)
+xreg(..., fixed = list())
 </pre>
 
 <table class='table'>
-<tr><td><code>...</code></td><td>Bare expressions for the exogenous regressors (such as <code><a href='https://rdrr.io/r/base/Log.html'>log(x)</a></code>)</td></tr>
+<tr><td><code>...</code></td><td>Bare expressions for the exogenous regressors (such as <code><a href='https://rdrr.io/r/base/Log.html'>log(x)</a></code>)
+<code>fixed</code></td></tr>
 </table>
 
 

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Generate new data from a fable model — generate.ETS • fable</title>
+<title>Generate new data from a fable model — generate.ARIMA • fable</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,7 +42,7 @@
 
 
 
-<meta property="og:title" content="Generate new data from a fable model — generate.ETS" />
+<meta property="og:title" content="Generate new data from a fable model — generate.ARIMA" />
 <meta property="og:description" content="Simulates future paths from a dataset using a fitted model. Innovations are
 sampled by the model's assumed error distribution. If bootstrap is TRUE,
 innovations will be sampled from the model's residuals. If new_data
@@ -142,8 +142,8 @@ contains the .innov column, those values will be treated as innovations." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Generate new data from a fable model</h1>
-    <small class="dont-index">Source: <a href='https://github.com/tidyverts/fable/blob/master/R/ets.R'><code>R/ets.R</code></a></small>
-    <div class="hidden name"><code>generate.ETS.Rd</code></div>
+    <small class="dont-index">Source: <a href='https://github.com/tidyverts/fable/blob/master/R/arima.R'><code>R/arima.R</code></a></small>
+    <div class="hidden name"><code>generate.ARIMA.Rd</code></div>
     </div>
 
     <div class="ref-description">
@@ -153,7 +153,7 @@ innovations will be sampled from the model's residuals. If <code>new_data</code>
 contains the <code>.innov</code> column, those values will be treated as innovations.</p>
     </div>
 
-    <pre class="usage"><span class='co'># S3 method for ETS</span>
+    <pre class="usage"><span class='co'># S3 method for ARIMA</span>
 <span class='fu'>generate</span>(<span class='no'>x</span>, <span class='no'>new_data</span>, <span class='no'>specials</span>, <span class='kw'>bootstrap</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -186,23 +186,24 @@ contains the <code>.innov</code> column, those values will be treated as innovat
     <div class='dont-index'><p><code><a href='https://fabletools.tidyverts.org/reference/generate.mdl_df.html'>fabletools::generate.mdl_df</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='no'>USAccDeaths</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='fu'><a href='ETS.html'>ETS</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>value</span>) ~ <span class='fu'>season</span>(<span class='st'>"A"</span>))) <span class='kw'>%&gt;%</span>
-  <span class='fu'>generate</span>(<span class='kw'>times</span> <span class='kw'>=</span> <span class='fl'>100</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tsibble: 2,400 x 4 [1M]</span><span>
-#&gt; </span><span style='color: #555555;'># Key:       .model, .rep [100]</span><span>
-#&gt;    .model                             .rep    index   .sim
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                             </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;mth&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> </span><span style='color: #555555;'>"</span><span>ETS(log(value) ~ season(\"A\"))</span><span style='color: #555555;'>"</span><span>     1 1979 Jan  </span><span style='text-decoration: underline;'>8</span><span>433.
-#&gt; </span><span style='color: #555555;'> 2</span><span> </span><span style='color: #555555;'>"</span><span>ETS(log(value) ~ season(\"A\"))</span><span style='color: #555555;'>"</span><span>     1 1979 Feb  </span><span style='text-decoration: underline;'>7</span><span>163.
-#&gt; </span><span style='color: #555555;'> 3</span><span> </span><span style='color: #555555;'>"</span><span>ETS(log(value) ~ season(\"A\"))</span><span style='color: #555555;'>"</span><span>     1 1979 Mar  </span><span style='text-decoration: underline;'>8</span><span>419.
-#&gt; </span><span style='color: #555555;'> 4</span><span> </span><span style='color: #555555;'>"</span><span>ETS(log(value) ~ season(\"A\"))</span><span style='color: #555555;'>"</span><span>     1 1979 Apr  </span><span style='text-decoration: underline;'>8</span><span>619.
-#&gt; </span><span style='color: #555555;'> 5</span><span> </span><span style='color: #555555;'>"</span><span>ETS(log(value) ~ season(\"A\"))</span><span style='color: #555555;'>"</span><span>     1 1979 May  </span><span style='text-decoration: underline;'>9</span><span>676.
-#&gt; </span><span style='color: #555555;'> 6</span><span> </span><span style='color: #555555;'>"</span><span>ETS(log(value) ~ season(\"A\"))</span><span style='color: #555555;'>"</span><span>     1 1979 Jun </span><span style='text-decoration: underline;'>10</span><span>051.
-#&gt; </span><span style='color: #555555;'> 7</span><span> </span><span style='color: #555555;'>"</span><span>ETS(log(value) ~ season(\"A\"))</span><span style='color: #555555;'>"</span><span>     1 1979 Jul </span><span style='text-decoration: underline;'>11</span><span>281.
-#&gt; </span><span style='color: #555555;'> 8</span><span> </span><span style='color: #555555;'>"</span><span>ETS(log(value) ~ season(\"A\"))</span><span style='color: #555555;'>"</span><span>     1 1979 Aug </span><span style='text-decoration: underline;'>10</span><span>084.
-#&gt; </span><span style='color: #555555;'> 9</span><span> </span><span style='color: #555555;'>"</span><span>ETS(log(value) ~ season(\"A\"))</span><span style='color: #555555;'>"</span><span>     1 1979 Sep  </span><span style='text-decoration: underline;'>8</span><span>309.
-#&gt; </span><span style='color: #555555;'>10</span><span> </span><span style='color: #555555;'>"</span><span>ETS(log(value) ~ season(\"A\"))</span><span style='color: #555555;'>"</span><span>     1 1979 Oct  </span><span style='text-decoration: underline;'>9</span><span>204.
-#&gt; </span><span style='color: #555555;'># … with 2,390 more rows</span><span></div></span></pre>
+    <pre class="examples"><div class='input'><span class='no'>fable_fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='no'>USAccDeaths</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'>model</span>(<span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='ARIMA.html'>ARIMA</a></span>(<span class='no'>value</span> ~ <span class='fl'>0</span> + <span class='fu'>pdq</span>(<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>1</span>) + <span class='fu'>PDQ</span>(<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>1</span>)))
+<span class='no'>fable_fit</span> <span class='kw'>%&gt;%</span> <span class='fu'>generate</span>(<span class='kw'>times</span> <span class='kw'>=</span> <span class='fl'>10</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tsibble: 240 x 4 [1M]</span><span>
+#&gt; </span><span style='color: #555555;'># Key:       .model, .rep [10]</span><span>
+#&gt;    .model  .rep    index  .sim
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;mth&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> model      1 1979 Jan </span><span style='text-decoration: underline;'>8</span><span>185.
+#&gt; </span><span style='color: #555555;'> 2</span><span> model      1 1979 Feb </span><span style='text-decoration: underline;'>7</span><span>037.
+#&gt; </span><span style='color: #555555;'> 3</span><span> model      1 1979 Mar </span><span style='text-decoration: underline;'>7</span><span>898.
+#&gt; </span><span style='color: #555555;'> 4</span><span> model      1 1979 Apr </span><span style='text-decoration: underline;'>8</span><span>951.
+#&gt; </span><span style='color: #555555;'> 5</span><span> model      1 1979 May </span><span style='text-decoration: underline;'>9</span><span>184.
+#&gt; </span><span style='color: #555555;'> 6</span><span> model      1 1979 Jun </span><span style='text-decoration: underline;'>9</span><span>331.
+#&gt; </span><span style='color: #555555;'> 7</span><span> model      1 1979 Jul </span><span style='text-decoration: underline;'>9</span><span>999.
+#&gt; </span><span style='color: #555555;'> 8</span><span> model      1 1979 Aug </span><span style='text-decoration: underline;'>9</span><span>899.
+#&gt; </span><span style='color: #555555;'> 9</span><span> model      1 1979 Sep </span><span style='text-decoration: underline;'>8</span><span>944.
+#&gt; </span><span style='color: #555555;'>10</span><span> model      1 1979 Oct </span><span style='text-decoration: underline;'>9</span><span>727.
+#&gt; </span><span style='color: #555555;'># … with 230 more rows</span><span></div><div class='input'>
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
