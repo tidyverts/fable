@@ -85,6 +85,7 @@ train_arima <- function(.data, specials, ic = "aicc",
 
     if (!is.null(xreg)) {
       keep <- map_lgl(PDQ$D, function(.x) {
+        if(.x*period >= nrow(xreg)) return(FALSE)
         diff_xreg <- diff(xreg, lag = period, differences = .x)
         !any(apply(diff_xreg, 2, is.constant))
       })
@@ -104,6 +105,7 @@ train_arima <- function(.data, specials, ic = "aicc",
     # Valid xregs
     if (!is.null(xreg)) {
       keep <- map_lgl(pdq$d, function(.x) {
+        if(.x >= nrow(diff_xreg)) return(FALSE)
         diff_xreg <- diff(diff_xreg, differences = .x)
         !any(apply(diff_xreg, 2, is.constant))
       })
@@ -348,7 +350,7 @@ This is generally discouraged, consider removing the constant or reducing the nu
         mutate(
           statistic = !!sym("estimate") / !!sym("std.error"),
           p.value = 2 * stats::pt(abs(!!sym("statistic")),
-            best$nobs - length(best$coef[best$mask]),
+            best$nobs,
             lower.tail = FALSE
           )
         ),
