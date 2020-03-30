@@ -697,11 +697,6 @@ report.ARIMA <- function(object, ...) {
 #' @export
 forecast.ARIMA <- function(object, new_data = NULL, specials = NULL,
                            bootstrap = FALSE, times = 5000, ...) {
-  xreg <- specials$xreg[[1]]$xreg
-  
-  # Drop unused rank deficient xreg
-  xreg <- xreg[,colnames(xreg) %in% names(object$model$coef), drop = FALSE]
-
   if (bootstrap) {
     sim <- map(seq_len(times), function(x) generate(object, new_data, specials, bootstrap = TRUE)[[".sim"]]) %>%
       transpose() %>%
@@ -710,6 +705,10 @@ forecast.ARIMA <- function(object, new_data = NULL, specials = NULL,
       construct_fc(map_dbl(sim, mean), map_dbl(sim, stats::sd), dist_sim(sim))
     )
   }
+  
+  xreg <- specials$xreg[[1]]$xreg
+  # Drop unused rank deficient xreg
+  xreg <- xreg[,colnames(xreg) %in% names(object$model$coef), drop = FALSE]
   
   if (object$spec$constant) {
     intercept <- arima_constant(
