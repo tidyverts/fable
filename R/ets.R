@@ -83,7 +83,7 @@ train_ets <- function(.data, specials, opt_crit,
 
   structure(
     list(
-      par = tibble(term = names(best$par) %||% chr(), estimate = best$par %||% dbl()),
+      par = tibble(term = names(best$par) %||% chr(), estimate = unname(best$par) %||% dbl()),
       est = dplyr::ungroup(.data) %>%
         mutate(
           .fitted = best$fitted,
