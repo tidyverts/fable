@@ -100,7 +100,7 @@ test_that("ARIMA with bad inputs", {
   expect_warning(
     UKLungDeaths %>%
       model(ARIMA(mdeaths ~ 1 + pdq(2, 0, 0) + pdq(d = 1) + PDQ(2, 1, 0))),
-    "Only one special for `pdq()` and `PDQ()` is allowed"
+    "Only one special for `pdq\\(\\)` and `PDQ\\(\\)` is allowed"
   )
 
   expect_warning(
