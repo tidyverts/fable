@@ -36,36 +36,33 @@ train_arima <- function(.data, specials, ic = "aicc",
 
   # Check xreg
   if (!is_empty(xreg)) {
-    xreg <- as.matrix(xreg)
-    # Check that xreg is not rank deficient
-    # First check if any columns are constant
-    constant_columns <- apply(xreg, 2, is.constant)
-    if (all(constant_columns)) {
-      xreg <- NULL
-    }
-    else {
-      if (any(constant_columns)) {
-        xreg <- xreg[, -which(constant_columns), drop = FALSE]
-      }
-
-      # Now check if it is rank deficient
-      qr <- qr(na.omit(if (all(constant)) cbind(rep(1, NROW(xreg)), xreg) else xreg))
-      num_regressors <- length(qr$qraux)
-      if (qr$rank < num_regressors) {
-        bad_regressors <- qr$pivot[(qr$rank + 1):num_regressors]
+    # Now check if it is rank deficient
+    # TODO: arima_constant should be considered to remove incompatible differences, rather than using the max
+    xreg_c <- if(all(constant)) cbind(intercept = arima_constant(length(y), max(pdq$d), max(PDQ$D), period), xreg) else xreg
+    qr <- qr(na.omit(xreg_c))
+    num_regressors <- length(qr$qraux)
+    if (qr$rank < num_regressors) {
+      bad_regressors <- qr$pivot[(qr$rank + 1):num_regressors]
+      # Ignore fixed coefficients for xreg
+      bad_regressors <- bad_regressors[!(colnames(xreg_c)[bad_regressors] %in% union(names(fixed), names(specials$xreg[[1]]$fixed)))]
+      # Offset for inclusion of intercept
+      bad_regressors <- bad_regressors - 1
+      
+      # Remove deficient regressors
+      if(!is_empty(bad_regressors)){
         warn(sprintf(
           "Provided exogenous regressors are rank deficient, removing regressors: %s",
           paste("`", colnames(xreg)[bad_regressors], "`", sep = "", collapse = ", ")
         ))
-
+        
         xreg <- xreg[, -bad_regressors, drop = FALSE]
       }
-
-      # Finally find residuals from regression in order
-      # to estimate appropriate level of differencing
-      j <- !is.na(x) & !is.na(rowSums(xreg))
-      x[j] <- residuals(lm(x ~ xreg))
     }
+
+    # Finally find residuals from regression in order
+    # to estimate appropriate level of differencing
+    j <- !is.na(x) & !is.na(rowSums(xreg))
+    x[j] <- residuals(lm(x ~ xreg))
   }
   else {
     xreg <- NULL
