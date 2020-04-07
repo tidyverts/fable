@@ -489,7 +489,7 @@ refit.ETS <- function(object, new_data, specials = NULL, reestimate = FALSE, rei
 
   structure(
     list(
-      par = tibble(term = names(best$par) %||% chr(), estimate = best$par %||% dbl()),
+      par = tibble(term = names(best$par) %||% chr(), estimate = unname(best$par) %||% dbl()),
       est = new_data %>%
         mutate(
           .fitted = best$fitted,

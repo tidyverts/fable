@@ -341,7 +341,7 @@ This is generally discouraged, consider removing the constant or reducing the nu
   structure(
     list(
       par = tibble(
-        term = names(fit_coef) %||% chr(), estimate = fit_coef %||% dbl(),
+        term = names(fit_coef) %||% chr(), estimate = unname(fit_coef) %||% dbl(),
         std.error = fit_se %||% rep(NA, length(fit_coef))
       ) %>%
         mutate(
