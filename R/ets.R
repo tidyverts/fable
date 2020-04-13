@@ -378,7 +378,7 @@ generate.ETS <- function(x, new_data, specials, bootstrap = FALSE, ...) {
 
   initstate <- as.numeric(x$states[start_pos, measured_vars(x$states)])
 
-  if (!(".innov" %in% new_data)) {
+  if (!(".innov" %in% names(new_data))) {
     if (bootstrap) {
       new_data$.innov <- sample(stats::na.omit(residuals(x) - mean(residuals(x), na.rm = TRUE)),
         NROW(new_data),

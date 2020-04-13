@@ -146,7 +146,7 @@ forecast.model_mean <- function(object, new_data, specials = NULL, bootstrap = F
 generate.model_mean <- function(x, new_data, bootstrap = FALSE, ...) {
   f <- x$par$estimate
 
-  if (!(".innov" %in% new_data)) {
+  if (!(".innov" %in% names(new_data))) {
     if (bootstrap) {
       res <- residuals(x)
       new_data$.innov <- sample(na.omit(res) - mean(res, na.rm = TRUE),

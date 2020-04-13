@@ -264,7 +264,7 @@ generate.RW <- function(x, new_data, bootstrap = FALSE, ...) {
     abort("The first lag window for simulation must be within the model's training set.")
   }
 
-  if (!(".innov" %in% new_data)) {
+  if (!(".innov" %in% names(new_data))) {
     if (bootstrap) {
       new_data$.innov <- sample(stats::na.omit(residuals(x) - mean(residuals(x), na.rm = TRUE)),
         NROW(new_data),

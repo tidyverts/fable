@@ -772,7 +772,7 @@ generate.ARIMA <- function(x, new_data, specials, bootstrap = FALSE, ...){
     xm <- rep(0, nrow(new_data))
   }
   
-  if(!(".innov" %in% new_data)){
+  if(!(".innov" %in% names(new_data))){
     if(bootstrap){
       res <- residuals(x)
       new_data$.innov <- sample(na.omit(res) - mean(res, na.rm = TRUE),
@@ -787,7 +787,7 @@ generate.ARIMA <- function(x, new_data, specials, bootstrap = FALSE, ...){
     group_by_key() %>% 
     transmute(".sim" := conditional_arima_sim(x$model, x$est$.regression_resid, !!sym(".innov"))) %>% 
     dplyr::ungroup() %>% 
-    mutate(".sim" := !!sym(".sim") + xm)
+    mutate(".sim" := as.numeric(!!sym(".sim") + xm))
 }
 
 # Version of stats::arima.sim which conditions on past observations

@@ -336,7 +336,7 @@ generate.NNETAR <- function(x, new_data, specials = NULL, bootstrap = FALSE, ...
     }
   }
 
-  if (!(".innov" %in% new_data)) {
+  if (!(".innov" %in% names(new_data))) {
     if (bootstrap) {
       res <- stats::na.omit(x$est[[".resid"]] - mean(x$est[[".resid"]], na.rm = TRUE))
       if (!is.null(x$scales$y)) {

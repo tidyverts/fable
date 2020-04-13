@@ -331,7 +331,7 @@ generate.TSLM <- function(x, new_data, specials, bootstrap = FALSE, ...) {
   piv <- x$model$qr$pivot[seq_len(x$model$rank)]
   pred <- xreg[, piv, drop = FALSE] %*% coef[piv]
 
-  if (!(".innov" %in% new_data)) {
+  if (!(".innov" %in% names(new_data))) {
     if (bootstrap) {
       res <- residuals(x)
       new_data$.innov <- sample(na.omit(res) - mean(res, na.rm = TRUE),
