@@ -137,6 +137,10 @@ estimate_ar <- function(x, p, xreg, constant, fixed) {
     xreg <- cbind(constant = rep.int(1, length(x)), xreg)
   }
   
+  # scale
+  x_sd <- sd(x)
+  x <- x/x_sd
+    
   par <- c(colnames(xreg), sprintf("ar%i", seq_len(p)))
   coef <- set_names(map_dbl(fixed[par], `%||%`, NA_real_), par)
   
@@ -173,6 +177,13 @@ estimate_ar <- function(x, p, xreg, constant, fixed) {
   aic <- nobs * log(det(varE)) + 2 * npar
   bic <- aic + npar * (log(nobs) - 2)
   aicc <- aic + 2 * npar * (npar + 1) / (nobs - npar - 1)
+  
+  # rescale
+  coef[seq_len(ncol(xreg))] <- coef[seq_len(ncol(xreg))]*x_sd
+  coef_se[seq_len(ncol(xreg))] <- coef_se[seq_len(ncol(xreg))]*x_sd
+  varE <- varE * x_sd^2
+  E <- E * x_sd
+  x <- x * x_sd
   
   # Output model
   structure(
