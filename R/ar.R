@@ -107,7 +107,7 @@ train_ar <- function(.data, specials, ic, ...) {
   p <- specials$order[[1]]$p
   
   # Get response variables
-  y <- invoke(cbind, unclass(.data)[measured_vars(.data)])
+  y <- unclass(.data)[[measured_vars(.data)]]
   
   # Get xreg
   constant <- specials$xreg[[1]]$constant %||% c(TRUE, FALSE)
@@ -138,7 +138,7 @@ estimate_ar <- function(x, p, xreg, constant, fixed) {
   coef <- set_names(map_dbl(fixed[par], `%||%`, NA_real_), par)
   
   y <- stats::embed(x, p + 1L)
-  X <- cbind(xreg[(p+1):nrow(x),,drop=FALSE], y[,-1,drop=FALSE])
+  X <- cbind(xreg[(p+1):nrow(xreg),,drop=FALSE], y[,-1,drop=FALSE])
   Y <- y[,1]
   Y_est <- t(Y - X[,!is.na(coef),drop=FALSE]%*%coef[!is.na(coef)])
   X_est <- X[,is.na(coef),drop=FALSE]
@@ -231,6 +231,41 @@ forecast.AR <- function(object, new_data = NULL, specials = NULL,
   
   # Output forecasts
   construct_fc(fc, se, dist)
+}
+
+#' Refit an AR model
+#'
+#' Applies a fitted AR model to a new dataset.
+#'
+#' @inheritParams forecast.AR
+#' @param reestimate If `TRUE`, the coefficients for the fitted model will be re-estimated to suit the new data.
+#'
+#' @examples
+#' lung_deaths_male <- as_tsibble(mdeaths)
+#' lung_deaths_female <- as_tsibble(fdeaths)
+#'
+#' fit <- lung_deaths_male %>%
+#'   model(AR(value ~ 1 + order(10)))
+#'
+#' report(fit)
+#'
+#' fit %>%
+#'   refit(lung_deaths_female) %>%
+#'   report()
+#' @return A refitted model.
+#'
+#' @importFrom stats formula residuals
+#' @export
+refit.AR <- function(object, new_data, specials = NULL, reestimate = FALSE, ...) {
+  y <- unclass(new_data)[[measured_vars(new_data)]]
+  
+  fixed <- if (reestimate) {
+    c(specials$order[[1]]$fixed, specials$xreg[[1]]$fixed)
+  } else {
+    as.list(object$coef)
+  }
+  
+  estimate_ar(y, object$p, specials$xreg[[1]]$xreg, object$constant, fixed)
 }
 
 ar_se <- function(phi, h){
