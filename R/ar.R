@@ -130,6 +130,9 @@ train_ar <- function(.data, specials, ic, ...) {
 
 # Adapted and generalised from stats::ar.ols
 estimate_ar <- function(x, p, xreg, constant, fixed) {
+  if (is.null(xreg)) {
+    xreg <- matrix(nrow = length(x), ncol = 0)
+  }
   if (constant) {
     xreg <- cbind(constant = rep.int(1, length(x)), xreg)
   }
