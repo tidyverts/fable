@@ -115,7 +115,7 @@ xreg(..., fixed = list())
 }
 
 \tabular{ll}{
-\code{...}      \tab Bare expressions for the exogenous regressors (such as \code{log(x)})
+\code{...}      \tab Bare expressions for the exogenous regressors (such as \code{log(x)})\cr
 \code{fixed}    \tab A named list of fixed parameters for coefficients. The names identify the coefficient, and should match the name of the regressor. For example, \code{fixed = list(constant = 20)}.
 }
 }

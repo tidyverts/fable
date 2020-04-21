@@ -525,7 +525,7 @@ specials_arima <- new_specials(
 #' }
 #'
 #' \tabular{ll}{
-#'   `...`      \tab Bare expressions for the exogenous regressors (such as `log(x)`)
+#'   `...`      \tab Bare expressions for the exogenous regressors (such as `log(x)`)\cr
 #'   `fixed`    \tab A named list of fixed parameters for coefficients. The names identify the coefficient, and should match the name of the regressor. For example, `fixed = list(constant = 20)`.
 #' }
 #' }
