@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract fitted values from a fable model — fitted.VAR • fable</title>
+<title>Glance a AR — glance.AR • fable</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,8 +42,8 @@
 
 
 
-<meta property="og:title" content="Extract fitted values from a fable model — fitted.VAR" />
-<meta property="og:description" content="Extracts the fitted values." />
+<meta property="og:title" content="Glance a AR — glance.AR" />
+<meta property="og:description" content="Construct a single row summary of the AR model." />
 <meta property="og:image" content="https://fable.tidyverts.org/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -138,62 +138,53 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Extract fitted values from a fable model</h1>
-    <small class="dont-index">Source: <a href='https://github.com/tidyverts/fable/blob/master/R/var.R'><code>R/var.R</code></a></small>
-    <div class="hidden name"><code>fitted.VAR.Rd</code></div>
+    <h1>Glance a AR</h1>
+    <small class="dont-index">Source: <a href='https://github.com/tidyverts/fable/blob/master/R/ar.R'><code>R/ar.R</code></a></small>
+    <div class="hidden name"><code>glance.AR.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Extracts the fitted values.</p>
+    <p>Construct a single row summary of the AR model.</p>
     </div>
 
-    <pre class="usage"><span class='co'># S3 method for VAR</span>
-<span class='fu'><a href='https://rdrr.io/r/stats/fitted.values.html'>fitted</a></span>(<span class='no'>object</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='co'># S3 method for AR</span>
+<span class='fu'>glance</span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>object</th>
-      <td><p>The time series model used to produce the forecasts</p></td>
+      <th>x</th>
+      <td><p>model or other R object to convert to single-row data frame</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Additional arguments for forecast model methods.</p></td>
+      <td><p>other arguments passed to methods</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A vector of fitted values.</p>
+    <p>A one row tibble summarising the model's fit.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Contains the variance of residuals (<code>sigma2</code>), the log-likelihood (<code>log_lik</code>),
+and information criterion (<code>AIC</code>, <code>AICc</code>, <code>BIC</code>).</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>lung_deaths</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span>(<span class='no'>mdeaths</span>, <span class='no'>fdeaths</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='kw'>pivot_longer</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-
-<span class='no'>lung_deaths</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='fu'><a href='VAR.html'>VAR</a></span>(<span class='fu'>vars</span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>mdeaths</span>), <span class='no'>fdeaths</span>) ~ <span class='fu'><a href='AR.html'>AR</a></span>(<span class='fl'>3</span>))) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/r/stats/fitted.values.html'>fitted</a></span>()</div><div class='output co'>#&gt; <span style='color: #555555;'># A tsibble: 72 x 4 [1M]</span><span>
-#&gt; </span><span style='color: #555555;'># Key:       .model [1]</span><span>
-#&gt;    .model                                      index mdeaths fdeaths
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                                       </span><span style='color: #555555;font-style: italic;'>&lt;mth&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> VAR(vars(log(mdeaths), fdeaths) ~ AR(3)) 1974 Jan     </span><span style='color: #BB0000;'>NA</span><span>      </span><span style='color: #BB0000;'>NA</span><span> 
-#&gt; </span><span style='color: #555555;'> 2</span><span> VAR(vars(log(mdeaths), fdeaths) ~ AR(3)) 1974 Feb     </span><span style='color: #BB0000;'>NA</span><span>      </span><span style='color: #BB0000;'>NA</span><span> 
-#&gt; </span><span style='color: #555555;'> 3</span><span> VAR(vars(log(mdeaths), fdeaths) ~ AR(3)) 1974 Mar     </span><span style='color: #BB0000;'>NA</span><span>      </span><span style='color: #BB0000;'>NA</span><span> 
-#&gt; </span><span style='color: #555555;'> 4</span><span> VAR(vars(log(mdeaths), fdeaths) ~ AR(3)) 1974 Apr   </span><span style='text-decoration: underline;'>1</span><span>676.    666.
-#&gt; </span><span style='color: #555555;'> 5</span><span> VAR(vars(log(mdeaths), fdeaths) ~ AR(3)) 1974 May   </span><span style='text-decoration: underline;'>1</span><span>553.    591.
-#&gt; </span><span style='color: #555555;'> 6</span><span> VAR(vars(log(mdeaths), fdeaths) ~ AR(3)) 1974 Jun   </span><span style='text-decoration: underline;'>1</span><span>379.    510.
-#&gt; </span><span style='color: #555555;'> 7</span><span> VAR(vars(log(mdeaths), fdeaths) ~ AR(3)) 1974 Jul   </span><span style='text-decoration: underline;'>1</span><span>195.    413.
-#&gt; </span><span style='color: #555555;'> 8</span><span> VAR(vars(log(mdeaths), fdeaths) ~ AR(3)) 1974 Aug   </span><span style='text-decoration: underline;'>1</span><span>350.    498.
-#&gt; </span><span style='color: #555555;'> 9</span><span> VAR(vars(log(mdeaths), fdeaths) ~ AR(3)) 1974 Sep   </span><span style='text-decoration: underline;'>1</span><span>220.    457.
-#&gt; </span><span style='color: #555555;'>10</span><span> VAR(vars(log(mdeaths), fdeaths) ~ AR(3)) 1974 Oct   </span><span style='text-decoration: underline;'>1</span><span>299.    476.
-#&gt; </span><span style='color: #555555;'># … with 62 more rows</span><span></div></span></pre>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='no'>lh</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'>model</span>(<span class='fu'><a href='AR.html'>AR</a></span>(<span class='no'>value</span> ~ <span class='fu'><a href='https://rdrr.io/r/base/order.html'>order</a></span>(<span class='fl'>3</span>))) <span class='kw'>%&gt;%</span>
+  <span class='fu'>glance</span>()</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 1 x 6</span><span>
+#&gt;   .model               sigma2   AIC  AICc   BIC   dof
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                 </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span> AR(value ~ order(3))  0.190 -</span><span style='color: #BB0000;'>66.6</span><span> -</span><span style='color: #BB0000;'>65.6</span><span> -</span><span style='color: #BB0000;'>59.4</span><span>    44</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
+      <li><a href="#details">Details</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 

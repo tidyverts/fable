@@ -4,6 +4,9 @@
     <loc>https://fable.tidyverts.org/index.html</loc>
   </url>
   <url>
+    <loc>https://fable.tidyverts.org/reference/AR.html</loc>
+  </url>
+  <url>
     <loc>https://fable.tidyverts.org/reference/ARIMA.html</loc>
   </url>
   <url>
@@ -37,6 +40,9 @@
     <loc>https://fable.tidyverts.org/reference/fable-package.html</loc>
   </url>
   <url>
+    <loc>https://fable.tidyverts.org/reference/fitted.AR.html</loc>
+  </url>
+  <url>
     <loc>https://fable.tidyverts.org/reference/fitted.ARIMA.html</loc>
   </url>
   <url>
@@ -59,6 +65,9 @@
   </url>
   <url>
     <loc>https://fable.tidyverts.org/reference/fitted.model_mean.html</loc>
+  </url>
+  <url>
+    <loc>https://fable.tidyverts.org/reference/forecast.AR.html</loc>
   </url>
   <url>
     <loc>https://fable.tidyverts.org/reference/forecast.ARIMA.html</loc>
@@ -103,6 +112,9 @@
     <loc>https://fable.tidyverts.org/reference/generate.model_mean.html</loc>
   </url>
   <url>
+    <loc>https://fable.tidyverts.org/reference/glance.AR.html</loc>
+  </url>
+  <url>
     <loc>https://fable.tidyverts.org/reference/glance.ARIMA.html</loc>
   </url>
   <url>
@@ -145,6 +157,9 @@
     <loc>https://fable.tidyverts.org/reference/refit.TSLM.html</loc>
   </url>
   <url>
+    <loc>https://fable.tidyverts.org/reference/residuals.AR.html</loc>
+  </url>
+  <url>
     <loc>https://fable.tidyverts.org/reference/residuals.ARIMA.html</loc>
   </url>
   <url>
@@ -167,6 +182,9 @@
   </url>
   <url>
     <loc>https://fable.tidyverts.org/reference/residuals.model_mean.html</loc>
+  </url>
+  <url>
+    <loc>https://fable.tidyverts.org/reference/tidy.AR.html</loc>
   </url>
   <url>
     <loc>https://fable.tidyverts.org/reference/tidy.ARIMA.html</loc>

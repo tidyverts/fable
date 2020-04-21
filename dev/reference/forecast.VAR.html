@@ -195,7 +195,7 @@
   <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='kw'>pivot_longer</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='no'>lung_deaths</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='fu'><a href='VAR.html'>VAR</a></span>(<span class='fu'>vars</span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>mdeaths</span>), <span class='no'>fdeaths</span>) ~ <span class='fu'>AR</span>(<span class='fl'>3</span>))) <span class='kw'>%&gt;%</span>
+  <span class='fu'>model</span>(<span class='fu'><a href='VAR.html'>VAR</a></span>(<span class='fu'>vars</span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>mdeaths</span>), <span class='no'>fdeaths</span>) ~ <span class='fu'><a href='AR.html'>AR</a></span>(<span class='fl'>3</span>))) <span class='kw'>%&gt;%</span>
   <span class='fu'>forecast</span>()</div><div class='output co'>#&gt; <span style='color: #555555;'># A fable: 24 x 5 [1M]</span><span>
 #&gt; </span><span style='color: #555555;'># Key:     .model [1]</span><span>
 #&gt;    .model                                    index mdeaths fdeaths .distribution
