@@ -74,9 +74,6 @@ specials_ar <- new_specials(
       warn("The AR order must be non-negative. Only non-negative orders will be considered.")
       p <- p[p >= 0]
     }
-    if(!is_empty(fixed)){
-      warn("Fixed coefficients for AR() is not yet supported.")
-    }
     list(p = p, fixed = fixed)
   },
   common_xregs,
@@ -116,10 +113,12 @@ train_ar <- function(.data, specials, ic, ...) {
   constant <- specials$xreg[[1]]$constant %||% c(TRUE, FALSE)
   xreg <- specials$xreg[[1]]$xreg
   
+  fixed <- c(specials$order[[1]]$fixed, specials$xreg[[1]]$fixed)
+  
   # Choose best model
   reduce(transpose(expand.grid(p = p, constant = constant)),
          function(best, args) {
-           new <- estimate_ar(y, args$p, xreg, args$constant)
+           new <- estimate_ar(y, args$p, xreg, args$constant, fixed)
            if ((new[[ic]] %||% Inf) < (best[[ic]] %||% Inf)) {
              best <- new
            }
@@ -130,18 +129,23 @@ train_ar <- function(.data, specials, ic, ...) {
 }
 
 # Adapted and generalised from stats::ar.ols
-estimate_ar <- function(x, p, xreg, constant) {
+estimate_ar <- function(x, p, xreg, constant, fixed) {
   if (constant) {
     xreg <- cbind(constant = rep.int(1, length(x)), xreg)
   }
   
-  y <- stats::embed(x, p + 1L)
-  X <- cbind(xreg[(p+1):nrow(x),,drop = FALSE], y[,-1,drop=FALSE])
-  Y <- t(y[,1,drop=FALSE])
-  npar <- ncol(X)
-  nr <- nrow(X)
+  par <- c(colnames(xreg), sprintf("ar%i", seq_len(p)))
+  coef <- set_names(map_dbl(fixed[par], `%||%`, NA_real_), par)
   
-  XX <- t(X) %*% X
+  y <- stats::embed(x, p + 1L)
+  X <- cbind(xreg[(p+1):nrow(x),,drop=FALSE], y[,-1,drop=FALSE])
+  Y <- y[,1]
+  Y_est <- t(Y - X[,!is.na(coef),drop=FALSE]%*%coef[!is.na(coef)])
+  X_est <- X[,is.na(coef),drop=FALSE]
+  npar <- ncol(X_est)
+  nr <- nrow(X_est)
+  
+  XX <- t(X_est) %*% X_est
   rank <- qr(XX)$rank
   if (rank != nrow(XX)) {
     warning(paste("model order: ", p, "singularities in the computation of the projection matrix", 
@@ -152,27 +156,27 @@ estimate_ar <- function(x, p, xreg, constant) {
   P <- if (ncol(XX) > 0) 
     solve(XX)
   else XX
-  A <- Y %*% X %*% P
-  YH <- A %*% t(X)
+  coef[coef_est <- is.na(coef)] <- Y_est %*% X_est %*% P
+  YH <- drop(coef %*% t(X))
   E <- Y - YH
-  varE <- tcrossprod(E)/nr
+  varE <- tcrossprod(t(E))/nr
   varA <- kronecker(P, varE)
-  seA <- if (ncol(varA) > 0) 
-    sqrt(diag(varA))
-  else numeric()
-  aic <- nr * log(det(varE)) + 2 * ncol(X)
+  
+  coef_se <- numeric(length(par))
+  coef_se[coef_est] <- if (ncol(varA) > 0) sqrt(diag(varA)) else numeric()
+  
+  aic <- nr * log(det(varE)) + 2 * npar
   bic <- aic + npar * (log(nr) - 2)
   aicc <- aic + 2 * npar * (npar + 1) / (nr - npar - 1)
   
-  colnames(A) <- c(colnames(xreg), sprintf("ar%i", seq_len(p)))
   # Output model
   structure(
     list(
-      coef = A,
-      coef.se = seA,
-      fits = c(rep.int(NA_real_, p), drop(YH)),
-      resid = c(rep.int(NA_real_, p), drop(E)),
-      last = x[(ncol(E)+1):length(x)],
+      coef = coef,
+      coef.se = coef_se,
+      fits = c(rep.int(NA_real_, p), YH),
+      resid = c(rep.int(NA_real_, p), E),
+      last = x[(length(E)+1):length(x)],
       sigma2 = drop(varE),
       aic = aic,
       bic = bic,
