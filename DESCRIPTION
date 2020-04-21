@@ -34,6 +34,7 @@ Imports:
     stats,
     dplyr (>= 0.8.0),
     tsibble (>= 0.8.0),
+    tibble,
     tidyr,
     utils
 Suggests:
@@ -56,4 +57,4 @@ Language: en-GB
 LazyData: true
 Roxygen: list(markdown = TRUE, roclets=c('rd', 'collate',
     'namespace'))
-RoxygenNote: 7.0.2.9000
+RoxygenNote: 7.1.0

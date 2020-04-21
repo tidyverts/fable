@@ -102,6 +102,14 @@ reference:
     - forecast.croston
     - fitted.croston
     - residuals.croston
+- title: Autoregression
+  desc: >
+    Autoregressive time series models
+  contents:
+    - AR
+    - forecast.AR
+    - fitted.AR
+    - residuals.AR
 - title: Vector autoregression
   desc: >
     Estimates a VAR(p) model with support for exogenous regressors.
