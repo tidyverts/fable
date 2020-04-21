@@ -145,6 +145,8 @@ estimate_ar <- function(x, p, xreg, constant, fixed) {
   Y <- y[,1]
   Y_est <- t(Y - X[,!is.na(coef),drop=FALSE]%*%coef[!is.na(coef)])
   X_est <- X[,is.na(coef),drop=FALSE]
+  
+  nobs <- length(x)
   npar <- ncol(X_est)
   nr <- nrow(X_est)
   
@@ -168,9 +170,9 @@ estimate_ar <- function(x, p, xreg, constant, fixed) {
   coef_se <- numeric(length(par))
   coef_se[coef_est] <- if (ncol(varA) > 0) sqrt(diag(varA)) else numeric()
   
-  aic <- nr * log(det(varE)) + 2 * npar
-  bic <- aic + npar * (log(nr) - 2)
-  aicc <- aic + 2 * npar * (npar + 1) / (nr - npar - 1)
+  aic <- nobs * log(det(varE)) + 2 * npar
+  bic <- aic + npar * (log(nobs) - 2)
+  aicc <- aic + 2 * npar * (npar + 1) / (nobs - npar - 1)
   
   # Output model
   structure(
