@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Changelog • fable</title>
+<title>Refit an AR model — refit.AR • fable</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,7 +42,8 @@
 
 
 
-<meta property="og:title" content="Changelog" />
+<meta property="og:title" content="Refit an AR model — refit.AR" />
+<meta property="og:description" content="Applies a fitted AR model to a new dataset." />
 <meta property="og:image" content="https://fable.tidyverts.org/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -73,7 +74,7 @@
   </head>
 
   <body>
-    <div class="container template-news">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -137,99 +138,88 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Changelog <small></small></h1>
-      <small>Source: <a href='https://github.com/tidyverts/fable/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
+    <h1>Refit an AR model</h1>
+    <small class="dont-index">Source: <a href='https://github.com/tidyverts/fable/blob/master/R/ar.R'><code>R/ar.R</code></a></small>
+    <div class="hidden name"><code>refit.AR.Rd</code></div>
     </div>
 
-    <div id="fable-development-version" class="section level1">
-<h1 class="page-header">
-<a href="#fable-development-version" class="anchor"></a>fable (development version)<small> Unreleased </small>
-</h1>
-<div id="improvements" class="section level2">
-<h2 class="hasAnchor">
-<a href="#improvements" class="anchor"></a>Improvements</h2>
-<ul>
-<li>Added autoregressive modelling with <code><a href="../reference/AR.html">AR()</a></code>.</li>
-<li>Better handling of rank deficiency in <code><a href="../reference/ARIMA.html">ARIMA()</a></code>.</li>
-<li>Added <code><a href="../reference/generate.ARIMA.html">generate.ARIMA()</a></code> method.</li>
-<li>
-<code><a href="../reference/ARIMA.html">ARIMA()</a></code> specials now allow specifying fixed coefficients via the <code>fixed</code> argument.</li>
-<li>Documentation improvements.</li>
-</ul>
-</div>
-</div>
-    <div id="fable-012" class="section level1">
-<h1 class="page-header">
-<a href="#fable-012" class="anchor"></a>fable 0.1.2<small> 2020-01-29 </small>
-</h1>
-<div id="improvements-1" class="section level2">
-<h2 class="hasAnchor">
-<a href="#improvements-1" class="anchor"></a>Improvements</h2>
-<ul>
-<li>Added <code><a href="../reference/CROSTON.html">CROSTON()</a></code> for Croston’s method of intermittent demand forecasting.</li>
-<li>Documentation improvements</li>
-</ul>
-</div>
-<div id="bug-fixes" class="section level2">
-<h2 class="hasAnchor">
-<a href="#bug-fixes" class="anchor"></a>Bug fixes</h2>
-<ul>
-<li>Fixed NNETAR &amp; VAR handling of missing values (<a href='https://github.com/tidyverts/fable/issues/215'>#215</a>).</li>
-<li>Fix ETS forecasting with forecast horizons less than the seasonal period (<a href='https://github.com/tidyverts/fable/issues/219'>#219</a>).</li>
-<li>Fixed season() special for non-seasonally based time indices (<a href='https://github.com/tidyverts/fable/issues/220'>#220</a>)</li>
-<li>Fix issue with simulation forecasting from damped ETS models.</li>
-</ul>
-</div>
-</div>
-    <div id="fable-011" class="section level1">
-<h1 class="page-header">
-<a href="#fable-011" class="anchor"></a>fable 0.1.1<small> 2019-12-06 </small>
-</h1>
-<div id="improvements-2" class="section level2">
-<h2 class="hasAnchor">
-<a href="#improvements-2" class="anchor"></a>Improvements</h2>
-<ul>
-<li>Added interpolation method for <code><a href="../reference/MEAN.html">MEAN()</a></code> model (<a href='https://github.com/tidyverts/fable/issues/203'>#203</a>).</li>
-<li>Added rolling mean option for <code><a href="../reference/MEAN.html">MEAN()</a></code> model (<a href='https://github.com/tidyverts/fable/issues/204'>#204</a>).</li>
-</ul>
-</div>
-<div id="bug-fixes-1" class="section level2">
-<h2 class="hasAnchor">
-<a href="#bug-fixes-1" class="anchor"></a>Bug fixes</h2>
-<ul>
-<li>Corrected forecast standard error for drift models.</li>
-</ul>
-</div>
-</div>
-    <div id="fable-010" class="section level1">
-<h1 class="page-header">
-<a href="#fable-010" class="anchor"></a>fable 0.1.0<small> 2019-09-23 </small>
-</h1>
-<ul>
-<li>First release.</li>
-</ul>
-<div id="new-features" class="section level2">
-<h2 class="hasAnchor">
-<a href="#new-features" class="anchor"></a>New features</h2>
-<ul>
-<li>Support for 9 models and relevant methods: <code>ARIMA</code>, <code>ETS</code>, <code>TSLM</code>, <code>MEAN</code>, <code>RW</code>, <code>NAIVE</code>, <code>SNAIVE</code>, <code>NNETAR</code>, <code>VAR</code>.</li>
-</ul>
-</div>
-</div>
-  </div>
+    <div class="ref-description">
+    <p>Applies a fitted AR model to a new dataset.</p>
+    </div>
 
+    <pre class="usage"><span class='co'># S3 method for AR</span>
+<span class='fu'>refit</span>(<span class='no'>object</span>, <span class='no'>new_data</span>, <span class='kw'>specials</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>reestimate</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
+
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>object</th>
+      <td><p>The time series model used to produce the forecasts</p></td>
+    </tr>
+    <tr>
+      <th>new_data</th>
+      <td><p>A <code>tsibble</code> containing future information used to forecast.</p></td>
+    </tr>
+    <tr>
+      <th>specials</th>
+      <td><p>(passed by <code><a href='https://fabletools.tidyverts.org/reference/forecast.html'>fabletools::forecast.mdl_df()</a></code>).</p></td>
+    </tr>
+    <tr>
+      <th>reestimate</th>
+      <td><p>If <code>TRUE</code>, the coefficients for the fitted model will be re-estimated to suit the new data.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Additional arguments for forecast model methods.</p></td>
+    </tr>
+    </table>
+
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>A refitted model.</p>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>lung_deaths_male</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='no'>mdeaths</span>)
+<span class='no'>lung_deaths_female</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='no'>fdeaths</span>)
+
+<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='no'>lung_deaths_male</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'>model</span>(<span class='fu'><a href='AR.html'>AR</a></span>(<span class='no'>value</span> ~ <span class='fl'>1</span> + <span class='fu'><a href='https://rdrr.io/r/base/order.html'>order</a></span>(<span class='fl'>10</span>)))
+
+<span class='fu'>report</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; Series: value 
+#&gt; Model: AR(10) w/ mean 
+#&gt; 
+#&gt; Coefficients:
+#&gt;   constant     ar1      ar2     ar3      ar4      ar5    ar6      ar7      ar8
+#&gt;   572.0428  0.6739  -0.1584  0.1291  -0.1581  -0.0342  0.012  -0.1172  -0.0832
+#&gt;       ar9    ar10
+#&gt;   -0.0712  0.4145
+#&gt; 
+#&gt; sigma^2 estimated as 37672
+#&gt; AIC = 675.27	AICc = 680.55	BIC = 698.67</div><div class='input'>
+<span class='no'>fit</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'>refit</span>(<span class='no'>lung_deaths_female</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'>report</span>()</div><div class='output co'>#&gt; Series: value 
+#&gt; Model: AR(10) w/ mean 
+#&gt; 
+#&gt; Coefficients:
+#&gt;   constant     ar1      ar2     ar3      ar4      ar5    ar6      ar7      ar8
+#&gt;   572.0428  0.6739  -0.1584  0.1291  -0.1581  -0.0342  0.012  -0.1172  -0.0832
+#&gt;       ar9    ar10
+#&gt;   -0.0712  0.4145
+#&gt; 
+#&gt; sigma^2 estimated as 134479
+#&gt; AIC = 732.17	AICc = 732.17	BIC = 732.17</div></pre>
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <div id="tocnav">
-      <h2>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-        <li><a href="#fable-development-version">development version</a></li>
-        <li><a href="#fable-012">0.1.2</a></li>
-        <li><a href="#fable-011">0.1.1</a></li>
-        <li><a href="#fable-010">0.1.0</a></li>
-      </ul>
-    </div>
-  </div>
+    <h2>Contents</h2>
+    <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#value">Value</a></li>
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
+  </div>
 </div>
 
 
