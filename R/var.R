@@ -165,7 +165,7 @@ specials_var <- new_specials(
 #'   as_tsibble(pivot_longer = FALSE)
 #'
 #' fit <- lung_deaths %>%
-#'   model(VAR(vars(log(mdeaths), fdeaths) ~ AR(3)))
+#'   model(VAR(vars(mdeaths, fdeaths) ~ AR(3)))
 #'
 #' report(fit)
 #'
@@ -191,7 +191,7 @@ VAR <- function(formula, ic = c("aicc", "aic", "bic"), ...) {
 #'   as_tsibble(pivot_longer = FALSE)
 #'
 #' lung_deaths %>%
-#'   model(VAR(vars(log(mdeaths), fdeaths) ~ AR(3))) %>%
+#'   model(VAR(vars(mdeaths, fdeaths) ~ AR(3))) %>%
 #'   forecast()
 #' @export
 forecast.VAR <- function(object, new_data = NULL, specials = NULL,
@@ -277,7 +277,7 @@ forecast.VAR <- function(object, new_data = NULL, specials = NULL,
 #'   as_tsibble(pivot_longer = FALSE)
 #'
 #' lung_deaths %>%
-#'   model(VAR(vars(log(mdeaths), fdeaths) ~ AR(3))) %>%
+#'   model(VAR(vars(mdeaths, fdeaths) ~ AR(3))) %>%
 #'   fitted()
 #' @export
 fitted.VAR <- function(object, ...) {
@@ -291,7 +291,7 @@ fitted.VAR <- function(object, ...) {
 #'   as_tsibble(pivot_longer = FALSE)
 #'
 #' lung_deaths %>%
-#'   model(VAR(vars(log(mdeaths), fdeaths) ~ AR(3))) %>%
+#'   model(VAR(vars(mdeaths, fdeaths) ~ AR(3))) %>%
 #'   residuals()
 #' @export
 residuals.VAR <- function(object, ...) {
@@ -310,7 +310,7 @@ model_sum.VAR <- function(x) {
 #'   as_tsibble(pivot_longer = FALSE)
 #'
 #' lung_deaths %>%
-#'   model(VAR(vars(log(mdeaths), fdeaths) ~ AR(3))) %>%
+#'   model(VAR(vars(mdeaths, fdeaths) ~ AR(3))) %>%
 #'   tidy()
 #' @export
 tidy.VAR <- function(x) {
@@ -349,7 +349,7 @@ tidy.VAR <- function(x) {
 #'   as_tsibble(pivot_longer = FALSE)
 #'
 #' lung_deaths %>%
-#'   model(VAR(vars(log(mdeaths), fdeaths) ~ AR(3))) %>%
+#'   model(VAR(vars(mdeaths, fdeaths) ~ AR(3))) %>%
 #'   glance()
 #' @export
 glance.VAR <- function(x, ...) {

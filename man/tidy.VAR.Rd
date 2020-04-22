@@ -20,6 +20,6 @@ lung_deaths <- cbind(mdeaths, fdeaths) \%>\%
   as_tsibble(pivot_longer = FALSE)
 
 lung_deaths \%>\%
-  model(VAR(vars(log(mdeaths), fdeaths) ~ AR(3))) \%>\%
+  model(VAR(vars(mdeaths, fdeaths) ~ AR(3))) \%>\%
   tidy()
 }
