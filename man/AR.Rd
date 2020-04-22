@@ -19,7 +19,8 @@ A model specification.
 }
 \description{
 Searches through the vector of lag orders to find the best AR model which
-has lowest AIC, AICc or BIC value. It is implemented using OLS per equation.
+has lowest AIC, AICc or BIC value. It is implemented using OLS, and behaves
+comparably to \code{\link[stats:ar.ols]{stats::ar.ols()}}.
 }
 \details{
 Exogenous regressors and \code{\link{common_xregs}} can be specified in the model
@@ -68,5 +69,5 @@ fit \%>\%
   autoplot(luteinizing_hormones)
 }
 \seealso{
-\href{https://otexts.com/fpp2/AR.html}{Forecasting: Principles and Practices, Vector autoregressions (section 11.2)}
+\href{https://otexts.com/fpp3/AR.html}{Forecasting: Principles and Practices, Vector autoregressions (section 11.2)}
 }

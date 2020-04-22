@@ -1,7 +1,8 @@
 #' Estimate a AR model
 #'
 #' Searches through the vector of lag orders to find the best AR model which
-#' has lowest AIC, AICc or BIC value. It is implemented using OLS per equation.
+#' has lowest AIC, AICc or BIC value. It is implemented using OLS, and behaves
+#' comparably to [`stats::ar.ols()`].
 #'
 #' Exogenous regressors and [`common_xregs`] can be specified in the model
 #' formula.
@@ -44,7 +45,7 @@
 #' @return A model specification.
 #'
 #' @seealso
-#' [Forecasting: Principles and Practices, Vector autoregressions (section 11.2)](https://otexts.com/fpp2/AR.html)
+#' [Forecasting: Principles and Practices, Vector autoregressions (section 11.2)](https://otexts.com/fpp3/AR.html)
 #'
 #' @examples
 #' luteinizing_hormones <- as_tsibble(lh)
