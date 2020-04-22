@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Forecast a model from the fable package — forecast.NNETAR • fable</title>
+<title>Extract residuals values from a fable model — residuals.AR • fable</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,8 +42,8 @@
 
 
 
-<meta property="og:title" content="Forecast a model from the fable package — forecast.NNETAR" />
-<meta property="og:description" content="Produces forecasts from a trained model." />
+<meta property="og:title" content="Extract residuals values from a fable model — residuals.AR" />
+<meta property="og:description" content="Extracts the residuals." />
 <meta property="og:image" content="https://fable.tidyverts.org/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -138,25 +138,17 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Forecast a model from the fable package</h1>
-    <small class="dont-index">Source: <a href='https://github.com/tidyverts/fable/blob/master/R/nnetar.R'><code>R/nnetar.R</code></a></small>
-    <div class="hidden name"><code>forecast.NNETAR.Rd</code></div>
+    <h1>Extract residuals values from a fable model</h1>
+    <small class="dont-index">Source: <a href='https://github.com/tidyverts/fable/blob/master/R/ar.R'><code>R/ar.R</code></a></small>
+    <div class="hidden name"><code>residuals.AR.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Produces forecasts from a trained model.</p>
+    <p>Extracts the residuals.</p>
     </div>
 
-    <pre class="usage"><span class='co'># S3 method for NNETAR</span>
-<span class='fu'>forecast</span>(
-  <span class='no'>object</span>,
-  <span class='no'>new_data</span>,
-  <span class='kw'>specials</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>simulate</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>bootstrap</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>times</span> <span class='kw'>=</span> <span class='fl'>1000</span>,
-  <span class='no'>...</span>
-)</pre>
+    <pre class="usage"><span class='co'># S3 method for AR</span>
+<span class='fu'><a href='https://rdrr.io/r/stats/residuals.html'>residuals</a></span>(<span class='no'>object</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"innovation"</span>, <span class='st'>"regression"</span>), <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -166,24 +158,8 @@
       <td><p>The time series model used to produce the forecasts</p></td>
     </tr>
     <tr>
-      <th>new_data</th>
-      <td><p>A <code>tsibble</code> containing future information used to forecast.</p></td>
-    </tr>
-    <tr>
-      <th>specials</th>
-      <td><p>(passed by <code><a href='https://fabletools.tidyverts.org/reference/forecast.html'>fabletools::forecast.mdl_df()</a></code>).</p></td>
-    </tr>
-    <tr>
-      <th>simulate</th>
-      <td><p>If <code>TRUE</code>, prediction intervals are produced by simulation rather than using analytic formulae.</p></td>
-    </tr>
-    <tr>
-      <th>bootstrap</th>
-      <td><p>If <code>TRUE</code>, then forecast distributions are computed using simulation with resampled errors.</p></td>
-    </tr>
-    <tr>
-      <th>times</th>
-      <td><p>The number of sample paths to use in estimating the forecast distribution if simulated intervals are used.</p></td>
+      <th>type</th>
+      <td><p>The type of the residuals to extract.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -193,17 +169,26 @@
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list of forecasts.</p>
+    <p>A vector of fitted residuals.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='no'>airmiles</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='kw'>nn</span> <span class='kw'>=</span> <span class='fu'><a href='NNETAR.html'>NNETAR</a></span>(<span class='fu'>box_cox</span>(<span class='no'>value</span>, <span class='fl'>0.15</span>))) <span class='kw'>%&gt;%</span>
-  <span class='fu'>forecast</span>(<span class='kw'>times</span> <span class='kw'>=</span> <span class='fl'>10</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A fable: 2 x 4 [1Y]</span><span>
-#&gt; </span><span style='color: #555555;'># Key:     .model [1]</span><span>
-#&gt;   .model index  value .distribution   
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dist&gt;</span><span>          
-#&gt; </span><span style='color: #555555;'>1</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>961 </span><span style='text-decoration: underline;'>31</span><span>923. t(sim(=dbl[10]))
-#&gt; </span><span style='color: #555555;'>2</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>962 </span><span style='text-decoration: underline;'>32</span><span>990. t(sim(=dbl[10]))</div></span></pre>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='no'>lh</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'>model</span>(<span class='fu'><a href='AR.html'>AR</a></span>(<span class='no'>value</span> ~ <span class='fu'><a href='https://rdrr.io/r/base/order.html'>order</a></span>(<span class='fl'>3</span>))) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/stats/residuals.html'>residuals</a></span>()</div><div class='output co'>#&gt; <span style='color: #555555;'># A tsibble: 48 x 3 [1]</span><span>
+#&gt; </span><span style='color: #555555;'># Key:       .model [1]</span><span>
+#&gt;    .model               index  .resid
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> AR(value ~ order(3))     1 </span><span style='color: #BB0000;'>NA</span><span>     
+#&gt; </span><span style='color: #555555;'> 2</span><span> AR(value ~ order(3))     2 </span><span style='color: #BB0000;'>NA</span><span>     
+#&gt; </span><span style='color: #555555;'> 3</span><span> AR(value ~ order(3))     3 </span><span style='color: #BB0000;'>NA</span><span>     
+#&gt; </span><span style='color: #555555;'> 4</span><span> AR(value ~ order(3))     4 -</span><span style='color: #BB0000;'>0.195</span><span> 
+#&gt; </span><span style='color: #555555;'> 5</span><span> AR(value ~ order(3))     5 -</span><span style='color: #BB0000;'>0.163</span><span> 
+#&gt; </span><span style='color: #555555;'> 6</span><span> AR(value ~ order(3))     6 -</span><span style='color: #BB0000;'>0.711</span><span> 
+#&gt; </span><span style='color: #555555;'> 7</span><span> AR(value ~ order(3))     7  0.431 
+#&gt; </span><span style='color: #555555;'> 8</span><span> AR(value ~ order(3))     8 -</span><span style='color: #BB0000;'>0.159</span><span> 
+#&gt; </span><span style='color: #555555;'> 9</span><span> AR(value ~ order(3))     9 -</span><span style='color: #BB0000;'>0.046</span><span style='color: #BB0000;text-decoration: underline;'>9</span><span>
+#&gt; </span><span style='color: #555555;'>10</span><span> AR(value ~ order(3))    10 -</span><span style='color: #BB0000;'>0.491</span><span> 
+#&gt; </span><span style='color: #555555;'># … with 38 more rows</span><span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

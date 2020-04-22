@@ -87,7 +87,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.3</span>
       </span>
     </div>
 
@@ -179,8 +179,10 @@
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibble</span>)
 <span class='no'>sim_poisson</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://tsibble.tidyverts.org/reference/tsibble.html'>tsibble</a></span>(
   <span class='kw'>time</span> <span class='kw'>=</span> <span class='fu'><a href='https://tsibble.tidyverts.org/reference/period.html'>yearmonth</a></span>(<span class='st'>"2012 Dec"</span>) + <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq_len</a></span>(<span class='fl'>24</span>),
-  <span class='kw'>count</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Poisson.html'>rpois</a></span>(<span class='fl'>24</span>, <span class='kw'>lambda</span> <span class='kw'>=</span> <span class='fl'>0.3</span>)
-)</div><div class='output co'>#&gt; <span class='message'>Using `time` as index variable.</span></div><div class='input'>
+  <span class='kw'>count</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Poisson.html'>rpois</a></span>(<span class='fl'>24</span>, <span class='kw'>lambda</span> <span class='kw'>=</span> <span class='fl'>0.3</span>),
+  <span class='kw'>index</span> <span class='kw'>=</span> <span class='no'>time</span>
+)
+
 <span class='no'>sim_poisson</span> <span class='kw'>%&gt;%</span>
   <span class='fu'>model</span>(<span class='fu'><a href='CROSTON.html'>CROSTON</a></span>(<span class='no'>count</span>)) <span class='kw'>%&gt;%</span>
   <span class='fu'>forecast</span>()</div><div class='output co'>#&gt; <span style='color: #555555;'># A fable: 24 x 4 [1M]</span><span>
@@ -197,8 +199,7 @@
 #&gt; </span><span style='color: #555555;'> 8</span><span> CROSTON(count) 2015 Aug   0.5 ?            
 #&gt; </span><span style='color: #555555;'> 9</span><span> CROSTON(count) 2015 Sep   0.5 ?            
 #&gt; </span><span style='color: #555555;'>10</span><span> CROSTON(count) 2015 Oct   0.5 ?            
-#&gt; </span><span style='color: #555555;'># … with 14 more rows</span><span></div><div class='input'>
-</div></span></pre>
+#&gt; </span><span style='color: #555555;'># … with 14 more rows</span><span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

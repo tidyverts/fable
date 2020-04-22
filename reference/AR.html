@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Forecast a model from the fable package — forecast.NNETAR • fable</title>
+<title>Estimate a AR model — AR • fable</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,8 +42,10 @@
 
 
 
-<meta property="og:title" content="Forecast a model from the fable package — forecast.NNETAR" />
-<meta property="og:description" content="Produces forecasts from a trained model." />
+<meta property="og:title" content="Estimate a AR model — AR" />
+<meta property="og:description" content="Searches through the vector of lag orders to find the best AR model which
+has lowest AIC, AICc or BIC value. It is implemented using OLS, and behaves
+comparably to stats::ar.ols()." />
 <meta property="og:image" content="https://fable.tidyverts.org/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -138,78 +140,104 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Forecast a model from the fable package</h1>
-    <small class="dont-index">Source: <a href='https://github.com/tidyverts/fable/blob/master/R/nnetar.R'><code>R/nnetar.R</code></a></small>
-    <div class="hidden name"><code>forecast.NNETAR.Rd</code></div>
+    <h1>Estimate a AR model</h1>
+    <small class="dont-index">Source: <a href='https://github.com/tidyverts/fable/blob/master/R/ar.R'><code>R/ar.R</code></a></small>
+    <div class="hidden name"><code>AR.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Produces forecasts from a trained model.</p>
+    <p>Searches through the vector of lag orders to find the best AR model which
+has lowest AIC, AICc or BIC value. It is implemented using OLS, and behaves
+comparably to <code><a href='https://rdrr.io/r/stats/ar.ols.html'>stats::ar.ols()</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='co'># S3 method for NNETAR</span>
-<span class='fu'>forecast</span>(
-  <span class='no'>object</span>,
-  <span class='no'>new_data</span>,
-  <span class='kw'>specials</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>simulate</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>bootstrap</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>times</span> <span class='kw'>=</span> <span class='fl'>1000</span>,
-  <span class='no'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>AR</span>(<span class='no'>formula</span>, <span class='kw'>ic</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"aicc"</span>, <span class='st'>"aic"</span>, <span class='st'>"bic"</span>), <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>object</th>
-      <td><p>The time series model used to produce the forecasts</p></td>
+      <th>formula</th>
+      <td><p>Model specification (see "Specials" section).</p></td>
     </tr>
     <tr>
-      <th>new_data</th>
-      <td><p>A <code>tsibble</code> containing future information used to forecast.</p></td>
-    </tr>
-    <tr>
-      <th>specials</th>
-      <td><p>(passed by <code><a href='https://fabletools.tidyverts.org/reference/forecast.html'>fabletools::forecast.mdl_df()</a></code>).</p></td>
-    </tr>
-    <tr>
-      <th>simulate</th>
-      <td><p>If <code>TRUE</code>, prediction intervals are produced by simulation rather than using analytic formulae.</p></td>
-    </tr>
-    <tr>
-      <th>bootstrap</th>
-      <td><p>If <code>TRUE</code>, then forecast distributions are computed using simulation with resampled errors.</p></td>
-    </tr>
-    <tr>
-      <th>times</th>
-      <td><p>The number of sample paths to use in estimating the forecast distribution if simulated intervals are used.</p></td>
+      <th>ic</th>
+      <td><p>The information criterion used in selecting the model.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Additional arguments for forecast model methods.</p></td>
+      <td><p>Further arguments for arima</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list of forecasts.</p>
+    <p>A model specification.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Exogenous regressors and <code><a href='common_xregs.html'>common_xregs</a></code> can be specified in the model
+formula.</p>
+    <h2 class="hasAnchor" id="specials"><a class="anchor" href="#specials"></a>Specials</h2>
+
+    
+
+
+<h3>pdq</h3>
+<p>The <code>order</code> special is used to specify the lag order for the auto-regression.</p><pre>
+order(p = 0:15, fixed = list())
+</pre>
+
+<table class='table'>
+<tr><td><code>p</code></td><td>The order of the auto-regressive (AR) terms. If multiple values are provided, the one which minimises <code>ic</code> will be chosen.</td></tr>
+<tr><td><code>fixed</code></td><td>A named list of fixed parameters for coefficients. The names identify the coefficient, beginning with <code>ar</code>, and then followed by the lag order. For example, <code>fixed = list(ar1 = 0.3, ar3 = 0)</code>.</td></tr>
+</table>
+
+
+
+<h3>xreg</h3>
+<p>Exogenous regressors can be included in an ARIMA model without explicitly using the <code>xreg()</code> special. Common exogenous regressor specials as specified in <code><a href='common_xregs.html'>common_xregs</a></code> can also be used. These regressors are handled using <code><a href='https://rdrr.io/r/stats/model.frame.html'>stats::model.frame()</a></code>, and so interactions and other functionality behaves similarly to <code><a href='https://rdrr.io/r/stats/lm.html'>stats::lm()</a></code>.</p>
+<p>The inclusion of a constant in the model follows the similar rules to <code><a href='https://rdrr.io/r/stats/lm.html'>stats::lm()</a></code>, where including <code>1</code> will add a constant and <code>0</code> or <code>-1</code> will remove the constant. If left out, the inclusion of a constant will be determined by minimising <code>ic</code>.</p>
+<pre>
+xreg(..., fixed = list())
+</pre>
+
+<table class='table'>
+<tr><td><code>...</code></td><td>Bare expressions for the exogenous regressors (such as <code><a href='https://rdrr.io/r/base/Log.html'>log(x)</a></code>)</td></tr>
+<tr><td><code>fixed</code></td><td>A named list of fixed parameters for coefficients. The names identify the coefficient, and should match the name of the regressor. For example, <code>fixed = list(constant = 20)</code>.</td></tr>
+</table>
+
+
+
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><a href='https://otexts.com/fpp3/AR.html'>Forecasting: Principles and Practices, Vector autoregressions (section 11.2)</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='no'>airmiles</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='kw'>nn</span> <span class='kw'>=</span> <span class='fu'><a href='NNETAR.html'>NNETAR</a></span>(<span class='fu'>box_cox</span>(<span class='no'>value</span>, <span class='fl'>0.15</span>))) <span class='kw'>%&gt;%</span>
-  <span class='fu'>forecast</span>(<span class='kw'>times</span> <span class='kw'>=</span> <span class='fl'>10</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A fable: 2 x 4 [1Y]</span><span>
-#&gt; </span><span style='color: #555555;'># Key:     .model [1]</span><span>
-#&gt;   .model index  value .distribution   
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dist&gt;</span><span>          
-#&gt; </span><span style='color: #555555;'>1</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>961 </span><span style='text-decoration: underline;'>31</span><span>923. t(sim(=dbl[10]))
-#&gt; </span><span style='color: #555555;'>2</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>962 </span><span style='text-decoration: underline;'>32</span><span>990. t(sim(=dbl[10]))</div></span></pre>
+    <pre class="examples"><div class='input'><span class='no'>luteinizing_hormones</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='no'>lh</span>)
+<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='no'>luteinizing_hormones</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'>model</span>(<span class='fu'>AR</span>(<span class='no'>value</span> ~ <span class='fu'><a href='https://rdrr.io/r/base/order.html'>order</a></span>(<span class='fl'>3</span>)))
+
+<span class='fu'>report</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; Series: value 
+#&gt; Model: AR(3) w/ mean 
+#&gt; 
+#&gt; Coefficients:
+#&gt;   constant     ar1      ar2      ar3
+#&gt;     1.5375  0.6578  -0.0658  -0.2348
+#&gt; 
+#&gt; sigma^2 estimated as 0.1905
+#&gt; AIC = -14.48	AICc = -13.55	BIC = -7</div><div class='input'>
+<span class='no'>fit</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'>forecast</span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'>autoplot</span>(<span class='no'>luteinizing_hormones</span>)</div><div class='img'><img src='AR-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
+      <li><a href="#details">Details</a></li>
+      <li><a href="#specials">Specials</a></li>
+      <li><a href="#see-also">See also</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 

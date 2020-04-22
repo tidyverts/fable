@@ -87,7 +87,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.3</span>
       </span>
     </div>
 
@@ -195,23 +195,22 @@
   <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='kw'>pivot_longer</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='no'>lung_deaths</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='fu'><a href='VAR.html'>VAR</a></span>(<span class='fu'>vars</span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>mdeaths</span>), <span class='no'>fdeaths</span>) ~ <span class='fu'>AR</span>(<span class='fl'>3</span>))) <span class='kw'>%&gt;%</span>
+  <span class='fu'>model</span>(<span class='fu'><a href='VAR.html'>VAR</a></span>(<span class='fu'>vars</span>(<span class='no'>mdeaths</span>, <span class='no'>fdeaths</span>) ~ <span class='fu'><a href='AR.html'>AR</a></span>(<span class='fl'>3</span>))) <span class='kw'>%&gt;%</span>
   <span class='fu'>forecast</span>()</div><div class='output co'>#&gt; <span style='color: #555555;'># A fable: 24 x 5 [1M]</span><span>
 #&gt; </span><span style='color: #555555;'># Key:     .model [1]</span><span>
-#&gt;    .model                                    index mdeaths fdeaths .distribution
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                                     </span><span style='color: #555555;font-style: italic;'>&lt;mth&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dist&gt;</span><span>       
-#&gt; </span><span style='color: #555555;'> 1</span><span> VAR(vars(log(mdeaths), fdeaths) ~ AR(… 1980 Jan   </span><span style='text-decoration: underline;'>1</span><span>490.    602. t(MVN[2])    
-#&gt; </span><span style='color: #555555;'> 2</span><span> VAR(vars(log(mdeaths), fdeaths) ~ AR(… 1980 Feb   </span><span style='text-decoration: underline;'>1</span><span>496.    582. t(MVN[2])    
-#&gt; </span><span style='color: #555555;'> 3</span><span> VAR(vars(log(mdeaths), fdeaths) ~ AR(… 1980 Mar   </span><span style='text-decoration: underline;'>1</span><span>500.    575. t(MVN[2])    
-#&gt; </span><span style='color: #555555;'> 4</span><span> VAR(vars(log(mdeaths), fdeaths) ~ AR(… 1980 Apr   </span><span style='text-decoration: underline;'>1</span><span>475.    555. t(MVN[2])    
-#&gt; </span><span style='color: #555555;'> 5</span><span> VAR(vars(log(mdeaths), fdeaths) ~ AR(… 1980 May   </span><span style='text-decoration: underline;'>1</span><span>452.    543. t(MVN[2])    
-#&gt; </span><span style='color: #555555;'> 6</span><span> VAR(vars(log(mdeaths), fdeaths) ~ AR(… 1980 Jun   </span><span style='text-decoration: underline;'>1</span><span>443.    538. t(MVN[2])    
-#&gt; </span><span style='color: #555555;'> 7</span><span> VAR(vars(log(mdeaths), fdeaths) ~ AR(… 1980 Jul   </span><span style='text-decoration: underline;'>1</span><span>448.    539. t(MVN[2])    
-#&gt; </span><span style='color: #555555;'> 8</span><span> VAR(vars(log(mdeaths), fdeaths) ~ AR(… 1980 Aug   </span><span style='text-decoration: underline;'>1</span><span>462.    545. t(MVN[2])    
-#&gt; </span><span style='color: #555555;'> 9</span><span> VAR(vars(log(mdeaths), fdeaths) ~ AR(… 1980 Sep   </span><span style='text-decoration: underline;'>1</span><span>477.    552. t(MVN[2])    
-#&gt; </span><span style='color: #555555;'>10</span><span> VAR(vars(log(mdeaths), fdeaths) ~ AR(… 1980 Oct   </span><span style='text-decoration: underline;'>1</span><span>490.    557. t(MVN[2])    
-#&gt; </span><span style='color: #555555;'># … with 14 more rows</span><span></div><div class='input'>  
-</div></span></pre>
+#&gt;    .model                                 index mdeaths fdeaths .distribution
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                                  </span><span style='color: #555555;font-style: italic;'>&lt;mth&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dist&gt;</span><span>       
+#&gt; </span><span style='color: #555555;'> 1</span><span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1980 Jan   </span><span style='text-decoration: underline;'>1</span><span>486.    575. MVN[2]       
+#&gt; </span><span style='color: #555555;'> 2</span><span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1980 Feb   </span><span style='text-decoration: underline;'>1</span><span>445.    558. MVN[2]       
+#&gt; </span><span style='color: #555555;'> 3</span><span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1980 Mar   </span><span style='text-decoration: underline;'>1</span><span>369.    528. MVN[2]       
+#&gt; </span><span style='color: #555555;'> 4</span><span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1980 Apr   </span><span style='text-decoration: underline;'>1</span><span>340.    505. MVN[2]       
+#&gt; </span><span style='color: #555555;'> 5</span><span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1980 May   </span><span style='text-decoration: underline;'>1</span><span>327.    497. MVN[2]       
+#&gt; </span><span style='color: #555555;'> 6</span><span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1980 Jun   </span><span style='text-decoration: underline;'>1</span><span>349.    505. MVN[2]       
+#&gt; </span><span style='color: #555555;'> 7</span><span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1980 Jul   </span><span style='text-decoration: underline;'>1</span><span>395.    522. MVN[2]       
+#&gt; </span><span style='color: #555555;'> 8</span><span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1980 Aug   </span><span style='text-decoration: underline;'>1</span><span>442.    540. MVN[2]       
+#&gt; </span><span style='color: #555555;'> 9</span><span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1980 Sep   </span><span style='text-decoration: underline;'>1</span><span>477.    554. MVN[2]       
+#&gt; </span><span style='color: #555555;'>10</span><span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1980 Oct   </span><span style='text-decoration: underline;'>1</span><span>495.    561. MVN[2]       
+#&gt; </span><span style='color: #555555;'># … with 14 more rows</span><span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

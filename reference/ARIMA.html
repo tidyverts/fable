@@ -90,7 +90,7 @@ framework." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.3</span>
       </span>
     </div>
 
@@ -190,7 +190,7 @@ framework.</p>
     <tr>
       <th>order_constraint</th>
       <td><p>A logical predicate on the orders of <code>p</code>, <code>d</code>, <code>q</code>,
-<code>P</code>, <code>D</code> and <code>Q</code> to consider in the search.</p></td>
+<code>P</code>, <code>D</code> and <code>Q</code> to consider in the search. See "Specials" for the meaning of these terms.</p></td>
     </tr>
     <tr>
       <th>unitroot_spec</th>
@@ -224,10 +224,12 @@ are equivalent, the coefficients for the constant/mean will differ.</p>
     
 
 
+<p>The <em>specials</em> define the space over which <code>ARIMA</code> will search for the model that best fits the data. If the RHS of <code>formula</code> is left blank, the default search space is given by <code>pdq() + PDQ()</code>: that is, a model with candidate seasonal and nonseasonal terms, but no exogenous regressors. Note that a seasonal model requires at least 2 full seasons' worth of data; if this is not available, <code>ARIMA</code> will revert to a nonseasonal model with a warning.</p>
+<p>To specify a model fully (avoid automatic selection), the intercept and <code>pdq()/PDQ()</code> values must be specified: for example <code>formula = response ~ 1 + pdq(1, 1, 1) + PDQ(1, 0, 0)</code>.</p>
 <h3>pdq</h3>
 <p>The <code>pdq</code> special is used to specify non-seasonal components of the model.</p><pre>
 pdq(p = 0:5, d = 0:2, q = 0:5,
-    p_init = 2, q_init = 2)
+    p_init = 2, q_init = 2, fixed = list())
 </pre>
 
 <table class='table'>
@@ -236,14 +238,15 @@ pdq(p = 0:5, d = 0:2, q = 0:5,
 <tr><td><code>q</code></td><td>The order of the non-seasonal moving average (MA) terms. If multiple values are provided, the one which minimises <code>ic</code> will be chosen.</td></tr>
 <tr><td><code>p_init</code></td><td>If <code>stepwise = TRUE</code>, <code>p_init</code> provides the initial value for <code>p</code> for the stepwise search procedure.</td></tr>
 <tr><td><code>q_init</code></td><td>If <code>stepwise = TRUE</code>, <code>q_init</code> provides the initial value for <code>q</code> for the stepwise search procedure.</td></tr>
+<tr><td><code>fixed</code></td><td>A named list of fixed parameters for coefficients. The names identify the coefficient, beginning with either <code>ar</code> or <code>ma</code>, and then followed by the lag order. For example, <code>fixed = list(ar1 = 0.3, ma2 = 0)</code>.</td></tr>
 </table>
 
 
 
 <h3>PDQ</h3>
-<p>The <code>PDQ</code> special is used to specify seasonal components of the model.</p><pre>
+<p>The <code>PDQ</code> special is used to specify seasonal components of the model. To force a nonseasonal fit, specify <code>PDQ(0, 0, 0)</code> in the RHS of the model formula. Note that simply omitting <code>PDQ</code> from the formula will <em>not</em> result in a nonseasonal fit.</p><pre>
 PDQ(P = 0:2, D = 0:1, Q = 0:2, period = NULL,
-    P_init = 1, Q_init = 1)
+    P_init = 1, Q_init = 1, fixed = list())
 </pre>
 
 <table class='table'>
@@ -253,6 +256,7 @@ PDQ(P = 0:2, D = 0:1, Q = 0:2, period = NULL,
 <tr><td><code>period</code></td><td>The periodic nature of the seasonality. This can be either a number indicating the number of observations in each seasonal period, or text to indicate the duration of the seasonal window (for example, annual seasonality would be "1 year").</td></tr>
 <tr><td><code>P_init</code></td><td>If <code>stepwise = TRUE</code>, <code>P_init</code> provides the initial value for <code>P</code> for the stepwise search procedure.</td></tr>
 <tr><td><code>Q_init</code></td><td>If <code>stepwise = TRUE</code>, <code>Q_init</code> provides the initial value for <code>Q</code> for the stepwise search procedure.</td></tr>
+<tr><td><code>fixed</code></td><td>A named list of fixed parameters for coefficients. The names identify the coefficient, beginning with either <code>sar</code> or <code>sma</code>, and then followed by the lag order. For example, <code>fixed = list(sar1 = 0.1)</code>.</td></tr>
 </table>
 
 
@@ -261,11 +265,12 @@ PDQ(P = 0:2, D = 0:1, Q = 0:2, period = NULL,
 <p>Exogenous regressors can be included in an ARIMA model without explicitly using the <code>xreg()</code> special. Common exogenous regressor specials as specified in <code><a href='common_xregs.html'>common_xregs</a></code> can also be used. These regressors are handled using <code><a href='https://rdrr.io/r/stats/model.frame.html'>stats::model.frame()</a></code>, and so interactions and other functionality behaves similarly to <code><a href='https://rdrr.io/r/stats/lm.html'>stats::lm()</a></code>.</p>
 <p>The inclusion of a constant in the model follows the similar rules to <code><a href='https://rdrr.io/r/stats/lm.html'>stats::lm()</a></code>, where including <code>1</code> will add a constant and <code>0</code> or <code>-1</code> will remove the constant. If left out, the inclusion of a constant will be determined by minimising <code>ic</code>.</p>
 <pre>
-xreg(...)
+xreg(..., fixed = list())
 </pre>
 
 <table class='table'>
 <tr><td><code>...</code></td><td>Bare expressions for the exogenous regressors (such as <code><a href='https://rdrr.io/r/base/Log.html'>log(x)</a></code>)</td></tr>
+<tr><td><code>fixed</code></td><td>A named list of fixed parameters for coefficients. The names identify the coefficient, and should match the name of the regressor. For example, <code>fixed = list(constant = 20)</code>.</td></tr>
 </table>
 
 
@@ -278,8 +283,8 @@ xreg(...)
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Manual ARIMA specification</span>
 <span class='no'>USAccDeaths</span> <span class='kw'>%&gt;%</span>
-  <span class='no'>as_tsibble</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='kw'>arima</span> <span class='kw'>=</span> <span class='fu'>ARIMA</span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>value</span>) ~ <span class='fl'>0</span> + <span class='fu'>pdq</span>(<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>1</span>) + <span class='fu'>PDQ</span>(<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>1</span>))) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'>model</span>(<span class='kw'>arima</span> <span class='kw'>=</span> <span class='fu'>ARIMA</span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>value</span>) ~ <span class='fl'>0</span> + <span class='fu'>pdq</span>(<span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span>) + <span class='fu'>PDQ</span>(<span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span>))) <span class='kw'>%&gt;%</span>
   <span class='fu'>report</span>()</div><div class='output co'>#&gt; Series: value 
 #&gt; Model: ARIMA(0,1,1)(0,1,1)[12] 
 #&gt; Transformation: log(.x) 
@@ -306,8 +311,7 @@ xreg(...)
 #&gt; </span><span style='color: #555555;'># Key:     Country [1]</span><span>
 #&gt;   Country   `ARIMA(log(GDP) ~ Population)`
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;model&gt;</span><span>                       
-#&gt; </span><span style='color: #555555;'>1</span><span> Australia </span><span style='color: #555555;'>&lt;LM w/ ARIMA(2,0,0) errors&gt;</span><span>   </div><div class='input'>
-</div></span></pre>
+#&gt; </span><span style='color: #555555;'>1</span><span> Australia </span><span style='color: #555555;'>&lt;LM w/ ARIMA(2,0,0) errors&gt;</span><span>   </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
