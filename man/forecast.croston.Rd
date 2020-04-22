@@ -25,7 +25,8 @@ Produces forecasts from a trained model.
 library(tsibble)
 sim_poisson <- tsibble(
   time = yearmonth("2012 Dec") + seq_len(24),
-  count = rpois(24, lambda = 0.3)
+  count = rpois(24, lambda = 0.3),
+  index = time
 )
 
 sim_poisson \%>\%

@@ -52,7 +52,8 @@
 #' library(tsibble)
 #' sim_poisson <- tsibble(
 #'   time = yearmonth("2012 Dec") + seq_len(24),
-#'   count = rpois(24, lambda = 0.3)
+#'   count = rpois(24, lambda = 0.3),
+#'   index = time
 #' )
 #'
 #' sim_poisson %>%
@@ -219,7 +220,8 @@ estimate_croston <- function(y_demand, y_interval, demand, interval, non_zero, n
 #' library(tsibble)
 #' sim_poisson <- tsibble(
 #'   time = yearmonth("2012 Dec") + seq_len(24),
-#'   count = rpois(24, lambda = 0.3)
+#'   count = rpois(24, lambda = 0.3),
+#'   index = time
 #' )
 #'
 #' sim_poisson %>%
@@ -238,7 +240,8 @@ forecast.croston <- function(object, new_data, specials = NULL, ...) {
 #' library(tsibble)
 #' sim_poisson <- tsibble(
 #'   time = yearmonth("2012 Dec") + seq_len(24),
-#'   count = rpois(24, lambda = 0.3)
+#'   count = rpois(24, lambda = 0.3),
+#'   index = time
 #' )
 #'
 #' sim_poisson %>%
@@ -256,7 +259,8 @@ fitted.croston <- function(object, ...) {
 #' library(tsibble)
 #' sim_poisson <- tsibble(
 #'   time = yearmonth("2012 Dec") + seq_len(24),
-#'   count = rpois(24, lambda = 0.3)
+#'   count = rpois(24, lambda = 0.3),
+#'   index = time
 #' )
 #'
 #' sim_poisson %>%
@@ -273,7 +277,8 @@ residuals.croston <- function(object, ...) {
 #' library(tsibble)
 #' sim_poisson <- tsibble(
 #'   time = yearmonth("2012 Dec") + seq_len(24),
-#'   count = rpois(24, lambda = 0.3)
+#'   count = rpois(24, lambda = 0.3),
+#'   index = time
 #' )
 #'
 #' sim_poisson %>%
