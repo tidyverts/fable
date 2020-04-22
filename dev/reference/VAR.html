@@ -214,34 +214,34 @@ xreg(...)
   <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='kw'>pivot_longer</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='no'>lung_deaths</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='fu'>VAR</span>(<span class='fu'>vars</span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>mdeaths</span>), <span class='no'>fdeaths</span>) ~ <span class='fu'><a href='AR.html'>AR</a></span>(<span class='fl'>3</span>)))
+  <span class='fu'>model</span>(<span class='fu'>VAR</span>(<span class='fu'>vars</span>(<span class='no'>mdeaths</span>, <span class='no'>fdeaths</span>) ~ <span class='fu'><a href='AR.html'>AR</a></span>(<span class='fl'>3</span>)))
 
 <span class='fu'>report</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; Series: mdeaths, fdeaths 
 #&gt; Model: VAR(3) w/ mean 
 #&gt; 
-#&gt; Coefficients for log(mdeaths):
-#&gt;       lag(log(mdeaths),1)  lag(fdeaths,1)  lag(log(mdeaths),2)  lag(fdeaths,2)
-#&gt;                    1.0361           0e+00               0.3054          -8e-04
-#&gt; s.e.               0.2642           4e-04               0.2969           4e-04
-#&gt;       lag(log(mdeaths),3)  lag(fdeaths,3)  constant
-#&gt;                   -0.3004           1e-04    0.0950
-#&gt; s.e.               0.2567           4e-04    2.0712
+#&gt; Coefficients for mdeaths:
+#&gt;       lag(mdeaths,1)  lag(fdeaths,1)  lag(mdeaths,2)  lag(fdeaths,2)
+#&gt;               0.6675          0.8074          0.3677         -1.4540
+#&gt; s.e.          0.3550          0.8347          0.3525          0.8088
+#&gt;       lag(mdeaths,3)  lag(fdeaths,3)  constant
+#&gt;               0.2606         -1.1214  538.7817
+#&gt; s.e.          0.3424          0.8143  137.1047
 #&gt; 
 #&gt; Coefficients for fdeaths:
-#&gt;       lag(log(mdeaths),1)  lag(fdeaths,1)  lag(log(mdeaths),2)  lag(fdeaths,2)
-#&gt;                  448.8642          0.2890             205.8660         -0.4334
-#&gt; s.e.             174.2395          0.2515             195.8019          0.2553
-#&gt;       lag(log(mdeaths),3)  lag(fdeaths,3)   constant
-#&gt;                 -234.3394          0.0251  -2433.657
-#&gt; s.e.             169.2827          0.2471   1365.746
+#&gt;       lag(mdeaths,1)  lag(fdeaths,1)  lag(mdeaths,2)  lag(fdeaths,2)
+#&gt;               0.2138          0.4563          0.0937         -0.3984
+#&gt; s.e.          0.1460          0.3434          0.1450          0.3328
+#&gt;       lag(mdeaths,3)  lag(fdeaths,3)  constant
+#&gt;               0.0250          -0.315  202.0027
+#&gt; s.e.          0.1409           0.335   56.4065
 #&gt; 
 #&gt; Residual covariance matrix:
-#&gt;              log(mdeaths)   fdeaths
-#&gt; log(mdeaths)       0.0204   11.8194
-#&gt; fdeaths           11.8194 8874.6465
+#&gt;          mdeaths  fdeaths
+#&gt; mdeaths 58985.95 22747.94
+#&gt; fdeaths 22747.94  9983.95
 #&gt; 
-#&gt; log likelihood = -316.92
-#&gt; AIC = 669.84	AICc = 683.52	BIC = 710.06</div><div class='input'>
+#&gt; log likelihood = -812.35
+#&gt; AIC = 1660.69	AICc = 1674.37	BIC = 1700.9</div><div class='input'>
 <span class='no'>fit</span> <span class='kw'>%&gt;%</span>
   <span class='fu'>forecast</span>() <span class='kw'>%&gt;%</span>
   <span class='fu'>autoplot</span>(<span class='no'>lung_deaths</span>)</div><div class='img'><img src='VAR-1.png' alt='' width='700' height='433' /></div></pre>
