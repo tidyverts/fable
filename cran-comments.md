@@ -1,6 +1,7 @@
 ## Submission
 
-This patch release resolves revdep check issues with the forecast package release.
+This patch release resolves outstanding issues on the CRAN check page introduced
+by the tibble v3.0.0 release.
 
 ## Test environments
 * local ubuntu 18.04 install, R 3.5.3, R 3.6.1

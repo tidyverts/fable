@@ -1,10 +1,11 @@
-# fable (development version)
+# fable 0.1.3
 
 ## Improvements
 
 * Added autoregressive modelling with `AR()`.
 * Better handling of rank deficiency in `ARIMA()`.
 * Added `generate.ARIMA()` method.
+* Added bootstrap forecast paths for `ARIMA()` models.
 * `ARIMA()` specials now allow specifying fixed coefficients via the `fixed` argument.
 * Documentation improvements.
 
