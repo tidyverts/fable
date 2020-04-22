@@ -466,13 +466,13 @@ specials_arima <- new_specials(
 #'
 #' In fable, the parameterisation used is:
 #'
-#' \deqn{(1-\phi_1B - \cdots - \phi_p B^p)(1-B)^d y_t = c + (1 + \theta_1 B + \cdots + \theta_q B^q)\varepsilon_t}{(1-φ₁B - ⋯ - φₚ Bᵖ)(1-B)ᵈ yₜ = c + (1 + θ₁ B + ⋯ + θ_q B^q)εₜ}
+#' \deqn{(1-\phi_1B - \cdots - \phi_p B^p)(1-B)^d y_t = c + (1 + \theta_1 B + \cdots + \theta_q B^q)\varepsilon_t}
 #'
 #' In stats and forecast, an ARIMA model is parameterised as:
 #'
-#' \deqn{(1-\phi_1B - \cdots - \phi_p B^p)(y_t' - \mu) = (1 + \theta_1 B + \cdots + \theta_q B^q)\varepsilon_t}{(1-φ₁B - ⋯ - φₚ Bᵖ)(1-B)ᵈ (yₜ - μ tᵈ/d!) = (1 + θ₁ B + ⋯ + θ_q B^q)εₜ}
+#' \deqn{(1-\phi_1B - \cdots - \phi_p B^p)(y_t' - \mu) = (1 + \theta_1 B + \cdots + \theta_q B^q)\varepsilon_t}
 #'
-#' where \eqn{\mu} is the mean of \eqn{(1-B)^d y_t}{(1-B)ᵈ yₜ} and \eqn{c = \mu(1-\phi_1 - \cdots - \phi_p )}{c = μ(1-φ₁ - ⋯ - φₚ )}.
+#' where \eqn{\mu} is the mean of \eqn{(1-B)^d y_t} and \eqn{c = \mu(1-\phi_1 - \cdots - \phi_p )}.
 #'
 #' @section Specials:
 #' 
