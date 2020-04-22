@@ -883,6 +883,61 @@ refit.ARIMA <- function(object, new_data, specials = NULL, reestimate = FALSE, .
   out
 }
 
+#' @export
+stream.ARIMA <- function(object, new_data, specials = NULL, ...){
+  y <- unclass(new_data)[[measured_vars(new_data)]]
+  coef <- object$model$coef
+  
+  xreg <- specials$xreg[[1]]$xreg
+  # Drop unused rank deficient xreg
+  xreg <- xreg[,colnames(xreg) %in% names(object$model$coef), drop = FALSE]
+  
+  if (object$spec$constant) {
+    intercept <- arima_constant(
+      NROW(object$est) + NROW(new_data),
+      object$spec$d, object$spec$D,
+      object$spec$period
+    )[NROW(object$est) + seq_len(NROW(new_data))]
+    
+    xreg <- if (is.null(xreg)) {
+      matrix(intercept, dimnames = list(NULL, "constant"))
+    } else {
+      xreg <- cbind(xreg, intercept = intercept)
+    }
+  }
+  
+  if (ncol(xreg)%||%0 > 0) {
+    reg_resid <- y - xreg %*% coef[narma + (1L:ncxreg)]
+  } else {
+    reg_resid <- y
+  }
+  
+  mod <- object$model$model
+  
+  n.used <- sum(!is.na(c(object$est$.regression_resid, reg_resid))) - length(mod$Delta)
+  
+  fit <- KalmanRun(reg_resid, object$model$model, update = TRUE)
+  resid <- c(object$est$.resid, fit$resid)
+  sigma2 <- sum(resid^2, na.rm = TRUE)/n.used
+  
+  nstar <- nrow(object$est) + length(y) - object$spec$d - object$spec$D * object$spec$period
+  npar <- length(object$model$coef[object$model$mask]) + 1
+  
+  value <- 2 * n.used * fit$values[["Lik"]] + n.used + n.used * log(2 * pi)
+  aic <- value + 2 * sum(object$model$mask) + 2
+  bic <- aic + npar * (log(nstar) - 2)
+  aicc <- aic + 2 * npar * (npar + 1) / (nstar - npar - 1)
+  # Adjust residual variance to be unbiased
+  fit$sigma2 <- sum(c(object$est$.resid, resid)^2, na.rm = TRUE) / (nstar - npar + 1)
+    
+  object$model$model <- attr(fit, "mod")
+  object$est <- dplyr::bind_rows(
+    object$est, 
+    tibble(.fitted = y - resid, .resid = resid, .regression_resid = reg_resid)
+  )
+  object
+}
+
 #' Interpolate missing values from a fable model
 #'
 #' Applies a model specific estimation technique to predict the values of missing values in a `tsibble`, and replace them.
