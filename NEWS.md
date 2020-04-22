@@ -1,4 +1,4 @@
-# fable 0.1.3
+# fable 0.2.0
 
 ## Improvements
 
