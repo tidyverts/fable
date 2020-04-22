@@ -47,7 +47,7 @@ test_that("Manual ARIMA selection", {
   stats_fc <- stats_fit %>% predict(24)
 
   expect_equivalent(
-    fable_fc$value,
+    fc_mean(fable_fc$value),
     unclass(stats_fc$pred)
   )
 
@@ -153,7 +153,7 @@ test_that("ARIMA with xregs", {
   )
 
   expect_equivalent(
-    fable_fc$mdeaths,
+    fc_mean(fable_fc$mdeaths),
     unclass(stats_fc$pred)
   )
 

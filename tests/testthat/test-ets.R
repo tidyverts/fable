@@ -36,7 +36,7 @@ test_that("Manual ETS selection", {
   forecast_fc <- forecast_fit %>% forecast::forecast()
 
   expect_equivalent(
-    fable_fc$value,
+    fc_mean(fable_fc$value),
     unclass(forecast_fc$mean)
   )
 
@@ -144,7 +144,7 @@ test_that("Multiplicative ETS models", {
   fable_fit <- USAccDeaths_tbl %>%
     model(ets = ETS(value ~ error("M") + trend("N") + season("N")))
   expect_true(
-    is.constant(forecast(fable_fit)$value)
+    is.constant(fc_mean(forecast(fable_fit)$value))
   )
 
   expect_s3_class(
