@@ -103,16 +103,14 @@ fc <- fit %>%
 fc
 ```
 
-The resulting forecasts are contained in a "fable" (forecast table), and both point forecasts (`Trips`) and forecast distributions (`.distribution`) are available in the table for the next five years.
+The resulting forecasts are contained in a "fable" (forecast table), and both point forecasts and forecast distributions are available in the table for the next five years. Confidence intervals can be extracted from the distribution using the `hilo()` function.
 
-Intervals can be extracted from the distribution using the `hilo()` function.
+<!-- ```{r dist-hilo} -->
+<!-- fc %>% -->
+<!--   mutate(interval = hilo(.distribution, 80)) -->
+<!-- ``` -->
 
-```{r dist-hilo}
-fc %>%
-  mutate(interval = hilo(.distribution, 80))
-```
-
-It may be more convenient to use `hilo()` on the entire fable, which allows you to extract multiple intervals at once.
+The `hilo()` function can also be used on fable objects, which allows you to extract multiple intervals at once.
 
 ```{r fc-hilo}
 fc %>%
@@ -127,7 +125,7 @@ These intervals can also be unnested if you're looking to obtain the numerical v
 library(tidyr)
 fc %>%
   mutate(interval = hilo(.distribution, 80)) %>%
-  unnest_tsibble(interval)
+  unpack_hilo(interval)
 ```
 -->
 
