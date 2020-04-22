@@ -38,7 +38,7 @@ test_that("RW w/ drift", {
 
   if(packageVersion("fabletools") > "0.1.3"){
     expect_equivalent(
-      vctrs::vec_data(hilo(fable_fc)$`80%`)[[2]],
+      unclass(hilo(fable_fc)$`80%`)$upper,
       unclass(forecast_fc$upper[, 1])
     )
   } else {
