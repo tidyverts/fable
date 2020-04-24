@@ -91,7 +91,7 @@ train_ets <- function(.data, specials, opt_crit,
         ),
       fit = tibble(
         sigma2 = sum(best$residuals^2, na.rm = TRUE) / (length(y) - length(best$par)),
-        log_ik = best$loglik, AIC = best$aic, AICc = best$aicc, BIC = best$bic,
+        log_lik = best$loglik, AIC = best$aic, AICc = best$aicc, BIC = best$bic,
         MSE = best$mse, AMSE = best$amse, MAE = best$mae
       ),
       states = tsibble(
