@@ -168,19 +168,18 @@
 <p>The <code>glance()</code> function provides a one-row summary of each model, and commonly includes descriptions of the model’s fit such as the residual variance and information criteria. Be wary though, as information criteria (AIC, AICc, BIC) are only comparable between the same model class and only if those models share the same response (after transformations and differencing).</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>fit <span class="op">%&gt;%</span></span>
 <span id="cb6-2"><a href="#cb6-2"></a><span class="st">  </span><span class="kw">glance</span>()</span>
-<span id="cb6-3"><a href="#cb6-3"></a><span class="co">#&gt; # A tibble: 8 x 15</span></span>
-<span id="cb6-4"><a href="#cb6-4"></a><span class="co">#&gt;   Region State Purpose .model  sigma2 log_ik   AIC  AICc   BIC   MSE  AMSE</span></span>
-<span id="cb6-5"><a href="#cb6-5"></a><span class="co">#&gt;   &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;    &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
-<span id="cb6-6"><a href="#cb6-6"></a><span class="co">#&gt; 1 Melbo… Vict… Busine… ets    3.53e+3  -498. 1014. 1016. 1035. 3180. 3520.</span></span>
-<span id="cb6-7"><a href="#cb6-7"></a><span class="co">#&gt; 2 Melbo… Vict… Holiday ets    1.10e-2  -487.  992.  994. 1013. 2548. 2574.</span></span>
-<span id="cb6-8"><a href="#cb6-8"></a><span class="co">#&gt; 3 Melbo… Vict… Other   ets    4.97e+2  -422.  853.  854.  865.  472.  512.</span></span>
-<span id="cb6-9"><a href="#cb6-9"></a><span class="co">#&gt; 4 Melbo… Vict… Visiti… ets    1.09e-2  -503. 1024. 1026. 1045. 3714. 3860.</span></span>
-<span id="cb6-10"><a href="#cb6-10"></a><span class="co">#&gt; 5 Melbo… Vict… Busine… arima  3.67e+3    NA   882.  883.  896.   NA    NA </span></span>
-<span id="cb6-11"><a href="#cb6-11"></a><span class="co">#&gt; 6 Melbo… Vict… Holiday arima  3.07e+3    NA   864.  865.  872.   NA    NA </span></span>
-<span id="cb6-12"><a href="#cb6-12"></a><span class="co">#&gt; 7 Melbo… Vict… Other   arima  4.89e+2    NA   718.  719.  725.   NA    NA </span></span>
-<span id="cb6-13"><a href="#cb6-13"></a><span class="co">#&gt; 8 Melbo… Vict… Visiti… arima  4.24e+3    NA   893.  894.  905.   NA    NA </span></span>
-<span id="cb6-14"><a href="#cb6-14"></a><span class="co">#&gt; # … with 4 more variables: MAE &lt;dbl&gt;, log_lik &lt;dbl&gt;, ar_roots &lt;list&gt;,</span></span>
-<span id="cb6-15"><a href="#cb6-15"></a><span class="co">#&gt; #   ma_roots &lt;list&gt;</span></span></code></pre></div>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="co">#&gt; # A tibble: 8 x 14</span></span>
+<span id="cb6-4"><a href="#cb6-4"></a><span class="co">#&gt;   Region State Purpose .model  sigma2 log_lik   AIC  AICc   BIC   MSE  AMSE</span></span>
+<span id="cb6-5"><a href="#cb6-5"></a><span class="co">#&gt;   &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;    &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span id="cb6-6"><a href="#cb6-6"></a><span class="co">#&gt; 1 Melbo… Vict… Busine… ets    3.53e+3   -498. 1014. 1016. 1035. 3180. 3520.</span></span>
+<span id="cb6-7"><a href="#cb6-7"></a><span class="co">#&gt; 2 Melbo… Vict… Holiday ets    1.10e-2   -487.  992.  994. 1013. 2548. 2574.</span></span>
+<span id="cb6-8"><a href="#cb6-8"></a><span class="co">#&gt; 3 Melbo… Vict… Other   ets    4.97e+2   -422.  853.  854.  865.  472.  512.</span></span>
+<span id="cb6-9"><a href="#cb6-9"></a><span class="co">#&gt; 4 Melbo… Vict… Visiti… ets    1.09e-2   -503. 1024. 1026. 1045. 3714. 3860.</span></span>
+<span id="cb6-10"><a href="#cb6-10"></a><span class="co">#&gt; 5 Melbo… Vict… Busine… arima  3.67e+3   -435.  882.  883.  896.   NA    NA </span></span>
+<span id="cb6-11"><a href="#cb6-11"></a><span class="co">#&gt; 6 Melbo… Vict… Holiday arima  3.07e+3   -429.  864.  865.  872.   NA    NA </span></span>
+<span id="cb6-12"><a href="#cb6-12"></a><span class="co">#&gt; 7 Melbo… Vict… Other   arima  4.89e+2   -356.  718.  719.  725.   NA    NA </span></span>
+<span id="cb6-13"><a href="#cb6-13"></a><span class="co">#&gt; 8 Melbo… Vict… Visiti… arima  4.24e+3   -442.  893.  894.  905.   NA    NA </span></span>
+<span id="cb6-14"><a href="#cb6-14"></a><span class="co">#&gt; # … with 3 more variables: MAE &lt;dbl&gt;, ar_roots &lt;list&gt;, ma_roots &lt;list&gt;</span></span></code></pre></div>
 <p>If you’re working with a single model (or want to look at one model in particular), the <code>report()</code> function gives a familiar and nicely formatted model-specific display.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>fit <span class="op">%&gt;%</span></span>
 <span id="cb7-2"><a href="#cb7-2"></a><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(Purpose <span class="op">==</span><span class="st"> "Holiday"</span>) <span class="op">%&gt;%</span></span>
