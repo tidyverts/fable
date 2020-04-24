@@ -2,6 +2,7 @@ context("test-spelling.R")
 
 test_that("package spell check", {
   skip_on_cran()
+  skip_if_not_installed("spelling")
 
   # Determine package source path by finding README.md
   package_dir <- dirname(list.files("../../", pattern = "README.md", recursive = TRUE, full.names = TRUE))
