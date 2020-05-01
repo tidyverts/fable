@@ -1,6 +1,7 @@
 lm_glance_measures <- function(fit) {
   # Set up fit measures
   res <- fit$residuals[complete.cases(fit$residuals), , drop = FALSE]
+  fits <- fit$fitted[complete.cases(fit$fitted), , drop = FALSE]
   n <- length(res)
   rdf <- fit$df.residual
   edf <- n - rdf
@@ -9,7 +10,7 @@ lm_glance_measures <- function(fit) {
   coef <- fit$coefficients
   intercept <- "(Intercept)" %in% rownames(coef)
 
-  mss <- sum((fit$fitted - intercept * mean(fit$fitted))^2)
+  mss <- sum((fits - intercept * mean(fits))^2)
   rss <- sum(res^2)
   resvar <- rss / rdf
 
