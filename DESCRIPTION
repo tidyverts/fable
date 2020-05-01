@@ -30,9 +30,9 @@ Depends:
     fabletools (>= 0.1.2)
 Imports:
     Rcpp (>= 0.11.0),
-    rlang (>= 0.2.0),
+    rlang (>= 0.4.5.9000),
     stats,
-    dplyr (>= 0.8.0),
+    dplyr (>= 0.8.99),
     tsibble (>= 0.8.0),
     tibble,
     tidyr,
@@ -51,6 +51,8 @@ Suggests:
 Remotes:
     tidyverts/tsibble@7ebd162111d32a75f5703a91406fe442416d3157,
     tidyverts/tsibbledata,
+    tidyverse/dplyr,
+    r-lib/rlang,
     tidyverts/fabletools,
     mitchelloharawild/distributional
 LinkingTo:
