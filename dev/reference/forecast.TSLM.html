@@ -193,8 +193,21 @@
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='no'>USAccDeaths</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>model</span>(<span class='kw'>lm</span> <span class='kw'>=</span> <span class='fu'><a href='TSLM.html'>TSLM</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>value</span>) ~ <span class='fu'>trend</span>() + <span class='fu'>season</span>())) <span class='kw'>%&gt;%</span>
-  <span class='fu'>forecast</span>()</div><div class='output co'>#&gt; <span class='error'>Error: `mutate()` argument `lm` must return compatible vectors across groups.</span>
-#&gt; <span class='error'><span style='color: #0000BB;'>ℹ</span><span> `lm` is `(function (object, ...) ...`.</span></div></span></pre>
+  <span class='fu'>forecast</span>()</div><div class='output co'>#&gt; <span style='color: #555555;'># A fable: 24 x 4 [1M]</span><span>
+#&gt; </span><span style='color: #555555;'># Key:     .model [1]</span><span>
+#&gt;    .model    index            value .mean
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;mth&gt;</span><span>           </span><span style='color: #555555;font-style: italic;'>&lt;dist&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> lm     1979 Jan t(N(8.9, 0.003)) </span><span style='text-decoration: underline;'>7</span><span>620.
+#&gt; </span><span style='color: #555555;'> 2</span><span> lm     1979 Feb t(N(8.8, 0.003)) </span><span style='text-decoration: underline;'>6</span><span>899.
+#&gt; </span><span style='color: #555555;'> 3</span><span> lm     1979 Mar t(N(8.9, 0.003)) </span><span style='text-decoration: underline;'>7</span><span>639.
+#&gt; </span><span style='color: #555555;'> 4</span><span> lm     1979 Apr   t(N(9, 0.003)) </span><span style='text-decoration: underline;'>7</span><span>841.
+#&gt; </span><span style='color: #555555;'> 5</span><span> lm     1979 May t(N(9.1, 0.003)) </span><span style='text-decoration: underline;'>8</span><span>645.
+#&gt; </span><span style='color: #555555;'> 6</span><span> lm     1979 Jun t(N(9.1, 0.003)) </span><span style='text-decoration: underline;'>9</span><span>087.
+#&gt; </span><span style='color: #555555;'> 7</span><span> lm     1979 Jul t(N(9.2, 0.003)) </span><span style='text-decoration: underline;'>9</span><span>908.
+#&gt; </span><span style='color: #555555;'> 8</span><span> lm     1979 Aug t(N(9.1, 0.003)) </span><span style='text-decoration: underline;'>9</span><span>237.
+#&gt; </span><span style='color: #555555;'> 9</span><span> lm     1979 Sep   t(N(9, 0.003)) </span><span style='text-decoration: underline;'>8</span><span>237.
+#&gt; </span><span style='color: #555555;'>10</span><span> lm     1979 Oct   t(N(9, 0.003)) </span><span style='text-decoration: underline;'>8</span><span>516.
+#&gt; </span><span style='color: #555555;'># … with 14 more rows</span><span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
