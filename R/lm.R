@@ -310,7 +310,7 @@ forecast.TSLM <- function(object, new_data, specials = NULL, bootstrap = FALSE,
     }
 
     se <- sqrt(ip + resvar)
-    distributional::dist_normal(fc, se)
+    distributional::dist_normal(drop(fc), drop(se))
   }
 }
 
