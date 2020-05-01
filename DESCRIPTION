@@ -47,6 +47,10 @@ Suggests:
     spelling,
     testthat,
     tsibbledata
+Remotes:
+    tidyverts/tsibble@7ebd162111d32a75f5703a91406fe442416d3157,
+    tidyverts/tsibbledata,
+    tidyverts/fabletools
 LinkingTo:
     Rcpp (>= 0.11.0)
 VignetteBuilder: 

@@ -594,7 +594,7 @@ components.ETS <- function(object, ...) {
       season = rev(as.numeric(object$states[1, paste0("s", seq_len(m - 1) + 1)])),
       index = !!idx
     )
-    out <- rbind(seasonal_init, out)
+    out <- dplyr::bind_rows(seasonal_init, out)
     seasonalities <- list(season = list(period = m, base = NA_real_))
   }
   else {
