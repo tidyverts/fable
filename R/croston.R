@@ -231,7 +231,7 @@ estimate_croston <- function(y_demand, y_interval, demand, interval, non_zero, n
 forecast.croston <- function(object, new_data, specials = NULL, ...) {
   h <- nrow(new_data)
   fc <- rep(object$.fitted[length(object$.fitted)], h)
-  construct_fc(fc, numeric(h), dist_unknown(h))
+  distributional::dist_degenerate(fc)
 }
 
 #' @inherit fitted.ARIMA

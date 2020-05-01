@@ -207,11 +207,8 @@ forecast.RW <- function(object, new_data, specials = NULL, bootstrap = FALSE, ti
   if (!object$spec$drift) {
     b <- b.se <- 0
   }
-  # Point forecasts
-  fc <- rep(object$future, fullperiods)[1:h] +
-    steps * b
-
-  # Intervals
+  
+  # Produce forecasts
   if (bootstrap) { # Compute prediction intervals using simulations
     sim <- map(seq_len(times), function(x) {
       generate(object, new_data, bootstrap = TRUE)[[".sim"]]
@@ -219,15 +216,15 @@ forecast.RW <- function(object, new_data, specials = NULL, bootstrap = FALSE, ti
       transpose() %>%
       map(as.numeric)
     se <- map_dbl(sim, stats::sd)
-    dist <- dist_sim(sim)
+    distributional::dist_sample(sim)
   } else {
+    fc <- rep(object$future, fullperiods)[1:h] + steps * b
     mse <- mean(residuals(object)^2, na.rm = TRUE)
     if (is.nan(mse)) mse <- NA
     # Adjust prediction intervals to allow for drift coefficient standard error
     se <- sqrt(mse * steps + (steps * b.se)^2)
-    dist <- dist_normal(fc, se)
+    distributional::dist_normal(fc, se)
   }
-  construct_fc(fc, se, dist)
 }
 
 #' @inherit generate.ETS

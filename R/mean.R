@@ -114,10 +114,7 @@ forecast.model_mean <- function(object, new_data, specials = NULL, bootstrap = F
   n <- NROW(object$est)
   sigma <- sqrt(object$fit$sigma2)
 
-  # Point forecasts
-  fc <- rep(y_mean, h)
-
-  # Intervals
+  # Produce forecasts
   if (bootstrap) { # Compute prediction intervals using simulations
     sim <- map(seq_len(times), function(x) {
       generate(object, new_data, bootstrap = TRUE)[[".sim"]]
@@ -125,13 +122,12 @@ forecast.model_mean <- function(object, new_data, specials = NULL, bootstrap = F
       transpose() %>%
       map(as.numeric)
     se <- map_dbl(sim, stats::sd)
-    dist <- dist_sim(sim)
+    distributional::dist_sample(sim)
   } else {
+    fc <- rep(y_mean, h)
     se <- sigma * sqrt(1 + 1 / n)
-    dist <- dist_normal(fc, se)
+    distributional::dist_normal(fc, se)
   }
-
-  construct_fc(fc, se, dist)
 }
 
 #' @inherit generate.ETS

@@ -334,7 +334,7 @@ forecast.ETS <- function(object, new_data, specials = NULL, simulate = FALSE, bo
       PACKAGE = "fable"
     )[[7]]
 
-    construct_fc(pred, map_dbl(sim, stats::sd), dist_sim(sim))
+    distributional::dist_sample(sim)
   }
   else {
     fc <- fc_class(
@@ -343,7 +343,7 @@ forecast.ETS <- function(object, new_data, specials = NULL, simulate = FALSE, bo
       trendtype, seasontype, damped, object$spec$period, object$fit$sigma2,
       set_names(object$par$estimate, object$par$term)
     )
-    construct_fc(fc$mu, sqrt(fc$var), dist_normal(fc$mu, sqrt(fc$var)))
+    distributional::dist_normal(fc$mu, sqrt(fc$var))
   }
 }
 

@@ -244,10 +244,8 @@ forecast.AR <- function(object, new_data = NULL, specials = NULL,
   psi <- ar_se(ar, h)
   se <- sqrt(object$sigma2 * cumsum(c(1, psi^2)))
   
-  dist <- dist_normal(fc, se)
-  
   # Output forecasts
-  construct_fc(fc, se, dist)
+  distributional::dist_normal(fc, se)
 }
 
 #' Refit an AR model

@@ -255,19 +255,13 @@ forecast.VAR <- function(object, new_data = NULL, specials = NULL,
     y_lag <- rbind(fc[i, , drop = FALSE], y_lag)[seq_len(p), , drop = FALSE]
   }
 
+  # Output forecasts
   if (NCOL(fc) == 1) {
-    dist <- dist_normal(fc, map_dbl(sigma, `[`, 1, 1))
+    distributional::dist_normal(fc, map_dbl(sigma, `[`, 1, 1))
   }
   else {
-    dist <- dist_mv_normal(split(fc, row(fc)), sigma)
+    distributional::dist_multivariate_normal(split(fc, row(fc)), sigma)
   }
-
-  # Output forecasts
-  construct_fc(
-    split(fc, col(fc)),
-    map(seq_len(K), function(x, y) map_dbl(y, `[[`, x), map(sigma, diag)),
-    dist
-  )
 }
 
 #' @inherit fitted.ARIMA

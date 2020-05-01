@@ -36,7 +36,8 @@ Imports:
     tsibble (>= 0.8.0),
     tibble,
     tidyr,
-    utils
+    utils,
+    distributional
 Suggests:
     covr,
     feasts,
@@ -50,7 +51,8 @@ Suggests:
 Remotes:
     tidyverts/tsibble@7ebd162111d32a75f5703a91406fe442416d3157,
     tidyverts/tsibbledata,
-    tidyverts/fabletools
+    tidyverts/fabletools,
+    mitchelloharawild/distributional
 LinkingTo:
     Rcpp (>= 0.11.0)
 VignetteBuilder: 

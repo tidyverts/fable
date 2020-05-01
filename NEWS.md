@@ -1,5 +1,10 @@
 # fable (development version)
 
+## Breaking changes
+
+* The sample path means are now used instead of analytical means when forecasts 
+  are produced from sample paths.
+
 # fable 0.2.0
 
 ## Improvements

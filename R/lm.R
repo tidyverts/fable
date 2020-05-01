@@ -288,8 +288,6 @@ forecast.TSLM <- function(object, new_data, specials = NULL, bootstrap = FALSE,
     warn("prediction from a rank-deficient fit may be misleading")
   }
 
-  fc <- xreg[, piv, drop = FALSE] %*% coef[piv]
-
   # Intervals
   if (bootstrap) { # Compute prediction intervals using simulations
     sim <- map(seq_len(times), function(x) {
@@ -298,8 +296,9 @@ forecast.TSLM <- function(object, new_data, specials = NULL, bootstrap = FALSE,
       transpose() %>%
       map(as.numeric)
     se <- map_dbl(sim, stats::sd)
-    dist <- dist_sim(sim)
+    distributional::dist_sample(sim)
   } else {
+    fc <- xreg[, piv, drop = FALSE] %*% coef[piv]
     resvar <- object$fit$sigma2
 
     if (rank > 0) {
@@ -311,10 +310,8 @@ forecast.TSLM <- function(object, new_data, specials = NULL, bootstrap = FALSE,
     }
 
     se <- sqrt(ip + resvar)
-    dist <- dist_normal(fc, se)
+    distributional::dist_normal(fc, se)
   }
-
-  construct_fc(fc, se, dist)
 }
 
 #' @inherit generate.ETS

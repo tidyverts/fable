@@ -701,9 +701,7 @@ forecast.ARIMA <- function(object, new_data = NULL, specials = NULL,
     sim <- map(seq_len(times), function(x) generate(object, new_data, specials, bootstrap = TRUE)[[".sim"]]) %>%
       transpose() %>%
       map(as.numeric)
-    return(
-      construct_fc(map_dbl(sim, mean), map_dbl(sim, stats::sd), dist_sim(sim))
-    )
+    return(distributional::dist_sample(sim))
   }
   
   xreg <- specials$xreg[[1]]$xreg
@@ -736,7 +734,7 @@ forecast.ARIMA <- function(object, new_data = NULL, specials = NULL,
   fc$pred <- as.numeric(fc$pred)
   fc$se <- as.numeric(fc$se)
   # Output forecasts
-  construct_fc(fc$pred, fc$se, dist_normal(fc$pred, fc$se))
+  distributional::dist_normal(fc$pred, fc$se)
 }
 
 #' @inherit generate.ETS

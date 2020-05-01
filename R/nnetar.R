@@ -278,23 +278,6 @@ forecast.NNETAR <- function(object, new_data, specials = NULL, simulate = TRUE, 
   maxlag <- max(lags)
   future_lags <- rev(object$future[[measured_vars(object$future)]])
 
-  # Compute 1-step forecasts iteratively
-  h <- NROW(new_data)
-  fc <- numeric(h)
-  for (i in seq_len(h))
-  {
-    fcdata <- c(future_lags[lags], xreg[i, ])
-    if (any(is.na(fcdata))) {
-      abort("I can't use NNETAR to forecast with missing values near the end of the series.")
-    }
-    fc[i] <- mean(map_dbl(object$model, predict, newdata = fcdata))
-    future_lags <- c(fc[i], future_lags[-maxlag])
-  }
-  # Re-scale point forecasts
-  if (!is.null(object$scales$y)) {
-    fc <- fc * object$scales$y$scale + object$scales$y$center
-  }
-
   # Compute forecast intervals
   if (!simulate) {
     warn("Analytical forecast distributions are not available for NNETAR.")
@@ -308,14 +291,27 @@ forecast.NNETAR <- function(object, new_data, specials = NULL, simulate = TRUE, 
       transpose() %>%
       map(as.numeric)
     se <- map_dbl(sim, stats::sd)
-    dist <- dist_sim(sim)
+    distributional::dist_sample(sim)
   }
   else {
-    se <- rep(NA, h)
-    dist <- dist_unknown(h)
+    # Compute 1-step forecasts iteratively
+    h <- NROW(new_data)
+    fc <- numeric(h)
+    for (i in seq_len(h))
+    {
+      fcdata <- c(future_lags[lags], xreg[i, ])
+      if (any(is.na(fcdata))) {
+        abort("I can't use NNETAR to forecast with missing values near the end of the series.")
+      }
+      fc[i] <- mean(map_dbl(object$model, predict, newdata = fcdata))
+      future_lags <- c(fc[i], future_lags[-maxlag])
+    }
+    # Re-scale point forecasts
+    if (!is.null(object$scales$y)) {
+      fc <- fc * object$scales$y$scale + object$scales$y$center
+    }
+    distributional::dist_degenerate(fc)
   }
-
-  construct_fc(fc, se, dist)
 }
 
 #' @inherit generate.ETS
