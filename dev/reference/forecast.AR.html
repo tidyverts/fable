@@ -87,7 +87,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.2.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.0.9000</span>
       </span>
     </div>
 
@@ -195,10 +195,10 @@
   <span class='fu'>model</span>(<span class='fu'><a href='AR.html'>AR</a></span>(<span class='no'>value</span> ~ <span class='fu'><a href='https://rdrr.io/r/base/order.html'>order</a></span>(<span class='fl'>3</span>))) <span class='kw'>%&gt;%</span>
   <span class='fu'>forecast</span>()</div><div class='output co'>#&gt; <span style='color: #555555;'># A fable: 2 x 4 [1]</span><span>
 #&gt; </span><span style='color: #555555;'># Key:     .model [1]</span><span>
-#&gt;   .model               index value .distribution
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dist&gt;</span><span>       
-#&gt; </span><span style='color: #555555;'>1</span><span> AR(value ~ order(3))    49  2.45 N(2.4, 0.19) 
-#&gt; </span><span style='color: #555555;'>2</span><span> AR(value ~ order(3))    50  2.25 N(2.3, 0.27) </div></span></pre>
+#&gt;   .model               index        value .mean
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;dist&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span> AR(value ~ order(3))    49 N(2.4, 0.19)  2.45
+#&gt; </span><span style='color: #555555;'>2</span><span> AR(value ~ order(3))    50 N(2.3, 0.27)  2.25</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

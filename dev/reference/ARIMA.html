@@ -90,7 +90,7 @@ framework." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.2.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.0.9000</span>
       </span>
     </div>
 
@@ -299,9 +299,7 @@ xreg(..., fixed = list())
 <span class='co'># Automatic ARIMA specification</span>
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibble</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)</div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘dplyr’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:tsibble’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    id</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:stats’:</span>
+#&gt; <span class='message'>Attaching package: ‘dplyr’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:stats’:</span>
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    filter, lag</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
 #&gt; <span class='message'></span>
@@ -310,8 +308,8 @@ xreg(..., fixed = list())
   <span class='fu'>model</span>(<span class='fu'>ARIMA</span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>GDP</span>) ~ <span class='no'>Population</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: NaNs produced</span></div><div class='output co'>#&gt; <span style='color: #555555;'># A mable: 1 x 2</span><span>
 #&gt; </span><span style='color: #555555;'># Key:     Country [1]</span><span>
 #&gt;   Country   `ARIMA(log(GDP) ~ Population)`
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;model&gt;</span><span>                       
-#&gt; </span><span style='color: #555555;'>1</span><span> Australia </span><span style='color: #555555;'>&lt;LM w/ ARIMA(2,0,0) errors&gt;</span><span>   </div></span></pre>
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>                            </span><span style='color: #555555;font-style: italic;'>&lt;model&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span> Australia    &lt;LM w/ ARIMA(2,0,0) errors&gt;</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

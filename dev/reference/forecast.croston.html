@@ -87,7 +87,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.2.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.0.9000</span>
       </span>
     </div>
 
@@ -178,7 +178,7 @@
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibble</span>)
 <span class='no'>sim_poisson</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://tsibble.tidyverts.org/reference/tsibble.html'>tsibble</a></span>(
-  <span class='kw'>time</span> <span class='kw'>=</span> <span class='fu'><a href='https://tsibble.tidyverts.org/reference/period.html'>yearmonth</a></span>(<span class='st'>"2012 Dec"</span>) + <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq_len</a></span>(<span class='fl'>24</span>),
+  <span class='kw'>time</span> <span class='kw'>=</span> <span class='fu'><a href='https://tsibble.tidyverts.org/reference/year-month.html'>yearmonth</a></span>(<span class='st'>"2012 Dec"</span>) + <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq_len</a></span>(<span class='fl'>24</span>),
   <span class='kw'>count</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Poisson.html'>rpois</a></span>(<span class='fl'>24</span>, <span class='kw'>lambda</span> <span class='kw'>=</span> <span class='fl'>0.3</span>),
   <span class='kw'>index</span> <span class='kw'>=</span> <span class='no'>time</span>
 )
@@ -187,18 +187,18 @@
   <span class='fu'>model</span>(<span class='fu'><a href='CROSTON.html'>CROSTON</a></span>(<span class='no'>count</span>)) <span class='kw'>%&gt;%</span>
   <span class='fu'>forecast</span>()</div><div class='output co'>#&gt; <span style='color: #555555;'># A fable: 24 x 4 [1M]</span><span>
 #&gt; </span><span style='color: #555555;'># Key:     .model [1]</span><span>
-#&gt;    .model             time count .distribution
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>             </span><span style='color: #555555;font-style: italic;'>&lt;mth&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dist&gt;</span><span>       
-#&gt; </span><span style='color: #555555;'> 1</span><span> CROSTON(count) 2015 Jan   0.5 ?            
-#&gt; </span><span style='color: #555555;'> 2</span><span> CROSTON(count) 2015 Feb   0.5 ?            
-#&gt; </span><span style='color: #555555;'> 3</span><span> CROSTON(count) 2015 Mar   0.5 ?            
-#&gt; </span><span style='color: #555555;'> 4</span><span> CROSTON(count) 2015 Apr   0.5 ?            
-#&gt; </span><span style='color: #555555;'> 5</span><span> CROSTON(count) 2015 May   0.5 ?            
-#&gt; </span><span style='color: #555555;'> 6</span><span> CROSTON(count) 2015 Jun   0.5 ?            
-#&gt; </span><span style='color: #555555;'> 7</span><span> CROSTON(count) 2015 Jul   0.5 ?            
-#&gt; </span><span style='color: #555555;'> 8</span><span> CROSTON(count) 2015 Aug   0.5 ?            
-#&gt; </span><span style='color: #555555;'> 9</span><span> CROSTON(count) 2015 Sep   0.5 ?            
-#&gt; </span><span style='color: #555555;'>10</span><span> CROSTON(count) 2015 Oct   0.5 ?            
+#&gt;    .model             time  count .mean
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>             </span><span style='color: #555555;font-style: italic;'>&lt;mth&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dist&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> CROSTON(count) 2015 Jan    0.5   0.5
+#&gt; </span><span style='color: #555555;'> 2</span><span> CROSTON(count) 2015 Feb    0.5   0.5
+#&gt; </span><span style='color: #555555;'> 3</span><span> CROSTON(count) 2015 Mar    0.5   0.5
+#&gt; </span><span style='color: #555555;'> 4</span><span> CROSTON(count) 2015 Apr    0.5   0.5
+#&gt; </span><span style='color: #555555;'> 5</span><span> CROSTON(count) 2015 May    0.5   0.5
+#&gt; </span><span style='color: #555555;'> 6</span><span> CROSTON(count) 2015 Jun    0.5   0.5
+#&gt; </span><span style='color: #555555;'> 7</span><span> CROSTON(count) 2015 Jul    0.5   0.5
+#&gt; </span><span style='color: #555555;'> 8</span><span> CROSTON(count) 2015 Aug    0.5   0.5
+#&gt; </span><span style='color: #555555;'> 9</span><span> CROSTON(count) 2015 Sep    0.5   0.5
+#&gt; </span><span style='color: #555555;'>10</span><span> CROSTON(count) 2015 Oct    0.5   0.5
 #&gt; </span><span style='color: #555555;'># … with 14 more rows</span><span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

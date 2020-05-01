@@ -86,7 +86,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.2.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.0.9000</span>
       </span>
     </div>
 
@@ -145,6 +145,18 @@
 <h1 class="page-header">
 <a href="#fable-development-version" class="anchor"></a>fable (development version)<small> Unreleased </small>
 </h1>
+<div id="breaking-changes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#breaking-changes" class="anchor"></a>Breaking changes</h2>
+<ul>
+<li>The sample path means are now used instead of analytical means when forecasts are produced from sample paths.</li>
+</ul>
+</div>
+</div>
+    <div id="fable-020" class="section level1">
+<h1 class="page-header">
+<a href="#fable-020" class="anchor"></a>fable 0.2.0<small> 2020-04-22 </small>
+</h1>
 <div id="improvements" class="section level2">
 <h2 class="hasAnchor">
 <a href="#improvements" class="anchor"></a>Improvements</h2>
@@ -152,6 +164,7 @@
 <li>Added autoregressive modelling with <code><a href="../reference/AR.html">AR()</a></code>.</li>
 <li>Better handling of rank deficiency in <code><a href="../reference/ARIMA.html">ARIMA()</a></code>.</li>
 <li>Added <code><a href="../reference/generate.ARIMA.html">generate.ARIMA()</a></code> method.</li>
+<li>Added bootstrap forecast paths for <code><a href="../reference/ARIMA.html">ARIMA()</a></code> models.</li>
 <li>
 <code><a href="../reference/ARIMA.html">ARIMA()</a></code> specials now allow specifying fixed coefficients via the <code>fixed</code> argument.</li>
 <li>Documentation improvements.</li>
@@ -223,6 +236,7 @@
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
         <li><a href="#fable-development-version">development version</a></li>
+        <li><a href="#fable-020">0.2.0</a></li>
         <li><a href="#fable-012">0.1.2</a></li>
         <li><a href="#fable-011">0.1.1</a></li>
         <li><a href="#fable-010">0.1.0</a></li>

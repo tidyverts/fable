@@ -87,7 +87,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.2.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.0.9000</span>
       </span>
     </div>
 
@@ -171,20 +171,20 @@
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibbledata</span>)
 <span class='no'>vic_elec</span> <span class='kw'>%&gt;%</span>
   <span class='fu'>model</span>(<span class='kw'>avg</span> <span class='kw'>=</span> <span class='fu'><a href='MEAN.html'>MEAN</a></span>(<span class='no'>Demand</span>)) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/r/stats/residuals.html'>residuals</a></span>()</div><div class='output co'>#&gt; <span style='color: #555555;'># A tsibble: 52,608 x 3 [30m] &lt;UTC&gt;</span><span>
+  <span class='fu'><a href='https://rdrr.io/r/stats/residuals.html'>residuals</a></span>()</div><div class='output co'>#&gt; <span style='color: #555555;'># A tsibble: 52,608 x 3 [30m] &lt;Australia/Melbourne&gt;</span><span>
 #&gt; </span><span style='color: #555555;'># Key:       .model [1]</span><span>
 #&gt;    .model Time                .resid
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>               </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> avg    2012-01-01 </span><span style='color: #555555;'>00:00:00</span><span>  -</span><span style='color: #BB0000;'>402.</span><span>
-#&gt; </span><span style='color: #555555;'> 2</span><span> avg    2012-01-01 </span><span style='color: #555555;'>00:30:00</span><span>  -</span><span style='color: #BB0000;'>616.</span><span>
-#&gt; </span><span style='color: #555555;'> 3</span><span> avg    2012-01-01 </span><span style='color: #555555;'>01:00:00</span><span>  -</span><span style='color: #BB0000;'>788.</span><span>
-#&gt; </span><span style='color: #555555;'> 4</span><span> avg    2012-01-01 </span><span style='color: #555555;'>01:30:00</span><span>  -</span><span style='color: #BB0000;'>629.</span><span>
-#&gt; </span><span style='color: #555555;'> 5</span><span> avg    2012-01-01 </span><span style='color: #555555;'>02:00:00</span><span>  -</span><span style='color: #BB0000;'>800.</span><span>
-#&gt; </span><span style='color: #555555;'> 6</span><span> avg    2012-01-01 </span><span style='color: #555555;'>02:30:00</span><span>  -</span><span style='color: #BB0000;'>971.</span><span>
-#&gt; </span><span style='color: #555555;'> 7</span><span> avg    2012-01-01 </span><span style='color: #555555;'>03:00:00</span><span> -</span><span style='color: #BB0000;text-decoration: underline;'>1</span><span style='color: #BB0000;'>104.</span><span>
-#&gt; </span><span style='color: #555555;'> 8</span><span> avg    2012-01-01 </span><span style='color: #555555;'>03:30:00</span><span> -</span><span style='color: #BB0000;text-decoration: underline;'>1</span><span style='color: #BB0000;'>232.</span><span>
-#&gt; </span><span style='color: #555555;'> 9</span><span> avg    2012-01-01 </span><span style='color: #555555;'>04:00:00</span><span> -</span><span style='color: #BB0000;text-decoration: underline;'>1</span><span style='color: #BB0000;'>306.</span><span>
-#&gt; </span><span style='color: #555555;'>10</span><span> avg    2012-01-01 </span><span style='color: #555555;'>04:30:00</span><span> -</span><span style='color: #BB0000;text-decoration: underline;'>1</span><span style='color: #BB0000;'>334.</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> avg    2012-01-01 </span><span style='color: #555555;'>00:00:00</span><span>  -</span><span style='color: #BB0000;'>283.</span><span>
+#&gt; </span><span style='color: #555555;'> 2</span><span> avg    2012-01-01 </span><span style='color: #555555;'>00:30:00</span><span>  -</span><span style='color: #BB0000;'>402.</span><span>
+#&gt; </span><span style='color: #555555;'> 3</span><span> avg    2012-01-01 </span><span style='color: #555555;'>01:00:00</span><span>  -</span><span style='color: #BB0000;'>616.</span><span>
+#&gt; </span><span style='color: #555555;'> 4</span><span> avg    2012-01-01 </span><span style='color: #555555;'>01:30:00</span><span>  -</span><span style='color: #BB0000;'>788.</span><span>
+#&gt; </span><span style='color: #555555;'> 5</span><span> avg    2012-01-01 </span><span style='color: #555555;'>02:00:00</span><span>  -</span><span style='color: #BB0000;'>629.</span><span>
+#&gt; </span><span style='color: #555555;'> 6</span><span> avg    2012-01-01 </span><span style='color: #555555;'>02:30:00</span><span>  -</span><span style='color: #BB0000;'>800.</span><span>
+#&gt; </span><span style='color: #555555;'> 7</span><span> avg    2012-01-01 </span><span style='color: #555555;'>03:00:00</span><span>  -</span><span style='color: #BB0000;'>971.</span><span>
+#&gt; </span><span style='color: #555555;'> 8</span><span> avg    2012-01-01 </span><span style='color: #555555;'>03:30:00</span><span> -</span><span style='color: #BB0000;text-decoration: underline;'>1</span><span style='color: #BB0000;'>104.</span><span>
+#&gt; </span><span style='color: #555555;'> 9</span><span> avg    2012-01-01 </span><span style='color: #555555;'>04:00:00</span><span> -</span><span style='color: #BB0000;text-decoration: underline;'>1</span><span style='color: #BB0000;'>232.</span><span>
+#&gt; </span><span style='color: #555555;'>10</span><span> avg    2012-01-01 </span><span style='color: #555555;'>04:30:00</span><span> -</span><span style='color: #BB0000;text-decoration: underline;'>1</span><span style='color: #BB0000;'>306.</span><span>
 #&gt; </span><span style='color: #555555;'># … with 52,598 more rows</span><span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

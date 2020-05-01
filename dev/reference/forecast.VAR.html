@@ -87,7 +87,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.2.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.0.9000</span>
       </span>
     </div>
 
@@ -196,21 +196,9 @@
 
 <span class='no'>lung_deaths</span> <span class='kw'>%&gt;%</span>
   <span class='fu'>model</span>(<span class='fu'><a href='VAR.html'>VAR</a></span>(<span class='fu'>vars</span>(<span class='no'>mdeaths</span>, <span class='no'>fdeaths</span>) ~ <span class='fu'><a href='AR.html'>AR</a></span>(<span class='fl'>3</span>))) <span class='kw'>%&gt;%</span>
-  <span class='fu'>forecast</span>()</div><div class='output co'>#&gt; <span style='color: #555555;'># A fable: 24 x 5 [1M]</span><span>
-#&gt; </span><span style='color: #555555;'># Key:     .model [1]</span><span>
-#&gt;    .model                                 index mdeaths fdeaths .distribution
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                                  </span><span style='color: #555555;font-style: italic;'>&lt;mth&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dist&gt;</span><span>       
-#&gt; </span><span style='color: #555555;'> 1</span><span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1980 Jan   </span><span style='text-decoration: underline;'>1</span><span>486.    575. MVN[2]       
-#&gt; </span><span style='color: #555555;'> 2</span><span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1980 Feb   </span><span style='text-decoration: underline;'>1</span><span>445.    558. MVN[2]       
-#&gt; </span><span style='color: #555555;'> 3</span><span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1980 Mar   </span><span style='text-decoration: underline;'>1</span><span>369.    528. MVN[2]       
-#&gt; </span><span style='color: #555555;'> 4</span><span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1980 Apr   </span><span style='text-decoration: underline;'>1</span><span>340.    505. MVN[2]       
-#&gt; </span><span style='color: #555555;'> 5</span><span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1980 May   </span><span style='text-decoration: underline;'>1</span><span>327.    497. MVN[2]       
-#&gt; </span><span style='color: #555555;'> 6</span><span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1980 Jun   </span><span style='text-decoration: underline;'>1</span><span>349.    505. MVN[2]       
-#&gt; </span><span style='color: #555555;'> 7</span><span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1980 Jul   </span><span style='text-decoration: underline;'>1</span><span>395.    522. MVN[2]       
-#&gt; </span><span style='color: #555555;'> 8</span><span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1980 Aug   </span><span style='text-decoration: underline;'>1</span><span>442.    540. MVN[2]       
-#&gt; </span><span style='color: #555555;'> 9</span><span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1980 Sep   </span><span style='text-decoration: underline;'>1</span><span>477.    554. MVN[2]       
-#&gt; </span><span style='color: #555555;'>10</span><span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1980 Oct   </span><span style='text-decoration: underline;'>1</span><span>495.    561. MVN[2]       
-#&gt; </span><span style='color: #555555;'># … with 14 more rows</span><span></div></span></pre>
+  <span class='fu'>forecast</span>()</div><div class='output co'>#&gt; <span class='error'>Error: `mutate()` argument `VAR(vars(mdeaths, fdeaths) ~ AR(3))` errored.</span>
+#&gt; <span class='error'><span style='color: #0000BB;'>ℹ</span><span> `VAR(vars(mdeaths, fdeaths) ~ AR(3))` is `(function (object, ...) ...`.</span>
+#&gt; <span class='error'></span><span style='color: #BB0000;'>✖</span><span> argument "x" is missing, with no default</span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

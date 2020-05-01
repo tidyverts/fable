@@ -87,7 +87,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.2.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.0.9000</span>
       </span>
     </div>
 
@@ -196,18 +196,18 @@
   <span class='fu'>model</span>(<span class='kw'>arima</span> <span class='kw'>=</span> <span class='fu'><a href='ARIMA.html'>ARIMA</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>value</span>) ~ <span class='fu'>pdq</span>(<span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span>) + <span class='fu'>PDQ</span>(<span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span>))) <span class='kw'>%&gt;%</span>
   <span class='fu'>forecast</span>()</div><div class='output co'>#&gt; <span style='color: #555555;'># A fable: 24 x 4 [1M]</span><span>
 #&gt; </span><span style='color: #555555;'># Key:     .model [1]</span><span>
-#&gt;    .model    index  value .distribution    
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;mth&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dist&gt;</span><span>           
-#&gt; </span><span style='color: #555555;'> 1</span><span> arima  1979 Jan  </span><span style='text-decoration: underline;'>8</span><span>290. t(N(9.0, 0.0014))
-#&gt; </span><span style='color: #555555;'> 2</span><span> arima  1979 Feb  </span><span style='text-decoration: underline;'>7</span><span>453. t(N(8.9, 0.0018))
-#&gt; </span><span style='color: #555555;'> 3</span><span> arima  1979 Mar  </span><span style='text-decoration: underline;'>8</span><span>276. t(N(9.0, 0.0022))
-#&gt; </span><span style='color: #555555;'> 4</span><span> arima  1979 Apr  </span><span style='text-decoration: underline;'>8</span><span>584. t(N(9.1, 0.0025))
-#&gt; </span><span style='color: #555555;'> 5</span><span> arima  1979 May  </span><span style='text-decoration: underline;'>9</span><span>499. t(N(9.2, 0.0029))
-#&gt; </span><span style='color: #555555;'> 6</span><span> arima  1979 Jun  </span><span style='text-decoration: underline;'>9</span><span>900. t(N(9.2, 0.0033))
-#&gt; </span><span style='color: #555555;'> 7</span><span> arima  1979 Jul </span><span style='text-decoration: underline;'>10</span><span>988. t(N(9.3, 0.0037))
-#&gt; </span><span style='color: #555555;'> 8</span><span> arima  1979 Aug </span><span style='text-decoration: underline;'>10</span><span>132. t(N(9.2, 0.0041))
-#&gt; </span><span style='color: #555555;'> 9</span><span> arima  1979 Sep  </span><span style='text-decoration: underline;'>9</span><span>138. t(N(9.1, 0.0045))
-#&gt; </span><span style='color: #555555;'>10</span><span> arima  1979 Oct  </span><span style='text-decoration: underline;'>9</span><span>391. t(N(9.1, 0.0049))
+#&gt;    .model    index             value  .mean
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;mth&gt;</span><span>            </span><span style='color: #555555;font-style: italic;'>&lt;dist&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> arima  1979 Jan   t(N(9, 0.0014))  </span><span style='text-decoration: underline;'>8</span><span>290.
+#&gt; </span><span style='color: #555555;'> 2</span><span> arima  1979 Feb t(N(8.9, 0.0018))  </span><span style='text-decoration: underline;'>7</span><span>453.
+#&gt; </span><span style='color: #555555;'> 3</span><span> arima  1979 Mar   t(N(9, 0.0022))  </span><span style='text-decoration: underline;'>8</span><span>276.
+#&gt; </span><span style='color: #555555;'> 4</span><span> arima  1979 Apr t(N(9.1, 0.0025))  </span><span style='text-decoration: underline;'>8</span><span>584.
+#&gt; </span><span style='color: #555555;'> 5</span><span> arima  1979 May t(N(9.2, 0.0029))  </span><span style='text-decoration: underline;'>9</span><span>499.
+#&gt; </span><span style='color: #555555;'> 6</span><span> arima  1979 Jun t(N(9.2, 0.0033))  </span><span style='text-decoration: underline;'>9</span><span>900.
+#&gt; </span><span style='color: #555555;'> 7</span><span> arima  1979 Jul t(N(9.3, 0.0037)) </span><span style='text-decoration: underline;'>10</span><span>988.
+#&gt; </span><span style='color: #555555;'> 8</span><span> arima  1979 Aug t(N(9.2, 0.0041)) </span><span style='text-decoration: underline;'>10</span><span>132.
+#&gt; </span><span style='color: #555555;'> 9</span><span> arima  1979 Sep t(N(9.1, 0.0045))  </span><span style='text-decoration: underline;'>9</span><span>138.
+#&gt; </span><span style='color: #555555;'>10</span><span> arima  1979 Oct t(N(9.1, 0.0049))  </span><span style='text-decoration: underline;'>9</span><span>391.
 #&gt; </span><span style='color: #555555;'># … with 14 more rows</span><span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
