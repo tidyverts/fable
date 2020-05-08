@@ -26,10 +26,6 @@ train_arima <- function(.data, specials, ic = "aicc",
     abort("All observations are missing, a model cannot be estimated without data.")
   }
 
-  if (is.null(approximation)) {
-    approximation <- (length(x) > 150) || (period > 12)
-  }
-
   # Get xreg
   constant <- specials$xreg[[1]]$constant %||% c(TRUE, FALSE)
   xreg <- specials$xreg[[1]]$xreg
@@ -125,19 +121,6 @@ train_arima <- function(.data, specials, ic = "aicc",
     warn("Having 3 or more differencing operations is not recommended. Please consider reducing the total number of differences.")
   }
 
-  if (approximation) {
-    method <- "CSS"
-    offset <- with(
-      stats::arima(y,
-        order = c(0, pdq$d, 0), xreg = xreg,
-        include.mean = all(constant)
-      ),
-      -2 * loglik - NROW(data) * log(sigma2)
-    )
-  } else {
-    method <- "CSS-ML"
-  }
-
   # Find best model
   best <- NULL
   compare_arima <- function(p, d, q, P, D, Q, constant) {
@@ -216,6 +199,23 @@ train_arima <- function(.data, specials, ic = "aicc",
   mostly_specified <- length(pdq$p) + length(pdq$d) + length(pdq$q) + length(PDQ$P) + length(PDQ$D) + length(PDQ$Q) == 6
   mostly_specified_msg <- "It looks like you're trying to fully specify your ARIMA model but have not said if a constant should be included.\nYou can include a constant using `ARIMA(y~1)` to the formula or exclude it by adding `ARIMA(y~0)`."
   model_opts <- expand.grid(p = pdq$p, d = pdq$d, q = pdq$q, P = PDQ$P, D = PDQ$D, Q = PDQ$Q, constant = constant)
+  
+  if (is.null(approximation)) {
+    approximation <- ((length(x) > 150) || (period > 12)) && nrow(model_opts) > 1
+  }
+  if (approximation) {
+    method <- "CSS"
+    offset <- with(
+      stats::arima(y,
+                   order = c(0, pdq$d, 0), xreg = xreg,
+                   include.mean = all(constant)
+      ),
+      -2 * loglik - NROW(data) * log(sigma2)
+    )
+  } else {
+    method <- "CSS-ML"
+  }
+  
   if (NROW(model_opts) > 1) {
     model_opts <- filter(model_opts, !!enexpr(order_constraint), (pdq$d + PDQ$D < 2) | !constant)
     if (NROW(model_opts) == 0) {
