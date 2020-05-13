@@ -29,20 +29,19 @@ train_mean <- function(.data, specials, ...) {
 
   structure(
     list(
-      par = tibble(term = "mean", estimate = y_mean, std.error = sigma / sqrt(n)) %>%
-        mutate(
-          statistic = !!sym("estimate") / !!sym("std.error"),
-          p.value = 2 * stats::pt(abs(!!sym("statistic")),
-            sum(!is.na(y)) - 1,
-            lower.tail = FALSE
-          )
-        ),
-      est = tibble(.fitted = fits, .resid = res),
-      fit = tibble(sigma2 = sigma^2),
-      spec = tibble(window_size = window_size %||% NA)
+      fitted = fits,
+      resid = res,
+      mean = y_mean,
+      sigma = sigma,
+      nobs = sum(!is.na(y)),
+      window = window_size %||% NA
     ),
     class = "model_mean"
   )
+      
+      # est = tibble(.fitted = fits, .resid = res),
+      # fit = tibble(sigma2 = sigma^2),
+      # spec = tibble(window_size = window_size %||% NA)
 }
 
 specials_mean <- new_specials(
@@ -110,9 +109,9 @@ MEAN <- function(formula, ...) {
 forecast.model_mean <- function(object, new_data, specials = NULL, bootstrap = FALSE, times = 5000, ...) {
   h <- NROW(new_data)
 
-  y_mean <- object$par$estimate
-  n <- NROW(object$est)
-  sigma <- sqrt(object$fit$sigma2)
+  y_mean <- object$mean
+  n <- length(object$resid)
+  sigma <- object$sigma
 
   # Produce forecasts
   if (bootstrap) { # Compute prediction intervals using simulations
@@ -140,7 +139,7 @@ forecast.model_mean <- function(object, new_data, specials = NULL, bootstrap = F
 #'   generate()
 #' @export
 generate.model_mean <- function(x, new_data, bootstrap = FALSE, ...) {
-  f <- x$par$estimate
+  f <- x$mean
 
   if (!(".innov" %in% names(new_data))) {
     if (bootstrap) {
@@ -151,9 +150,7 @@ generate.model_mean <- function(x, new_data, bootstrap = FALSE, ...) {
       )
     }
     else {
-      new_data$.innov <- stats::rnorm(NROW(new_data),
-        sd = sqrt(x$fit$sigma2)
-      )
+      new_data$.innov <- stats::rnorm(NROW(new_data), sd = x$sigma)
     }
   }
 
@@ -174,7 +171,7 @@ generate.model_mean <- function(x, new_data, bootstrap = FALSE, ...) {
 interpolate.model_mean <- function(object, new_data, specials, ...) {
   # Get inputs
   y <- new_data[[measured_vars(new_data)]]
-  window_size <- object[["spec"]][["window_size"]]
+  window_size <- object$window
   miss_val <- is.na(y)
 
   if (!is.na(window_size)) {
@@ -183,7 +180,7 @@ interpolate.model_mean <- function(object, new_data, specials, ...) {
     )[miss_val]
   }
   else {
-    fits <- object[["par"]][["estimate"]]
+    fits <- object$mean
   }
 
   new_data[[measured_vars(new_data)]][miss_val] <- fits
@@ -199,7 +196,7 @@ interpolate.model_mean <- function(object, new_data, specials, ...) {
 #'   fitted()
 #' @export
 fitted.model_mean <- function(object, ...) {
-  object$est[[".fitted"]]
+  object$fitted
 }
 
 #' @inherit residuals.ARIMA
@@ -211,7 +208,7 @@ fitted.model_mean <- function(object, ...) {
 #'   residuals()
 #' @export
 residuals.model_mean <- function(object, ...) {
-  object$est[[".resid"]]
+  object$resid
 }
 
 #' Glance a average method model
@@ -231,7 +228,7 @@ residuals.model_mean <- function(object, ...) {
 #'   glance()
 #' @export
 glance.model_mean <- function(x, ...) {
-  x$fit
+  tibble(sigma2 = x$sigma^2)
 }
 
 #' @inherit tidy.ARIMA
@@ -243,14 +240,19 @@ glance.model_mean <- function(x, ...) {
 #'   tidy()
 #' @export
 tidy.model_mean <- function(x, ...) {
-  x$par
+  mu <- x$mean
+  se <- x$sigma / sqrt(x$nobs)
+  stat <- mu/se
+  tibble(term = "mean", estimate = mu, std.error = se,
+         statistic = stat,
+         p.value = 2 * stats::pt(abs(stat), x$nobs - 1, lower.tail = FALSE))
 }
 
 #' @export
 report.model_mean <- function(object, ...) {
   cat("\n")
-  cat(paste("Mean:", round(object$par$estimate, 4), "\n"))
-  cat(paste("sigma^2:", round(object$fit$sigma2, 4), "\n"))
+  cat(paste("Mean:", round(object$mean, 4), "\n"))
+  cat(paste("sigma^2:", round(object$sigma^2, 4), "\n"))
 }
 
 #' @export
