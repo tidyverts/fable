@@ -196,9 +196,9 @@
 
 <span class='no'>lung_deaths</span> <span class='kw'>%&gt;%</span>
   <span class='fu'>model</span>(<span class='fu'><a href='VAR.html'>VAR</a></span>(<span class='fu'>vars</span>(<span class='no'>mdeaths</span>, <span class='no'>fdeaths</span>) ~ <span class='fu'><a href='AR.html'>AR</a></span>(<span class='fl'>3</span>))) <span class='kw'>%&gt;%</span>
-  <span class='fu'>forecast</span>()</div><div class='output co'>#&gt; <span class='error'>Error: `mutate()` argument `VAR(vars(mdeaths, fdeaths) ~ AR(3))` errored.</span>
-#&gt; <span class='error'><span style='color: #0000BB;'>ℹ</span><span> `VAR(vars(mdeaths, fdeaths) ~ AR(3))` is `(function (object, ...) ...`.</span>
-#&gt; <span class='error'></span><span style='color: #BB0000;'>✖</span><span> argument "x" is missing, with no default</span></div></span></pre>
+  <span class='fu'>forecast</span>()</div><div class='output co'>#&gt; <span class='error'>Error: Problem with `mutate()` input `VAR(vars(mdeaths, fdeaths) ~ AR(3))`.</span>
+#&gt; <span class='error'><span style='color: #BB0000;'>✖</span><span> argument "x" is missing, with no default</span>
+#&gt; <span class='error'></span><span style='color: #0000BB;'>ℹ</span><span> Input `VAR(vars(mdeaths, fdeaths) ~ AR(3))` is `(function (object, ...) ...`.</span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
