@@ -2,7 +2,17 @@
 #'
 #' Based on Croston's (1972) method for intermittent demand forecasting, also described in Shenstone and Hyndman (2005). Croston's method involves using simple exponential smoothing (SES) on the non-zero elements of the time series and a separate application of SES to the times between non-zero elements of the time series.
 #'
-#' Note that forecast distributions are not computed as Croston's method has no underlying stochastic model. In a later update, we plan to support distributions via the equivalent stochastic models that underly Croston's method (Shenstone and Hyndman, 2005)
+#' Note that forecast distributions are not computed as Croston's method has no 
+#' underlying stochastic model. In a later update, we plan to support distributions via 
+#' the equivalent stochastic models that underly Croston's method (Shenstone and 
+#' Hyndman, 2005)
+#' 
+#' There are two variant methods available which apply multiplicative correction factors 
+#' to the forecasts that result from the original Croston's method. For the 
+#' Syntetos-Boylan approximation (`type = "sba"`), this factor is \eqn{1 - \alpha / 2}, 
+#' and for the Shale-Boylan-Johnston method (`type = "sbj"`), this factor is 
+#' \eqn{1 - \alpha / (2 - \alpha)}, where \eqn{\alpha} is the smoothing parameter for 
+#' the interval SES application.
 #'
 #' @param formula Model specification (see "Specials" section).
 #' @param opt_crit The optimisation criterion used to optimise the parameters.
