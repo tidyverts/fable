@@ -196,7 +196,7 @@ SNAIVE <- function(formula, ...) {
 #'   model(snaive = SNAIVE(Beer ~ lag("year"))) %>%
 #'   forecast()
 #' @export
-forecast.RW <- function(object, new_data, specials = NULL, bootstrap = FALSE, times = 5000, ...) {
+forecast.RW <- function(object, new_data, specials = NULL, simulate = FALSE, bootstrap = FALSE, times = 5000, ...) {
   h <- NROW(new_data)
   lag <- object$spec$lag
   fullperiods <- (h - 1) / lag + 1
@@ -207,11 +207,11 @@ forecast.RW <- function(object, new_data, specials = NULL, bootstrap = FALSE, ti
   if (!object$spec$drift) {
     b <- b.se <- 0
   }
-  
+
   # Produce forecasts
-  if (bootstrap) { # Compute prediction intervals using simulations
+  if (simulate | bootstrap) { # Compute prediction intervals using simulations
     sim <- map(seq_len(times), function(x) {
-      generate(object, new_data, bootstrap = TRUE)[[".sim"]]
+      generate(object, new_data, bootstrap = bootstrap)[[".sim"]]
     }) %>%
       transpose() %>%
       map(as.numeric)
