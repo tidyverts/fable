@@ -246,7 +246,7 @@ generate.RW <- function(x, new_data, bootstrap = FALSE, ...) {
 
   lag <- x$spec$lag
   if (x$spec$drift) {
-    b <- x$par$estimate
+    b <- stats::rnorm(1, mean = x$par$estimate, sd = x$par$std.error)
   } else {
     b <- 0
   }
