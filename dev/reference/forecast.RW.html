@@ -152,6 +152,7 @@
   <span class='no'>object</span>,
   <span class='no'>new_data</span>,
   <span class='kw'>specials</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>simulate</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>bootstrap</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>times</span> <span class='kw'>=</span> <span class='fl'>5000</span>,
   <span class='no'>...</span>
@@ -171,6 +172,10 @@
     <tr>
       <th>specials</th>
       <td><p>(passed by <code><a href='https://fabletools.tidyverts.org/reference/forecast.html'>fabletools::forecast.mdl_df()</a></code>).</p></td>
+    </tr>
+    <tr>
+      <th>simulate</th>
+      <td><p>If <code>TRUE</code>, prediction intervals are produced by simulation rather than using analytic formulae.</p></td>
     </tr>
     <tr>
       <th>bootstrap</th>
