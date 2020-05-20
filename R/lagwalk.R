@@ -183,6 +183,7 @@ SNAIVE <- function(formula, ...) {
 }
 
 #' @inherit forecast.ARIMA
+#' @inheritParams forecast.ETS
 #' @importFrom stats qnorm time
 #' @importFrom utils tail
 #'
@@ -209,7 +210,7 @@ forecast.RW <- function(object, new_data, specials = NULL, simulate = FALSE, boo
   }
 
   # Produce forecasts
-  if (simulate | bootstrap) { # Compute prediction intervals using simulations
+  if (simulate || bootstrap) { # Compute prediction intervals using simulations
     sim <- map(seq_len(times), function(x) {
       generate(object, new_data, bootstrap = bootstrap)[[".sim"]]
     }) %>%
