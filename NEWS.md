@@ -2,7 +2,7 @@
 
 This minor release is a patch for some substantial changes to the fabletools 
 package. These changes to fabletools emphasise the distribution in the fable 
-object. The most noticable is a change in column names of the fable, with the
+object. The most noticeable is a change in column names of the fable, with the
 distribution now stored in the column matching the response variable, and the
 forecast mean now stored in the `.mean` column. 
 For a complete summary of these changes, refer to the fabletools v0.2.0 release
