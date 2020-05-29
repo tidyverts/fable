@@ -33,7 +33,7 @@ Imports:
     rlang (>= 0.4.5.9000),
     stats,
     dplyr (>= 0.8.99),
-    tsibble (>= 0.8.0),
+    tsibble (>= 0.8.9.9000),
     tibble,
     tidyr,
     utils,
