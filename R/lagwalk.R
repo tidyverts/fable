@@ -38,17 +38,13 @@ train_lagwalk <- function(.data, specials, ...) {
 
   structure(
     list(
-      par = list(
-        term = if (drift) "b" else chr(),
-        estimate = b, std.error = b.se,
-        statistic = b / b.se,
-        p.value = 2 * stats::pt(abs(b / b.se), n - lag - drift, lower.tail = FALSE)
-      ),
-      time = list(start = unclass(.data)[[index_var(.data)]][[1]], interval = interval(.data)),
+      b = b,
+      b.se = b.se,
+      lag = lag,
+      sigma2 = sigma^2,
       .fitted = fitted,
       .resid = res,
-      fit = list(sigma2 = sigma^2),
-      spec = list(lag = lag, drift = drift),
+      time = list(start = unclass(.data)[[index_var(.data)]][[1]], interval = interval(.data)),
       future = y[c(rep(NA, max(0, lag - n)), seq_len(min(n, lag)) + n - min(n, lag))]
     ),
     class = "RW"
@@ -199,13 +195,13 @@ SNAIVE <- function(formula, ...) {
 #' @export
 forecast.RW <- function(object, new_data, specials = NULL, simulate = FALSE, bootstrap = FALSE, times = 5000, ...) {
   h <- NROW(new_data)
-  lag <- object$spec$lag
+  lag <- object$lag
   fullperiods <- (h - 1) / lag + 1
   steps <- rep(1:fullperiods, rep(lag, fullperiods))[1:h]
 
-  b <- object$par$estimate
-  b.se <- object$par$std.error
-  if (!object$spec$drift) {
+  b <- object$b
+  b.se <- object$b.se
+  if (is_empty(b)) {
     b <- b.se <- 0
   }
 
@@ -245,9 +241,9 @@ generate.RW <- function(x, new_data, bootstrap = FALSE, ...) {
     abort("Simulation new_data must be regularly spaced")
   }
 
-  lag <- x$spec$lag
-  if (x$spec$drift) {
-    b <- stats::rnorm(1, mean = x$par$estimate, sd = x$par$std.error)
+  lag <- x$lag
+  if (!is_empty(x$b)) {
+    b <- stats::rnorm(1, mean = x$b, sd = x$b.se)
   } else {
     b <- 0
   }
@@ -270,7 +266,7 @@ generate.RW <- function(x, new_data, bootstrap = FALSE, ...) {
       )
     }
     else {
-      new_data$.innov <- stats::rnorm(NROW(new_data), sd = sqrt(x$fit$sigma2))
+      new_data$.innov <- stats::rnorm(NROW(new_data), sd = sqrt(x$sigma2))
     }
   }
 
@@ -340,7 +336,7 @@ residuals.RW <- function(object, ...) {
 #'   glance()
 #' @export
 glance.RW <- function(x, ...) {
-  as_tibble(x[["fit"]])
+  tibble(sigma2 = x[["sigma2"]])
 }
 
 #' @inherit tidy.ARIMA
@@ -356,35 +352,41 @@ glance.RW <- function(x, ...) {
 #'   tidy()
 #' @export
 tidy.RW <- function(x, ...) {
-  as_tibble(x[["par"]])
+  drift <- !is_empty(x$b)
+  tibble(
+    term = if (drift) "b" else chr(),
+    estimate = x$b, std.error = x$b.se,
+    statistic = x$b / x$b.se,
+    p.value = 2 * stats::pt(abs(x$b / x$b.se), length(x$.resid) - x$lag - drift, lower.tail = FALSE)
+  )
 }
 
 #' @export
 report.RW <- function(object, ...) {
   cat("\n")
-  if (object[["spec"]][["drift"]]) {
-    row <- object[["par"]][["term"]] == "b"
-    cat(paste("Drift: ", round(object[["par"]][["estimate"]][row], 4),
-      " (se: ", round(object[["par"]][["std.error"]][row], 4), ")\n",
+  if (!is_empty(object[["b"]])) {
+    cat(paste("Drift: ", round(object[["b"]], 4),
+      " (se: ", round(object[["b.se"]], 4), ")\n",
       sep = ""
     ))
   }
-  cat(paste("sigma^2:", round(object[["fit"]][["sigma2"]], 4), "\n"))
+  cat(paste("sigma^2:", round(object[["sigma2"]], 4), "\n"))
 }
 
 #' @importFrom stats coef
 #' @export
 model_sum.RW <- function(x) {
-  if (x[["spec"]][["lag"]] == 1 & !x[["spec"]][["drift"]]) {
+  drift <- !is_empty(x[["b"]])
+  if (x[["lag"]] == 1 && !drift) {
     method <- "NAIVE"
   }
-  else if (x[["spec"]][["lag"]] != 1) {
+  else if (x[["lag"]] != 1) {
     method <- "SNAIVE"
   }
   else {
     method <- "RW"
   }
-  if (x[["spec"]][["drift"]]) {
+  if (drift) {
     method <- paste(method, "w/ drift")
   }
   method
