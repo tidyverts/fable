@@ -6,7 +6,7 @@ test_that("LM", {
   forecast_fit <- lm(USAccDeaths ~ 1)
 
   expect_equivalent(
-    coef(fable_fit$lm[[1]]$fit$model),
+    coef(fable_fit)$estimate,
     coef(forecast_fit)
   )
 
