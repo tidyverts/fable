@@ -1,4 +1,4 @@
-# fable (development version)
+# fable 0.2.1
 
 This minor release is a patch for some substantial changes to the fabletools 
 package. These changes to fabletools emphasise the distribution in the fable 
