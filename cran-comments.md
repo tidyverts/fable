@@ -1,7 +1,7 @@
 ## Submission
 
 This patch release resolves outstanding issues on the CRAN check page introduced
-by the dplyr v1.0.0 release.
+by the dplyr v1.0.0 and tsibble v0.9.0 releases.
 
 ## Test environments
 * local ubuntu 18.04 install, R 3.6.3
@@ -16,4 +16,6 @@ by the dplyr v1.0.0 release.
 
 ## revdep checks
 
-All revdeps have been checked. No new problems were detected.
+All revdeps have been checked. All changes to worse (in fpp3 and feasts) are due
+to upstream changes in tsibble v0.9.0, and have fixed versions ready for 
+submission.
