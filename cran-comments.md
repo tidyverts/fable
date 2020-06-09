@@ -19,3 +19,7 @@ by the dplyr v1.0.0 and tsibble v0.9.0 releases.
 All revdeps have been checked. All changes to worse (in fpp3 and feasts) are due
 to upstream changes in tsibble v0.9.0, and have fixed versions ready for 
 submission.
+
+## Resubmission
+
+Resubmitting as requested now that distributional is on CRAN.
