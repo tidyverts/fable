@@ -11,7 +11,7 @@ ARIMA(
   stepwise = TRUE,
   greedy = TRUE,
   approximation = NULL,
-  order_constraint = p + q + P + Q <= 6,
+  order_constraint = p + q + P + Q <= 6 & (!constant | d + D < 2),
   unitroot_spec = unitroot_options(),
   ...
 )
@@ -28,7 +28,8 @@ ARIMA(
 \item{approximation}{Should CSS (conditional sum of squares) be used during model selection? The default (\code{NULL}) will use the approximation if there are more than 150 observations or if the seasonal period is greater than 12.}
 
 \item{order_constraint}{A logical predicate on the orders of \code{p}, \code{d}, \code{q},
-\code{P}, \code{D} and \code{Q} to consider in the search. See "Specials" for the meaning of these terms.}
+\code{P}, \code{D}, \code{Q} and \code{constant} to consider in the search. See "Specials" for
+the meaning of these terms.}
 
 \item{unitroot_spec}{A specification of unit root tests to use in the
 selection of \code{d} and \code{D}. See \code{\link[=unitroot_options]{unitroot_options()}} for more details.}
