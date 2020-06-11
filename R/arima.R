@@ -42,7 +42,7 @@ train_arima <- function(.data, specials, ic = "aicc",
       # Ignore fixed coefficients for xreg
       bad_regressors <- bad_regressors[!(colnames(xreg_c)[bad_regressors] %in% union(names(fixed), names(specials$xreg[[1]]$fixed)))]
       # Offset for inclusion of intercept
-      bad_regressors <- bad_regressors - 1
+      bad_regressors <- bad_regressors - all(constant)
       
       # Remove deficient regressors
       if(!is_empty(bad_regressors)){
