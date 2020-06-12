@@ -1,4 +1,4 @@
-globalVariables(c("p", "P", "q", "Q"))
+globalVariables(c("p", "P", "d", "D", "q", "Q", "constant"))
 
 #' @importFrom stats approx lm ts
 train_arima <- function(.data, specials, ic = "aicc",
