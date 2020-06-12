@@ -386,7 +386,9 @@ specials_arima <- new_specials(
                  P_init = 1, Q_init = 1,
                  fixed = list()) {
     period <- get_frequencies(period, self$data, .auto = "smallest")
-    if (period == 1) {
+    if (period < 1) {
+      abort("The seasonal period must be greater or equal to 1.")
+    } else if (period == 1) {
       # Not seasonal
       P <- 0
       D <- 0
