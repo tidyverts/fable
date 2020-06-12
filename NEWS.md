@@ -1,12 +1,17 @@
 # fable 0.2.1
 
-This minor release is a patch for some substantial changes to the fabletools 
-package. These changes to fabletools emphasise the distribution in the fable 
+This release coincides with v0.2.0 of the fabletools package, which contains
+some substantial changes to the output of `forecast()` methods.
+These changes to fabletools emphasise the distribution in the fable 
 object. The most noticeable is a change in column names of the fable, with the
 distribution now stored in the column matching the response variable, and the
 forecast mean now stored in the `.mean` column. 
 For a complete summary of these changes, refer to the fabletools v0.2.0 release
 news: https://fabletools.tidyverts.org/news/index.html
+
+## New features
+
+* Added the `THETA()` method.
 
 ## Improvements
 

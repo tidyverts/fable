@@ -102,6 +102,14 @@ reference:
     - forecast.croston
     - fitted.croston
     - residuals.croston
+- title: Theta method
+  desc: >
+    The Theta method of Assimakopoulos and Nikolopoulos (2000)
+  contents:
+    - THETA
+    - forecast.model_theta
+    - fitted.model_theta
+    - residuals.mode_theta
 - title: Autoregression
   desc: >
     Autoregressive time series models
