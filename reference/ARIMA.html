@@ -90,7 +90,7 @@ framework." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
       </span>
     </div>
 
@@ -159,7 +159,7 @@ framework.</p>
   <span class='kw'>stepwise</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>greedy</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>approximation</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>order_constraint</span> <span class='kw'>=</span> <span class='no'>p</span> + <span class='no'>q</span> + <span class='no'>P</span> + <span class='no'>Q</span> <span class='kw'>&lt;=</span> <span class='fl'>6</span>,
+  <span class='kw'>order_constraint</span> <span class='kw'>=</span> <span class='no'>p</span> + <span class='no'>q</span> + <span class='no'>P</span> + <span class='no'>Q</span> <span class='kw'>&lt;=</span> <span class='fl'>6</span> <span class='kw'>&amp;</span> (!<span class='no'>constant</span> <span class='kw'>|</span> <span class='no'>d</span> + <span class='no'>D</span> <span class='kw'>&lt;</span> <span class='fl'>2</span>),
   <span class='kw'>unitroot_spec</span> <span class='kw'>=</span> <span class='fu'><a href='unitroot_options.html'>unitroot_options</a></span>(),
   <span class='no'>...</span>
 )</pre>
@@ -190,7 +190,8 @@ framework.</p>
     <tr>
       <th>order_constraint</th>
       <td><p>A logical predicate on the orders of <code>p</code>, <code>d</code>, <code>q</code>,
-<code>P</code>, <code>D</code> and <code>Q</code> to consider in the search. See "Specials" for the meaning of these terms.</p></td>
+<code>P</code>, <code>D</code>, <code>Q</code> and <code>constant</code> to consider in the search. See "Specials" for
+the meaning of these terms.</p></td>
     </tr>
     <tr>
       <th>unitroot_spec</th>
@@ -299,9 +300,7 @@ xreg(..., fixed = list())
 <span class='co'># Automatic ARIMA specification</span>
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibble</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)</div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘dplyr’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:tsibble’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    id</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:stats’:</span>
+#&gt; <span class='message'>Attaching package: ‘dplyr’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:stats’:</span>
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    filter, lag</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
 #&gt; <span class='message'></span>
@@ -310,8 +309,8 @@ xreg(..., fixed = list())
   <span class='fu'>model</span>(<span class='fu'>ARIMA</span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>GDP</span>) ~ <span class='no'>Population</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: NaNs produced</span></div><div class='output co'>#&gt; <span style='color: #555555;'># A mable: 1 x 2</span><span>
 #&gt; </span><span style='color: #555555;'># Key:     Country [1]</span><span>
 #&gt;   Country   `ARIMA(log(GDP) ~ Population)`
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;model&gt;</span><span>                       
-#&gt; </span><span style='color: #555555;'>1</span><span> Australia </span><span style='color: #555555;'>&lt;LM w/ ARIMA(2,0,0) errors&gt;</span><span>   </div></span></pre>
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>                            </span><span style='color: #555555;font-style: italic;'>&lt;model&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span> Australia    &lt;LM w/ ARIMA(2,0,0) errors&gt;</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

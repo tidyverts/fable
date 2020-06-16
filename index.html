@@ -49,7 +49,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">fable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
       </span>
     </div>
 
@@ -122,19 +122,20 @@
 <span id="cb3-2"><a href="#cb3-2"></a><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(tsibble)</span>
 <span id="cb3-3"><a href="#cb3-3"></a><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(tsibbledata)</span>
 <span id="cb3-4"><a href="#cb3-4"></a><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(lubridate)</span>
-<span id="cb3-5"><a href="#cb3-5"></a><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(dplyr)</span>
-<span id="cb3-6"><a href="#cb3-6"></a>aus_retail <span class="op">%&gt;%</span></span>
-<span id="cb3-7"><a href="#cb3-7"></a><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(</span>
-<span id="cb3-8"><a href="#cb3-8"></a>    State <span class="op">%in%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"New South Wales"</span>, <span class="st">"Victoria"</span>),</span>
-<span id="cb3-9"><a href="#cb3-9"></a>    Industry <span class="op">==</span><span class="st"> "Department stores"</span></span>
-<span id="cb3-10"><a href="#cb3-10"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb3-11"><a href="#cb3-11"></a><span class="st">  </span><span class="kw">model</span>(</span>
-<span id="cb3-12"><a href="#cb3-12"></a>    <span class="dt">ets =</span> <span class="kw"><a href="reference/ETS.html">ETS</a></span>(<span class="kw">box_cox</span>(Turnover, <span class="fl">0.3</span>)),</span>
-<span id="cb3-13"><a href="#cb3-13"></a>    <span class="dt">arima =</span> <span class="kw"><a href="reference/ARIMA.html">ARIMA</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/Log.html">log</a></span>(Turnover)),</span>
-<span id="cb3-14"><a href="#cb3-14"></a>    <span class="dt">snaive =</span> <span class="kw"><a href="reference/RW.html">SNAIVE</a></span>(Turnover)</span>
-<span id="cb3-15"><a href="#cb3-15"></a>  ) <span class="op">%&gt;%</span></span>
-<span id="cb3-16"><a href="#cb3-16"></a><span class="st">  </span><span class="kw">forecast</span>(<span class="dt">h =</span> <span class="st">"2 years"</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb3-17"><a href="#cb3-17"></a><span class="st">  </span><span class="kw">autoplot</span>(<span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(aus_retail, <span class="kw"><a href="http://lubridate.tidyverse.org/reference/year.html">year</a></span>(Month) <span class="op">&gt;</span><span class="st"> </span><span class="dv">2010</span>), <span class="dt">level =</span> <span class="ot">NULL</span>)</span></code></pre></div>
+<span id="cb3-5"><a href="#cb3-5"></a><span class="co">#&gt; Warning: package 'lubridate' was built under R version 3.6.3</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(dplyr)</span>
+<span id="cb3-7"><a href="#cb3-7"></a>aus_retail <span class="op">%&gt;%</span></span>
+<span id="cb3-8"><a href="#cb3-8"></a><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(</span>
+<span id="cb3-9"><a href="#cb3-9"></a>    State <span class="op">%in%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"New South Wales"</span>, <span class="st">"Victoria"</span>),</span>
+<span id="cb3-10"><a href="#cb3-10"></a>    Industry <span class="op">==</span><span class="st"> "Department stores"</span></span>
+<span id="cb3-11"><a href="#cb3-11"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb3-12"><a href="#cb3-12"></a><span class="st">  </span><span class="kw">model</span>(</span>
+<span id="cb3-13"><a href="#cb3-13"></a>    <span class="dt">ets =</span> <span class="kw"><a href="reference/ETS.html">ETS</a></span>(<span class="kw">box_cox</span>(Turnover, <span class="fl">0.3</span>)),</span>
+<span id="cb3-14"><a href="#cb3-14"></a>    <span class="dt">arima =</span> <span class="kw"><a href="reference/ARIMA.html">ARIMA</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/Log.html">log</a></span>(Turnover)),</span>
+<span id="cb3-15"><a href="#cb3-15"></a>    <span class="dt">snaive =</span> <span class="kw"><a href="reference/RW.html">SNAIVE</a></span>(Turnover)</span>
+<span id="cb3-16"><a href="#cb3-16"></a>  ) <span class="op">%&gt;%</span></span>
+<span id="cb3-17"><a href="#cb3-17"></a><span class="st">  </span><span class="kw">forecast</span>(<span class="dt">h =</span> <span class="st">"2 years"</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb3-18"><a href="#cb3-18"></a><span class="st">  </span><span class="kw">autoplot</span>(<span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(aus_retail, <span class="kw"><a href="http://lubridate.tidyverse.org/reference/year.html">year</a></span>(Month) <span class="op">&gt;</span><span class="st"> </span><span class="dv">2010</span>), <span class="dt">level =</span> <span class="ot">NULL</span>)</span></code></pre></div>
 <p><img src="reference/figures/README-example-1.png" width="100%"></p>
 </div>
 <div id="learning-to-forecast-with-fable" class="section level2">

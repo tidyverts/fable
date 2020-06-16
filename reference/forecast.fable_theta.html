@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Tidy a fable model — tidy.ARIMA • fable</title>
+<title>Forecast a model from the fable package — forecast.fable_theta • fable</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,8 +42,8 @@
 
 
 
-<meta property="og:title" content="Tidy a fable model — tidy.ARIMA" />
-<meta property="og:description" content="Returns the coefficients from the model in a tibble format." />
+<meta property="og:title" content="Forecast a model from the fable package — forecast.fable_theta" />
+<meta property="og:description" content="Produces forecasts from a trained model." />
 <meta property="og:image" content="https://fable.tidyverts.org/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -138,44 +138,77 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Tidy a fable model</h1>
-    <small class="dont-index">Source: <a href='https://github.com/tidyverts/fable/blob/master/R/arima.R'><code>R/arima.R</code></a></small>
-    <div class="hidden name"><code>tidy.ARIMA.Rd</code></div>
+    <h1>Forecast a model from the fable package</h1>
+    <small class="dont-index">Source: <a href='https://github.com/tidyverts/fable/blob/master/R/theta.R'><code>R/theta.R</code></a></small>
+    <div class="hidden name"><code>forecast.fable_theta.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Returns the coefficients from the model in a <code>tibble</code> format.</p>
+    <p>Produces forecasts from a trained model.</p>
     </div>
 
-    <pre class="usage"><span class='co'># S3 method for ARIMA</span>
-<span class='fu'>tidy</span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='co'># S3 method for fable_theta</span>
+<span class='fu'>forecast</span>(
+  <span class='no'>object</span>,
+  <span class='no'>new_data</span>,
+  <span class='kw'>specials</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>bootstrap</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>times</span> <span class='kw'>=</span> <span class='fl'>5000</span>,
+  <span class='no'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>An object to be converted into a tidy <code><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble::tibble()</a></code>.</p></td>
+      <th>object</th>
+      <td><p>The time series model used to produce the forecasts</p></td>
+    </tr>
+    <tr>
+      <th>new_data</th>
+      <td><p>A <code>tsibble</code> containing future information used to forecast.</p></td>
+    </tr>
+    <tr>
+      <th>specials</th>
+      <td><p>(passed by <code><a href='https://fabletools.tidyverts.org/reference/forecast.html'>fabletools::forecast.mdl_df()</a></code>).</p></td>
+    </tr>
+    <tr>
+      <th>bootstrap</th>
+      <td><p>If <code>TRUE</code>, then forecast distributions are computed using simulation with resampled errors.</p></td>
+    </tr>
+    <tr>
+      <th>times</th>
+      <td><p>The number of sample paths to use in estimating the forecast distribution when <code>boostrap = TRUE</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Additional arguments to tidying method.</p></td>
+      <td><p>Additional arguments for forecast model methods.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The model's coefficients in a <code>tibble</code>.</p>
+    <p>A list of forecasts.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>USAccDeaths</span> <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>() <span class='kw'>%&gt;%</span>
   <span class='fu'>model</span>(<span class='kw'>arima</span> <span class='kw'>=</span> <span class='fu'><a href='ARIMA.html'>ARIMA</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>value</span>) ~ <span class='fu'>pdq</span>(<span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span>) + <span class='fu'>PDQ</span>(<span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span>))) <span class='kw'>%&gt;%</span>
-  <span class='fu'>tidy</span>()</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 2 x 6</span><span>
-#&gt;   .model term  estimate std.error statistic  p.value
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> arima  ma1     -</span><span style='color: #BB0000;'>0.471</span><span>     0.123     -</span><span style='color: #BB0000;'>3.83</span><span> 0.000</span><span style='text-decoration: underline;'>311</span><span>
-#&gt; </span><span style='color: #555555;'>2</span><span> arima  sma1    -</span><span style='color: #BB0000;'>0.593</span><span>     0.193     -</span><span style='color: #BB0000;'>3.07</span><span> 0.003</span><span style='text-decoration: underline;'>27</span><span> </div></span></pre>
+  <span class='fu'>forecast</span>()</div><div class='output co'>#&gt; <span style='color: #555555;'># A fable: 24 x 4 [1M]</span><span>
+#&gt; </span><span style='color: #555555;'># Key:     .model [1]</span><span>
+#&gt;    .model    index             value  .mean
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;mth&gt;</span><span>            </span><span style='color: #555555;font-style: italic;'>&lt;dist&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> arima  1979 Jan   t(N(9, 0.0014))  </span><span style='text-decoration: underline;'>8</span><span>290.
+#&gt; </span><span style='color: #555555;'> 2</span><span> arima  1979 Feb t(N(8.9, 0.0018))  </span><span style='text-decoration: underline;'>7</span><span>453.
+#&gt; </span><span style='color: #555555;'> 3</span><span> arima  1979 Mar   t(N(9, 0.0022))  </span><span style='text-decoration: underline;'>8</span><span>276.
+#&gt; </span><span style='color: #555555;'> 4</span><span> arima  1979 Apr t(N(9.1, 0.0025))  </span><span style='text-decoration: underline;'>8</span><span>584.
+#&gt; </span><span style='color: #555555;'> 5</span><span> arima  1979 May t(N(9.2, 0.0029))  </span><span style='text-decoration: underline;'>9</span><span>499.
+#&gt; </span><span style='color: #555555;'> 6</span><span> arima  1979 Jun t(N(9.2, 0.0033))  </span><span style='text-decoration: underline;'>9</span><span>900.
+#&gt; </span><span style='color: #555555;'> 7</span><span> arima  1979 Jul t(N(9.3, 0.0037)) </span><span style='text-decoration: underline;'>10</span><span>988.
+#&gt; </span><span style='color: #555555;'> 8</span><span> arima  1979 Aug t(N(9.2, 0.0041)) </span><span style='text-decoration: underline;'>10</span><span>132.
+#&gt; </span><span style='color: #555555;'> 9</span><span> arima  1979 Sep t(N(9.1, 0.0045))  </span><span style='text-decoration: underline;'>9</span><span>138.
+#&gt; </span><span style='color: #555555;'>10</span><span> arima  1979 Oct t(N(9.1, 0.0049))  </span><span style='text-decoration: underline;'>9</span><span>391.
+#&gt; </span><span style='color: #555555;'># … with 14 more rows</span><span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

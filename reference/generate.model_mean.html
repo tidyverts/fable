@@ -90,7 +90,7 @@ contains the .innov column, those values will be treated as innovations." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
       </span>
     </div>
 
@@ -185,14 +185,14 @@ contains the <code>.innov</code> column, those values will be treated as innovat
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibbledata</span>)
 <span class='no'>vic_elec</span> <span class='kw'>%&gt;%</span>
   <span class='fu'>model</span>(<span class='kw'>avg</span> <span class='kw'>=</span> <span class='fu'><a href='MEAN.html'>MEAN</a></span>(<span class='no'>Demand</span>)) <span class='kw'>%&gt;%</span>
-  <span class='fu'>generate</span>()</div><div class='output co'>#&gt; <span style='color: #555555;'># A tsibble: 4 x 4 [30m] &lt;UTC&gt;</span><span>
+  <span class='fu'>generate</span>()</div><div class='output co'>#&gt; <span style='color: #555555;'># A tsibble: 4 x 4 [30m] &lt;Australia/Melbourne&gt;</span><span>
 #&gt; </span><span style='color: #555555;'># Key:       .model, .rep [1]</span><span>
-#&gt;   .model  .rep Time                 .sim
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> avg        1 2015-01-01 </span><span style='color: #555555;'>00:00:00</span><span> </span><span style='text-decoration: underline;'>4</span><span>419.
-#&gt; </span><span style='color: #555555;'>2</span><span> avg        1 2015-01-01 </span><span style='color: #555555;'>00:30:00</span><span> </span><span style='text-decoration: underline;'>5</span><span>142.
-#&gt; </span><span style='color: #555555;'>3</span><span> avg        1 2015-01-01 </span><span style='color: #555555;'>01:00:00</span><span> </span><span style='text-decoration: underline;'>5</span><span>425.
-#&gt; </span><span style='color: #555555;'>4</span><span> avg        1 2015-01-01 </span><span style='color: #555555;'>01:30:00</span><span> </span><span style='text-decoration: underline;'>4</span><span>485.</div></span></pre>
+#&gt;   .model Time                .rep   .sim
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span> avg    2015-01-01 </span><span style='color: #555555;'>00:00:00</span><span> 1     </span><span style='text-decoration: underline;'>4</span><span>419.
+#&gt; </span><span style='color: #555555;'>2</span><span> avg    2015-01-01 </span><span style='color: #555555;'>00:30:00</span><span> 1     </span><span style='text-decoration: underline;'>5</span><span>142.
+#&gt; </span><span style='color: #555555;'>3</span><span> avg    2015-01-01 </span><span style='color: #555555;'>01:00:00</span><span> 1     </span><span style='text-decoration: underline;'>5</span><span>425.
+#&gt; </span><span style='color: #555555;'>4</span><span> avg    2015-01-01 </span><span style='color: #555555;'>01:30:00</span><span> 1     </span><span style='text-decoration: underline;'>4</span><span>485.</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

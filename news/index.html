@@ -86,7 +86,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
       </span>
     </div>
 
@@ -141,13 +141,52 @@
       <small>Source: <a href='https://github.com/tidyverts/fable/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="fable-021" class="section level1">
+<h1 class="page-header">
+<a href="#fable-021" class="anchor"></a>fable 0.2.1<small> Unreleased </small>
+</h1>
+<p>This release coincides with v0.2.0 of the fabletools package, which contains some substantial changes to the output of <code>forecast()</code> methods. These changes to fabletools emphasise the distribution in the fable object. The most noticeable is a change in column names of the fable, with the distribution now stored in the column matching the response variable, and the forecast mean now stored in the <code>.mean</code> column. For a complete summary of these changes, refer to the fabletools v0.2.0 release news: <a href="https://fabletools.tidyverts.org/news/index.html" class="uri">https://fabletools.tidyverts.org/news/index.html</a></p>
+<div id="new-features" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features" class="anchor"></a>New features</h2>
+<ul>
+<li>Added the <code><a href="../reference/THETA.html">THETA()</a></code> method.</li>
+</ul>
+</div>
+<div id="improvements" class="section level2">
+<h2 class="hasAnchor">
+<a href="#improvements" class="anchor"></a>Improvements</h2>
+<ul>
+<li>Forecasts distributions are now provided by the distributional package. They are now more space efficient and allows calculation of distributional statistics including the <code><a href="https://rdrr.io/r/base/mean.html">mean()</a></code>, <code><a href="https://rdrr.io/r/stats/median.html">median()</a></code>, <code>variance()</code>, <code><a href="https://rdrr.io/r/stats/quantile.html">quantile()</a></code>, <code>cdf()</code>, and <code><a href="https://rdrr.io/r/stats/density.html">density()</a></code>.</li>
+<li>The uncertainty of the drift parameter in random walk models (<code><a href="../reference/RW.html">RW()</a></code>, <code><a href="../reference/RW.html">NAIVE()</a></code> and <code><a href="../reference/RW.html">SNAIVE()</a></code>) is now included in data generated with <code>generate()</code>.</li>
+<li>Added Syntetos-Boylan and Shale-Boylan-Johnston variants of <code><a href="../reference/CROSTON.html">CROSTON()</a></code> method.</li>
+<li>Performance improvements.</li>
+</ul>
+</div>
+<div id="bug-fixes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes" class="anchor"></a>Bug fixes</h2>
+<ul>
+<li>Fixed issue with approximation being used when refitting ARIMA models and when a specific model is requested.</li>
+<li>Fixed <code>glance()</code> for <code><a href="../reference/TSLM.html">TSLM()</a></code> models when the data contains missing values.</li>
+<li>Fixed typo in <code>glance()</code> output of <code><a href="../reference/ETS.html">ETS()</a></code> models.</li>
+</ul>
+</div>
+<div id="breaking-changes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#breaking-changes" class="anchor"></a>Breaking changes</h2>
+<ul>
+<li>The sample path means are now used instead of analytical means when forecasts are produced from sample paths.</li>
+</ul>
+</div>
+</div>
     <div id="fable-020" class="section level1">
 <h1 class="page-header">
 <a href="#fable-020" class="anchor"></a>fable 0.2.0<small> 2020-04-22 </small>
 </h1>
-<div id="improvements" class="section level2">
+<div id="improvements-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#improvements" class="anchor"></a>Improvements</h2>
+<a href="#improvements-1" class="anchor"></a>Improvements</h2>
 <ul>
 <li>Added autoregressive modelling with <code><a href="../reference/AR.html">AR()</a></code>.</li>
 <li>Better handling of rank deficiency in <code><a href="../reference/ARIMA.html">ARIMA()</a></code>.</li>
@@ -163,17 +202,17 @@
 <h1 class="page-header">
 <a href="#fable-012" class="anchor"></a>fable 0.1.2<small> 2020-01-29 </small>
 </h1>
-<div id="improvements-1" class="section level2">
+<div id="improvements-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#improvements-1" class="anchor"></a>Improvements</h2>
+<a href="#improvements-2" class="anchor"></a>Improvements</h2>
 <ul>
 <li>Added <code><a href="../reference/CROSTON.html">CROSTON()</a></code> for Croston’s method of intermittent demand forecasting.</li>
 <li>Documentation improvements</li>
 </ul>
 </div>
-<div id="bug-fixes" class="section level2">
+<div id="bug-fixes-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-1" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>Fixed NNETAR &amp; VAR handling of missing values (<a href='https://github.com/tidyverts/fable/issues/215'>#215</a>).</li>
 <li>Fix ETS forecasting with forecast horizons less than the seasonal period (<a href='https://github.com/tidyverts/fable/issues/219'>#219</a>).</li>
@@ -186,17 +225,17 @@
 <h1 class="page-header">
 <a href="#fable-011" class="anchor"></a>fable 0.1.1<small> 2019-12-06 </small>
 </h1>
-<div id="improvements-2" class="section level2">
+<div id="improvements-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#improvements-2" class="anchor"></a>Improvements</h2>
+<a href="#improvements-3" class="anchor"></a>Improvements</h2>
 <ul>
 <li>Added interpolation method for <code><a href="../reference/MEAN.html">MEAN()</a></code> model (<a href='https://github.com/tidyverts/fable/issues/203'>#203</a>).</li>
 <li>Added rolling mean option for <code><a href="../reference/MEAN.html">MEAN()</a></code> model (<a href='https://github.com/tidyverts/fable/issues/204'>#204</a>).</li>
 </ul>
 </div>
-<div id="bug-fixes-1" class="section level2">
+<div id="bug-fixes-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-1" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-2" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>Corrected forecast standard error for drift models.</li>
 </ul>
@@ -209,9 +248,9 @@
 <ul>
 <li>First release.</li>
 </ul>
-<div id="new-features" class="section level2">
+<div id="new-features-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features" class="anchor"></a>New features</h2>
+<a href="#new-features-1" class="anchor"></a>New features</h2>
 <ul>
 <li>Support for 9 models and relevant methods: <code>ARIMA</code>, <code>ETS</code>, <code>TSLM</code>, <code>MEAN</code>, <code>RW</code>, <code>NAIVE</code>, <code>SNAIVE</code>, <code>NNETAR</code>, <code>VAR</code>.</li>
 </ul>
@@ -223,6 +262,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#fable-021">0.2.1</a></li>
         <li><a href="#fable-020">0.2.0</a></li>
         <li><a href="#fable-012">0.1.2</a></li>
         <li><a href="#fable-011">0.1.1</a></li>

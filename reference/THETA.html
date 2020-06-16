@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Tidy a fable model — tidy.ARIMA • fable</title>
+<title>Theta method — THETA • fable</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,8 +42,10 @@
 
 
 
-<meta property="og:title" content="Tidy a fable model — tidy.ARIMA" />
-<meta property="og:description" content="Returns the coefficients from the model in a tibble format." />
+<meta property="og:title" content="Theta method — THETA" />
+<meta property="og:description" content="The theta method of Assimakopoulos and Nikolopoulos (2000) is equivalent to
+simple exponential smoothing with drift. This is demonstrated in Hyndman and
+Billah (2003)." />
 <meta property="og:image" content="https://fable.tidyverts.org/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -138,53 +140,80 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Tidy a fable model</h1>
-    <small class="dont-index">Source: <a href='https://github.com/tidyverts/fable/blob/master/R/arima.R'><code>R/arima.R</code></a></small>
-    <div class="hidden name"><code>tidy.ARIMA.Rd</code></div>
+    <h1>Theta method</h1>
+    <small class="dont-index">Source: <a href='https://github.com/tidyverts/fable/blob/master/R/theta.R'><code>R/theta.R</code></a></small>
+    <div class="hidden name"><code>THETA.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Returns the coefficients from the model in a <code>tibble</code> format.</p>
+    <p>The theta method of Assimakopoulos and Nikolopoulos (2000) is equivalent to
+simple exponential smoothing with drift. This is demonstrated in Hyndman and
+Billah (2003).</p>
     </div>
 
-    <pre class="usage"><span class='co'># S3 method for ARIMA</span>
-<span class='fu'>tidy</span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>THETA</span>(<span class='no'>formula</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>An object to be converted into a tidy <code><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble::tibble()</a></code>.</p></td>
+      <th>formula</th>
+      <td><p>Model specification.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Additional arguments to tidying method.</p></td>
+      <td><p>Not used.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The model's coefficients in a <code>tibble</code>.</p>
+    <p>A model specification.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>USAccDeaths</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='kw'>arima</span> <span class='kw'>=</span> <span class='fu'><a href='ARIMA.html'>ARIMA</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>value</span>) ~ <span class='fu'>pdq</span>(<span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span>) + <span class='fu'>PDQ</span>(<span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span>))) <span class='kw'>%&gt;%</span>
-  <span class='fu'>tidy</span>()</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 2 x 6</span><span>
-#&gt;   .model term  estimate std.error statistic  p.value
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> arima  ma1     -</span><span style='color: #BB0000;'>0.471</span><span>     0.123     -</span><span style='color: #BB0000;'>3.83</span><span> 0.000</span><span style='text-decoration: underline;'>311</span><span>
-#&gt; </span><span style='color: #555555;'>2</span><span> arima  sma1    -</span><span style='color: #BB0000;'>0.593</span><span>     0.193     -</span><span style='color: #BB0000;'>3.07</span><span> 0.003</span><span style='text-decoration: underline;'>27</span><span> </div></span></pre>
+    <p>The series is tested for seasonality using the test outlined in A&amp;N. If
+deemed seasonal, the series is seasonally adjusted using a classical
+multiplicative decomposition before applying the theta method. The resulting
+forecasts are then reseasonalized.</p>
+<p>More general theta methods are available in the forecTheta package.</p>
+    <h2 class="hasAnchor" id="specials"><a class="anchor" href="#specials"></a>Specials</h2>
+
+    
+
+
+<h3>season</h3>
+<p>The <code>season</code> special is used to specify the parameters of the seasonal adjustment via classical decomposition.</p><pre>
+window(period = NULL, method = c("multiplicative", "additive"))
+</pre>
+
+<table class='table'>
+<tr><td><code>period</code></td><td>The periodic nature of the seasonality. This can be either a number indicating the number of observations in each seasonal period, or text to indicate the duration of the seasonal window (for example, annual seasonality would be "1 year").</td></tr>
+<tr><td><code>method</code></td><td>The type of classical decomposition to apply. The original Theta method always used multiplicative seasonal decomposition, and so this is the default.</td></tr>
+</table>
+
+
+
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>Assimakopoulos, V. and Nikolopoulos, K. (2000). The theta model:
+a decomposition approach to forecasting. <em>International Journal of
+Forecasting</em> <b>16</b>, 521-530.</p>
+<p>Hyndman, R.J., and Billah, B. (2003) Unmasking the Theta method.
+<em>International J. Forecasting</em>, <b>19</b>, 287-290.</p>
+
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
-      <li><a href="#examples">Examples</a></li>
+      <li><a href="#details">Details</a></li>
+      <li><a href="#specials">Specials</a></li>
+      <li><a href="#references">References</a></li>
     </ul>
 
+    <h2>Author</h2>
+    <p>Rob J Hyndman, Mitchell O'Hara-Wild</p>
   </div>
 </div>
 

@@ -90,7 +90,7 @@ contains the .innov column, those values will be treated as innovations." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
       </span>
     </div>
 
@@ -190,10 +190,10 @@ contains the <code>.innov</code> column, those values will be treated as innovat
   <span class='fu'>model</span>(<span class='kw'>nn</span> <span class='kw'>=</span> <span class='fu'><a href='NNETAR.html'>NNETAR</a></span>(<span class='fu'>box_cox</span>(<span class='no'>value</span>, <span class='fl'>0.15</span>))) <span class='kw'>%&gt;%</span>
   <span class='fu'>generate</span>()</div><div class='output co'>#&gt; <span style='color: #555555;'># A tsibble: 2 x 4 [1Y]</span><span>
 #&gt; </span><span style='color: #555555;'># Key:       .model, .rep [1]</span><span>
-#&gt;   .model  .rep index   .sim
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> nn         1  </span><span style='text-decoration: underline;'>1</span><span>961 </span><span style='text-decoration: underline;'>29</span><span>733.
-#&gt; </span><span style='color: #555555;'>2</span><span> nn         1  </span><span style='text-decoration: underline;'>1</span><span>962 </span><span style='text-decoration: underline;'>33</span><span>705.</div></span></pre>
+#&gt;   .model index .rep    .sim
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>961 1     </span><span style='text-decoration: underline;'>29</span><span>733.
+#&gt; </span><span style='color: #555555;'>2</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>962 1     </span><span style='text-decoration: underline;'>33</span><span>705.</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

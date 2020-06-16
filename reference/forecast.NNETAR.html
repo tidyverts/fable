@@ -87,7 +87,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
       </span>
     </div>
 
@@ -200,10 +200,10 @@
   <span class='fu'>model</span>(<span class='kw'>nn</span> <span class='kw'>=</span> <span class='fu'><a href='NNETAR.html'>NNETAR</a></span>(<span class='fu'>box_cox</span>(<span class='no'>value</span>, <span class='fl'>0.15</span>))) <span class='kw'>%&gt;%</span>
   <span class='fu'>forecast</span>(<span class='kw'>times</span> <span class='kw'>=</span> <span class='fl'>10</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A fable: 2 x 4 [1Y]</span><span>
 #&gt; </span><span style='color: #555555;'># Key:     .model [1]</span><span>
-#&gt;   .model index  value .distribution   
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dist&gt;</span><span>          
-#&gt; </span><span style='color: #555555;'>1</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>961 </span><span style='text-decoration: underline;'>31</span><span>923. t(sim(=dbl[10]))
-#&gt; </span><span style='color: #555555;'>2</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>962 </span><span style='text-decoration: underline;'>32</span><span>990. t(sim(=dbl[10]))</div></span></pre>
+#&gt;   .model index         value  .mean
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;dist&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>961 t(sample[10]) </span><span style='text-decoration: underline;'>31</span><span>100.
+#&gt; </span><span style='color: #555555;'>2</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>962 t(sample[10]) </span><span style='text-decoration: underline;'>33</span><span>951.</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

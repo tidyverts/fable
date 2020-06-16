@@ -87,7 +87,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
       </span>
     </div>
 
@@ -147,7 +147,12 @@
     <p>Based on Croston's (1972) method for intermittent demand forecasting, also described in Shenstone and Hyndman (2005). Croston's method involves using simple exponential smoothing (SES) on the non-zero elements of the time series and a separate application of SES to the times between non-zero elements of the time series.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>CROSTON</span>(<span class='no'>formula</span>, <span class='kw'>opt_crit</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"mse"</span>, <span class='st'>"mae"</span>), <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>CROSTON</span>(
+  <span class='no'>formula</span>,
+  <span class='kw'>opt_crit</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"mse"</span>, <span class='st'>"mae"</span>),
+  <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"croston"</span>, <span class='st'>"sba"</span>, <span class='st'>"sbj"</span>),
+  <span class='no'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -161,6 +166,12 @@
       <td><p>The optimisation criterion used to optimise the parameters.</p></td>
     </tr>
     <tr>
+      <th>type</th>
+      <td><p>Which variant of Croston's method to use. Defaults to <code>"croston"</code> for
+Croston's method, but can also be set to <code>"sba"</code> for the Syntetos-Boylan
+approximation, and <code>"sbj"</code> for the Shale-Boylan-Johnston method.</p></td>
+    </tr>
+    <tr>
       <th>...</th>
       <td><p>Not used.</p></td>
     </tr>
@@ -171,7 +182,16 @@
     <p>A model specification.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Note that forecast distributions are not computed as Croston's method has no underlying stochastic model. In a later update, we plan to support distributions via the equivalent stochastic models that underly Croston's method (Shenstone and Hyndman, 2005)</p>
+    <p>Note that forecast distributions are not computed as Croston's method has no
+underlying stochastic model. In a later update, we plan to support distributions via
+the equivalent stochastic models that underly Croston's method (Shenstone and
+Hyndman, 2005)</p>
+<p>There are two variant methods available which apply multiplicative correction factors
+to the forecasts that result from the original Croston's method. For the
+Syntetos-Boylan approximation (<code>type = "sba"</code>), this factor is \(1 - \alpha / 2\),
+and for the Shale-Boylan-Johnston method (<code>type = "sbj"</code>), this factor is
+\(1 - \alpha / (2 - \alpha)\), where \(\alpha\) is the smoothing parameter for
+the interval SES application.</p>
     <h2 class="hasAnchor" id="specials"><a class="anchor" href="#specials"></a>Specials</h2>
 
     
@@ -179,24 +199,26 @@
 
 <h3>demand</h3>
 <p>The <code>demand</code> special specifies parameters for the demand SES application.</p><pre>
-demand(initial = NULL, param = NULL)
+demand(initial = NULL, param = NULL, param_range = c(0, 1))
 </pre>
 
 <table class='table'>
 <tr><td><code>initial</code></td><td>The initial value for the demand application of SES.</td></tr>
 <tr><td><code>param</code></td><td>The smoothing parameter for the demand application of SES.</td></tr>
+<tr><td><code>param_range</code></td><td>If <code>param = NULL</code>, the range of values over which to search for the smoothing parameter.</td></tr>
 </table>
 
 
 
 <h3>interval</h3>
 <p>The <code>interval</code> special specifies parameters for the interval SES application.</p><pre>
-interval(initial = NULL, param = NULL)
+interval(initial = NULL, param = NULL, param_range = c(0, 1))
 </pre>
 
 <table class='table'>
 <tr><td><code>initial</code></td><td>The initial value for the interval application of SES.</td></tr>
 <tr><td><code>param</code></td><td>The smoothing parameter for the interval application of SES.</td></tr>
+<tr><td><code>param_range</code></td><td>If <code>param = NULL</code>, the range of values over which to search for the smoothing parameter.</td></tr>
 </table>
 
 
@@ -216,7 +238,7 @@ selection". <em>International Journal of Production Economics</em>, <b>156</b>,
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibble</span>)
 <span class='no'>sim_poisson</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://tsibble.tidyverts.org/reference/tsibble.html'>tsibble</a></span>(
-  <span class='kw'>time</span> <span class='kw'>=</span> <span class='fu'><a href='https://tsibble.tidyverts.org/reference/period.html'>yearmonth</a></span>(<span class='st'>"2012 Dec"</span>) + <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq_len</a></span>(<span class='fl'>24</span>),
+  <span class='kw'>time</span> <span class='kw'>=</span> <span class='fu'><a href='https://tsibble.tidyverts.org/reference/year-month.html'>yearmonth</a></span>(<span class='st'>"2012 Dec"</span>) + <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq_len</a></span>(<span class='fl'>24</span>),
   <span class='kw'>count</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Poisson.html'>rpois</a></span>(<span class='fl'>24</span>, <span class='kw'>lambda</span> <span class='kw'>=</span> <span class='fl'>0.3</span>),
   <span class='kw'>index</span> <span class='kw'>=</span> <span class='no'>time</span>
 )
