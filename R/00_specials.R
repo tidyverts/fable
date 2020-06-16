@@ -21,17 +21,17 @@ trend <- function(x, knots = NULL, origin = NULL) {
 }
 
 trend.tbl_ts <- function(x, knots = NULL, origin = NULL) {
-  idx_num <- x[[index_var(x)]] %>% units_since()
+  idx_num <- x[[index_var(x)]] %>% as.double()
   knots_num <- if (is.null(knots)) {
     NULL
   } else {
-    knots %>% units_since()
+    knots %>% as.double()
   }
   index_interval <- interval(x) %>% default_time_units()
   idx_num <- idx_num / index_interval
   knots_num <- knots_num / index_interval
   if (!is.null(origin)) {
-    origin <- units_since(origin) / index_interval
+    origin <- as.double(origin) / index_interval
   }
 
   trend(idx_num, knots_num, origin)
@@ -57,7 +57,7 @@ season <- function(x, period) {
 }
 
 season.tbl_ts <- function(x, period) {
-  idx_num <- x[[index_var(x)]] %>% units_since()
+  idx_num <- x[[index_var(x)]] %>% as.double()
   index_interval <- interval(x) %>% default_time_units()
   idx_num <- idx_num / index_interval
   period <- get_frequencies(period, x, .auto = "smallest")
@@ -77,11 +77,11 @@ fourier <- function(x, period, K, origin = NULL) {
 }
 
 fourier.tbl_ts <- function(x, period, K, origin = NULL) {
-  idx_num <- x[[index_var(x)]] %>% units_since()
+  idx_num <- x[[index_var(x)]] %>% as.double()
   index_interval <- interval(x) %>% default_time_units()
   idx_num <- idx_num / index_interval
   if (!is.null(origin)) {
-    origin <- units_since(origin) / index_interval
+    origin <- as.double(origin) / index_interval
   }
   period <- get_frequencies(period, x, .auto = "smallest")
 

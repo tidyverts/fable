@@ -1,4 +1,35 @@
-# fable (development version)
+# fable 0.2.1
+
+This release coincides with v0.2.0 of the fabletools package, which contains
+some substantial changes to the output of `forecast()` methods.
+These changes to fabletools emphasise the distribution in the fable 
+object. The most noticeable is a change in column names of the fable, with the
+distribution now stored in the column matching the response variable, and the
+forecast mean now stored in the `.mean` column. 
+For a complete summary of these changes, refer to the fabletools v0.2.0 release
+news: https://fabletools.tidyverts.org/news/index.html
+
+## New features
+
+* Added the `THETA()` method.
+
+## Improvements
+
+* Forecasts distributions are now provided by the distributional package. They
+  are now more space efficient and allows calculation of distributional 
+  statistics including the `mean()`, `median()`, `variance()`, `quantile()`,
+  `cdf()`, and  `density()`.
+* The uncertainty of the drift parameter in random walk models (`RW()`, 
+  `NAIVE()` and `SNAIVE()`) is now included in data generated with `generate()`.
+* Added Syntetos-Boylan and Shale-Boylan-Johnston variants of `CROSTON()` method.
+* Performance improvements.
+
+## Bug fixes
+
+* Fixed issue with approximation being used when refitting ARIMA models and when
+  a specific model is requested.
+* Fixed `glance()` for `TSLM()` models when the data contains missing values.
+* Fixed typo in `glance()` output of `ETS()` models.
 
 ## Breaking changes
 

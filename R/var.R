@@ -257,10 +257,10 @@ forecast.VAR <- function(object, new_data = NULL, specials = NULL,
 
   # Output forecasts
   if (NCOL(fc) == 1) {
-    distributional::dist_normal(fc, map_dbl(sigma, `[`, 1, 1))
+    distributional::dist_normal(drop(fc), map_dbl(sigma, `[`, 1, 1))
   }
   else {
-    distributional::dist_multivariate_normal(split(fc, row(fc)), sigma)
+    unname(distributional::dist_multivariate_normal(split(fc, row(fc)), map(sigma, `^`, 2)))
   }
 }
 

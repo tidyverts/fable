@@ -1,6 +1,9 @@
 etsmodel <- function(y, m, errortype, trendtype, seasontype, damped,
                      alpha = NULL, beta = NULL, gamma = NULL, phi = NULL,
-                     alpharange = NULL, betarange = NULL, gammarange = NULL, phirange = NULL,
+                     alpharange = c(1e-04, 0.9999),
+                     betarange = c(1e-04, 0.9999),
+                     gammarange = c(1e-04, 0.9999),
+                     phirange = c(0.8, 0.98),
                      opt.crit, nmse, bounds, maxit = 2000, trace = FALSE) {
   m <- as.numeric(m)
   if (seasontype == "N") {

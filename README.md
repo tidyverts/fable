@@ -43,6 +43,7 @@ library(fable)
 library(tsibble)
 library(tsibbledata)
 library(lubridate)
+#> Warning: package 'lubridate' was built under R version 3.6.3
 library(dplyr)
 aus_retail %>%
   filter(

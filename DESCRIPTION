@@ -1,6 +1,6 @@
 Package: fable
 Title: Forecasting Models for Tidy Time Series
-Version: 0.2.0.9000
+Version: 0.2.1
 Description: Provides a collection of commonly used univariate and multivariate
     time series forecasting models including automatically selected exponential 
     smoothing (ETS) and autoregressive integrated moving average (ARIMA) models.
@@ -27,13 +27,13 @@ URL: https://fable.tidyverts.org, https://github.com/tidyverts/fable
 BugReports: https://github.com/tidyverts/fable/issues
 Depends:
     R (>= 3.4.0),
-    fabletools (>= 0.1.2)
+    fabletools (>= 0.2.0)
 Imports:
     Rcpp (>= 0.11.0),
-    rlang (>= 0.4.5.9000),
+    rlang (>= 0.4.6),
     stats,
-    dplyr (>= 0.8.99),
-    tsibble (>= 0.8.0),
+    dplyr (>= 1.0.0),
+    tsibble (>= 0.9.0),
     tibble,
     tidyr,
     utils,
@@ -47,14 +47,7 @@ Suggests:
     rmarkdown,
     spelling,
     testthat,
-    tsibbledata
-Remotes:
-    tidyverts/tsibble@7ebd162111d32a75f5703a91406fe442416d3157,
-    tidyverts/tsibbledata,
-    tidyverse/dplyr,
-    r-lib/rlang,
-    tidyverts/fabletools,
-    mitchelloharawild/distributional
+    tsibbledata (>= 0.2.0)
 LinkingTo:
     Rcpp (>= 0.11.0)
 VignetteBuilder: 
@@ -65,4 +58,4 @@ Language: en-GB
 LazyData: true
 Roxygen: list(markdown = TRUE, roclets=c('rd', 'collate',
     'namespace'))
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.0.9000

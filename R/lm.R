@@ -61,7 +61,7 @@ train_tslm <- function(.data, specials, ...) {
   resid <- matrix(nrow = nrow(y), ncol = ncol(y))
   resid[keep, ] <- as.matrix(fit$residuals)
   fit$residuals <- resid
-  fit$fitted <- y - fit$residuals
+  fit$fitted.values <- y - fit$residuals
 
   if (is_empty(fit$coefficients)) {
     fit$coefficients <- matrix(nrow = 0, ncol = NCOL(y))
@@ -70,17 +70,12 @@ train_tslm <- function(.data, specials, ...) {
     fit$coefficients <- as.matrix(fit$coefficients)
   }
   colnames(fit$coefficients) <- colnames(y)
-
-  structure(
-    list(
-      coef = fit$coefficients,
-      fits = fit$fitted,
-      resid = fit$residuals,
-      fit = lm_glance_measures(fit),
-      model = fit
-    ),
-    class = "TSLM"
-  )
+  
+  # Remove unused structure
+  fit$effects <- NULL
+  fit$sigma2 <- sum(resid^2, na.rm = TRUE)/fit$df.residual 
+  
+  structure(fit, class = "TSLM")
 }
 
 specials_tslm <- new_specials(
@@ -161,7 +156,7 @@ TSLM <- function(formula) {
 #'   fitted()
 #' @export
 fitted.TSLM <- function(object, ...) {
-  object$fits
+  object$fitted
 }
 
 #' @inherit residuals.ARIMA
@@ -172,7 +167,7 @@ fitted.TSLM <- function(object, ...) {
 #'   residuals()
 #' @export
 residuals.TSLM <- function(object, ...) {
-  object$resid
+  object$residuals
 }
 
 #' Glance a TSLM
@@ -192,7 +187,7 @@ residuals.TSLM <- function(object, ...) {
 #'   glance()
 #' @export
 glance.TSLM <- function(x, ...) {
-  as_tibble(x$fit)
+  as_tibble(lm_glance_measures(x))
 }
 
 #' @inherit tidy.ARIMA
@@ -203,20 +198,18 @@ glance.TSLM <- function(x, ...) {
 #'   tidy()
 #' @export
 tidy.TSLM <- function(x, ...) {
-  rdf <- x$model$df.residual
-  res <- split(x$resid, col(x$resid))
-  rss <- map_dbl(res, function(resid) sum(resid^2, na.rm = TRUE))
-  resvar <- rss / rdf
-  rank <- x$model$rank
+  rdf <- x$df.residual
+  coef <- x$coefficients
+  rank <- x$rank
 
-  R <- chol2inv(x$model$qr$qr[seq_len(rank), seq_len(rank), drop = FALSE])
+  R <- chol2inv(x$qr$qr[seq_len(rank), seq_len(rank), drop = FALSE])
 
-  se <- rep(NA_real_, nrow(x$coef))
-  se[!is.na(x$coef)] <- sqrt(diag(R) * resvar) # map(resvar, function(resvar) sqrt(diag(R) * resvar)) #for multiple response tslm
+  se <- rep(NA_real_, nrow(coef))
+  se[!is.na(coef)] <- sqrt(diag(R) * x$sigma2) # map(resvar, function(resvar) sqrt(diag(R) * resvar)) #for multiple response tslm
 
-  out <- dplyr::as_tibble(x$coef, rownames = "term") %>%
-    tidyr::gather(".response", "estimate", !!!syms(colnames(x$coef)))
-  if (NCOL(x$coef) == 1) out[[".response"]] <- NULL
+  out <- dplyr::as_tibble(x$coefficients, rownames = "term") %>%
+    tidyr::gather(".response", "estimate", !!!syms(colnames(coef)))
+  if (NCOL(coef) == 1) out[[".response"]] <- NULL
   out %>%
     mutate(
       std.error = unlist(se),
@@ -276,9 +269,9 @@ report.TSLM <- function(object, digits = max(3, getOption("digits") - 3), ...) {
 #' @export
 forecast.TSLM <- function(object, new_data, specials = NULL, bootstrap = FALSE,
                           times = 5000, ...) {
-  coef <- object$coef
-  rank <- object$model$rank
-  qr <- object$model$qr
+  coef <- object$coefficients
+  rank <- object$rank
+  qr <- object$qr
   piv <- qr$pivot[seq_len(rank)]
 
   # Get xreg
@@ -299,7 +292,7 @@ forecast.TSLM <- function(object, new_data, specials = NULL, bootstrap = FALSE,
     distributional::dist_sample(sim)
   } else {
     fc <- xreg[, piv, drop = FALSE] %*% coef[piv]
-    resvar <- object$fit$sigma2
+    resvar <- object$sigma2
 
     if (rank > 0) {
       XRinv <- xreg[, piv] %*% qr.solve(qr.R(qr)[seq_len(rank), seq_len(rank)])
@@ -325,8 +318,8 @@ generate.TSLM <- function(x, new_data, specials, bootstrap = FALSE, ...) {
   # Get xreg
   xreg <- specials$xreg[[1]]
 
-  coef <- x$coef
-  piv <- x$model$qr$pivot[seq_len(x$model$rank)]
+  coef <- x$coefficients
+  piv <- x$qr$pivot[seq_len(x$rank)]
   pred <- xreg[, piv, drop = FALSE] %*% coef[piv]
 
   if (!(".innov" %in% names(new_data))) {
@@ -338,7 +331,7 @@ generate.TSLM <- function(x, new_data, specials, bootstrap = FALSE, ...) {
       )
     }
     else {
-      vars <- x$fit$sigma2 / x$fit$df.residual
+      vars <- x$sigma2 / x$df.residual
       new_data$.innov <- stats::rnorm(length(pred), sd = sqrt(vars))
     }
   }
@@ -361,8 +354,8 @@ interpolate.TSLM <- function(object, new_data, specials, ...) {
   xreg <- specials$xreg[[1]]
 
   # Make predictions
-  coef <- object$coef
-  piv <- object$model$qr$pivot[seq_len(object$model$rank)]
+  coef <- object$coefficients
+  piv <- object$qr$pivot[seq_len(object$rank)]
   pred <- xreg[miss_val, piv, drop = FALSE] %*% coef[piv]
 
   # Update data
@@ -406,23 +399,15 @@ refit.TSLM <- function(object, new_data, specials = NULL, reestimate = FALSE, ..
   y <- invoke(cbind, unclass(new_data)[measured_vars(new_data)])
   xreg <- specials$xreg[[1]]
 
-  fit <- object$model
-  coef <- object$coef
+  fit <- object
+  coef <- object$coefficients
   fit$qr <- qr(xreg)
   piv <- fit$qr$pivot[seq_len(fit$rank)]
   fit$fitted.values <- xreg[, piv, drop = FALSE] %*% coef[piv]
   fit$residuals <- y - fit$fitted.values
+  fit$sigma2 <- sum(fit$residuals^2, na.rm = TRUE)/fit$df.residual 
 
-  structure(
-    list(
-      coef = fit$coefficients,
-      fits = fit$fitted,
-      resid = fit$residuals,
-      fit = lm_glance_measures(fit),
-      model = fit
-    ),
-    class = "TSLM"
-  )
+  structure(fit, class = "TSLM")
 }
 
 #' @export

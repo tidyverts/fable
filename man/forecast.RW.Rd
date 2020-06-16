@@ -8,6 +8,7 @@
   object,
   new_data,
   specials = NULL,
+  simulate = FALSE,
   bootstrap = FALSE,
   times = 5000,
   ...
@@ -18,7 +19,9 @@
 
 \item{new_data}{A \code{tsibble} containing future information used to forecast.}
 
-\item{specials}{(passed by \code{\link[fabletools:forecast.mdl_df]{fabletools::forecast.mdl_df()}}).}
+\item{specials}{(passed by \code{\link[fabletools:forecast]{fabletools::forecast.mdl_df()}}).}
+
+\item{simulate}{If \code{TRUE}, prediction intervals are produced by simulation rather than using analytic formulae.}
 
 \item{bootstrap}{If \code{TRUE}, then forecast distributions are computed using simulation with resampled errors.}
 
