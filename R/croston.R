@@ -158,7 +158,8 @@ train_croston <- function(.data, specials, opt_crit = "mse", type = "croston", .
   }
   if (is.null(interval$initial)) {
     interval$initial <- switch(interval$method, mean = mean(y_interval), naive = y_interval[1])
-    par_est[2] <- TRUE
+    # Only optimize if more than one feasible value
+    par_est[2] <- max(y_interval) > 1
   }
   if (is.null(demand$param)) {
     demand$param <- 0.05
