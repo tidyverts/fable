@@ -25,8 +25,7 @@ deemed seasonal, the series is seasonally adjusted using a classical
 multiplicative decomposition before applying the theta method. The resulting
 forecasts are then reseasonalized.
 
-More general theta methods are available in the
-\code{\link[forecTheta]{forecTheta}} package.
+More general theta methods are available in the forecTheta package.
 }
 \section{Specials}{
 

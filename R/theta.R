@@ -85,8 +85,7 @@ specials_theta <- new_specials(
 #' multiplicative decomposition before applying the theta method. The resulting
 #' forecasts are then reseasonalized.
 #'
-#' More general theta methods are available in the
-#' \code{\link[forecTheta]{forecTheta}} package.
+#' More general theta methods are available in the forecTheta package.
 #'
 #' @param formula Model specification.
 #' @param ... Not used.
