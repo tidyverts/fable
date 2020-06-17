@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Forecast a model from the fable package — forecast.RW • fable</title>
+<title>Extract residuals values from a fable model — residuals.fable_theta • fable</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,8 +42,8 @@
 
 
 
-<meta property="og:title" content="Forecast a model from the fable package — forecast.RW" />
-<meta property="og:description" content="Produces forecasts from a trained model." />
+<meta property="og:title" content="Extract residuals values from a fable model — residuals.fable_theta" />
+<meta property="og:description" content="Extracts the residuals." />
 <meta property="og:image" content="https://fable.tidyverts.org/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -138,25 +138,17 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Forecast a model from the fable package</h1>
-    <small class="dont-index">Source: <a href='https://github.com/tidyverts/fable/blob/master/R/lagwalk.R'><code>R/lagwalk.R</code></a></small>
-    <div class="hidden name"><code>forecast.RW.Rd</code></div>
+    <h1>Extract residuals values from a fable model</h1>
+    <small class="dont-index">Source: <a href='https://github.com/tidyverts/fable/blob/master/R/theta.R'><code>R/theta.R</code></a></small>
+    <div class="hidden name"><code>residuals.fable_theta.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Produces forecasts from a trained model.</p>
+    <p>Extracts the residuals.</p>
     </div>
 
-    <pre class="usage"><span class='co'># S3 method for RW</span>
-<span class='fu'>forecast</span>(
-  <span class='no'>object</span>,
-  <span class='no'>new_data</span>,
-  <span class='kw'>specials</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>simulate</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>bootstrap</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>times</span> <span class='kw'>=</span> <span class='fl'>5000</span>,
-  <span class='no'>...</span>
-)</pre>
+    <pre class="usage"><span class='co'># S3 method for fable_theta</span>
+<span class='fu'><a href='https://rdrr.io/r/stats/residuals.html'>residuals</a></span>(<span class='no'>object</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -166,26 +158,6 @@
       <td><p>The time series model used to produce the forecasts</p></td>
     </tr>
     <tr>
-      <th>new_data</th>
-      <td><p>A <code>tsibble</code> containing future information used to forecast.</p></td>
-    </tr>
-    <tr>
-      <th>specials</th>
-      <td><p>(passed by <code><a href='https://fabletools.tidyverts.org/reference/forecast.html'>fabletools::forecast.mdl_df()</a></code>).</p></td>
-    </tr>
-    <tr>
-      <th>simulate</th>
-      <td><p>If <code>TRUE</code>, prediction intervals are produced by simulation rather than using analytic formulae.</p></td>
-    </tr>
-    <tr>
-      <th>bootstrap</th>
-      <td><p>If <code>TRUE</code>, then forecast distributions are computed using simulation with resampled errors.</p></td>
-    </tr>
-    <tr>
-      <th>times</th>
-      <td><p>The number of sample paths to use in estimating the forecast distribution when <code>boostrap = TRUE</code>.</p></td>
-    </tr>
-    <tr>
       <th>...</th>
       <td><p>Additional arguments for forecast model methods.</p></td>
     </tr>
@@ -193,32 +165,27 @@
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list of forecasts.</p>
+    <p>A vector of fitted residuals.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='no'>Nile</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='fu'><a href='RW.html'>NAIVE</a></span>(<span class='no'>value</span>)) <span class='kw'>%&gt;%</span>
-  <span class='fu'>forecast</span>()</div><div class='output co'>#&gt; <span style='color: #555555;'># A fable: 2 x 4 [1Y]</span><span>
-#&gt; </span><span style='color: #555555;'># Key:     .model [1]</span><span>
-#&gt;   .model       index         value .mean
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;dist&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> NAIVE(value)  </span><span style='text-decoration: underline;'>1</span><span>971 N(740, 27998)   740
-#&gt; </span><span style='color: #555555;'>2</span><span> NAIVE(value)  </span><span style='text-decoration: underline;'>1</span><span>972 N(740, 55995)   740</div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibbledata</span>)
-<span class='no'>aus_production</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='kw'>snaive</span> <span class='kw'>=</span> <span class='fu'><a href='RW.html'>SNAIVE</a></span>(<span class='no'>Beer</span> ~ <span class='fu'><a href='https://rdrr.io/r/stats/lag.html'>lag</a></span>(<span class='st'>"year"</span>))) <span class='kw'>%&gt;%</span>
-  <span class='fu'>forecast</span>()</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A fable: 8 x 4 [1Q]</span><span>
-#&gt; </span><span style='color: #555555;'># Key:     .model [1]</span><span>
-#&gt;   .model Quarter        Beer .mean
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;qtr&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dist&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> snaive 2010 Q3 N(419, 373)   419
-#&gt; </span><span style='color: #555555;'>2</span><span> snaive 2010 Q4 N(488, 373)   488
-#&gt; </span><span style='color: #555555;'>3</span><span> snaive 2011 Q1 N(414, 373)   414
-#&gt; </span><span style='color: #555555;'>4</span><span> snaive 2011 Q2 N(374, 373)   374
-#&gt; </span><span style='color: #555555;'>5</span><span> snaive 2011 Q3 N(419, 747)   419
-#&gt; </span><span style='color: #555555;'>6</span><span> snaive 2011 Q4 N(488, 747)   488
-#&gt; </span><span style='color: #555555;'>7</span><span> snaive 2012 Q1 N(414, 747)   414
-#&gt; </span><span style='color: #555555;'>8</span><span> snaive 2012 Q2 N(374, 747)   374</div></span></pre>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibbledata</span>)
+<span class='no'>vic_elec</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'>model</span>(<span class='kw'>avg</span> <span class='kw'>=</span> <span class='fu'><a href='MEAN.html'>MEAN</a></span>(<span class='no'>Demand</span>)) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/stats/residuals.html'>residuals</a></span>()</div><div class='output co'>#&gt; <span style='color: #555555;'># A tsibble: 52,608 x 3 [30m] &lt;Australia/Melbourne&gt;</span><span>
+#&gt; </span><span style='color: #555555;'># Key:       .model [1]</span><span>
+#&gt;    .model Time                .resid
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>               </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> avg    2012-01-01 </span><span style='color: #555555;'>00:00:00</span><span>  -</span><span style='color: #BB0000;'>283.</span><span>
+#&gt; </span><span style='color: #555555;'> 2</span><span> avg    2012-01-01 </span><span style='color: #555555;'>00:30:00</span><span>  -</span><span style='color: #BB0000;'>402.</span><span>
+#&gt; </span><span style='color: #555555;'> 3</span><span> avg    2012-01-01 </span><span style='color: #555555;'>01:00:00</span><span>  -</span><span style='color: #BB0000;'>616.</span><span>
+#&gt; </span><span style='color: #555555;'> 4</span><span> avg    2012-01-01 </span><span style='color: #555555;'>01:30:00</span><span>  -</span><span style='color: #BB0000;'>788.</span><span>
+#&gt; </span><span style='color: #555555;'> 5</span><span> avg    2012-01-01 </span><span style='color: #555555;'>02:00:00</span><span>  -</span><span style='color: #BB0000;'>629.</span><span>
+#&gt; </span><span style='color: #555555;'> 6</span><span> avg    2012-01-01 </span><span style='color: #555555;'>02:30:00</span><span>  -</span><span style='color: #BB0000;'>800.</span><span>
+#&gt; </span><span style='color: #555555;'> 7</span><span> avg    2012-01-01 </span><span style='color: #555555;'>03:00:00</span><span>  -</span><span style='color: #BB0000;'>971.</span><span>
+#&gt; </span><span style='color: #555555;'> 8</span><span> avg    2012-01-01 </span><span style='color: #555555;'>03:30:00</span><span> -</span><span style='color: #BB0000;text-decoration: underline;'>1</span><span style='color: #BB0000;'>104.</span><span>
+#&gt; </span><span style='color: #555555;'> 9</span><span> avg    2012-01-01 </span><span style='color: #555555;'>04:00:00</span><span> -</span><span style='color: #BB0000;text-decoration: underline;'>1</span><span style='color: #BB0000;'>232.</span><span>
+#&gt; </span><span style='color: #555555;'>10</span><span> avg    2012-01-01 </span><span style='color: #555555;'>04:30:00</span><span> -</span><span style='color: #BB0000;text-decoration: underline;'>1</span><span style='color: #BB0000;'>306.</span><span>
+#&gt; </span><span style='color: #555555;'># … with 52,598 more rows</span><span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

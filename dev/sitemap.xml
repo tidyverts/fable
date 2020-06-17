@@ -25,6 +25,9 @@
     <loc>https://fable.tidyverts.org/reference/RW.html</loc>
   </url>
   <url>
+    <loc>https://fable.tidyverts.org/reference/THETA.html</loc>
+  </url>
+  <url>
     <loc>https://fable.tidyverts.org/reference/TSLM.html</loc>
   </url>
   <url>
@@ -64,6 +67,9 @@
     <loc>https://fable.tidyverts.org/reference/fitted.croston.html</loc>
   </url>
   <url>
+    <loc>https://fable.tidyverts.org/reference/fitted.fable_theta.html</loc>
+  </url>
+  <url>
     <loc>https://fable.tidyverts.org/reference/fitted.model_mean.html</loc>
   </url>
   <url>
@@ -89,6 +95,9 @@
   </url>
   <url>
     <loc>https://fable.tidyverts.org/reference/forecast.croston.html</loc>
+  </url>
+  <url>
+    <loc>https://fable.tidyverts.org/reference/forecast.fable_theta.html</loc>
   </url>
   <url>
     <loc>https://fable.tidyverts.org/reference/forecast.model_mean.html</loc>
@@ -131,6 +140,9 @@
   </url>
   <url>
     <loc>https://fable.tidyverts.org/reference/glance.VAR.html</loc>
+  </url>
+  <url>
+    <loc>https://fable.tidyverts.org/reference/glance.fable_theta.html</loc>
   </url>
   <url>
     <loc>https://fable.tidyverts.org/reference/glance.model_mean.html</loc>
@@ -184,6 +196,9 @@
     <loc>https://fable.tidyverts.org/reference/residuals.croston.html</loc>
   </url>
   <url>
+    <loc>https://fable.tidyverts.org/reference/residuals.fable_theta.html</loc>
+  </url>
+  <url>
     <loc>https://fable.tidyverts.org/reference/residuals.model_mean.html</loc>
   </url>
   <url>
@@ -209,6 +224,9 @@
   </url>
   <url>
     <loc>https://fable.tidyverts.org/reference/tidy.croston.html</loc>
+  </url>
+  <url>
+    <loc>https://fable.tidyverts.org/reference/tidy.fable_theta.html</loc>
   </url>
   <url>
     <loc>https://fable.tidyverts.org/reference/tidy.model_mean.html</loc>

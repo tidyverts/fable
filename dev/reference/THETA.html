@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Forecast a model from the fable package — forecast.RW • fable</title>
+<title>Theta method — THETA • fable</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,8 +42,10 @@
 
 
 
-<meta property="og:title" content="Forecast a model from the fable package — forecast.RW" />
-<meta property="og:description" content="Produces forecasts from a trained model." />
+<meta property="og:title" content="Theta method — THETA" />
+<meta property="og:description" content="The theta method of Assimakopoulos and Nikolopoulos (2000) is equivalent to
+simple exponential smoothing with drift. This is demonstrated in Hyndman and
+Billah (2003)." />
 <meta property="og:image" content="https://fable.tidyverts.org/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -138,96 +140,80 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Forecast a model from the fable package</h1>
-    <small class="dont-index">Source: <a href='https://github.com/tidyverts/fable/blob/master/R/lagwalk.R'><code>R/lagwalk.R</code></a></small>
-    <div class="hidden name"><code>forecast.RW.Rd</code></div>
+    <h1>Theta method</h1>
+    <small class="dont-index">Source: <a href='https://github.com/tidyverts/fable/blob/master/R/theta.R'><code>R/theta.R</code></a></small>
+    <div class="hidden name"><code>THETA.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Produces forecasts from a trained model.</p>
+    <p>The theta method of Assimakopoulos and Nikolopoulos (2000) is equivalent to
+simple exponential smoothing with drift. This is demonstrated in Hyndman and
+Billah (2003).</p>
     </div>
 
-    <pre class="usage"><span class='co'># S3 method for RW</span>
-<span class='fu'>forecast</span>(
-  <span class='no'>object</span>,
-  <span class='no'>new_data</span>,
-  <span class='kw'>specials</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>simulate</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>bootstrap</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>times</span> <span class='kw'>=</span> <span class='fl'>5000</span>,
-  <span class='no'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>THETA</span>(<span class='no'>formula</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>object</th>
-      <td><p>The time series model used to produce the forecasts</p></td>
-    </tr>
-    <tr>
-      <th>new_data</th>
-      <td><p>A <code>tsibble</code> containing future information used to forecast.</p></td>
-    </tr>
-    <tr>
-      <th>specials</th>
-      <td><p>(passed by <code><a href='https://fabletools.tidyverts.org/reference/forecast.html'>fabletools::forecast.mdl_df()</a></code>).</p></td>
-    </tr>
-    <tr>
-      <th>simulate</th>
-      <td><p>If <code>TRUE</code>, prediction intervals are produced by simulation rather than using analytic formulae.</p></td>
-    </tr>
-    <tr>
-      <th>bootstrap</th>
-      <td><p>If <code>TRUE</code>, then forecast distributions are computed using simulation with resampled errors.</p></td>
-    </tr>
-    <tr>
-      <th>times</th>
-      <td><p>The number of sample paths to use in estimating the forecast distribution when <code>boostrap = TRUE</code>.</p></td>
+      <th>formula</th>
+      <td><p>Model specification.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Additional arguments for forecast model methods.</p></td>
+      <td><p>Not used.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list of forecasts.</p>
+    <p>A model specification.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='no'>Nile</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='fu'><a href='RW.html'>NAIVE</a></span>(<span class='no'>value</span>)) <span class='kw'>%&gt;%</span>
-  <span class='fu'>forecast</span>()</div><div class='output co'>#&gt; <span style='color: #555555;'># A fable: 2 x 4 [1Y]</span><span>
-#&gt; </span><span style='color: #555555;'># Key:     .model [1]</span><span>
-#&gt;   .model       index         value .mean
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;dist&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> NAIVE(value)  </span><span style='text-decoration: underline;'>1</span><span>971 N(740, 27998)   740
-#&gt; </span><span style='color: #555555;'>2</span><span> NAIVE(value)  </span><span style='text-decoration: underline;'>1</span><span>972 N(740, 55995)   740</div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibbledata</span>)
-<span class='no'>aus_production</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='kw'>snaive</span> <span class='kw'>=</span> <span class='fu'><a href='RW.html'>SNAIVE</a></span>(<span class='no'>Beer</span> ~ <span class='fu'><a href='https://rdrr.io/r/stats/lag.html'>lag</a></span>(<span class='st'>"year"</span>))) <span class='kw'>%&gt;%</span>
-  <span class='fu'>forecast</span>()</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A fable: 8 x 4 [1Q]</span><span>
-#&gt; </span><span style='color: #555555;'># Key:     .model [1]</span><span>
-#&gt;   .model Quarter        Beer .mean
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;qtr&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dist&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> snaive 2010 Q3 N(419, 373)   419
-#&gt; </span><span style='color: #555555;'>2</span><span> snaive 2010 Q4 N(488, 373)   488
-#&gt; </span><span style='color: #555555;'>3</span><span> snaive 2011 Q1 N(414, 373)   414
-#&gt; </span><span style='color: #555555;'>4</span><span> snaive 2011 Q2 N(374, 373)   374
-#&gt; </span><span style='color: #555555;'>5</span><span> snaive 2011 Q3 N(419, 747)   419
-#&gt; </span><span style='color: #555555;'>6</span><span> snaive 2011 Q4 N(488, 747)   488
-#&gt; </span><span style='color: #555555;'>7</span><span> snaive 2012 Q1 N(414, 747)   414
-#&gt; </span><span style='color: #555555;'>8</span><span> snaive 2012 Q2 N(374, 747)   374</div></span></pre>
+    <p>The series is tested for seasonality using the test outlined in A&amp;N. If
+deemed seasonal, the series is seasonally adjusted using a classical
+multiplicative decomposition before applying the theta method. The resulting
+forecasts are then reseasonalized.</p>
+<p>More general theta methods are available in the forecTheta package.</p>
+    <h2 class="hasAnchor" id="specials"><a class="anchor" href="#specials"></a>Specials</h2>
+
+    
+
+
+<h3>season</h3>
+<p>The <code>season</code> special is used to specify the parameters of the seasonal adjustment via classical decomposition.</p><pre>
+window(period = NULL, method = c("multiplicative", "additive"))
+</pre>
+
+<table class='table'>
+<tr><td><code>period</code></td><td>The periodic nature of the seasonality. This can be either a number indicating the number of observations in each seasonal period, or text to indicate the duration of the seasonal window (for example, annual seasonality would be "1 year").</td></tr>
+<tr><td><code>method</code></td><td>The type of classical decomposition to apply. The original Theta method always used multiplicative seasonal decomposition, and so this is the default.</td></tr>
+</table>
+
+
+
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>Assimakopoulos, V. and Nikolopoulos, K. (2000). The theta model:
+a decomposition approach to forecasting. <em>International Journal of
+Forecasting</em> <b>16</b>, 521-530.</p>
+<p>Hyndman, R.J., and Billah, B. (2003) Unmasking the Theta method.
+<em>International J. Forecasting</em>, <b>19</b>, 287-290.</p>
+
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
-      <li><a href="#examples">Examples</a></li>
+      <li><a href="#details">Details</a></li>
+      <li><a href="#specials">Specials</a></li>
+      <li><a href="#references">References</a></li>
     </ul>
 
+    <h2>Author</h2>
+    <p>Rob J Hyndman, Mitchell O'Hara-Wild</p>
   </div>
 </div>
 
