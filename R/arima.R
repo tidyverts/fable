@@ -1,7 +1,7 @@
 globalVariables(c("p", "P", "d", "D", "q", "Q", "constant"))
 
 #' @importFrom stats approx lm ts
-train_arima <- function(.data, specials, ic = "aicc",
+train_arima <- function(.data, specials, ic = "aicc", selection_metric,
                         stepwise = TRUE, greedy = TRUE, approximation = NULL,
                         order_constraint = p + q + P + Q <= 6 & (!constant | d + D < 2),
                         unitroot_spec = unitroot_options(),
@@ -123,6 +123,7 @@ train_arima <- function(.data, specials, ic = "aicc",
 
   # Find best model
   best <- NULL
+  sm_best <- Inf
   compare_arima <- function(p, d, q, P, D, Q, constant) {
     if (constant) {
       intercept <- arima_constant(length(y), d, D, period)
@@ -190,10 +191,16 @@ train_arima <- function(.data, specials, ic = "aicc",
         } # Don't like this model
       }
     }
-    if ((new[[ic]] %||% Inf) < (best[[ic]] %||% Inf)) {
-      best <<- new
+    if(inherits(new, "Arima")){
+      sm <- selection_metric(new) %||% Inf
+      if (sm < sm_best) {
+        best <<- new
+        sm_best <<- sm
+      }
+    } else {
+      sm <- Inf
     }
-    (new[[ic]] %||% Inf)
+    sm
   }
 
   mostly_specified <- length(pdq$p) + length(pdq$d) + length(pdq$q) + length(PDQ$P) + length(PDQ$D) + length(PDQ$Q) == 6
@@ -451,6 +458,8 @@ specials_arima <- new_specials(
 #'
 #' @param formula Model specification (see "Specials" section).
 #' @param ic The information criterion used in selecting the model.
+#' @param selection_metric A function used to compute a metric from an `Arima`
+#' object which is minimised to select the best model.
 #' @param stepwise Should stepwise be used?
 #' @param greedy Should the stepwise search move to the next best option immediately?
 #' @param approximation Should CSS (conditional sum of squares) be used during model selection? The default (`NULL`) will use the approximation if there are more than 150 observations or if the seasonal period is greater than 12.
@@ -554,18 +563,20 @@ specials_arima <- new_specials(
 #'   model(ARIMA(log(GDP) ~ Population))
 #' @importFrom stats model.matrix
 #' @export
-ARIMA <- function(formula, ic = c("aicc", "aic", "bic"), stepwise = TRUE, greedy = TRUE,
-                  approximation = NULL,
+ARIMA <- function(formula, ic = c("aicc", "aic", "bic"),
+                  selection_metric = function(x) x[[ic]],
+                  stepwise = TRUE, greedy = TRUE, approximation = NULL,
                   order_constraint = p + q + P + Q <= 6 & (!constant | d + D < 2),
                   unitroot_spec = unitroot_options(), ...) {
   ic <- match.arg(ic)
+  stopifnot(is.function(selection_metric))
   arima_model <- new_model_class("ARIMA",
     train = train_arima,
     specials = specials_arima, origin = NULL,
     check = all_tsbl_checks
   )
   new_model_definition(arima_model, !!enquo(formula),
-    ic = ic,
+    ic = ic, selection_metric = selection_metric,
     stepwise = stepwise, greedy = greedy,
     approximation = approximation,
     order_constraint = enexpr(order_constraint),

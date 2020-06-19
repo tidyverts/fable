@@ -8,6 +8,7 @@
 ARIMA(
   formula,
   ic = c("aicc", "aic", "bic"),
+  selection_metric = function(x) x[[ic]],
   stepwise = TRUE,
   greedy = TRUE,
   approximation = NULL,
@@ -20,6 +21,9 @@ ARIMA(
 \item{formula}{Model specification (see "Specials" section).}
 
 \item{ic}{The information criterion used in selecting the model.}
+
+\item{selection_metric}{A function used to compute a metric from an \code{Arima}
+object which is minimised to select the best model.}
 
 \item{stepwise}{Should stepwise be used?}
 

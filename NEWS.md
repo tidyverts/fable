@@ -1,5 +1,11 @@
 # fable (development version)
 
+## Improvements
+
+* Added the `selection_metric` argument to `ARIMA()`, which allows more control
+  over the measure used to select the best model. By default this function will
+  extract the information criteria specified by the `ic` argument.
+
 # fable 0.2.1
 
 This release coincides with v0.2.0 of the fabletools package, which contains
