@@ -145,6 +145,13 @@
 <h1 class="page-header">
 <a href="#fable-development-version" class="anchor"></a>fable (development version)<small> Unreleased </small>
 </h1>
+<div id="improvements" class="section level2">
+<h2 class="hasAnchor">
+<a href="#improvements" class="anchor"></a>Improvements</h2>
+<ul>
+<li>Added the <code>selection_metric</code> argument to <code><a href="../reference/ARIMA.html">ARIMA()</a></code>, which allows more control over the measure used to select the best model. By default this function will extract the information criteria specified by the <code>ic</code> argument.</li>
+</ul>
+</div>
 </div>
     <div id="fable-021" class="section level1">
 <h1 class="page-header">
@@ -158,9 +165,9 @@
 <li>Added the <code><a href="../reference/THETA.html">THETA()</a></code> method.</li>
 </ul>
 </div>
-<div id="improvements" class="section level2">
+<div id="improvements-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#improvements" class="anchor"></a>Improvements</h2>
+<a href="#improvements-1" class="anchor"></a>Improvements</h2>
 <ul>
 <li>Forecasts distributions are now provided by the distributional package. They are now more space efficient and allows calculation of distributional statistics including the <code><a href="https://rdrr.io/r/base/mean.html">mean()</a></code>, <code><a href="https://rdrr.io/r/stats/median.html">median()</a></code>, <code>variance()</code>, <code><a href="https://rdrr.io/r/stats/quantile.html">quantile()</a></code>, <code>cdf()</code>, and <code><a href="https://rdrr.io/r/stats/density.html">density()</a></code>.</li>
 <li>The uncertainty of the drift parameter in random walk models (<code><a href="../reference/RW.html">RW()</a></code>, <code><a href="../reference/RW.html">NAIVE()</a></code> and <code><a href="../reference/RW.html">SNAIVE()</a></code>) is now included in data generated with <code>generate()</code>.</li>
@@ -189,9 +196,9 @@
 <h1 class="page-header">
 <a href="#fable-020" class="anchor"></a>fable 0.2.0<small> 2020-04-22 </small>
 </h1>
-<div id="improvements-1" class="section level2">
+<div id="improvements-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#improvements-1" class="anchor"></a>Improvements</h2>
+<a href="#improvements-2" class="anchor"></a>Improvements</h2>
 <ul>
 <li>Added autoregressive modelling with <code><a href="../reference/AR.html">AR()</a></code>.</li>
 <li>Better handling of rank deficiency in <code><a href="../reference/ARIMA.html">ARIMA()</a></code>.</li>
@@ -207,9 +214,9 @@
 <h1 class="page-header">
 <a href="#fable-012" class="anchor"></a>fable 0.1.2<small> 2020-01-29 </small>
 </h1>
-<div id="improvements-2" class="section level2">
+<div id="improvements-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#improvements-2" class="anchor"></a>Improvements</h2>
+<a href="#improvements-3" class="anchor"></a>Improvements</h2>
 <ul>
 <li>Added <code><a href="../reference/CROSTON.html">CROSTON()</a></code> for Croston’s method of intermittent demand forecasting.</li>
 <li>Documentation improvements</li>
@@ -230,9 +237,9 @@
 <h1 class="page-header">
 <a href="#fable-011" class="anchor"></a>fable 0.1.1<small> 2019-12-06 </small>
 </h1>
-<div id="improvements-3" class="section level2">
+<div id="improvements-4" class="section level2">
 <h2 class="hasAnchor">
-<a href="#improvements-3" class="anchor"></a>Improvements</h2>
+<a href="#improvements-4" class="anchor"></a>Improvements</h2>
 <ul>
 <li>Added interpolation method for <code><a href="../reference/MEAN.html">MEAN()</a></code> model (<a href='https://github.com/tidyverts/fable/issues/203'>#203</a>).</li>
 <li>Added rolling mean option for <code><a href="../reference/MEAN.html">MEAN()</a></code> model (<a href='https://github.com/tidyverts/fable/issues/204'>#204</a>).</li>

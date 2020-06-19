@@ -198,16 +198,9 @@
 #&gt; AIC=806.03   AICc=807.61   BIC=818.59</div><div class='input'>
 <span class='no'>fit</span> <span class='kw'>%&gt;%</span>
   <span class='fu'>refit</span>(<span class='no'>lung_deaths_female</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>report</span>()</div><div class='output co'>#&gt; Series: value 
-#&gt; Model: ARIMA(2,0,0)(2,1,0)[12] w/ drift 
-#&gt; 
-#&gt; Coefficients:
-#&gt;          ar1      ar2     sar1     sar2   constant
-#&gt;       0.2480  -0.3326  -0.9903  -0.4766  -146.0254
-#&gt; s.e.  0.1392   0.1393   0.1340   0.1356    25.6430
-#&gt; 
-#&gt; sigma^2 estimated as 14165:  log likelihood=-378.7
-#&gt; AIC=759.41   AICc=759.48   BIC=761.5</div></pre>
+  <span class='fu'>report</span>()</div><div class='output co'>#&gt; <span class='error'>Error: Problem with `mutate()` input `ARIMA(value ~ 1 + pdq(2, 0, 0) + PDQ(2, 1, 0))`.</span>
+#&gt; <span class='error'><span style='color: #BB0000;'>✖</span><span> argument "selection_metric" is missing, with no default</span>
+#&gt; <span class='error'></span><span style='color: #0000BB;'>ℹ</span><span> Input `ARIMA(value ~ 1 + pdq(2, 0, 0) + PDQ(2, 1, 0))` is `(function (object, ...) ...`.</span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

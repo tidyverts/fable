@@ -156,6 +156,7 @@ framework.</p>
     <pre class="usage"><span class='fu'>ARIMA</span>(
   <span class='no'>formula</span>,
   <span class='kw'>ic</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"aicc"</span>, <span class='st'>"aic"</span>, <span class='st'>"bic"</span>),
+  <span class='kw'>selection_metric</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>x</span>) <span class='no'>x</span><span class='kw'>[[</span><span class='no'>ic</span>]],
   <span class='kw'>stepwise</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>greedy</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>approximation</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
@@ -174,6 +175,11 @@ framework.</p>
     <tr>
       <th>ic</th>
       <td><p>The information criterion used in selecting the model.</p></td>
+    </tr>
+    <tr>
+      <th>selection_metric</th>
+      <td><p>A function used to compute a metric from an <code>Arima</code>
+object which is minimised to select the best model.</p></td>
     </tr>
     <tr>
       <th>stepwise</th>
