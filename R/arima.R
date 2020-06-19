@@ -1,7 +1,8 @@
 globalVariables(c("p", "P", "d", "D", "q", "Q", "constant"))
 
 #' @importFrom stats approx lm ts
-train_arima <- function(.data, specials, ic = "aicc", selection_metric,
+train_arima <- function(.data, specials, 
+                        ic = "aicc", selection_metric = function(x) x[[ic]],
                         stepwise = TRUE, greedy = TRUE, approximation = NULL,
                         order_constraint = p + q + P + Q <= 6 & (!constant | d + D < 2),
                         unitroot_spec = unitroot_options(),
