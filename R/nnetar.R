@@ -136,10 +136,7 @@ train_nnetar <- function(.data, specials, n_nodes, n_networks, scale_inputs, ...
       fit = tibble(sigma2 = stats::var(res, na.rm = TRUE)),
       spec = tibble(period = period, p = p, P = P, size = n_nodes, lags = list(lags)),
       scales = list(y = y_scale, xreg = xreg_scale),
-      future = mutate(
-        new_data(.data, maxlag),
-        !!expr_text(model_lhs(self)) := utils::tail(x, maxlag)
-      )
+      future = utils::tail(x, maxlag)
     ),
     class = "NNETAR"
   )
@@ -276,7 +273,7 @@ forecast.NNETAR <- function(object, new_data, specials = NULL, simulate = TRUE, 
   # Extract model attributes
   lags <- object$spec$lags[[1]]
   maxlag <- max(lags)
-  future_lags <- rev(object$future[[measured_vars(object$future)]])
+  future_lags <- rev(object$future)
 
   # Compute forecast intervals
   if (!simulate) {
@@ -359,7 +356,7 @@ generate.NNETAR <- function(x, new_data, specials = NULL, bootstrap = FALSE, ...
   # Extract model attributes
   lags <- x$spec$lags[[1]]
   maxlag <- max(lags)
-  future_lags <- rev(x$future[[measured_vars(x$future)]])
+  future_lags <- rev(x$future)
 
   sim_nnetar <- function(e) {
     path <- numeric(length(e))
