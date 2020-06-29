@@ -1,5 +1,5 @@
 #' @importFrom stats ar complete.cases
-train_nnetar <- function(.data, specials, n_nodes, n_networks, scale_inputs, ...) {
+train_nnetar <- function(.data, specials, n_nodes, n_networks, scale_inputs, wts = NULL,...) {
   require_package("nnet")
 
   if (length(measured_vars(.data)) > 1) {
@@ -109,11 +109,20 @@ train_nnetar <- function(.data, specials, n_nodes, n_networks, scale_inputs, ...
     abort("No data to fit (possibly due to missing values)")
   }
 
-  # Fit the nnet
-  nn_models <- map(
-    seq_len(n_networks),
-    function(.) wrap_nnet(x_lags, x, size = n_nodes, ...)
-  )
+  # Fit the nnet and consider the Wts argument for nnet::nnet() if provided: 
+  if (is.null(wts)) {
+    nn_models <- map(
+      seq_len(n_networks),
+      function(.) wrap_nnet(x_lags, x, size = n_nodes, ...)
+    )
+  } else {
+    maxnwts <- max(lengths(wts), na.rm = TRUE)
+    nn_models <- map(
+      wts, 
+      function(i) {
+        wrap_nnet(x = x_lags, y = x, size = n_nodes, MaxNWts = maxnwts, Wts = i, ...)
+      })
+  }
 
   # Calculate fitted values
   pred <- map(nn_models, predict) %>%
@@ -457,4 +466,61 @@ model_sum.NNETAR <- function(x) {
     x$spec$size,
     ifelse(P > 0, paste0("[", x$spec$period, "]"), "")
   )
+}
+
+#' Refit an NNETAR model 
+#'
+#' Applies a fitted NNETAR model to a new dataset.
+#'
+#' @inheritParams forecast.NNETAR
+#' @param reestimate If `TRUE`, the networks will be initialized with random 
+#' starting weights to suit the new data. If `FALSE`, for every network the best 
+#' individual set of weights found in the pre-estimation process is used as the 
+#' starting weight vector. But consider that, even if the argument re-estimate is 
+#' set to `FALSE`, the weights are likely to change due to the re-estimation 
+#' process in `\link[nnet]{nnet}`.       
+#'
+#' @examples
+#' lung_deaths_male <- as_tsibble(mdeaths)
+#' lung_deaths_female <- as_tsibble(fdeaths)
+#'
+#' fit <- lung_deaths_male %>%
+#'   model(NNETAR(value))
+#'
+#' report(fit)
+#'
+#' fit %>%
+#'   refit(new_data = lung_deaths_female, reestimate = FALSE) %>%
+#'   report()
+#' @return A refitted model.
+#'
+#' @importFrom stats formula residuals
+#' @export
+refit.NNETAR <- function(object, new_data, specials = NULL, reestimate = FALSE, ...) {
+  # Update data for re-evaluation
+  
+  # update specials and size: 
+  specials$AR[[1]][c("p", "P", "period")] <- 
+    as.list(object$spec[c("p", "P", "period")])
+  
+  size <- object$spec[["size"]]
+  
+  # extract number of networks used: 
+  n_nets <- length(object$model)
+  
+  # check for scale_inputs:
+  scale_in <- TRUE
+  if (length(unlist(object$scales)) == 0) scale_in <- FALSE 
+
+  # return for reestimate = TRUE; i.e random assignment of weights:
+  if (reestimate) {
+    return(train_nnetar(new_data, specials, n_nodes = size, n_networks = n_nets, scale_inputs = scale_in, ...))
+  }
+  
+  # extract best set of weights for every network: 
+  wts_list <- object$model %>% 
+    purrr::map(.,"wts")  
+  
+  out <- train_nnetar(new_data, specials, n_nodes = size, n_networks = n_nets, scale_inputs = scale_in, wts = wts_list,...)
+  out
 }
