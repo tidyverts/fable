@@ -48,8 +48,8 @@ train_nnetar <- function(.data, specials, n_nodes, n_networks, scale_inputs, wts
       xreg <- sweep(xreg, 2, scale_inputs$xreg$center, "-")
       xreg <- sweep(xreg, 2, scale_inputs$xreg$scale, "/")
     }
-    scale_inputs <- TRUE
     scales <- scale_inputs
+    scale_inputs <- TRUE
   } else {
     if (scale_inputs) {
       x <- scale(x, center = TRUE, scale = TRUE)
@@ -135,7 +135,7 @@ train_nnetar <- function(.data, specials, n_nodes, n_networks, scale_inputs, wts
   fits_idx <- c(rep(FALSE, maxlag), j)
   fits[fits_idx] <- pred
   if (scale_inputs) {
-    fits <- fits * y_scale$scale + y_scale$center
+    fits <- fits * scales$y$scale + scales$y$center
   }
   res <- y - fits
 
@@ -501,7 +501,6 @@ model_sum.NNETAR <- function(x) {
 #' @export
 refit.NNETAR <- function(object, new_data, specials = NULL, reestimate = FALSE, ...) {
   # Update data for re-evaluation
-  
   # update specials and size: 
   specials$AR[[1]][c("p", "P", "period")] <- 
     as.list(object$spec[c("p", "P", "period")])
@@ -512,18 +511,18 @@ refit.NNETAR <- function(object, new_data, specials = NULL, reestimate = FALSE, 
   n_nets <- length(object$model)
   
   # check for scale_inputs:
-  scale_in <- TRUE
-  if (length(unlist(object$scales)) == 0) scale_in <- FALSE 
+  scale_in <- if(is_empty(object$scales)) FALSE else object$scales
 
   # return for reestimate = TRUE; i.e random assignment of weights:
   if (reestimate) {
-    return(train_nnetar(new_data, specials, n_nodes = size, n_networks = n_nets, scale_inputs = scale_in, ...))
+    return(train_nnetar(new_data, specials, n_nodes = size, n_networks = n_nets, 
+                        scale_inputs = scale_in, ...))
   }
   
   # extract best set of weights for every network: 
-  wts_list <- object$model %>% 
-    purrr::map(.,"wts")  
+  wts_list <- lapply(object$model, `[[`, "wts")
   
-  out <- train_nnetar(new_data, specials, n_nodes = size, n_networks = n_nets, scale_inputs = scale_in, wts = wts_list,...)
+  out <- train_nnetar(new_data, specials, n_nodes = size, n_networks = n_nets,
+                      scale_inputs = scale_in, wts = wts_list, maxit = 0, ...)
   out
 }
