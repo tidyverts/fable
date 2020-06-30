@@ -42,29 +42,32 @@ train_nnetar <- function(.data, specials, n_nodes, n_networks, scale_inputs, wts
 
   # Scale inputs
   y_scale <- xreg_scale <- NULL
-  if (scale_inputs) {
-    x <- scale(x, center = TRUE, scale = TRUE)
-    # y_scale <- tibble(
-    #   term = c("y_center", "y_scale"),
-    #   estimate = c(attr(x, "scaled:center"), attr(x, "scaled:scale"))
-    # )
-    y_scale <- list(
-      center = attr(x, "scaled:center"),
-      scale = attr(x, "scaled:scale")
-    )
-    x <- c(x)
-
-    if (!is.null(xreg)) {
-      xreg <- scale(xreg, center = TRUE, scale = TRUE)
-      # xreg_scale <- tibble(
-      #   term = c("xreg_center", "xreg_scale"),
-      #   estimate = c(attr(xreg, "scaled:center"), attr(xreg, "scaled:scale"))
-      # )
-      xreg_scale <- list(
-        center = attr(xreg, "scaled:center"),
-        scale = attr(xreg, "scaled:scale")
-      )
+  if (is.list(scale_inputs)) {
+    x <- (x - scale_inputs$y$center)/scale_inputs$y$scale
+    if(!is.null(xreg)){
+      xreg <- sweep(xreg, 2, scale_inputs$xreg$center, "-")
+      xreg <- sweep(xreg, 2, scale_inputs$xreg$scale, "/")
     }
+    scale_inputs <- TRUE
+    scales <- scale_inputs
+  } else {
+    if (scale_inputs) {
+      x <- scale(x, center = TRUE, scale = TRUE)
+      y_scale <- list(
+        center = attr(x, "scaled:center"),
+        scale = attr(x, "scaled:scale")
+      )
+      x <- c(x)
+  
+      if (!is.null(xreg)) {
+        xreg <- scale(xreg, center = TRUE, scale = TRUE)
+        xreg_scale <- list(
+          center = attr(xreg, "scaled:center"),
+          scale = attr(xreg, "scaled:scale")
+        )
+      }
+    }
+    scales <- list(y = y_scale, xreg = xreg_scale)
   }
 
   # Construct lagged matrix
@@ -144,7 +147,7 @@ train_nnetar <- function(.data, specials, n_nodes, n_networks, scale_inputs, wts
       est = tibble(.fitted = fits, .resid = res),
       fit = tibble(sigma2 = stats::var(res, na.rm = TRUE)),
       spec = tibble(period = period, p = p, P = P, size = n_nodes, lags = list(lags)),
-      scales = list(y = y_scale, xreg = xreg_scale),
+      scales = scales,
       future = utils::tail(x, maxlag)
     ),
     class = "NNETAR"
