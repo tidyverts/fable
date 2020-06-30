@@ -259,3 +259,49 @@ report.model_mean <- function(object, ...) {
 model_sum.model_mean <- function(x) {
   paste0("MEAN") # , ", intToUtf8(0x3BC), "=", format(x$par$estimate))
 }
+
+#' Refit a MEAN model
+#'
+#' Applies a fitted average method model to a new dataset.
+#'
+#' @inheritParams refit.ARIMA
+#'
+#' @examples
+#' lung_deaths_male <- as_tsibble(mdeaths)
+#' lung_deaths_female <- as_tsibble(fdeaths)
+#'
+#' fit <- lung_deaths_male %>%
+#'   model(MEAN(value))
+#'
+#' report(fit)
+#'
+#' fit %>%
+#'   refit(lung_deaths_female) %>%
+#'   report()
+#' @export
+refit.model_mean <- function(object, new_data, specials = NULL, reestimate = FALSE, ...) {
+  # Update data for re-evaluation
+  # update specials
+  specials$window <- if(is.na(object$window)) NULL else object$window 
+
+  if (reestimate) {
+    return(train_mean(new_data, specials, ...))
+  }
+  
+  y <- unclass(new_data)[[measured_vars(new_data)]]
+  
+  if (all(is.na(y))) {
+    abort("All new observations are missing, model cannot be applied.")
+  }
+
+  n <- length(y)
+
+  if (is_null(specials$window)) {
+    fits <- rep(object$mean, n)
+    res <- y - fits
+  }
+  object$fitted <- fits
+  object$resid <- res
+  object$nobs <- sum(!is.na(y))
+  object
+}
