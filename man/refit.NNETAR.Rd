@@ -2,7 +2,7 @@
 % Please edit documentation in R/nnetar.R
 \name{refit.NNETAR}
 \alias{refit.NNETAR}
-\title{Refit an NNETAR model}
+\title{Refit a NNETAR model}
 \usage{
 \method{refit}{NNETAR}(object, new_data, specials = NULL, reestimate = FALSE, ...)
 }
@@ -16,7 +16,7 @@
 \item{reestimate}{If \code{TRUE}, the networks will be initialized with random
 starting weights to suit the new data. If \code{FALSE}, for every network the best
 individual set of weights found in the pre-estimation process is used as the
-starting weight vector. But consider that, even if the argument re-estimate is
+starting weight vector. But consider that, even if the argument reestimate is
 set to \code{FALSE}, the weights are likely to change due to the re-estimation
 process in \verb{\link[nnet]\{nnet\}}.}
 
