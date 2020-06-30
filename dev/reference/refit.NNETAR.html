@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract residuals values from a fable model — residuals.NNETAR • fable</title>
+<title>Refit a NNETAR model — refit.NNETAR • fable</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,8 +42,8 @@
 
 
 
-<meta property="og:title" content="Extract residuals values from a fable model — residuals.NNETAR" />
-<meta property="og:description" content="Extracts the residuals." />
+<meta property="og:title" content="Refit a NNETAR model — refit.NNETAR" />
+<meta property="og:description" content="Applies a fitted NNETAR model to a new dataset." />
 <meta property="og:image" content="https://fable.tidyverts.org/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -138,17 +138,17 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Extract residuals values from a fable model</h1>
+    <h1>Refit a NNETAR model</h1>
     <small class="dont-index">Source: <a href='https://github.com/tidyverts/fable/blob/master/R/nnetar.R'><code>R/nnetar.R</code></a></small>
-    <div class="hidden name"><code>residuals.NNETAR.Rd</code></div>
+    <div class="hidden name"><code>refit.NNETAR.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Extracts the residuals.</p>
+    <p>Applies a fitted NNETAR model to a new dataset.</p>
     </div>
 
     <pre class="usage"><span class='co'># S3 method for NNETAR</span>
-<span class='fu'><a href='https://rdrr.io/r/stats/residuals.html'>residuals</a></span>(<span class='no'>object</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>refit</span>(<span class='no'>object</span>, <span class='no'>new_data</span>, <span class='kw'>specials</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>reestimate</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -158,6 +158,23 @@
       <td><p>The time series model used to produce the forecasts</p></td>
     </tr>
     <tr>
+      <th>new_data</th>
+      <td><p>A <code>tsibble</code> containing future information used to forecast.</p></td>
+    </tr>
+    <tr>
+      <th>specials</th>
+      <td><p>(passed by <code><a href='https://fabletools.tidyverts.org/reference/forecast.html'>fabletools::forecast.mdl_df()</a></code>).</p></td>
+    </tr>
+    <tr>
+      <th>reestimate</th>
+      <td><p>If <code>TRUE</code>, the networks will be initialized with random
+starting weights to suit the new data. If <code>FALSE</code>, for every network the best
+individual set of weights found in the pre-estimation process is used as the
+starting weight vector. But consider that, even if the argument reestimate is
+set to <code>FALSE</code>, the weights are likely to change due to the re-estimation
+process in <code>\link[nnet]{nnet}</code>.</p></td>
+    </tr>
+    <tr>
       <th>...</th>
       <td><p>Additional arguments for forecast model methods.</p></td>
     </tr>
@@ -165,26 +182,33 @@
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A vector of fitted residuals.</p>
+    <p>A refitted model.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='no'>airmiles</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='kw'>nn</span> <span class='kw'>=</span> <span class='fu'><a href='NNETAR.html'>NNETAR</a></span>(<span class='fu'>box_cox</span>(<span class='no'>value</span>, <span class='fl'>0.15</span>))) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/r/stats/residuals.html'>residuals</a></span>()</div><div class='output co'>#&gt; <span style='color: #555555;'># A tsibble: 24 x 3 [1Y]</span><span>
-#&gt; </span><span style='color: #555555;'># Key:       .model [1]</span><span>
-#&gt;    .model index  .resid
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>937 </span><span style='color: #BB0000;'>NA</span><span>     
-#&gt; </span><span style='color: #555555;'> 2</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>938 -</span><span style='color: #BB0000;'>0.446</span><span> 
-#&gt; </span><span style='color: #555555;'> 3</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>939  0.109 
-#&gt; </span><span style='color: #555555;'> 4</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>940  0.420 
-#&gt; </span><span style='color: #555555;'> 5</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>941  0.056</span><span style='text-decoration: underline;'>1</span><span>
-#&gt; </span><span style='color: #555555;'> 6</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>942 -</span><span style='color: #BB0000;'>0.665</span><span> 
-#&gt; </span><span style='color: #555555;'> 7</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>943 -</span><span style='color: #BB0000;'>0.309</span><span> 
-#&gt; </span><span style='color: #555555;'> 8</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>944  0.156 
-#&gt; </span><span style='color: #555555;'> 9</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>945  0.682 
-#&gt; </span><span style='color: #555555;'>10</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>946  1.26  
-#&gt; </span><span style='color: #555555;'># … with 14 more rows</span><span></div></span></pre>
+    <pre class="examples"><div class='input'><span class='no'>lung_deaths_male</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='no'>mdeaths</span>)
+<span class='no'>lung_deaths_female</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='no'>fdeaths</span>)
+
+<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='no'>lung_deaths_male</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'>model</span>(<span class='fu'><a href='NNETAR.html'>NNETAR</a></span>(<span class='no'>value</span>))
+
+<span class='fu'>report</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; Series: value 
+#&gt; Model: NNAR(3,1,2)[12] 
+#&gt; 
+#&gt; Average of 20 networks, each of which is
+#&gt; a 4-2-1 network with 13 weights
+#&gt; options were - linear output units 
+#&gt; 
+#&gt; sigma^2 estimated as 20350</div><div class='input'>
+<span class='no'>fit</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'>refit</span>(<span class='kw'>new_data</span> <span class='kw'>=</span> <span class='no'>lung_deaths_female</span>, <span class='kw'>reestimate</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'>report</span>()</div><div class='output co'>#&gt; Series: value 
+#&gt; Model: NNAR(3,1,2)[12] 
+#&gt; 
+#&gt; Average of 20 networks, each of which is
+#&gt; a 4-2-1 network with 13 weights
+#&gt; options were - linear output units 
+#&gt; 
+#&gt; sigma^2 estimated as 3305</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
