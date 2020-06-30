@@ -58,7 +58,7 @@ train_theta <- function(.data, specials, ...) {
       lT = ses$states[n+1,1],
       drift = drift,
       sigma2 = sigma2,
-      dcmp = dcmp$type,
+      dcmp = specials$season[[1]]$method,
       season = if(m > 1L) dcmp$seasonal[seq(n-m+1, n)] else NULL
     ),
     class = "fable_theta"
