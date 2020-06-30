@@ -5,6 +5,7 @@
 * Added the `selection_metric` argument to `ARIMA()`, which allows more control
   over the measure used to select the best model. By default this function will
   extract the information criteria specified by the `ic` argument.
+* Added `refit()` method for NNETAR (#287, @Tim-TU)
 
 # fable 0.2.1
 
