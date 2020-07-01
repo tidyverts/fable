@@ -299,6 +299,15 @@ refit.model_mean <- function(object, new_data, specials = NULL, reestimate = FAL
   if (is_null(specials$window)) {
     fits <- rep(object$mean, n)
     res <- y - fits
+  } else {
+    # First option (if used the conditional statement above can be removed!)
+    fits <- rep(object$mean, n)
+    res <- y - fits
+    # Second option (if used, the conditional statement has to be included!)
+    fits <- dplyr::lag(
+      slide_dbl(y, mean, na.rm = TRUE, .size = specials$window, .partial = TRUE)
+    )
+    res <- y - fits
   }
   object$fitted <- fits
   object$resid <- res
