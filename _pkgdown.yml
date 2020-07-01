@@ -79,6 +79,7 @@ reference:
     - SNAIVE
     - forecast.model_mean
     - forecast.RW
+    - refit.model_mean
     - generate.model_mean
     - generate.RW
     - fitted.model_mean

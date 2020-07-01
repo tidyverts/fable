@@ -296,7 +296,7 @@ refit.model_mean <- function(object, new_data, specials = NULL, reestimate = FAL
     abort("All new observations are missing, model cannot be applied.")
   }
 
-  if (!is_null(specials$window)) warn("Rolling means are specified. The fixed mean is used to recalculate the fitted values!")
+  if (!is_null(specials$window)) warn("A rolling mean model cannot be refitted, the most recent mean from the fitted model will be used as a fixed estimate of the mean.")
   
   n <- length(y)
 
