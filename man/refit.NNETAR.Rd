@@ -16,7 +16,9 @@
 \item{reestimate}{If \code{TRUE}, the networks will be initialized with random
 starting weights to suit the new data. If \code{FALSE}, for every network the best
 individual set of weights found in the pre-estimation process is used as the
-starting weight vector.}
+starting weight vector. But consider that, even if the argument reestimate is
+set to \code{FALSE}, the weights are likely to change due to the re-estimation
+process in \verb{\link[nnet]\{nnet\}}.}
 
 \item{...}{Additional arguments for forecast model methods.}
 }

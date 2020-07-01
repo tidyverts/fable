@@ -265,7 +265,9 @@ model_sum.model_mean <- function(x) {
 #' Applies a fitted average method model to a new dataset.
 #'
 #' @inheritParams refit.ARIMA
-#'
+#' @param reestimate If `TRUE`, the mean for the fitted model will be re-estimated 
+#' to suit the new data. 
+#' 
 #' @examples
 #' lung_deaths_male <- as_tsibble(mdeaths)
 #' lung_deaths_female <- as_tsibble(fdeaths)
@@ -294,23 +296,17 @@ refit.model_mean <- function(object, new_data, specials = NULL, reestimate = FAL
     abort("All new observations are missing, model cannot be applied.")
   }
 
+  if (!is_null(specials$window)) warn("Rolling means are specified. The fixed mean is used to recalculate the fitted values!")
+  
   n <- length(y)
 
-  if (is_null(specials$window)) {
-    fits <- rep(object$mean, n)
-    res <- y - fits
-  } else {
-    # First option (if used the conditional statement above can be removed!)
-    fits <- rep(object$mean, n)
-    res <- y - fits
-    # Second option (if used, the conditional statement has to be included!)
-    fits <- dplyr::lag(
-      slide_dbl(y, mean, na.rm = TRUE, .size = specials$window, .partial = TRUE)
-    )
-    res <- y - fits
-  }
+  fits <- rep(object$mean, n)
+  res <- y - fits
+  sigma <- sd(res, na.rm = TRUE)
+  
   object$fitted <- fits
   object$resid <- res
+  object$sigma <- sigma
   object$nobs <- sum(!is.na(y))
   object
 }

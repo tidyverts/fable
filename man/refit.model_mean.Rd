@@ -13,7 +13,8 @@
 
 \item{specials}{(passed by \code{\link[fabletools:forecast.mdl_df]{fabletools::forecast.mdl_df()}}).}
 
-\item{reestimate}{If \code{TRUE}, the coefficients for the fitted model will be re-estimated to suit the new data.}
+\item{reestimate}{If \code{TRUE}, the mean for the fitted model will be re-estimated
+to suit the new data.}
 
 \item{...}{Additional arguments for forecast model methods.}
 }
