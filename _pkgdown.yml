@@ -91,6 +91,7 @@ reference:
   contents:
     - NNETAR
     - forecast.NNETAR
+    - refit.NNETAR
     - generate.NNETAR
     - fitted.NNETAR
     - residuals.NNETAR
