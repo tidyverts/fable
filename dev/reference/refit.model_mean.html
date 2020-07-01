@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Refit a NNETAR model — refit.NNETAR • fable</title>
+<title>Refit a MEAN model — refit.model_mean • fable</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,8 +42,8 @@
 
 
 
-<meta property="og:title" content="Refit a NNETAR model — refit.NNETAR" />
-<meta property="og:description" content="Applies a fitted NNETAR model to a new dataset." />
+<meta property="og:title" content="Refit a MEAN model — refit.model_mean" />
+<meta property="og:description" content="Applies a fitted average method model to a new dataset." />
 <meta property="og:image" content="https://fable.tidyverts.org/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -138,16 +138,16 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Refit a NNETAR model</h1>
-    <small class="dont-index">Source: <a href='https://github.com/tidyverts/fable/blob/master/R/nnetar.R'><code>R/nnetar.R</code></a></small>
-    <div class="hidden name"><code>refit.NNETAR.Rd</code></div>
+    <h1>Refit a MEAN model</h1>
+    <small class="dont-index">Source: <a href='https://github.com/tidyverts/fable/blob/master/R/mean.R'><code>R/mean.R</code></a></small>
+    <div class="hidden name"><code>refit.model_mean.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Applies a fitted NNETAR model to a new dataset.</p>
+    <p>Applies a fitted average method model to a new dataset.</p>
     </div>
 
-    <pre class="usage"><span class='co'># S3 method for NNETAR</span>
+    <pre class="usage"><span class='co'># S3 method for model_mean</span>
 <span class='fu'>refit</span>(<span class='no'>object</span>, <span class='no'>new_data</span>, <span class='kw'>specials</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>reestimate</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -167,10 +167,8 @@
     </tr>
     <tr>
       <th>reestimate</th>
-      <td><p>If <code>TRUE</code>, the networks will be initialized with random
-starting weights to suit the new data. If <code>FALSE</code>, for every network the best
-individual set of weights found in the pre-estimation process is used as the
-starting weight vector.</p></td>
+      <td><p>If <code>TRUE</code>, the mean for the fitted model will be re-estimated
+to suit the new data.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -178,41 +176,31 @@ starting weight vector.</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>A refitted model.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>lung_deaths_male</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='no'>mdeaths</span>)
 <span class='no'>lung_deaths_female</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='no'>fdeaths</span>)
 
 <span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='no'>lung_deaths_male</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='fu'><a href='NNETAR.html'>NNETAR</a></span>(<span class='no'>value</span>))
+  <span class='fu'>model</span>(<span class='fu'><a href='MEAN.html'>MEAN</a></span>(<span class='no'>value</span>))
 
 <span class='fu'>report</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; Series: value 
-#&gt; Model: NNAR(3,1,2)[12] 
+#&gt; Model: MEAN 
 #&gt; 
-#&gt; Average of 20 networks, each of which is
-#&gt; a 4-2-1 network with 13 weights
-#&gt; options were - linear output units 
-#&gt; 
-#&gt; sigma^2 estimated as 20350</div><div class='input'>
+#&gt; Mean: 1495.9444 
+#&gt; sigma^2: 187619.7152 </div><div class='input'>
 <span class='no'>fit</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>refit</span>(<span class='kw'>new_data</span> <span class='kw'>=</span> <span class='no'>lung_deaths_female</span>, <span class='kw'>reestimate</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'>refit</span>(<span class='no'>lung_deaths_female</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>report</span>()</div><div class='output co'>#&gt; Series: value 
-#&gt; Model: NNAR(3,1,2)[12] 
+#&gt; Model: MEAN 
 #&gt; 
-#&gt; Average of 20 networks, each of which is
-#&gt; a 4-2-1 network with 13 weights
-#&gt; options were - linear output units 
-#&gt; 
-#&gt; sigma^2 estimated as 207748</div></pre>
+#&gt; Mean: 1495.9444 
+#&gt; sigma^2: 32299.2909 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 
