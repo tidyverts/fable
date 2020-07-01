@@ -6,6 +6,7 @@
   over the measure used to select the best model. By default this function will
   extract the information criteria specified by the `ic` argument.
 * Added `refit()` method for NNETAR (#287, @Tim-TU)
+* Added `refit()` method for MEAN (#289, @Tim-TU)
 
 # fable 0.2.1
 

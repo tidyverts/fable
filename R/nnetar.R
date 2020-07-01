@@ -479,9 +479,7 @@ model_sum.NNETAR <- function(x) {
 #' @param reestimate If `TRUE`, the networks will be initialized with random 
 #' starting weights to suit the new data. If `FALSE`, for every network the best 
 #' individual set of weights found in the pre-estimation process is used as the 
-#' starting weight vector. But consider that, even if the argument reestimate is 
-#' set to `FALSE`, the weights are likely to change due to the re-estimation 
-#' process in `\link[nnet]{nnet}`.       
+#' starting weight vector.     
 #'
 #' @examples
 #' lung_deaths_male <- as_tsibble(mdeaths)
