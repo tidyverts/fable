@@ -31,7 +31,12 @@ train_nnetar <- function(.data, specials, n_nodes, n_networks, scale_inputs, wts
     p <- 1
     P <- 0
   }
-  ## Check for constant data in xreg
+  # Check for insufficient data for seasonal lags
+  if (P > 0 && n < period * P + 2) {
+    warn("Series too short for seasonal lags")
+    P <- 0
+  }
+  # Check for constant data in xreg
   if (!is.null(xreg)) {
     xreg <- as.matrix(xreg)
     if (any(apply(xreg, 2, is.constant))) {
@@ -166,10 +171,6 @@ specials_nnetar <- new_specials(
       if (!missing(P) && P > 0) {
         warn("Non-seasonal data, ignoring seasonal lags")
       }
-      P <- 0
-    }
-    if (P > 0 && NROW(self$data) < period * P + 2) {
-      warn("Series too short for seasonal lags")
       P <- 0
     }
     as.list(environment())

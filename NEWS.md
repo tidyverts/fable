@@ -8,6 +8,10 @@
 * Added `refit()` method for NNETAR (#287, @Tim-TU)
 * Added `refit()` method for MEAN (#289, @Tim-TU)
 
+## Bug fixes
+
+* Fixed unecessary warning when forecasting short horizons using `NNETAR()`.
+
 # fable 0.2.1
 
 This release coincides with v0.2.0 of the fabletools package, which contains
