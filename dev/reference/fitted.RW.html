@@ -170,7 +170,13 @@
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='no'>Nile</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>model</span>(<span class='fu'><a href='RW.html'>NAIVE</a></span>(<span class='no'>value</span>)) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/r/stats/fitted.values.html'>fitted</a></span>()</div><div class='output co'>#&gt; <span style='color: #555555;'># A tsibble: 100 x 3 [1Y]</span><span>
+  <span class='fu'><a href='https://rdrr.io/r/stats/fitted.values.html'>fitted</a></span>()</div><div class='output co'>#&gt; <span class='warning'>Warning: `...` is not empty.</span>
+#&gt; <span class='warning'></span>
+#&gt; <span class='warning'>We detected these problematic arguments:</span>
+#&gt; <span class='warning'>* `needs_dots`</span>
+#&gt; <span class='warning'></span>
+#&gt; <span class='warning'>These dots only exist to allow future extensions and should be empty.</span>
+#&gt; <span class='warning'>Did you misspecify an argument?</span></div><div class='output co'>#&gt; <span style='color: #555555;'># A tsibble: 100 x 3 [1Y]</span><span>
 #&gt; </span><span style='color: #555555;'># Key:       .model [1]</span><span>
 #&gt;    .model       index .fitted
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
@@ -188,7 +194,13 @@
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibbledata</span>)
 <span class='no'>aus_production</span> <span class='kw'>%&gt;%</span>
   <span class='fu'>model</span>(<span class='kw'>snaive</span> <span class='kw'>=</span> <span class='fu'><a href='RW.html'>SNAIVE</a></span>(<span class='no'>Beer</span> ~ <span class='fu'><a href='https://rdrr.io/r/stats/lag.html'>lag</a></span>(<span class='st'>"year"</span>))) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/r/stats/fitted.values.html'>fitted</a></span>()</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tsibble: 218 x 3 [1Q]</span><span>
+  <span class='fu'><a href='https://rdrr.io/r/stats/fitted.values.html'>fitted</a></span>()</div><div class='output co'>#&gt; <span class='warning'>Warning: `...` is not empty.</span>
+#&gt; <span class='warning'></span>
+#&gt; <span class='warning'>We detected these problematic arguments:</span>
+#&gt; <span class='warning'>* `needs_dots`</span>
+#&gt; <span class='warning'></span>
+#&gt; <span class='warning'>These dots only exist to allow future extensions and should be empty.</span>
+#&gt; <span class='warning'>Did you misspecify an argument?</span></div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tsibble: 218 x 3 [1Q]</span><span>
 #&gt; </span><span style='color: #555555;'># Key:       .model [1]</span><span>
 #&gt;    .model Quarter .fitted
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;qtr&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>

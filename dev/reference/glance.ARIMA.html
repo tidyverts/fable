@@ -176,7 +176,13 @@ information criterion (<code>AIC</code>, <code>AICc</code>, <code>BIC</code>) an
     <pre class="examples"><div class='input'><span class='no'>USAccDeaths</span> <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>() <span class='kw'>%&gt;%</span>
   <span class='fu'>model</span>(<span class='kw'>arima</span> <span class='kw'>=</span> <span class='fu'><a href='ARIMA.html'>ARIMA</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>value</span>) ~ <span class='fu'>pdq</span>(<span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span>) + <span class='fu'>PDQ</span>(<span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span>))) <span class='kw'>%&gt;%</span>
-  <span class='fu'>glance</span>()</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 1 x 8</span><span>
+  <span class='fu'>glance</span>()</div><div class='output co'>#&gt; <span class='warning'>Warning: `...` is not empty.</span>
+#&gt; <span class='warning'></span>
+#&gt; <span class='warning'>We detected these problematic arguments:</span>
+#&gt; <span class='warning'>* `needs_dots`</span>
+#&gt; <span class='warning'></span>
+#&gt; <span class='warning'>These dots only exist to allow future extensions and should be empty.</span>
+#&gt; <span class='warning'>Did you misspecify an argument?</span></div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 1 x 8</span><span>
 #&gt;   .model  sigma2 log_lik   AIC  AICc   BIC ar_roots  ma_roots  
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span>    
 #&gt; </span><span style='color: #555555;'>1</span><span> arima  0.001</span><span style='text-decoration: underline;'>38</span><span>    109. -</span><span style='color: #BB0000;'>213.</span><span> -</span><span style='color: #BB0000;'>212.</span><span> -</span><span style='color: #BB0000;'>206.</span><span> </span><span style='color: #555555;'>&lt;cpl [0]&gt;</span><span> </span><span style='color: #555555;'>&lt;cpl [13]&gt;</span><span></div></span></pre>

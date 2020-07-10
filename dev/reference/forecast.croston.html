@@ -185,7 +185,13 @@
 
 <span class='no'>sim_poisson</span> <span class='kw'>%&gt;%</span>
   <span class='fu'>model</span>(<span class='fu'><a href='CROSTON.html'>CROSTON</a></span>(<span class='no'>count</span>)) <span class='kw'>%&gt;%</span>
-  <span class='fu'>forecast</span>()</div><div class='output co'>#&gt; <span style='color: #555555;'># A fable: 24 x 4 [1M]</span><span>
+  <span class='fu'>forecast</span>()</div><div class='output co'>#&gt; <span class='warning'>Warning: `...` is not empty.</span>
+#&gt; <span class='warning'></span>
+#&gt; <span class='warning'>We detected these problematic arguments:</span>
+#&gt; <span class='warning'>* `needs_dots`</span>
+#&gt; <span class='warning'></span>
+#&gt; <span class='warning'>These dots only exist to allow future extensions and should be empty.</span>
+#&gt; <span class='warning'>Did you misspecify an argument?</span></div><div class='output co'>#&gt; <span style='color: #555555;'># A fable: 24 x 4 [1M]</span><span>
 #&gt; </span><span style='color: #555555;'># Key:     .model [1]</span><span>
 #&gt;    .model             time  count .mean
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>             </span><span style='color: #555555;font-style: italic;'>&lt;mth&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dist&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>

@@ -174,7 +174,13 @@ the log-likelihood (<code>log_lik</code>), and information criterion (<code>AIC<
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='no'>USAccDeaths</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>model</span>(<span class='kw'>lm</span> <span class='kw'>=</span> <span class='fu'><a href='TSLM.html'>TSLM</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>value</span>) ~ <span class='fu'>trend</span>() + <span class='fu'>season</span>())) <span class='kw'>%&gt;%</span>
-  <span class='fu'>glance</span>()</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 1 x 15</span><span>
+  <span class='fu'>glance</span>()</div><div class='output co'>#&gt; <span class='warning'>Warning: `...` is not empty.</span>
+#&gt; <span class='warning'></span>
+#&gt; <span class='warning'>We detected these problematic arguments:</span>
+#&gt; <span class='warning'>* `needs_dots`</span>
+#&gt; <span class='warning'></span>
+#&gt; <span class='warning'>These dots only exist to allow future extensions and should be empty.</span>
+#&gt; <span class='warning'>Did you misspecify an argument?</span></div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 1 x 15</span><span>
 #&gt;   .model r_squared adj_r_squared  sigma2 statistic  p_value    df log_lik   AIC
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>         </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; </span><span style='color: #555555;'>1</span><span> lm         0.825         0.789 0.002</span><span style='text-decoration: underline;'>48</span><span>      23.1 6.02</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>-18</span><span>    13    121. -</span><span style='color: #BB0000;'>418.</span><span>
