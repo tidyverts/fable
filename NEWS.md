@@ -10,7 +10,7 @@
 
 ## Bug fixes
 
-* Fixed unecessary warning when forecasting short horizons using `NNETAR()`.
+* Fixed unnecessary warning when forecasting short horizons using `NNETAR()`.
 
 # fable 0.2.1
 
