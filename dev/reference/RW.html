@@ -223,35 +223,17 @@ drift(drift = TRUE)
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibbledata</span>)
 <span class='no'>aus_production</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='kw'>rw</span> <span class='kw'>=</span> <span class='fu'>RW</span>(<span class='no'>Beer</span> ~ <span class='fu'>drift</span>()))</div><div class='output co'>#&gt; <span class='warning'>Warning: `...` is not empty.</span>
-#&gt; <span class='warning'></span>
-#&gt; <span class='warning'>We detected these problematic arguments:</span>
-#&gt; <span class='warning'>* `needs_dots`</span>
-#&gt; <span class='warning'></span>
-#&gt; <span class='warning'>These dots only exist to allow future extensions and should be empty.</span>
-#&gt; <span class='warning'>Did you misspecify an argument?</span></div><div class='output co'>#&gt; <span style='color: #555555;'># A mable: 1 x 1</span><span>
+  <span class='fu'>model</span>(<span class='kw'>rw</span> <span class='kw'>=</span> <span class='fu'>RW</span>(<span class='no'>Beer</span> ~ <span class='fu'>drift</span>()))</div><div class='output co'>#&gt; <span style='color: #555555;'># A mable: 1 x 1</span><span>
 #&gt;              rw
 #&gt;         </span><span style='color: #555555;font-style: italic;'>&lt;model&gt;</span><span>
 #&gt; </span><span style='color: #555555;'>1</span><span> &lt;RW w/ drift&gt;</div><div class='input'>
 <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='no'>Nile</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='fu'>NAIVE</span>(<span class='no'>value</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: `...` is not empty.</span>
-#&gt; <span class='warning'></span>
-#&gt; <span class='warning'>We detected these problematic arguments:</span>
-#&gt; <span class='warning'>* `needs_dots`</span>
-#&gt; <span class='warning'></span>
-#&gt; <span class='warning'>These dots only exist to allow future extensions and should be empty.</span>
-#&gt; <span class='warning'>Did you misspecify an argument?</span></div><div class='output co'>#&gt; </span><span style='color: #555555;'># A mable: 1 x 1</span><span>
+  <span class='fu'>model</span>(<span class='fu'>NAIVE</span>(<span class='no'>value</span>))</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A mable: 1 x 1</span><span>
 #&gt;   `NAIVE(value)`
 #&gt;          </span><span style='color: #555555;font-style: italic;'>&lt;model&gt;</span><span>
 #&gt; </span><span style='color: #555555;'>1</span><span>        &lt;NAIVE&gt;</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibbledata</span>)
 <span class='no'>aus_production</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='kw'>snaive</span> <span class='kw'>=</span> <span class='fu'>SNAIVE</span>(<span class='no'>Beer</span> ~ <span class='fu'><a href='https://rdrr.io/r/stats/lag.html'>lag</a></span>(<span class='st'>"year"</span>)))</div><div class='output co'>#&gt; <span class='warning'>Warning: `...` is not empty.</span>
-#&gt; <span class='warning'></span>
-#&gt; <span class='warning'>We detected these problematic arguments:</span>
-#&gt; <span class='warning'>* `needs_dots`</span>
-#&gt; <span class='warning'></span>
-#&gt; <span class='warning'>These dots only exist to allow future extensions and should be empty.</span>
-#&gt; <span class='warning'>Did you misspecify an argument?</span></div><div class='output co'>#&gt; </span><span style='color: #555555;'># A mable: 1 x 1</span><span>
+  <span class='fu'>model</span>(<span class='kw'>snaive</span> <span class='kw'>=</span> <span class='fu'>SNAIVE</span>(<span class='no'>Beer</span> ~ <span class='fu'><a href='https://rdrr.io/r/stats/lag.html'>lag</a></span>(<span class='st'>"year"</span>)))</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A mable: 1 x 1</span><span>
 #&gt;     snaive
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;model&gt;</span><span>
 #&gt; </span><span style='color: #555555;'>1</span><span> &lt;SNAIVE&gt;</div></span></pre>

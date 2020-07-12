@@ -116,22 +116,15 @@
 <span id="cb2-3"><a href="#cb2-3"></a>tourism_melb <span class="op">%&gt;%</span></span>
 <span id="cb2-4"><a href="#cb2-4"></a><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(Purpose) <span class="op">%&gt;%</span></span>
 <span id="cb2-5"><a href="#cb2-5"></a><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span>(<span class="dv">1</span>)</span>
-<span id="cb2-6"><a href="#cb2-6"></a><span class="co">#&gt; Warning: `...` is not empty.</span></span>
-<span id="cb2-7"><a href="#cb2-7"></a><span class="co">#&gt; </span></span>
-<span id="cb2-8"><a href="#cb2-8"></a><span class="co">#&gt; We detected these problematic arguments:</span></span>
-<span id="cb2-9"><a href="#cb2-9"></a><span class="co">#&gt; * `needs_dots`</span></span>
-<span id="cb2-10"><a href="#cb2-10"></a><span class="co">#&gt; </span></span>
-<span id="cb2-11"><a href="#cb2-11"></a><span class="co">#&gt; These dots only exist to allow future extensions and should be empty.</span></span>
-<span id="cb2-12"><a href="#cb2-12"></a><span class="co">#&gt; Did you misspecify an argument?</span></span>
-<span id="cb2-13"><a href="#cb2-13"></a><span class="co">#&gt; # A tsibble: 4 x 5 [1Q]</span></span>
-<span id="cb2-14"><a href="#cb2-14"></a><span class="co">#&gt; # Key:       Region, State, Purpose [4]</span></span>
-<span id="cb2-15"><a href="#cb2-15"></a><span class="co">#&gt; # Groups:    Purpose [4]</span></span>
-<span id="cb2-16"><a href="#cb2-16"></a><span class="co">#&gt;   Quarter Region    State    Purpose  Trips</span></span>
-<span id="cb2-17"><a href="#cb2-17"></a><span class="co">#&gt;     &lt;qtr&gt; &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;    &lt;dbl&gt;</span></span>
-<span id="cb2-18"><a href="#cb2-18"></a><span class="co">#&gt; 1 1998 Q1 Melbourne Victoria Business 405. </span></span>
-<span id="cb2-19"><a href="#cb2-19"></a><span class="co">#&gt; 2 1998 Q1 Melbourne Victoria Holiday  428. </span></span>
-<span id="cb2-20"><a href="#cb2-20"></a><span class="co">#&gt; 3 1998 Q1 Melbourne Victoria Other     79.9</span></span>
-<span id="cb2-21"><a href="#cb2-21"></a><span class="co">#&gt; 4 1998 Q1 Melbourne Victoria Visiting 666.</span></span></code></pre></div>
+<span id="cb2-6"><a href="#cb2-6"></a><span class="co">#&gt; # A tsibble: 4 x 5 [1Q]</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a><span class="co">#&gt; # Key:       Region, State, Purpose [4]</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a><span class="co">#&gt; # Groups:    Purpose [4]</span></span>
+<span id="cb2-9"><a href="#cb2-9"></a><span class="co">#&gt;   Quarter Region    State    Purpose  Trips</span></span>
+<span id="cb2-10"><a href="#cb2-10"></a><span class="co">#&gt;     &lt;qtr&gt; &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;    &lt;dbl&gt;</span></span>
+<span id="cb2-11"><a href="#cb2-11"></a><span class="co">#&gt; 1 1998 Q1 Melbourne Victoria Business 405. </span></span>
+<span id="cb2-12"><a href="#cb2-12"></a><span class="co">#&gt; 2 1998 Q1 Melbourne Victoria Holiday  428. </span></span>
+<span id="cb2-13"><a href="#cb2-13"></a><span class="co">#&gt; 3 1998 Q1 Melbourne Victoria Other     79.9</span></span>
+<span id="cb2-14"><a href="#cb2-14"></a><span class="co">#&gt; 4 1998 Q1 Melbourne Victoria Visiting 666.</span></span></code></pre></div>
 <p>The variable that we’d like to estimate is the number of overnight trips (in thousands) represented by the <code>Trips</code> variable. A plot of the data reveals that some trends and weak seasonality are apparent.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>tourism_melb <span class="op">%&gt;%</span></span>
 <span id="cb3-2"><a href="#cb3-2"></a><span class="st">  </span><span class="kw">autoplot</span>(Trips)</span></code></pre></div>
@@ -144,71 +137,50 @@
 <span id="cb4-4"><a href="#cb4-4"></a>    <span class="dt">arima =</span> <span class="kw"><a href="../reference/ARIMA.html">ARIMA</a></span>(Trips)</span>
 <span id="cb4-5"><a href="#cb4-5"></a>  )</span>
 <span id="cb4-6"><a href="#cb4-6"></a>fit</span>
-<span id="cb4-7"><a href="#cb4-7"></a><span class="co">#&gt; Warning: `...` is not empty.</span></span>
-<span id="cb4-8"><a href="#cb4-8"></a><span class="co">#&gt; </span></span>
-<span id="cb4-9"><a href="#cb4-9"></a><span class="co">#&gt; We detected these problematic arguments:</span></span>
-<span id="cb4-10"><a href="#cb4-10"></a><span class="co">#&gt; * `needs_dots`</span></span>
-<span id="cb4-11"><a href="#cb4-11"></a><span class="co">#&gt; </span></span>
-<span id="cb4-12"><a href="#cb4-12"></a><span class="co">#&gt; These dots only exist to allow future extensions and should be empty.</span></span>
-<span id="cb4-13"><a href="#cb4-13"></a><span class="co">#&gt; Did you misspecify an argument?</span></span>
-<span id="cb4-14"><a href="#cb4-14"></a><span class="co">#&gt; # A mable: 4 x 5</span></span>
-<span id="cb4-15"><a href="#cb4-15"></a><span class="co">#&gt; # Key:     Region, State, Purpose [4]</span></span>
-<span id="cb4-16"><a href="#cb4-16"></a><span class="co">#&gt;   Region    State    Purpose           ets                             arima</span></span>
-<span id="cb4-17"><a href="#cb4-17"></a><span class="co">#&gt;   &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;         &lt;model&gt;                           &lt;model&gt;</span></span>
-<span id="cb4-18"><a href="#cb4-18"></a><span class="co">#&gt; 1 Melbourne Victoria Business &lt;ETS(A,A,A)&gt; &lt;ARIMA(0,1,2)(1,0,1)[4] w/ drift&gt;</span></span>
-<span id="cb4-19"><a href="#cb4-19"></a><span class="co">#&gt; 2 Melbourne Victoria Holiday  &lt;ETS(M,A,A)&gt;           &lt;ARIMA(0,1,1) w/ drift&gt;</span></span>
-<span id="cb4-20"><a href="#cb4-20"></a><span class="co">#&gt; 3 Melbourne Victoria Other    &lt;ETS(A,A,N)&gt;           &lt;ARIMA(0,1,1) w/ drift&gt;</span></span>
-<span id="cb4-21"><a href="#cb4-21"></a><span class="co">#&gt; 4 Melbourne Victoria Visiting &lt;ETS(M,A,A)&gt;          &lt;ARIMA(0,1,1)(1,0,2)[4]&gt;</span></span></code></pre></div>
+<span id="cb4-7"><a href="#cb4-7"></a><span class="co">#&gt; # A mable: 4 x 5</span></span>
+<span id="cb4-8"><a href="#cb4-8"></a><span class="co">#&gt; # Key:     Region, State, Purpose [4]</span></span>
+<span id="cb4-9"><a href="#cb4-9"></a><span class="co">#&gt;   Region    State    Purpose           ets                             arima</span></span>
+<span id="cb4-10"><a href="#cb4-10"></a><span class="co">#&gt;   &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;         &lt;model&gt;                           &lt;model&gt;</span></span>
+<span id="cb4-11"><a href="#cb4-11"></a><span class="co">#&gt; 1 Melbourne Victoria Business &lt;ETS(A,A,A)&gt; &lt;ARIMA(0,1,2)(1,0,1)[4] w/ drift&gt;</span></span>
+<span id="cb4-12"><a href="#cb4-12"></a><span class="co">#&gt; 2 Melbourne Victoria Holiday  &lt;ETS(M,A,A)&gt;           &lt;ARIMA(0,1,1) w/ drift&gt;</span></span>
+<span id="cb4-13"><a href="#cb4-13"></a><span class="co">#&gt; 3 Melbourne Victoria Other    &lt;ETS(A,A,N)&gt;           &lt;ARIMA(0,1,1) w/ drift&gt;</span></span>
+<span id="cb4-14"><a href="#cb4-14"></a><span class="co">#&gt; 4 Melbourne Victoria Visiting &lt;ETS(M,A,A)&gt;          &lt;ARIMA(0,1,1)(1,0,2)[4]&gt;</span></span></code></pre></div>
 <p>A mable contains a row for each time series (uniquely identified by the key variables), and a column for each model specification. A model is contained within the cells of each model column. In the example above we can see that the all four ETS models have an additive trend, and the error and seasonality have been chosen automatically. Similarly, the ARIMA model varies between time series as it has been automatically selected.</p>
 <p>The <code><a href="https://rdrr.io/r/stats/coef.html">coef()</a></code> or <code>tidy()</code> function is used to extract the coefficients from the models. It’s possible to use <code><a href="https://dplyr.tidyverse.org/reference/select.html">select()</a></code> and other verbs to focus on the coefficients from a particular model.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>fit <span class="op">%&gt;%</span></span>
 <span id="cb5-2"><a href="#cb5-2"></a><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(Region, State, Purpose, arima) <span class="op">%&gt;%</span></span>
 <span id="cb5-3"><a href="#cb5-3"></a><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span>()</span>
-<span id="cb5-4"><a href="#cb5-4"></a><span class="co">#&gt; Warning: `...` is not empty.</span></span>
-<span id="cb5-5"><a href="#cb5-5"></a><span class="co">#&gt; </span></span>
-<span id="cb5-6"><a href="#cb5-6"></a><span class="co">#&gt; We detected these problematic arguments:</span></span>
-<span id="cb5-7"><a href="#cb5-7"></a><span class="co">#&gt; * `needs_dots`</span></span>
-<span id="cb5-8"><a href="#cb5-8"></a><span class="co">#&gt; </span></span>
-<span id="cb5-9"><a href="#cb5-9"></a><span class="co">#&gt; These dots only exist to allow future extensions and should be empty.</span></span>
-<span id="cb5-10"><a href="#cb5-10"></a><span class="co">#&gt; Did you misspecify an argument?</span></span>
-<span id="cb5-11"><a href="#cb5-11"></a><span class="co">#&gt; # A tibble: 13 x 9</span></span>
-<span id="cb5-12"><a href="#cb5-12"></a><span class="co">#&gt;    Region   State   Purpose  .model term   estimate std.error statistic  p.value</span></span>
-<span id="cb5-13"><a href="#cb5-13"></a><span class="co">#&gt;    &lt;chr&gt;    &lt;chr&gt;   &lt;chr&gt;    &lt;chr&gt;  &lt;chr&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;</span></span>
-<span id="cb5-14"><a href="#cb5-14"></a><span class="co">#&gt;  1 Melbour… Victor… Business arima  ma1      -0.555    0.130     -4.28  5.29e- 5</span></span>
-<span id="cb5-15"><a href="#cb5-15"></a><span class="co">#&gt;  2 Melbour… Victor… Business arima  ma2      -0.233    0.129     -1.81  7.47e- 2</span></span>
-<span id="cb5-16"><a href="#cb5-16"></a><span class="co">#&gt;  3 Melbour… Victor… Business arima  sar1      0.946    0.0634    14.9   1.07e-24</span></span>
-<span id="cb5-17"><a href="#cb5-17"></a><span class="co">#&gt;  4 Melbour… Victor… Business arima  sma1     -0.772    0.145     -5.34  8.81e- 7</span></span>
-<span id="cb5-18"><a href="#cb5-18"></a><span class="co">#&gt;  5 Melbour… Victor… Business arima  const…    0.192    0.213      0.903 3.69e- 1</span></span>
-<span id="cb5-19"><a href="#cb5-19"></a><span class="co">#&gt;  6 Melbour… Victor… Holiday  arima  ma1      -0.931    0.0851   -10.9   1.77e-17</span></span>
-<span id="cb5-20"><a href="#cb5-20"></a><span class="co">#&gt;  7 Melbour… Victor… Holiday  arima  const…    3.65     0.571      6.39  1.06e- 8</span></span>
-<span id="cb5-21"><a href="#cb5-21"></a><span class="co">#&gt;  8 Melbour… Victor… Other    arima  ma1      -0.750    0.0708   -10.6   8.19e-17</span></span>
-<span id="cb5-22"><a href="#cb5-22"></a><span class="co">#&gt;  9 Melbour… Victor… Other    arima  const…    1.24     0.640      1.93  5.70e- 2</span></span>
-<span id="cb5-23"><a href="#cb5-23"></a><span class="co">#&gt; 10 Melbour… Victor… Visiting arima  ma1      -0.838    0.0652   -12.8   5.03e-21</span></span>
-<span id="cb5-24"><a href="#cb5-24"></a><span class="co">#&gt; 11 Melbour… Victor… Visiting arima  sar1      0.659    0.193      3.41  1.03e- 3</span></span>
-<span id="cb5-25"><a href="#cb5-25"></a><span class="co">#&gt; 12 Melbour… Victor… Visiting arima  sma1     -0.402    0.206     -1.95  5.47e- 2</span></span>
-<span id="cb5-26"><a href="#cb5-26"></a><span class="co">#&gt; 13 Melbour… Victor… Visiting arima  sma2      0.322    0.143      2.26  2.68e- 2</span></span></code></pre></div>
+<span id="cb5-4"><a href="#cb5-4"></a><span class="co">#&gt; # A tibble: 13 x 9</span></span>
+<span id="cb5-5"><a href="#cb5-5"></a><span class="co">#&gt;    Region   State   Purpose  .model term   estimate std.error statistic  p.value</span></span>
+<span id="cb5-6"><a href="#cb5-6"></a><span class="co">#&gt;    &lt;chr&gt;    &lt;chr&gt;   &lt;chr&gt;    &lt;chr&gt;  &lt;chr&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;</span></span>
+<span id="cb5-7"><a href="#cb5-7"></a><span class="co">#&gt;  1 Melbour… Victor… Business arima  ma1      -0.555    0.130     -4.28  5.29e- 5</span></span>
+<span id="cb5-8"><a href="#cb5-8"></a><span class="co">#&gt;  2 Melbour… Victor… Business arima  ma2      -0.233    0.129     -1.81  7.47e- 2</span></span>
+<span id="cb5-9"><a href="#cb5-9"></a><span class="co">#&gt;  3 Melbour… Victor… Business arima  sar1      0.946    0.0634    14.9   1.07e-24</span></span>
+<span id="cb5-10"><a href="#cb5-10"></a><span class="co">#&gt;  4 Melbour… Victor… Business arima  sma1     -0.772    0.145     -5.34  8.81e- 7</span></span>
+<span id="cb5-11"><a href="#cb5-11"></a><span class="co">#&gt;  5 Melbour… Victor… Business arima  const…    0.192    0.213      0.903 3.69e- 1</span></span>
+<span id="cb5-12"><a href="#cb5-12"></a><span class="co">#&gt;  6 Melbour… Victor… Holiday  arima  ma1      -0.931    0.0851   -10.9   1.77e-17</span></span>
+<span id="cb5-13"><a href="#cb5-13"></a><span class="co">#&gt;  7 Melbour… Victor… Holiday  arima  const…    3.65     0.571      6.39  1.06e- 8</span></span>
+<span id="cb5-14"><a href="#cb5-14"></a><span class="co">#&gt;  8 Melbour… Victor… Other    arima  ma1      -0.750    0.0708   -10.6   8.19e-17</span></span>
+<span id="cb5-15"><a href="#cb5-15"></a><span class="co">#&gt;  9 Melbour… Victor… Other    arima  const…    1.24     0.640      1.93  5.70e- 2</span></span>
+<span id="cb5-16"><a href="#cb5-16"></a><span class="co">#&gt; 10 Melbour… Victor… Visiting arima  ma1      -0.838    0.0652   -12.8   5.03e-21</span></span>
+<span id="cb5-17"><a href="#cb5-17"></a><span class="co">#&gt; 11 Melbour… Victor… Visiting arima  sar1      0.659    0.193      3.41  1.03e- 3</span></span>
+<span id="cb5-18"><a href="#cb5-18"></a><span class="co">#&gt; 12 Melbour… Victor… Visiting arima  sma1     -0.402    0.206     -1.95  5.47e- 2</span></span>
+<span id="cb5-19"><a href="#cb5-19"></a><span class="co">#&gt; 13 Melbour… Victor… Visiting arima  sma2      0.322    0.143      2.26  2.68e- 2</span></span></code></pre></div>
 <p>The <code>glance()</code> function provides a one-row summary of each model, and commonly includes descriptions of the model’s fit such as the residual variance and information criteria. Be wary though, as information criteria (AIC, AICc, BIC) are only comparable between the same model class and only if those models share the same response (after transformations and differencing).</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>fit <span class="op">%&gt;%</span></span>
 <span id="cb6-2"><a href="#cb6-2"></a><span class="st">  </span><span class="kw">glance</span>()</span>
-<span id="cb6-3"><a href="#cb6-3"></a><span class="co">#&gt; Warning: `...` is not empty.</span></span>
-<span id="cb6-4"><a href="#cb6-4"></a><span class="co">#&gt; </span></span>
-<span id="cb6-5"><a href="#cb6-5"></a><span class="co">#&gt; We detected these problematic arguments:</span></span>
-<span id="cb6-6"><a href="#cb6-6"></a><span class="co">#&gt; * `needs_dots`</span></span>
-<span id="cb6-7"><a href="#cb6-7"></a><span class="co">#&gt; </span></span>
-<span id="cb6-8"><a href="#cb6-8"></a><span class="co">#&gt; These dots only exist to allow future extensions and should be empty.</span></span>
-<span id="cb6-9"><a href="#cb6-9"></a><span class="co">#&gt; Did you misspecify an argument?</span></span>
-<span id="cb6-10"><a href="#cb6-10"></a><span class="co">#&gt; # A tibble: 8 x 14</span></span>
-<span id="cb6-11"><a href="#cb6-11"></a><span class="co">#&gt;   Region State Purpose .model  sigma2 log_lik   AIC  AICc   BIC   MSE  AMSE</span></span>
-<span id="cb6-12"><a href="#cb6-12"></a><span class="co">#&gt;   &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;    &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
-<span id="cb6-13"><a href="#cb6-13"></a><span class="co">#&gt; 1 Melbo… Vict… Busine… ets    3.53e+3   -498. 1014. 1016. 1035. 3180. 3520.</span></span>
-<span id="cb6-14"><a href="#cb6-14"></a><span class="co">#&gt; 2 Melbo… Vict… Holiday ets    1.10e-2   -487.  992.  994. 1013. 2548. 2574.</span></span>
-<span id="cb6-15"><a href="#cb6-15"></a><span class="co">#&gt; 3 Melbo… Vict… Other   ets    4.97e+2   -422.  853.  854.  865.  472.  512.</span></span>
-<span id="cb6-16"><a href="#cb6-16"></a><span class="co">#&gt; 4 Melbo… Vict… Visiti… ets    1.09e-2   -503. 1024. 1026. 1045. 3714. 3860.</span></span>
-<span id="cb6-17"><a href="#cb6-17"></a><span class="co">#&gt; 5 Melbo… Vict… Busine… arima  3.67e+3   -435.  882.  883.  896.   NA    NA </span></span>
-<span id="cb6-18"><a href="#cb6-18"></a><span class="co">#&gt; 6 Melbo… Vict… Holiday arima  3.07e+3   -429.  864.  865.  872.   NA    NA </span></span>
-<span id="cb6-19"><a href="#cb6-19"></a><span class="co">#&gt; 7 Melbo… Vict… Other   arima  4.89e+2   -356.  718.  719.  725.   NA    NA </span></span>
-<span id="cb6-20"><a href="#cb6-20"></a><span class="co">#&gt; 8 Melbo… Vict… Visiti… arima  4.24e+3   -442.  893.  894.  905.   NA    NA </span></span>
-<span id="cb6-21"><a href="#cb6-21"></a><span class="co">#&gt; # … with 3 more variables: MAE &lt;dbl&gt;, ar_roots &lt;list&gt;, ma_roots &lt;list&gt;</span></span></code></pre></div>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="co">#&gt; # A tibble: 8 x 14</span></span>
+<span id="cb6-4"><a href="#cb6-4"></a><span class="co">#&gt;   Region State Purpose .model  sigma2 log_lik   AIC  AICc   BIC   MSE  AMSE</span></span>
+<span id="cb6-5"><a href="#cb6-5"></a><span class="co">#&gt;   &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;    &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span id="cb6-6"><a href="#cb6-6"></a><span class="co">#&gt; 1 Melbo… Vict… Busine… ets    3.53e+3   -498. 1014. 1016. 1035. 3180. 3520.</span></span>
+<span id="cb6-7"><a href="#cb6-7"></a><span class="co">#&gt; 2 Melbo… Vict… Holiday ets    1.10e-2   -487.  992.  994. 1013. 2548. 2574.</span></span>
+<span id="cb6-8"><a href="#cb6-8"></a><span class="co">#&gt; 3 Melbo… Vict… Other   ets    4.97e+2   -422.  853.  854.  865.  472.  512.</span></span>
+<span id="cb6-9"><a href="#cb6-9"></a><span class="co">#&gt; 4 Melbo… Vict… Visiti… ets    1.09e-2   -503. 1024. 1026. 1045. 3714. 3860.</span></span>
+<span id="cb6-10"><a href="#cb6-10"></a><span class="co">#&gt; 5 Melbo… Vict… Busine… arima  3.67e+3   -435.  882.  883.  896.   NA    NA </span></span>
+<span id="cb6-11"><a href="#cb6-11"></a><span class="co">#&gt; 6 Melbo… Vict… Holiday arima  3.07e+3   -429.  864.  865.  872.   NA    NA </span></span>
+<span id="cb6-12"><a href="#cb6-12"></a><span class="co">#&gt; 7 Melbo… Vict… Other   arima  4.89e+2   -356.  718.  719.  725.   NA    NA </span></span>
+<span id="cb6-13"><a href="#cb6-13"></a><span class="co">#&gt; 8 Melbo… Vict… Visiti… arima  4.24e+3   -442.  893.  894.  905.   NA    NA </span></span>
+<span id="cb6-14"><a href="#cb6-14"></a><span class="co">#&gt; # … with 3 more variables: MAE &lt;dbl&gt;, ar_roots &lt;list&gt;, ma_roots &lt;list&gt;</span></span></code></pre></div>
 <p>If you’re working with a single model (or want to look at one model in particular), the <code>report()</code> function gives a familiar and nicely formatted model-specific display.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>fit <span class="op">%&gt;%</span></span>
 <span id="cb7-2"><a href="#cb7-2"></a><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(Purpose <span class="op">==</span><span class="st"> "Holiday"</span>) <span class="op">%&gt;%</span></span>
@@ -232,77 +204,56 @@
 <p>The fitted values and residuals from a model can obtained using <code><a href="https://rdrr.io/r/stats/fitted.values.html">fitted()</a></code> and <code><a href="https://rdrr.io/r/stats/residuals.html">residuals()</a></code> respectively. Additionally, the <code>augment()</code> function may be more convenient, which provides the original data along with both fitted values and their residuals.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>fit <span class="op">%&gt;%</span></span>
 <span id="cb8-2"><a href="#cb8-2"></a><span class="st">  </span><span class="kw">augment</span>()</span>
-<span id="cb8-3"><a href="#cb8-3"></a><span class="co">#&gt; Warning: `...` is not empty.</span></span>
-<span id="cb8-4"><a href="#cb8-4"></a><span class="co">#&gt; </span></span>
-<span id="cb8-5"><a href="#cb8-5"></a><span class="co">#&gt; We detected these problematic arguments:</span></span>
-<span id="cb8-6"><a href="#cb8-6"></a><span class="co">#&gt; * `needs_dots`</span></span>
-<span id="cb8-7"><a href="#cb8-7"></a><span class="co">#&gt; </span></span>
-<span id="cb8-8"><a href="#cb8-8"></a><span class="co">#&gt; These dots only exist to allow future extensions and should be empty.</span></span>
-<span id="cb8-9"><a href="#cb8-9"></a><span class="co">#&gt; Did you misspecify an argument?</span></span>
-<span id="cb8-10"><a href="#cb8-10"></a><span class="co">#&gt; # A tsibble: 640 x 8 [1Q]</span></span>
-<span id="cb8-11"><a href="#cb8-11"></a><span class="co">#&gt; # Key:       Region, State, Purpose, .model [8]</span></span>
-<span id="cb8-12"><a href="#cb8-12"></a><span class="co">#&gt;    Region    State    Purpose  .model Quarter Trips .fitted  .resid</span></span>
-<span id="cb8-13"><a href="#cb8-13"></a><span class="co">#&gt;    &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;    &lt;qtr&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;</span></span>
-<span id="cb8-14"><a href="#cb8-14"></a><span class="co">#&gt;  1 Melbourne Victoria Business ets    1998 Q1  405.    396.    9.54</span></span>
-<span id="cb8-15"><a href="#cb8-15"></a><span class="co">#&gt;  2 Melbourne Victoria Business ets    1998 Q2  408.    483.  -75.1 </span></span>
-<span id="cb8-16"><a href="#cb8-16"></a><span class="co">#&gt;  3 Melbourne Victoria Business ets    1998 Q3  486.    487.   -1.13</span></span>
-<span id="cb8-17"><a href="#cb8-17"></a><span class="co">#&gt;  4 Melbourne Victoria Business ets    1998 Q4  429.    454.  -25.2 </span></span>
-<span id="cb8-18"><a href="#cb8-18"></a><span class="co">#&gt;  5 Melbourne Victoria Business ets    1999 Q1  361.    391.  -30.3 </span></span>
-<span id="cb8-19"><a href="#cb8-19"></a><span class="co">#&gt;  6 Melbourne Victoria Business ets    1999 Q2  486.    466.   19.9 </span></span>
-<span id="cb8-20"><a href="#cb8-20"></a><span class="co">#&gt;  7 Melbourne Victoria Business ets    1999 Q3  359.    492. -133.  </span></span>
-<span id="cb8-21"><a href="#cb8-21"></a><span class="co">#&gt;  8 Melbourne Victoria Business ets    1999 Q4  426.    424.    1.49</span></span>
-<span id="cb8-22"><a href="#cb8-22"></a><span class="co">#&gt;  9 Melbourne Victoria Business ets    2000 Q1  495.    364.  130.  </span></span>
-<span id="cb8-23"><a href="#cb8-23"></a><span class="co">#&gt; 10 Melbourne Victoria Business ets    2000 Q2  499.    477.   22.0 </span></span>
-<span id="cb8-24"><a href="#cb8-24"></a><span class="co">#&gt; # … with 630 more rows</span></span></code></pre></div>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="co">#&gt; # A tsibble: 640 x 8 [1Q]</span></span>
+<span id="cb8-4"><a href="#cb8-4"></a><span class="co">#&gt; # Key:       Region, State, Purpose, .model [8]</span></span>
+<span id="cb8-5"><a href="#cb8-5"></a><span class="co">#&gt;    Region    State    Purpose  .model Quarter Trips .fitted  .resid</span></span>
+<span id="cb8-6"><a href="#cb8-6"></a><span class="co">#&gt;    &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;    &lt;qtr&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;</span></span>
+<span id="cb8-7"><a href="#cb8-7"></a><span class="co">#&gt;  1 Melbourne Victoria Business ets    1998 Q1  405.    396.    9.54</span></span>
+<span id="cb8-8"><a href="#cb8-8"></a><span class="co">#&gt;  2 Melbourne Victoria Business ets    1998 Q2  408.    483.  -75.1 </span></span>
+<span id="cb8-9"><a href="#cb8-9"></a><span class="co">#&gt;  3 Melbourne Victoria Business ets    1998 Q3  486.    487.   -1.13</span></span>
+<span id="cb8-10"><a href="#cb8-10"></a><span class="co">#&gt;  4 Melbourne Victoria Business ets    1998 Q4  429.    454.  -25.2 </span></span>
+<span id="cb8-11"><a href="#cb8-11"></a><span class="co">#&gt;  5 Melbourne Victoria Business ets    1999 Q1  361.    391.  -30.3 </span></span>
+<span id="cb8-12"><a href="#cb8-12"></a><span class="co">#&gt;  6 Melbourne Victoria Business ets    1999 Q2  486.    466.   19.9 </span></span>
+<span id="cb8-13"><a href="#cb8-13"></a><span class="co">#&gt;  7 Melbourne Victoria Business ets    1999 Q3  359.    492. -133.  </span></span>
+<span id="cb8-14"><a href="#cb8-14"></a><span class="co">#&gt;  8 Melbourne Victoria Business ets    1999 Q4  426.    424.    1.49</span></span>
+<span id="cb8-15"><a href="#cb8-15"></a><span class="co">#&gt;  9 Melbourne Victoria Business ets    2000 Q1  495.    364.  130.  </span></span>
+<span id="cb8-16"><a href="#cb8-16"></a><span class="co">#&gt; 10 Melbourne Victoria Business ets    2000 Q2  499.    477.   22.0 </span></span>
+<span id="cb8-17"><a href="#cb8-17"></a><span class="co">#&gt; # … with 630 more rows</span></span></code></pre></div>
 <p>To compare how well the models fit the data, we can consider some common accuracy measures. It seems that on the training set the ETS model out-performs ARIMA for the series where travellers are on holiday, business, and visiting friends and relatives. The <a href="https://otexts.com/fpp3/evaluation.html"><em>Evaluating modelling accuracy</em></a> chapter from the <a href="https://otexts.com/fpp3/"><em>Forecasting: Principles and Practices (3rd Ed.)</em></a> textbook provides more detail in how modelling and forecasting accuracy is evaluated.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>fit <span class="op">%&gt;%</span></span>
 <span id="cb9-2"><a href="#cb9-2"></a><span class="st">  </span><span class="kw">accuracy</span>() <span class="op">%&gt;%</span></span>
 <span id="cb9-3"><a href="#cb9-3"></a><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(MASE)</span>
-<span id="cb9-4"><a href="#cb9-4"></a><span class="co">#&gt; Warning: `...` is not empty.</span></span>
-<span id="cb9-5"><a href="#cb9-5"></a><span class="co">#&gt; </span></span>
-<span id="cb9-6"><a href="#cb9-6"></a><span class="co">#&gt; We detected these problematic arguments:</span></span>
-<span id="cb9-7"><a href="#cb9-7"></a><span class="co">#&gt; * `needs_dots`</span></span>
-<span id="cb9-8"><a href="#cb9-8"></a><span class="co">#&gt; </span></span>
-<span id="cb9-9"><a href="#cb9-9"></a><span class="co">#&gt; These dots only exist to allow future extensions and should be empty.</span></span>
-<span id="cb9-10"><a href="#cb9-10"></a><span class="co">#&gt; Did you misspecify an argument?</span></span>
-<span id="cb9-11"><a href="#cb9-11"></a><span class="co">#&gt; # A tibble: 8 x 12</span></span>
-<span id="cb9-12"><a href="#cb9-12"></a><span class="co">#&gt;   Region State Purpose .model .type     ME  RMSE   MAE    MPE  MAPE  MASE</span></span>
-<span id="cb9-13"><a href="#cb9-13"></a><span class="co">#&gt;   &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
-<span id="cb9-14"><a href="#cb9-14"></a><span class="co">#&gt; 1 Melbo… Vict… Holiday ets    Trai…  4.67   50.5  37.2  0.217  7.29 0.675</span></span>
-<span id="cb9-15"><a href="#cb9-15"></a><span class="co">#&gt; 2 Melbo… Vict… Busine… ets    Trai…  3.31   56.4  42.9 -0.753  9.31 0.691</span></span>
-<span id="cb9-16"><a href="#cb9-16"></a><span class="co">#&gt; 3 Melbo… Vict… Busine… arima  Trai…  2.54   58.2  46.0 -1.17  10.1  0.741</span></span>
-<span id="cb9-17"><a href="#cb9-17"></a><span class="co">#&gt; 4 Melbo… Vict… Holiday arima  Trai… -4.64   54.3  41.4 -2.44   8.46 0.752</span></span>
-<span id="cb9-18"><a href="#cb9-18"></a><span class="co">#&gt; 5 Melbo… Vict… Other   arima  Trai… -0.344  21.7  17.0 -6.16  19.5  0.763</span></span>
-<span id="cb9-19"><a href="#cb9-19"></a><span class="co">#&gt; 6 Melbo… Vict… Other   ets    Trai… -0.142  21.7  17.0 -5.97  19.6  0.767</span></span>
-<span id="cb9-20"><a href="#cb9-20"></a><span class="co">#&gt; 7 Melbo… Vict… Visiti… ets    Trai…  8.17   60.9  51.4  0.433  8.28 0.819</span></span>
-<span id="cb9-21"><a href="#cb9-21"></a><span class="co">#&gt; 8 Melbo… Vict… Visiti… arima  Trai…  6.89   63.1  51.7  0.106  8.44 0.825</span></span>
-<span id="cb9-22"><a href="#cb9-22"></a><span class="co">#&gt; # … with 1 more variable: ACF1 &lt;dbl&gt;</span></span></code></pre></div>
+<span id="cb9-4"><a href="#cb9-4"></a><span class="co">#&gt; # A tibble: 8 x 12</span></span>
+<span id="cb9-5"><a href="#cb9-5"></a><span class="co">#&gt;   Region State Purpose .model .type     ME  RMSE   MAE    MPE  MAPE  MASE</span></span>
+<span id="cb9-6"><a href="#cb9-6"></a><span class="co">#&gt;   &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span id="cb9-7"><a href="#cb9-7"></a><span class="co">#&gt; 1 Melbo… Vict… Holiday ets    Trai…  4.67   50.5  37.2  0.217  7.29 0.675</span></span>
+<span id="cb9-8"><a href="#cb9-8"></a><span class="co">#&gt; 2 Melbo… Vict… Busine… ets    Trai…  3.31   56.4  42.9 -0.753  9.31 0.691</span></span>
+<span id="cb9-9"><a href="#cb9-9"></a><span class="co">#&gt; 3 Melbo… Vict… Busine… arima  Trai…  2.54   58.2  46.0 -1.17  10.1  0.741</span></span>
+<span id="cb9-10"><a href="#cb9-10"></a><span class="co">#&gt; 4 Melbo… Vict… Holiday arima  Trai… -4.64   54.3  41.4 -2.44   8.46 0.752</span></span>
+<span id="cb9-11"><a href="#cb9-11"></a><span class="co">#&gt; 5 Melbo… Vict… Other   arima  Trai… -0.344  21.7  17.0 -6.16  19.5  0.763</span></span>
+<span id="cb9-12"><a href="#cb9-12"></a><span class="co">#&gt; 6 Melbo… Vict… Other   ets    Trai… -0.142  21.7  17.0 -5.97  19.6  0.767</span></span>
+<span id="cb9-13"><a href="#cb9-13"></a><span class="co">#&gt; 7 Melbo… Vict… Visiti… ets    Trai…  8.17   60.9  51.4  0.433  8.28 0.819</span></span>
+<span id="cb9-14"><a href="#cb9-14"></a><span class="co">#&gt; 8 Melbo… Vict… Visiti… arima  Trai…  6.89   63.1  51.7  0.106  8.44 0.825</span></span>
+<span id="cb9-15"><a href="#cb9-15"></a><span class="co">#&gt; # … with 1 more variable: ACF1 &lt;dbl&gt;</span></span></code></pre></div>
 <p>Forecasts from these models can be produced directly as our specified models do not require any additional data.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>fc &lt;-<span class="st"> </span>fit <span class="op">%&gt;%</span></span>
 <span id="cb10-2"><a href="#cb10-2"></a><span class="st">  </span><span class="kw">forecast</span>(<span class="dt">h =</span> <span class="st">"5 years"</span>)</span>
 <span id="cb10-3"><a href="#cb10-3"></a>fc</span>
-<span id="cb10-4"><a href="#cb10-4"></a><span class="co">#&gt; Warning: `...` is not empty.</span></span>
-<span id="cb10-5"><a href="#cb10-5"></a><span class="co">#&gt; </span></span>
-<span id="cb10-6"><a href="#cb10-6"></a><span class="co">#&gt; We detected these problematic arguments:</span></span>
-<span id="cb10-7"><a href="#cb10-7"></a><span class="co">#&gt; * `needs_dots`</span></span>
-<span id="cb10-8"><a href="#cb10-8"></a><span class="co">#&gt; </span></span>
-<span id="cb10-9"><a href="#cb10-9"></a><span class="co">#&gt; These dots only exist to allow future extensions and should be empty.</span></span>
-<span id="cb10-10"><a href="#cb10-10"></a><span class="co">#&gt; Did you misspecify an argument?</span></span>
-<span id="cb10-11"><a href="#cb10-11"></a><span class="co">#&gt; # A fable: 160 x 7 [1Q]</span></span>
-<span id="cb10-12"><a href="#cb10-12"></a><span class="co">#&gt; # Key:     Region, State, Purpose, .model [8]</span></span>
-<span id="cb10-13"><a href="#cb10-13"></a><span class="co">#&gt;    Region    State    Purpose  .model Quarter        Trips .mean</span></span>
-<span id="cb10-14"><a href="#cb10-14"></a><span class="co">#&gt;    &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;    &lt;qtr&gt;       &lt;dist&gt; &lt;dbl&gt;</span></span>
-<span id="cb10-15"><a href="#cb10-15"></a><span class="co">#&gt;  1 Melbourne Victoria Business ets    2018 Q1 N(619, 3533)  619.</span></span>
-<span id="cb10-16"><a href="#cb10-16"></a><span class="co">#&gt;  2 Melbourne Victoria Business ets    2018 Q2 N(709, 3766)  709.</span></span>
-<span id="cb10-17"><a href="#cb10-17"></a><span class="co">#&gt;  3 Melbourne Victoria Business ets    2018 Q3 N(738, 4042)  738.</span></span>
-<span id="cb10-18"><a href="#cb10-18"></a><span class="co">#&gt;  4 Melbourne Victoria Business ets    2018 Q4 N(713, 4364)  713.</span></span>
-<span id="cb10-19"><a href="#cb10-19"></a><span class="co">#&gt;  5 Melbourne Victoria Business ets    2019 Q1 N(664, 4735)  664.</span></span>
-<span id="cb10-20"><a href="#cb10-20"></a><span class="co">#&gt;  6 Melbourne Victoria Business ets    2019 Q2 N(755, 5159)  755.</span></span>
-<span id="cb10-21"><a href="#cb10-21"></a><span class="co">#&gt;  7 Melbourne Victoria Business ets    2019 Q3 N(784, 5640)  784.</span></span>
-<span id="cb10-22"><a href="#cb10-22"></a><span class="co">#&gt;  8 Melbourne Victoria Business ets    2019 Q4 N(759, 6181)  759.</span></span>
-<span id="cb10-23"><a href="#cb10-23"></a><span class="co">#&gt;  9 Melbourne Victoria Business ets    2020 Q1 N(710, 6786)  710.</span></span>
-<span id="cb10-24"><a href="#cb10-24"></a><span class="co">#&gt; 10 Melbourne Victoria Business ets    2020 Q2 N(800, 7458)  800.</span></span>
-<span id="cb10-25"><a href="#cb10-25"></a><span class="co">#&gt; # … with 150 more rows</span></span></code></pre></div>
+<span id="cb10-4"><a href="#cb10-4"></a><span class="co">#&gt; # A fable: 160 x 7 [1Q]</span></span>
+<span id="cb10-5"><a href="#cb10-5"></a><span class="co">#&gt; # Key:     Region, State, Purpose, .model [8]</span></span>
+<span id="cb10-6"><a href="#cb10-6"></a><span class="co">#&gt;    Region    State    Purpose  .model Quarter        Trips .mean</span></span>
+<span id="cb10-7"><a href="#cb10-7"></a><span class="co">#&gt;    &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;    &lt;qtr&gt;       &lt;dist&gt; &lt;dbl&gt;</span></span>
+<span id="cb10-8"><a href="#cb10-8"></a><span class="co">#&gt;  1 Melbourne Victoria Business ets    2018 Q1 N(619, 3533)  619.</span></span>
+<span id="cb10-9"><a href="#cb10-9"></a><span class="co">#&gt;  2 Melbourne Victoria Business ets    2018 Q2 N(709, 3766)  709.</span></span>
+<span id="cb10-10"><a href="#cb10-10"></a><span class="co">#&gt;  3 Melbourne Victoria Business ets    2018 Q3 N(738, 4042)  738.</span></span>
+<span id="cb10-11"><a href="#cb10-11"></a><span class="co">#&gt;  4 Melbourne Victoria Business ets    2018 Q4 N(713, 4364)  713.</span></span>
+<span id="cb10-12"><a href="#cb10-12"></a><span class="co">#&gt;  5 Melbourne Victoria Business ets    2019 Q1 N(664, 4735)  664.</span></span>
+<span id="cb10-13"><a href="#cb10-13"></a><span class="co">#&gt;  6 Melbourne Victoria Business ets    2019 Q2 N(755, 5159)  755.</span></span>
+<span id="cb10-14"><a href="#cb10-14"></a><span class="co">#&gt;  7 Melbourne Victoria Business ets    2019 Q3 N(784, 5640)  784.</span></span>
+<span id="cb10-15"><a href="#cb10-15"></a><span class="co">#&gt;  8 Melbourne Victoria Business ets    2019 Q4 N(759, 6181)  759.</span></span>
+<span id="cb10-16"><a href="#cb10-16"></a><span class="co">#&gt;  9 Melbourne Victoria Business ets    2020 Q1 N(710, 6786)  710.</span></span>
+<span id="cb10-17"><a href="#cb10-17"></a><span class="co">#&gt; 10 Melbourne Victoria Business ets    2020 Q2 N(800, 7458)  800.</span></span>
+<span id="cb10-18"><a href="#cb10-18"></a><span class="co">#&gt; # … with 150 more rows</span></span></code></pre></div>
 <p>The resulting forecasts are contained in a “fable” (forecast table), and both point forecasts and forecast distributions are available in the table for the next five years. Confidence intervals can be extracted from the distribution using the <code>hilo()</code> function.</p>
 <!-- ```{r dist-hilo} -->
 <!-- fc %>% -->
@@ -311,28 +262,21 @@
 <p>The <code>hilo()</code> function can also be used on fable objects, which allows you to extract multiple intervals at once.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>fc <span class="op">%&gt;%</span></span>
 <span id="cb11-2"><a href="#cb11-2"></a><span class="st">  </span><span class="kw">hilo</span>(<span class="dt">level =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">80</span>, <span class="dv">95</span>))</span>
-<span id="cb11-3"><a href="#cb11-3"></a><span class="co">#&gt; Warning: `...` is not empty.</span></span>
-<span id="cb11-4"><a href="#cb11-4"></a><span class="co">#&gt; </span></span>
-<span id="cb11-5"><a href="#cb11-5"></a><span class="co">#&gt; We detected these problematic arguments:</span></span>
-<span id="cb11-6"><a href="#cb11-6"></a><span class="co">#&gt; * `needs_dots`</span></span>
-<span id="cb11-7"><a href="#cb11-7"></a><span class="co">#&gt; </span></span>
-<span id="cb11-8"><a href="#cb11-8"></a><span class="co">#&gt; These dots only exist to allow future extensions and should be empty.</span></span>
-<span id="cb11-9"><a href="#cb11-9"></a><span class="co">#&gt; Did you misspecify an argument?</span></span>
-<span id="cb11-10"><a href="#cb11-10"></a><span class="co">#&gt; # A tsibble: 160 x 9 [1Q]</span></span>
-<span id="cb11-11"><a href="#cb11-11"></a><span class="co">#&gt; # Key:       Region, State, Purpose, .model [8]</span></span>
-<span id="cb11-12"><a href="#cb11-12"></a><span class="co">#&gt;    Region State Purpose .model Quarter        Trips .mean                  `80%`</span></span>
-<span id="cb11-13"><a href="#cb11-13"></a><span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;    &lt;qtr&gt;       &lt;dist&gt; &lt;dbl&gt;                 &lt;hilo&gt;</span></span>
-<span id="cb11-14"><a href="#cb11-14"></a><span class="co">#&gt;  1 Melbo… Vict… Busine… ets    2018 Q1 N(619, 3533)  619. [542.3864, 694.7363]80</span></span>
-<span id="cb11-15"><a href="#cb11-15"></a><span class="co">#&gt;  2 Melbo… Vict… Busine… ets    2018 Q2 N(709, 3766)  709. [630.4443, 787.7426]80</span></span>
-<span id="cb11-16"><a href="#cb11-16"></a><span class="co">#&gt;  3 Melbo… Vict… Busine… ets    2018 Q3 N(738, 4042)  738. [656.9891, 819.9425]80</span></span>
-<span id="cb11-17"><a href="#cb11-17"></a><span class="co">#&gt;  4 Melbo… Vict… Busine… ets    2018 Q4 N(713, 4364)  713. [628.7879, 798.1010]80</span></span>
-<span id="cb11-18"><a href="#cb11-18"></a><span class="co">#&gt;  5 Melbo… Vict… Busine… ets    2019 Q1 N(664, 4735)  664. [575.8480, 752.2196]80</span></span>
-<span id="cb11-19"><a href="#cb11-19"></a><span class="co">#&gt;  6 Melbo… Vict… Busine… ets    2019 Q2 N(755, 5159)  755. [662.5141, 846.6176]80</span></span>
-<span id="cb11-20"><a href="#cb11-20"></a><span class="co">#&gt;  7 Melbo… Vict… Busine… ets    2019 Q3 N(784, 5640)  784. [687.6922, 880.1843]80</span></span>
-<span id="cb11-21"><a href="#cb11-21"></a><span class="co">#&gt;  8 Melbo… Vict… Busine… ets    2019 Q4 N(759, 6181)  759. [658.1603, 859.6735]80</span></span>
-<span id="cb11-22"><a href="#cb11-22"></a><span class="co">#&gt;  9 Melbo… Vict… Busine… ets    2020 Q1 N(710, 6786)  710. [603.9336, 815.0789]80</span></span>
-<span id="cb11-23"><a href="#cb11-23"></a><span class="co">#&gt; 10 Melbo… Vict… Busine… ets    2020 Q2 N(800, 7458)  800. [689.3620, 910.7146]80</span></span>
-<span id="cb11-24"><a href="#cb11-24"></a><span class="co">#&gt; # … with 150 more rows, and 1 more variable: `95%` &lt;hilo&gt;</span></span></code></pre></div>
+<span id="cb11-3"><a href="#cb11-3"></a><span class="co">#&gt; # A tsibble: 160 x 9 [1Q]</span></span>
+<span id="cb11-4"><a href="#cb11-4"></a><span class="co">#&gt; # Key:       Region, State, Purpose, .model [8]</span></span>
+<span id="cb11-5"><a href="#cb11-5"></a><span class="co">#&gt;    Region State Purpose .model Quarter        Trips .mean                  `80%`</span></span>
+<span id="cb11-6"><a href="#cb11-6"></a><span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;    &lt;qtr&gt;       &lt;dist&gt; &lt;dbl&gt;                 &lt;hilo&gt;</span></span>
+<span id="cb11-7"><a href="#cb11-7"></a><span class="co">#&gt;  1 Melbo… Vict… Busine… ets    2018 Q1 N(619, 3533)  619. [542.3864, 694.7363]80</span></span>
+<span id="cb11-8"><a href="#cb11-8"></a><span class="co">#&gt;  2 Melbo… Vict… Busine… ets    2018 Q2 N(709, 3766)  709. [630.4443, 787.7426]80</span></span>
+<span id="cb11-9"><a href="#cb11-9"></a><span class="co">#&gt;  3 Melbo… Vict… Busine… ets    2018 Q3 N(738, 4042)  738. [656.9891, 819.9425]80</span></span>
+<span id="cb11-10"><a href="#cb11-10"></a><span class="co">#&gt;  4 Melbo… Vict… Busine… ets    2018 Q4 N(713, 4364)  713. [628.7879, 798.1010]80</span></span>
+<span id="cb11-11"><a href="#cb11-11"></a><span class="co">#&gt;  5 Melbo… Vict… Busine… ets    2019 Q1 N(664, 4735)  664. [575.8480, 752.2196]80</span></span>
+<span id="cb11-12"><a href="#cb11-12"></a><span class="co">#&gt;  6 Melbo… Vict… Busine… ets    2019 Q2 N(755, 5159)  755. [662.5141, 846.6176]80</span></span>
+<span id="cb11-13"><a href="#cb11-13"></a><span class="co">#&gt;  7 Melbo… Vict… Busine… ets    2019 Q3 N(784, 5640)  784. [687.6922, 880.1843]80</span></span>
+<span id="cb11-14"><a href="#cb11-14"></a><span class="co">#&gt;  8 Melbo… Vict… Busine… ets    2019 Q4 N(759, 6181)  759. [658.1603, 859.6735]80</span></span>
+<span id="cb11-15"><a href="#cb11-15"></a><span class="co">#&gt;  9 Melbo… Vict… Busine… ets    2020 Q1 N(710, 6786)  710. [603.9336, 815.0789]80</span></span>
+<span id="cb11-16"><a href="#cb11-16"></a><span class="co">#&gt; 10 Melbo… Vict… Busine… ets    2020 Q2 N(800, 7458)  800. [689.3620, 910.7146]80</span></span>
+<span id="cb11-17"><a href="#cb11-17"></a><span class="co">#&gt; # … with 150 more rows, and 1 more variable: `95%` &lt;hilo&gt;</span></span></code></pre></div>
 <!--
 These intervals can also be unnested if you're looking to obtain the numerical values (`.lower`, `.upper`, and `level`).
 
