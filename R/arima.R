@@ -299,6 +299,7 @@ This is generally discouraged, consider removing the constant or reducing the nu
   if (approximation && !is.null(best$arma)) {
     method <- "CSS-ML"
     best <- NULL
+    sm_best <- Inf
     step_order <- order(est_ic)[seq_len(sum(!is.na(est_ic)))]
     est_ic <- rep_len(Inf, length(est_ic)) # Ignore all approximate models until re-estimated
     for (mod_spec in step_order)
