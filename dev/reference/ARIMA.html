@@ -17,23 +17,27 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -48,7 +52,6 @@ best ARIMA model which has lowest AIC, AICc or BIC value. It is implemented
 using stats::arima() and allows ARIMA models to be used in the fable
 framework." />
 <meta property="og:image" content="https://fable.tidyverts.org/logo.png" />
-<meta name="twitter:card" content="summary" />
 
 
 <meta name="robots" content="noindex">
@@ -76,7 +79,7 @@ framework." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -235,9 +238,8 @@ are equivalent, the coefficients for the constant/mean will differ.</p>
 <p>To specify a model fully (avoid automatic selection), the intercept and <code>pdq()/PDQ()</code> values must be specified: for example <code>formula = response ~ 1 + pdq(1, 1, 1) + PDQ(1, 0, 0)</code>.</p>
 <h3>pdq</h3>
 <p>The <code>pdq</code> special is used to specify non-seasonal components of the model.</p><pre>
-pdq(p = 0:5, d = 0:2, q = 0:5,
-    p_init = 2, q_init = 2, fixed = list())
-</pre>
+<span class='fu'>pdq</span>(<span class='kw'>p</span> <span class='kw'>=</span> <span class='fl'>0</span>:<span class='fl'>5</span>, <span class='kw'>d</span> <span class='kw'>=</span> <span class='fl'>0</span>:<span class='fl'>2</span>, <span class='kw'>q</span> <span class='kw'>=</span> <span class='fl'>0</span>:<span class='fl'>5</span>,
+    <span class='kw'>p_init</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>q_init</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>fixed</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>())</pre>
 
 <table class='table'>
 <tr><td><code>p</code></td><td>The order of the non-seasonal auto-regressive (AR) terms. If multiple values are provided, the one which minimises <code>ic</code> will be chosen.</td></tr>
@@ -252,9 +254,8 @@ pdq(p = 0:5, d = 0:2, q = 0:5,
 
 <h3>PDQ</h3>
 <p>The <code>PDQ</code> special is used to specify seasonal components of the model. To force a nonseasonal fit, specify <code>PDQ(0, 0, 0)</code> in the RHS of the model formula. Note that simply omitting <code>PDQ</code> from the formula will <em>not</em> result in a nonseasonal fit.</p><pre>
-PDQ(P = 0:2, D = 0:1, Q = 0:2, period = NULL,
-    P_init = 1, Q_init = 1, fixed = list())
-</pre>
+<span class='fu'>PDQ</span>(<span class='kw'>P</span> <span class='kw'>=</span> <span class='fl'>0</span>:<span class='fl'>2</span>, <span class='kw'>D</span> <span class='kw'>=</span> <span class='fl'>0</span>:<span class='fl'>1</span>, <span class='kw'>Q</span> <span class='kw'>=</span> <span class='fl'>0</span>:<span class='fl'>2</span>, <span class='kw'>period</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+    <span class='kw'>P_init</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>Q_init</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>fixed</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>())</pre>
 
 <table class='table'>
 <tr><td><code>P</code></td><td>The order of the seasonal auto-regressive (SAR) terms. If multiple values are provided, the one which minimises <code>ic</code> will be chosen.</td></tr>
@@ -272,8 +273,7 @@ PDQ(P = 0:2, D = 0:1, Q = 0:2, period = NULL,
 <p>Exogenous regressors can be included in an ARIMA model without explicitly using the <code>xreg()</code> special. Common exogenous regressor specials as specified in <code><a href='common_xregs.html'>common_xregs</a></code> can also be used. These regressors are handled using <code><a href='https://rdrr.io/r/stats/model.frame.html'>stats::model.frame()</a></code>, and so interactions and other functionality behaves similarly to <code><a href='https://rdrr.io/r/stats/lm.html'>stats::lm()</a></code>.</p>
 <p>The inclusion of a constant in the model follows the similar rules to <code><a href='https://rdrr.io/r/stats/lm.html'>stats::lm()</a></code>, where including <code>1</code> will add a constant and <code>0</code> or <code>-1</code> will remove the constant. If left out, the inclusion of a constant will be determined by minimising <code>ic</code>.</p>
 <pre>
-xreg(..., fixed = list())
-</pre>
+<span class='fu'>xreg</span>(<span class='no'>...</span>, <span class='kw'>fixed</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>())</pre>
 
 <table class='table'>
 <tr><td><code>...</code></td><td>Bare expressions for the exogenous regressors (such as <code><a href='https://rdrr.io/r/base/Log.html'>log(x)</a></code>)</td></tr>
@@ -318,17 +318,10 @@ xreg(..., fixed = list())
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>                            </span><span style='color: #555555;font-style: italic;'>&lt;model&gt;</span><span>
 #&gt; </span><span style='color: #555555;'>1</span><span> Australia    &lt;LM w/ ARIMA(2,0,0) errors&gt;</div></span></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#parameterisation">Parameterisation</a></li>
-      <li><a href="#specials">Specials</a></li>
-      <li><a href="#see-also">See also</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -339,7 +332,7 @@ xreg(..., fixed = list())
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>
