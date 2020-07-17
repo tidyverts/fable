@@ -3,12 +3,16 @@
 
 # fable <a href='https://fable.tidyverts.org'><img src='man/figures/logo.png' align="right" height="138.5" /></a>
 
+<!-- badges: start -->
+
 ![R build
 status](https://github.com/tidyverts/fable/workflows/R-CMD-check/badge.svg)
 [![Coverage
 status](https://codecov.io/gh/tidyverts/fable/branch/master/graph/badge.svg)](https://codecov.io/github/tidyverts/fable?branch=master)
 [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/fable)](https://cran.r-project.org/package=fable)
-[![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+[![Lifecycle:
+maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
+<!-- badges: end -->
 
 The R package *fable* provides a collection of commonly used univariate
 and multivariate time series forecasting models including exponential
@@ -43,7 +47,6 @@ library(fable)
 library(tsibble)
 library(tsibbledata)
 library(lubridate)
-#> Warning: package 'lubridate' was built under R version 3.6.3
 library(dplyr)
 aus_retail %>%
   filter(
