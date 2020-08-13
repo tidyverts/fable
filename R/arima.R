@@ -4,7 +4,7 @@ globalVariables(c("p", "P", "d", "D", "q", "Q", "constant"))
 train_arima <- function(.data, specials, 
                         ic = "aicc", selection_metric = function(x) x[[ic]],
                         stepwise = TRUE, greedy = TRUE, approximation = NULL,
-                        order_constraint = p + q + P + Q <= 6 & (!constant | d + D < 2),
+                        order_constraint = p + q + P + Q <= 6 & (constant + d + D <= 2),
                         unitroot_spec = unitroot_options(),
                         fixed = NULL, ...) {
   if (length(measured_vars(.data)) > 1) {
@@ -568,7 +568,7 @@ specials_arima <- new_specials(
 ARIMA <- function(formula, ic = c("aicc", "aic", "bic"),
                   selection_metric = function(x) x[[ic]],
                   stepwise = TRUE, greedy = TRUE, approximation = NULL,
-                  order_constraint = p + q + P + Q <= 6 & (!constant | d + D < 2),
+                  order_constraint = p + q + P + Q <= 6 & (constant + d + D <= 2),
                   unitroot_spec = unitroot_options(), ...) {
   ic <- match.arg(ic)
   stopifnot(is.function(selection_metric))
@@ -1006,7 +1006,7 @@ ur_seasonal_strength <- function(threshold = 0.64){
     features <- feasts::feat_stl(x, .period)
     seas_strength <- grepl("^seasonal_strength_", names(features))
     if(!any(seas_strength)){
-      FALSE
+      TRUE
     } else{
       features[seas_strength] < threshold
     }
