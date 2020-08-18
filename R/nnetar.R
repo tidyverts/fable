@@ -355,7 +355,7 @@ generate.NNETAR <- function(x, new_data, specials = NULL, bootstrap = FALSE, ...
         sigma <- sd(x$est[[".resid"]] / x$scales$y$scale, na.rm = TRUE)
       }
       else {
-        sigma <- x$fit$sigma
+        sigma <- sqrt(x$fit$sigma2)
       }
       new_data$.innov <- stats::rnorm(NROW(new_data), sd = sigma)
     }

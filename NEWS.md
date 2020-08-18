@@ -11,6 +11,7 @@
 ## Bug fixes
 
 * Fixed unnecessary warning when forecasting short horizons using `NNETAR()`.
+* Fixed `generate()` method for NNETAR models when data isn't scaled (#302).
 
 # fable 0.2.1
 
