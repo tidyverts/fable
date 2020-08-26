@@ -11,7 +11,7 @@
 
 \item{new_data}{A \code{tsibble} containing future information used to forecast.}
 
-\item{specials}{(passed by \code{\link[fabletools:forecast.mdl_df]{fabletools::forecast.mdl_df()}}).}
+\item{specials}{(passed by \code{\link[fabletools:forecast]{fabletools::forecast.mdl_df()}}).}
 
 \item{reestimate}{If \code{TRUE}, the mean for the fitted model will be re-estimated
 to suit the new data.}

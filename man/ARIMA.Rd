@@ -12,7 +12,7 @@ ARIMA(
   stepwise = TRUE,
   greedy = TRUE,
   approximation = NULL,
-  order_constraint = p + q + P + Q <= 6 & (!constant | d + D < 2),
+  order_constraint = p + q + P + Q <= 6 & (constant + d + D <= 2),
   unitroot_spec = unitroot_options(),
   ...
 )
