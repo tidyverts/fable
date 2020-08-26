@@ -336,7 +336,7 @@ generate.TSLM <- function(x, new_data, specials, bootstrap = FALSE, ...) {
     }
   }
 
-  transmute(new_data, .sim = pred + !!sym(".innov"))
+  transmute(new_data, .sim = drop(pred + !!sym(".innov")))
 }
 
 #' @inherit interpolate.ARIMA
