@@ -204,7 +204,7 @@ train_arima <- function(.data, specials,
     sm
   }
 
-  mostly_specified <- length(pdq$p) + length(pdq$d) + length(pdq$q) + length(PDQ$P) + length(PDQ$D) + length(PDQ$Q) == 6
+  mostly_specified <- length(constant) == 2 && length(pdq$p) + length(pdq$d) + length(pdq$q) + length(PDQ$P) + length(PDQ$D) + length(PDQ$Q) == 6
   mostly_specified_msg <- "It looks like you're trying to fully specify your ARIMA model but have not said if a constant should be included.\nYou can include a constant using `ARIMA(y~1)` to the formula or exclude it by adding `ARIMA(y~0)`."
   model_opts <- expand.grid(p = pdq$p, d = pdq$d, q = pdq$q, P = PDQ$P, D = PDQ$D, Q = PDQ$Q, constant = constant)
   
