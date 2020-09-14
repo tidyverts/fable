@@ -119,6 +119,7 @@ reference:
     - AR
     - forecast.AR
     - refit.AR
+    - generate.AR
     - fitted.AR
     - residuals.AR
 - title: Vector autoregression
