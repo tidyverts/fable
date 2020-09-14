@@ -154,7 +154,7 @@ simple exponential smoothing with drift. This is demonstrated in Hyndman and
 Billah (2003).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>THETA</span>(<span class='no'>formula</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>THETA</span>(<span class='kw'>formula</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -184,9 +184,10 @@ forecasts are then reseasonalized.</p>
     
 
 
-<h3>season</h3>
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>season</h3>
 <p>The <code>season</code> special is used to specify the parameters of the seasonal adjustment via classical decomposition.</p><pre>
-<span class='fu'><a href='https://rdrr.io/r/stats/window.html'>window</a></span>(<span class='kw'>period</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"multiplicative"</span>, <span class='st'>"additive"</span>))</pre>
+<span class='fu'><a href='https://rdrr.io/r/stats/window.html'>window</a></span>(period = <span class='kw'>NULL</span>, method = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"multiplicative"</span>, <span class='st'>"additive"</span>))
+</pre>
 
 <table class='table'>
 <tr><td><code>period</code></td><td>The periodic nature of the seasonality. This can be either a number indicating the number of observations in each seasonal period, or text to indicate the duration of the seasonal window (for example, annual seasonality would be "1 year").</td></tr>
@@ -202,6 +203,9 @@ a decomposition approach to forecasting. <em>International Journal of
 Forecasting</em> <b>16</b>, 521-530.</p>
 <p>Hyndman, R.J., and Billah, B. (2003) Unmasking the Theta method.
 <em>International J. Forecasting</em>, <b>19</b>, 287-290.</p>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Rob J Hyndman, Mitchell O'Hara-Wild</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -218,7 +222,7 @@ Forecasting</em> <b>16</b>, 521-530.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

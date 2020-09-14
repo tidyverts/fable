@@ -152,12 +152,12 @@
 
     <pre class="usage"><span class='co'># S3 method for VAR</span>
 <span class='fu'>forecast</span>(
-  <span class='no'>object</span>,
-  <span class='kw'>new_data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>specials</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>bootstrap</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>times</span> <span class='kw'>=</span> <span class='fl'>5000</span>,
-  <span class='no'>...</span>
+  <span class='kw'>object</span>,
+  new_data = <span class='kw'>NULL</span>,
+  specials = <span class='kw'>NULL</span>,
+  bootstrap = <span class='fl'>FALSE</span>,
+  times = <span class='fl'>5000</span>,
+  <span class='kw'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -194,12 +194,13 @@
     <p>A list of forecasts.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>lung_deaths</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span>(<span class='no'>mdeaths</span>, <span class='no'>fdeaths</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='kw'>pivot_longer</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+    <pre class="examples"><div class='input'><span class='kw'>lung_deaths</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span>(<span class='kw'>mdeaths</span>, <span class='kw'>fdeaths</span>) <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(pivot_longer = <span class='fl'>FALSE</span>)
 
-<span class='no'>lung_deaths</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='fu'><a href='VAR.html'>VAR</a></span>(<span class='fu'>vars</span>(<span class='no'>mdeaths</span>, <span class='no'>fdeaths</span>) ~ <span class='fu'><a href='AR.html'>AR</a></span>(<span class='fl'>3</span>))) <span class='kw'>%&gt;%</span>
-  <span class='fu'>forecast</span>()</div><div class='output co'>#&gt; <span style='color: #555555;'># A fable: 24 x 5 [1M]</span><span>
+<span class='kw'>lung_deaths</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>model</span>(<span class='fu'><a href='VAR.html'>VAR</a></span>(<span class='fu'><a href='https://dplyr.tidyverse.org/reference/vars.html'>vars</a></span>(<span class='kw'>mdeaths</span>, <span class='kw'>fdeaths</span>) <span class='op'>~</span> <span class='fu'><a href='AR.html'>AR</a></span>(<span class='fl'>3</span>))) <span class='op'>%&gt;%</span>
+  <span class='fu'>forecast</span>()
+</div><div class='output co'>#&gt; <span style='color: #555555;'># A fable: 24 x 5 [1M]</span><span>
 #&gt; </span><span style='color: #555555;'># Key:     .model [1]</span><span>
 #&gt;    .model                        index .distribution .mean_mdeaths .mean_fdeaths
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                         </span><span style='color: #555555;font-style: italic;'>&lt;mth&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;dist&gt;</span><span>         </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>         </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
@@ -229,7 +230,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

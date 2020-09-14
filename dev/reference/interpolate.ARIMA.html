@@ -151,7 +151,7 @@
     </div>
 
     <pre class="usage"><span class='co'># S3 method for ARIMA</span>
-<span class='fu'>interpolate</span>(<span class='no'>object</span>, <span class='no'>new_data</span>, <span class='no'>specials</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>interpolate</span>(<span class='kw'>object</span>, <span class='kw'>new_data</span>, <span class='kw'>specials</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -179,11 +179,12 @@
     <p>A tibble of the same dimension of <code>new_data</code> with missing values interpolated.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibbledata</span>)
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='http://tsibbledata.tidyverts.org'>tsibbledata</a></span>)
 
-<span class='no'>olympic_running</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='kw'>arima</span> <span class='kw'>=</span> <span class='fu'><a href='ARIMA.html'>ARIMA</a></span>(<span class='no'>Time</span> ~ <span class='fu'>trend</span>())) <span class='kw'>%&gt;%</span>
-  <span class='fu'>interpolate</span>(<span class='no'>olympic_running</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tsibble: 312 x 4 [4Y]</span><span>
+<span class='kw'>olympic_running</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>model</span>(arima = <span class='fu'><a href='ARIMA.html'>ARIMA</a></span>(<span class='kw'>Time</span> <span class='op'>~</span> <span class='fu'>trend</span>())) <span class='op'>%&gt;%</span>
+  <span class='fu'>interpolate</span>(<span class='kw'>olympic_running</span>)
+</div><div class='output co'>#&gt; <span style='color: #555555;'># A tsibble: 312 x 4 [4Y]</span><span>
 #&gt; </span><span style='color: #555555;'># Key:       Length, Sex [14]</span><span>
 #&gt;    Length Sex    Year  Time
 #&gt;     </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
@@ -213,7 +214,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

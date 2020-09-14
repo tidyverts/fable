@@ -151,7 +151,7 @@
     </div>
 
     <pre class="usage"><span class='co'># S3 method for NNETAR</span>
-<span class='fu'><a href='https://rdrr.io/r/stats/residuals.html'>residuals</a></span>(<span class='no'>object</span>, <span class='no'>...</span>)</pre>
+<span class='fu'><a href='https://rdrr.io/r/stats/residuals.html'>residuals</a></span>(<span class='kw'>object</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -171,21 +171,22 @@
     <p>A vector of fitted residuals.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='no'>airmiles</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='kw'>nn</span> <span class='kw'>=</span> <span class='fu'><a href='NNETAR.html'>NNETAR</a></span>(<span class='fu'>box_cox</span>(<span class='no'>value</span>, <span class='fl'>0.15</span>))) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/r/stats/residuals.html'>residuals</a></span>()</div><div class='output co'>#&gt; <span style='color: #555555;'># A tsibble: 24 x 3 [1Y]</span><span>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='kw'>airmiles</span>) <span class='op'>%&gt;%</span>
+  <span class='fu'>model</span>(nn = <span class='fu'><a href='NNETAR.html'>NNETAR</a></span>(<span class='fu'>box_cox</span>(<span class='kw'>value</span>, <span class='fl'>0.15</span>))) <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/stats/residuals.html'>residuals</a></span>()
+</div><div class='output co'>#&gt; <span style='color: #555555;'># A tsibble: 24 x 3 [1Y]</span><span>
 #&gt; </span><span style='color: #555555;'># Key:       .model [1]</span><span>
 #&gt;    .model index  .resid
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; </span><span style='color: #555555;'> 1</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>937 </span><span style='color: #BB0000;'>NA</span><span>     
-#&gt; </span><span style='color: #555555;'> 2</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>938 -</span><span style='color: #BB0000;'>0.446</span><span> 
-#&gt; </span><span style='color: #555555;'> 3</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>939  0.109 
-#&gt; </span><span style='color: #555555;'> 4</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>940  0.420 
-#&gt; </span><span style='color: #555555;'> 5</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>941  0.056</span><span style='text-decoration: underline;'>1</span><span>
-#&gt; </span><span style='color: #555555;'> 6</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>942 -</span><span style='color: #BB0000;'>0.665</span><span> 
-#&gt; </span><span style='color: #555555;'> 7</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>943 -</span><span style='color: #BB0000;'>0.309</span><span> 
-#&gt; </span><span style='color: #555555;'> 8</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>944  0.156 
-#&gt; </span><span style='color: #555555;'> 9</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>945  0.682 
+#&gt; </span><span style='color: #555555;'> 2</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>938 -</span><span style='color: #BB0000;'>0.444</span><span> 
+#&gt; </span><span style='color: #555555;'> 3</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>939  0.110 
+#&gt; </span><span style='color: #555555;'> 4</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>940  0.421 
+#&gt; </span><span style='color: #555555;'> 5</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>941  0.055</span><span style='text-decoration: underline;'>7</span><span>
+#&gt; </span><span style='color: #555555;'> 6</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>942 -</span><span style='color: #BB0000;'>0.666</span><span> 
+#&gt; </span><span style='color: #555555;'> 7</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>943 -</span><span style='color: #BB0000;'>0.310</span><span> 
+#&gt; </span><span style='color: #555555;'> 8</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>944  0.155 
+#&gt; </span><span style='color: #555555;'> 9</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>945  0.680 
 #&gt; </span><span style='color: #555555;'>10</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>946  1.26  
 #&gt; </span><span style='color: #555555;'># … with 14 more rows</span><span></div></span></pre>
   </div>
@@ -203,7 +204,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

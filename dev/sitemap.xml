@@ -103,6 +103,9 @@
     <loc>https://fable.tidyverts.org/reference/forecast.model_mean.html</loc>
   </url>
   <url>
+    <loc>https://fable.tidyverts.org/reference/generate.AR.html</loc>
+  </url>
+  <url>
     <loc>https://fable.tidyverts.org/reference/generate.ARIMA.html</loc>
   </url>
   <url>

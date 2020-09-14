@@ -152,12 +152,12 @@
 
     <pre class="usage"><span class='co'># S3 method for model_mean</span>
 <span class='fu'>forecast</span>(
-  <span class='no'>object</span>,
-  <span class='no'>new_data</span>,
-  <span class='kw'>specials</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>bootstrap</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>times</span> <span class='kw'>=</span> <span class='fl'>5000</span>,
-  <span class='no'>...</span>
+  <span class='kw'>object</span>,
+  <span class='kw'>new_data</span>,
+  specials = <span class='kw'>NULL</span>,
+  bootstrap = <span class='fl'>FALSE</span>,
+  times = <span class='fl'>5000</span>,
+  <span class='kw'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -194,10 +194,11 @@
     <p>A list of forecasts.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibbledata</span>)
-<span class='no'>vic_elec</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='kw'>avg</span> <span class='kw'>=</span> <span class='fu'><a href='MEAN.html'>MEAN</a></span>(<span class='no'>Demand</span>)) <span class='kw'>%&gt;%</span>
-  <span class='fu'>forecast</span>()</div><div class='output co'>#&gt; <span style='color: #555555;'># A fable: 4 x 4 [30m] &lt;Australia/Melbourne&gt;</span><span>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='http://tsibbledata.tidyverts.org'>tsibbledata</a></span>)
+<span class='kw'>vic_elec</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>model</span>(avg = <span class='fu'><a href='MEAN.html'>MEAN</a></span>(<span class='kw'>Demand</span>)) <span class='op'>%&gt;%</span>
+  <span class='fu'>forecast</span>()
+</div><div class='output co'>#&gt; <span style='color: #555555;'># A fable: 4 x 4 [30m] &lt;Australia/Melbourne&gt;</span><span>
 #&gt; </span><span style='color: #555555;'># Key:     .model [1]</span><span>
 #&gt;   .model Time                         Demand .mean
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>                       </span><span style='color: #555555;font-style: italic;'>&lt;dist&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
@@ -220,7 +221,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

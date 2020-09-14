@@ -152,7 +152,7 @@ the model formulae interface." />
 the model formulae interface.</p>
     </div>
 
-    <pre class="usage"><span class='no'>common_xregs</span></pre>
+    <pre class="usage"><span class='kw'>common_xregs</span></pre>
 
 
     <h2 class="hasAnchor" id="specials"><a class="anchor" href="#specials"></a>Specials</h2>
@@ -160,9 +160,10 @@ the model formulae interface.</p>
     
 
 
-<h3>trend</h3>
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>trend</h3>
 <p>The <code>trend</code> special includes common linear trend regressors in the model. It also supports piecewise linear trend via the <code>knots</code> argument.</p><pre>
-<span class='fu'>trend</span>(<span class='kw'>knots</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>origin</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+<span class='fu'>trend</span>(knots = <span class='kw'>NULL</span>, origin = <span class='kw'>NULL</span>)
+</pre>
 
 <table class='table'>
 <tr><td><code>knots</code></td><td>A vector of times (same class as the data's time index) identifying the position of knots for a piecewise linear trend.</td></tr>
@@ -171,9 +172,10 @@ the model formulae interface.</p>
 
 
 
-<h3>season</h3>
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>season</h3>
 <p>The <code>season</code> special includes seasonal dummy variables in the model.</p><pre>
-<span class='fu'>season</span>(<span class='kw'>period</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+<span class='fu'>season</span>(period = <span class='kw'>NULL</span>)
+</pre>
 
 <table class='table'>
 <tr><td><code>period</code></td><td>The periodic nature of the seasonality. This can be either a number indicating the number of observations in each seasonal period, or text to indicate the duration of the seasonal window (for example, annual seasonality would be "1 year").</td></tr>
@@ -181,9 +183,10 @@ the model formulae interface.</p>
 
 
 
-<h3>fourier</h3>
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>fourier</h3>
 <p>The <code>fourier</code> special includes seasonal fourier terms in the model. The maximum order of the fourier terms must be specified using <code>K</code>.</p><pre>
-<span class='fu'>fourier</span>(<span class='kw'>period</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>K</span>, <span class='kw'>origin</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+<span class='fu'>fourier</span>(period = <span class='kw'>NULL</span>, <span class='kw'>K</span>, origin = <span class='kw'>NULL</span>)
+</pre>
 
 <table class='table'>
 <tr><td><code>period</code></td><td>The periodic nature of the seasonality. This can be either a number indicating the number of observations in each seasonal period, or text to indicate the duration of the seasonal window (for example, annual seasonality would be "1 year").</td></tr>
@@ -209,7 +212,7 @@ the model formulae interface.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -151,13 +151,13 @@
     </div>
 
     <pre class="usage"><span class='fu'>ETS</span>(
-  <span class='no'>formula</span>,
-  <span class='kw'>opt_crit</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"lik"</span>, <span class='st'>"amse"</span>, <span class='st'>"mse"</span>, <span class='st'>"sigma"</span>, <span class='st'>"mae"</span>),
-  <span class='kw'>nmse</span> <span class='kw'>=</span> <span class='fl'>3</span>,
-  <span class='kw'>bounds</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"both"</span>, <span class='st'>"usual"</span>, <span class='st'>"admissible"</span>),
-  <span class='kw'>ic</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"aicc"</span>, <span class='st'>"aic"</span>, <span class='st'>"bic"</span>),
-  <span class='kw'>restrict</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='no'>...</span>
+  <span class='kw'>formula</span>,
+  opt_crit = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"lik"</span>, <span class='st'>"amse"</span>, <span class='st'>"mse"</span>, <span class='st'>"sigma"</span>, <span class='st'>"mae"</span>),
+  nmse = <span class='fl'>3</span>,
+  bounds = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"both"</span>, <span class='st'>"usual"</span>, <span class='st'>"admissible"</span>),
+  ic = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"aicc"</span>, <span class='st'>"aic"</span>, <span class='st'>"bic"</span>),
+  restrict = <span class='fl'>TRUE</span>,
+  <span class='kw'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -218,12 +218,13 @@ data. (See Hyndman, et al, 2002, below.)</p>
 <p>The <em>specials</em> define the methods and parameters for the components (error, trend, and seasonality) of an ETS model. If more than one method is specified, <code>ETS</code> will consider all combinations of the specified models and select the model which best fits the data (minimising <code>ic</code>). The method argument for each specials have reasonable defaults, so if a component is not specified an appropriate method will be chosen automatically.</p>
 <p>There are a couple of limitations to note about ETS models:</p><ul>
 <li><p>It does not support exogenous regressors.</p></li>
-<li><p>It does not support missing values. You can complete missing values in the data with imputed values (e.g. with <code><a href='https://tidyr.tidyverse.org/reference/fill.html'>tidyr::fill()</a></code>, or by fitting a different model type and then calling <code><a href='https://fabletools.tidyverts.org/reference/reexports.html'>fabletools::interpolate()</a></code>) before fitting the model.</p></li>
+<li><p>It does not support missing values. You can complete missing values in the data with imputed values (e.g. with <code><a href='https://tidyr.tidyverse.org/reference/fill.html'>tidyr::fill()</a></code>, or by fitting a different model type and then calling <code><a href='https://rdrr.io/pkg/generics/man/interpolate.html'>fabletools::interpolate()</a></code>) before fitting the model.</p></li>
 </ul>
 
-<h3>error</h3>
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>error</h3>
 <p>The <code>error</code> special is used to specify the form of the error term.</p><pre>
-<span class='fu'>error</span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"A"</span>, <span class='st'>"M"</span>))</pre>
+<span class='fu'>error</span>(method = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"A"</span>, <span class='st'>"M"</span>))
+</pre>
 
 <table class='table'>
 <tr><td><code>method</code></td><td>The form of the error term: either additive ("A") or multiplicative ("M"). If the error is multiplicative, the data must be non-negative. All specified methods are tested on the data, and the one that gives the best fit (lowest <code>ic</code>) will be kept.</td></tr>
@@ -231,12 +232,13 @@ data. (See Hyndman, et al, 2002, below.)</p>
 
 
 
-<h3>trend</h3>
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>trend</h3>
 <p>The <code>trend</code> special is used to specify the form of the trend term and associated parameters.</p><pre>
-<span class='fu'>trend</span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"N"</span>, <span class='st'>"A"</span>, <span class='st'>"Ad"</span>),
-      <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>alpha_range</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1e-04</span>, <span class='fl'>0.9999</span>),
-      <span class='kw'>beta</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>beta_range</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1e-04</span>, <span class='fl'>0.9999</span>),
-      <span class='kw'>phi</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>phi_range</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.8</span>, <span class='fl'>0.98</span>))</pre>
+<span class='fu'>trend</span>(method = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"N"</span>, <span class='st'>"A"</span>, <span class='st'>"Ad"</span>),
+      alpha = <span class='kw'>NULL</span>, alpha_range = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1e-04</span>, <span class='fl'>0.9999</span>),
+      beta = <span class='kw'>NULL</span>, beta_range = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1e-04</span>, <span class='fl'>0.9999</span>),
+      phi = <span class='kw'>NULL</span>, phi_range = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.8</span>, <span class='fl'>0.98</span>))
+</pre>
 
 <table class='table'>
 <tr><td><code>method</code></td><td>The form of the trend term: either none ("N"), additive ("A"), multiplicative ("M") or damped variants ("Ad", "Md"). All specified methods are tested on the data, and the one that gives the best fit (lowest <code>ic</code>) will be kept.</td></tr>
@@ -250,10 +252,11 @@ data. (See Hyndman, et al, 2002, below.)</p>
 
 
 
-<h3>season</h3>
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>season</h3>
 <p>The <code>season</code> special is used to specify the form of the seasonal term and associated parameters. To specify a nonseasonal model you would include <code>season(method = "N")</code>.</p><pre>
-<span class='fu'>season</span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"N"</span>, <span class='st'>"A"</span>, <span class='st'>"M"</span>), <span class='kw'>period</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-       <span class='kw'>gamma</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>gamma_range</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1e-04</span>, <span class='fl'>0.9999</span>))</pre>
+<span class='fu'>season</span>(method = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"N"</span>, <span class='st'>"A"</span>, <span class='st'>"M"</span>), period = <span class='kw'>NULL</span>,
+       gamma = <span class='kw'>NULL</span>, gamma_range = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1e-04</span>, <span class='fl'>0.9999</span>))
+</pre>
 
 <table class='table'>
 <tr><td><code>method</code></td><td>The form of the seasonal term: either none ("N"), additive ("A") or multiplicative ("M"). All specified methods are tested on the data, and the one that gives the best fit (lowest <code>ic</code>) will be kept.</td></tr>
@@ -281,8 +284,9 @@ Springer-Verlag. <a href='http://www.exponentialsmoothing.net'>http://www.expone
     <div class='dont-index'><p><a href='https://otexts.com/fpp3/expsmooth.html'>Forecasting: Principles and Practices, Exponential smoothing (chapter 8)</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='no'>USAccDeaths</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='fu'>ETS</span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>value</span>) ~ <span class='fu'>season</span>(<span class='st'>"A"</span>)))</div><div class='output co'>#&gt; <span style='color: #555555;'># A mable: 1 x 1</span><span>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='kw'>USAccDeaths</span>) <span class='op'>%&gt;%</span>
+  <span class='fu'>model</span>(<span class='fu'>ETS</span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='kw'>value</span>) <span class='op'>~</span> <span class='fu'>season</span>(<span class='st'>"A"</span>)))
+</div><div class='output co'>#&gt; <span style='color: #555555;'># A mable: 1 x 1</span><span>
 #&gt;   `ETS(log(value) ~ season("A"))`
 #&gt;                           </span><span style='color: #555555;font-style: italic;'>&lt;model&gt;</span><span>
 #&gt; </span><span style='color: #555555;'>1</span><span>                    &lt;ETS(A,A,A)&gt;</div></span></pre>
@@ -301,7 +305,7 @@ Springer-Verlag. <a href='http://www.exponentialsmoothing.net'>http://www.expone
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

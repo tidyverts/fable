@@ -151,10 +151,10 @@
     </div>
 
     <pre class="usage"><span class='fu'>CROSTON</span>(
-  <span class='no'>formula</span>,
-  <span class='kw'>opt_crit</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"mse"</span>, <span class='st'>"mae"</span>),
-  <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"croston"</span>, <span class='st'>"sba"</span>, <span class='st'>"sbj"</span>),
-  <span class='no'>...</span>
+  <span class='kw'>formula</span>,
+  opt_crit = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"mse"</span>, <span class='st'>"mae"</span>),
+  type = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"croston"</span>, <span class='st'>"sba"</span>, <span class='st'>"sbj"</span>),
+  <span class='kw'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -200,9 +200,10 @@ the interval SES application.</p>
     
 
 
-<h3>demand</h3>
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>demand</h3>
 <p>The <code>demand</code> special specifies parameters for the demand SES application.</p><pre>
-<span class='fu'>demand</span>(<span class='kw'>initial</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>param</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>param_range</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>))</pre>
+<span class='fu'>demand</span>(initial = <span class='kw'>NULL</span>, param = <span class='kw'>NULL</span>, param_range = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>))
+</pre>
 
 <table class='table'>
 <tr><td><code>initial</code></td><td>The initial value for the demand application of SES.</td></tr>
@@ -212,9 +213,10 @@ the interval SES application.</p>
 
 
 
-<h3>interval</h3>
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>interval</h3>
 <p>The <code>interval</code> special specifies parameters for the interval SES application.</p><pre>
-<span class='fu'><a href='https://tsibble.tidyverts.org/reference/regular.html'>interval</a></span>(<span class='kw'>initial</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>param</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>param_range</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>))</pre>
+<span class='fu'><a href='https://tsibble.tidyverts.org/reference/regular.html'>interval</a></span>(initial = <span class='kw'>NULL</span>, param = <span class='kw'>NULL</span>, param_range = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>))
+</pre>
 
 <table class='table'>
 <tr><td><code>initial</code></td><td>The initial value for the interval application of SES.</td></tr>
@@ -237,19 +239,21 @@ selection". <em>International Journal of Production Economics</em>, <b>156</b>,
 180-190. <a href='http://dx.doi.org/10.1016/j.ijpe.2014.06.007'>http://dx.doi.org/10.1016/j.ijpe.2014.06.007</a>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibble</span>)
-<span class='no'>sim_poisson</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://tsibble.tidyverts.org/reference/tsibble.html'>tsibble</a></span>(
-  <span class='kw'>time</span> <span class='kw'>=</span> <span class='fu'><a href='https://tsibble.tidyverts.org/reference/year-month.html'>yearmonth</a></span>(<span class='st'>"2012 Dec"</span>) + <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq_len</a></span>(<span class='fl'>24</span>),
-  <span class='kw'>count</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Poisson.html'>rpois</a></span>(<span class='fl'>24</span>, <span class='kw'>lambda</span> <span class='kw'>=</span> <span class='fl'>0.3</span>),
-  <span class='kw'>index</span> <span class='kw'>=</span> <span class='no'>time</span>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://tsibble.tidyverts.org'>tsibble</a></span>)
+<span class='kw'>sim_poisson</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://tsibble.tidyverts.org/reference/tsibble.html'>tsibble</a></span>(
+  time = <span class='fu'><a href='https://tsibble.tidyverts.org/reference/year-month.html'>yearmonth</a></span>(<span class='st'>"2012 Dec"</span>) <span class='op'>+</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq_len</a></span>(<span class='fl'>24</span>),
+  count = <span class='fu'><a href='https://rdrr.io/r/stats/Poisson.html'>rpois</a></span>(<span class='fl'>24</span>, lambda = <span class='fl'>0.3</span>),
+  index = <span class='kw'>time</span>
 )
 
-<span class='no'>sim_poisson</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>autoplot</span>(<span class='no'>count</span>)</div><div class='img'><img src='CROSTON-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='no'>sim_poisson</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='fu'>CROSTON</span>(<span class='no'>count</span>)) <span class='kw'>%&gt;%</span>
-  <span class='fu'>forecast</span>(<span class='kw'>h</span> <span class='kw'>=</span> <span class='st'>"2 years"</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>autoplot</span>(<span class='no'>sim_poisson</span>)</div><div class='img'><img src='CROSTON-2.png' alt='' width='700' height='433' /></div></pre>
+<span class='kw'>sim_poisson</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>autoplot</span>(<span class='kw'>count</span>)
+</div><div class='img'><img src='CROSTON-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='kw'>sim_poisson</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>model</span>(<span class='fu'>CROSTON</span>(<span class='kw'>count</span>)) <span class='op'>%&gt;%</span>
+  <span class='fu'>forecast</span>(h = <span class='st'>"2 years"</span>) <span class='op'>%&gt;%</span>
+  <span class='fu'>autoplot</span>(<span class='kw'>sim_poisson</span>)
+</div><div class='img'><img src='CROSTON-2.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -265,7 +269,7 @@ selection". <em>International Journal of Production Economics</em>, <b>156</b>,
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

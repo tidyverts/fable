@@ -157,15 +157,15 @@ framework.</p>
     </div>
 
     <pre class="usage"><span class='fu'>ARIMA</span>(
-  <span class='no'>formula</span>,
-  <span class='kw'>ic</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"aicc"</span>, <span class='st'>"aic"</span>, <span class='st'>"bic"</span>),
-  <span class='kw'>selection_metric</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>x</span>) <span class='no'>x</span><span class='kw'>[[</span><span class='no'>ic</span>]],
-  <span class='kw'>stepwise</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>greedy</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>approximation</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>order_constraint</span> <span class='kw'>=</span> <span class='no'>p</span> + <span class='no'>q</span> + <span class='no'>P</span> + <span class='no'>Q</span> <span class='kw'>&lt;=</span> <span class='fl'>6</span> <span class='kw'>&amp;</span> (<span class='no'>constant</span> + <span class='no'>d</span> + <span class='no'>D</span> <span class='kw'>&lt;=</span> <span class='fl'>2</span>),
-  <span class='kw'>unitroot_spec</span> <span class='kw'>=</span> <span class='fu'><a href='unitroot_options.html'>unitroot_options</a></span>(),
-  <span class='no'>...</span>
+  <span class='kw'>formula</span>,
+  ic = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"aicc"</span>, <span class='st'>"aic"</span>, <span class='st'>"bic"</span>),
+  selection_metric = <span class='fu'>function</span>(<span class='kw'>x</span>) <span class='kw'>x</span>[[<span class='kw'>ic</span>]],
+  stepwise = <span class='fl'>TRUE</span>,
+  greedy = <span class='fl'>TRUE</span>,
+  approximation = <span class='kw'>NULL</span>,
+  order_constraint = <span class='kw'>p</span> <span class='op'>+</span> <span class='kw'>q</span> <span class='op'>+</span> <span class='kw'>P</span> <span class='op'>+</span> <span class='kw'>Q</span> <span class='op'>&lt;=</span> <span class='fl'>6</span> <span class='op'>&amp;</span> (<span class='kw'>constant</span> <span class='op'>+</span> <span class='kw'>d</span> <span class='op'>+</span> <span class='kw'>D</span> <span class='op'>&lt;=</span> <span class='fl'>2</span>),
+  unitroot_spec = <span class='fu'><a href='unitroot_options.html'>unitroot_options</a></span>(),
+  <span class='kw'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -236,10 +236,11 @@ are equivalent, the coefficients for the constant/mean will differ.</p>
 
 <p>The <em>specials</em> define the space over which <code>ARIMA</code> will search for the model that best fits the data. If the RHS of <code>formula</code> is left blank, the default search space is given by <code>pdq() + PDQ()</code>: that is, a model with candidate seasonal and nonseasonal terms, but no exogenous regressors. Note that a seasonal model requires at least 2 full seasons' worth of data; if this is not available, <code>ARIMA</code> will revert to a nonseasonal model with a warning.</p>
 <p>To specify a model fully (avoid automatic selection), the intercept and <code>pdq()/PDQ()</code> values must be specified: for example <code>formula = response ~ 1 + pdq(1, 1, 1) + PDQ(1, 0, 0)</code>.</p>
-<h3>pdq</h3>
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>pdq</h3>
 <p>The <code>pdq</code> special is used to specify non-seasonal components of the model.</p><pre>
-<span class='fu'>pdq</span>(<span class='kw'>p</span> <span class='kw'>=</span> <span class='fl'>0</span>:<span class='fl'>5</span>, <span class='kw'>d</span> <span class='kw'>=</span> <span class='fl'>0</span>:<span class='fl'>2</span>, <span class='kw'>q</span> <span class='kw'>=</span> <span class='fl'>0</span>:<span class='fl'>5</span>,
-    <span class='kw'>p_init</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>q_init</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>fixed</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>())</pre>
+<span class='fu'>pdq</span>(p = <span class='fl'>0</span><span class='op'>:</span><span class='fl'>5</span>, d = <span class='fl'>0</span><span class='op'>:</span><span class='fl'>2</span>, q = <span class='fl'>0</span><span class='op'>:</span><span class='fl'>5</span>,
+    p_init = <span class='fl'>2</span>, q_init = <span class='fl'>2</span>, fixed = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>())
+</pre>
 
 <table class='table'>
 <tr><td><code>p</code></td><td>The order of the non-seasonal auto-regressive (AR) terms. If multiple values are provided, the one which minimises <code>ic</code> will be chosen.</td></tr>
@@ -252,10 +253,11 @@ are equivalent, the coefficients for the constant/mean will differ.</p>
 
 
 
-<h3>PDQ</h3>
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>PDQ</h3>
 <p>The <code>PDQ</code> special is used to specify seasonal components of the model. To force a nonseasonal fit, specify <code>PDQ(0, 0, 0)</code> in the RHS of the model formula. Note that simply omitting <code>PDQ</code> from the formula will <em>not</em> result in a nonseasonal fit.</p><pre>
-<span class='fu'>PDQ</span>(<span class='kw'>P</span> <span class='kw'>=</span> <span class='fl'>0</span>:<span class='fl'>2</span>, <span class='kw'>D</span> <span class='kw'>=</span> <span class='fl'>0</span>:<span class='fl'>1</span>, <span class='kw'>Q</span> <span class='kw'>=</span> <span class='fl'>0</span>:<span class='fl'>2</span>, <span class='kw'>period</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-    <span class='kw'>P_init</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>Q_init</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>fixed</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>())</pre>
+<span class='fu'>PDQ</span>(P = <span class='fl'>0</span><span class='op'>:</span><span class='fl'>2</span>, D = <span class='fl'>0</span><span class='op'>:</span><span class='fl'>1</span>, Q = <span class='fl'>0</span><span class='op'>:</span><span class='fl'>2</span>, period = <span class='kw'>NULL</span>,
+    P_init = <span class='fl'>1</span>, Q_init = <span class='fl'>1</span>, fixed = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>())
+</pre>
 
 <table class='table'>
 <tr><td><code>P</code></td><td>The order of the seasonal auto-regressive (SAR) terms. If multiple values are provided, the one which minimises <code>ic</code> will be chosen.</td></tr>
@@ -269,11 +271,12 @@ are equivalent, the coefficients for the constant/mean will differ.</p>
 
 
 
-<h3>xreg</h3>
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>xreg</h3>
 <p>Exogenous regressors can be included in an ARIMA model without explicitly using the <code>xreg()</code> special. Common exogenous regressor specials as specified in <code><a href='common_xregs.html'>common_xregs</a></code> can also be used. These regressors are handled using <code><a href='https://rdrr.io/r/stats/model.frame.html'>stats::model.frame()</a></code>, and so interactions and other functionality behaves similarly to <code><a href='https://rdrr.io/r/stats/lm.html'>stats::lm()</a></code>.</p>
 <p>The inclusion of a constant in the model follows the similar rules to <code><a href='https://rdrr.io/r/stats/lm.html'>stats::lm()</a></code>, where including <code>1</code> will add a constant and <code>0</code> or <code>-1</code> will remove the constant. If left out, the inclusion of a constant will be determined by minimising <code>ic</code>.</p>
 <pre>
-<span class='fu'>xreg</span>(<span class='no'>...</span>, <span class='kw'>fixed</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>())</pre>
+<span class='fu'>xreg</span>(<span class='kw'>...</span>, fixed = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>())
+</pre>
 
 <table class='table'>
 <tr><td><code>...</code></td><td>Bare expressions for the exogenous regressors (such as <code><a href='https://rdrr.io/r/base/Log.html'>log(x)</a></code>)</td></tr>
@@ -289,10 +292,11 @@ are equivalent, the coefficients for the constant/mean will differ.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Manual ARIMA specification</span>
-<span class='no'>USAccDeaths</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='kw'>arima</span> <span class='kw'>=</span> <span class='fu'>ARIMA</span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>value</span>) ~ <span class='fl'>0</span> + <span class='fu'>pdq</span>(<span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span>) + <span class='fu'>PDQ</span>(<span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span>))) <span class='kw'>%&gt;%</span>
-  <span class='fu'>report</span>()</div><div class='output co'>#&gt; Series: value 
+<span class='kw'>USAccDeaths</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>() <span class='op'>%&gt;%</span>
+  <span class='fu'>model</span>(arima = <span class='fu'>ARIMA</span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='kw'>value</span>) <span class='op'>~</span> <span class='fl'>0</span> <span class='op'>+</span> <span class='fu'>pdq</span>(<span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span>) <span class='op'>+</span> <span class='fu'>PDQ</span>(<span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span>))) <span class='op'>%&gt;%</span>
+  <span class='fu'>report</span>()
+</div><div class='output co'>#&gt; Series: value 
 #&gt; Model: ARIMA(0,1,1)(0,1,1)[12] 
 #&gt; Transformation: log(.x) 
 #&gt; 
@@ -304,15 +308,17 @@ are equivalent, the coefficients for the constant/mean will differ.</p>
 #&gt; sigma^2 estimated as 0.001379:  log likelihood=109.31
 #&gt; AIC=-212.63   AICc=-212.19   BIC=-206.39</div><div class='input'>
 <span class='co'># Automatic ARIMA specification</span>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibble</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)</div><div class='output co'>#&gt; <span class='message'></span>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://tsibble.tidyverts.org'>tsibble</a></span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://dplyr.tidyverse.org'>dplyr</a></span>)
+</div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>Attaching package: ‘dplyr’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:stats’:</span>
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    filter, lag</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
 #&gt; <span class='message'></span>
-#&gt; <span class='message'>    intersect, lag, setdiff, setequal, union</span></div><div class='input'><span class='kw pkg'>tsibbledata</span><span class='kw ns'>::</span><span class='no'><a href='https://tsibbledata.tidyverts.org/reference/global_economy.html'>global_economy</a></span> <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>Country</span> <span class='kw'>==</span> <span class='st'>"Australia"</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='fu'>ARIMA</span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>GDP</span>) ~ <span class='no'>Population</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: NaNs produced</span></div><div class='output co'>#&gt; <span style='color: #555555;'># A mable: 1 x 2</span><span>
+#&gt; <span class='message'>    intersect, lag, setdiff, setequal, union</span></div><div class='input'><span class='kw'>tsibbledata</span>::<span class='kw'><a href='https://tsibbledata.tidyverts.org/reference/global_economy.html'>global_economy</a></span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='kw'>Country</span> <span class='op'>==</span> <span class='st'>"Australia"</span>) <span class='op'>%&gt;%</span>
+  <span class='fu'>model</span>(<span class='fu'>ARIMA</span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='kw'>GDP</span>) <span class='op'>~</span> <span class='kw'>Population</span>))
+</div><div class='output co'>#&gt; <span class='warning'>Warning: NaNs produced</span></div><div class='output co'>#&gt; <span style='color: #555555;'># A mable: 1 x 2</span><span>
 #&gt; </span><span style='color: #555555;'># Key:     Country [1]</span><span>
 #&gt;   Country   `ARIMA(log(GDP) ~ Population)`
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>                            </span><span style='color: #555555;font-style: italic;'>&lt;model&gt;</span><span>
@@ -332,7 +338,7 @@ are equivalent, the coefficients for the constant/mean will differ.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

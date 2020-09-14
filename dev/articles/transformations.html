@@ -108,11 +108,12 @@
     
     
 <p>All fable models with formula-based model specification support a highly flexible specification of transformations. Specified transformations are automatically back-transformed and bias adjusted to produce forecast means and fitted values on the original scale of the data.</p>
-<p>The transformation used for the model is defined on the left of the tilde (<code>~</code>) in the formula. For example, when forecasting Melbourne <code>Trips</code> from the <code><a href="https://tsibble.tidyverts.org/reference/tourism.html">tsibble::tourism</a></code> dataset, a square root transformation can applied using <code><a href="https://rdrr.io/r/base/MathFun.html">sqrt(Trips)</a></code>.</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">fable</span>)
+<p>The transformation used for the model is defined on the left of the tilde (<code><a href="https://rdrr.io/r/base/tilde.html">~</a></code>) in the formula. For example, when forecasting Melbourne <code>Trips</code> from the <code><a href="https://tsibble.tidyverts.org/reference/tourism.html">tsibble::tourism</a></code> dataset, a square root transformation can applied using <code><a href="https://rdrr.io/r/base/MathFun.html">sqrt(Trips)</a></code>.</p>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://fable.tidyverts.org">fable</a></span>)
 <span class="co">#&gt; Loading required package: fabletools</span>
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">tsibble</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">dplyr</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://tsibble.tidyverts.org">tsibble</a></span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://dplyr.tidyverse.org">dplyr</a></span>)
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Attaching package: 'dplyr'</span>
 <span class="co">#&gt; The following objects are masked from 'package:stats':</span>
@@ -121,9 +122,9 @@
 <span class="co">#&gt; The following objects are masked from 'package:base':</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;     intersect, setdiff, setequal, union</span>
-<span class="no">tourism</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="no">Region</span> <span class="kw">==</span> <span class="st">"Melbourne"</span>) <span class="kw">%&gt;%</span>
-  <span class="fu">model</span>(<span class="fu"><a href="../reference/ETS.html">ETS</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span>(<span class="no">Trips</span>)))
+<span class="kw">tourism</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="kw">Region</span> <span class="op">==</span> <span class="st">"Melbourne"</span>) <span class="op">%&gt;%</span> 
+  <span class="fu">model</span>(<span class="fu"><a href="../reference/ETS.html">ETS</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span>(<span class="kw">Trips</span>)))
 <span class="co">#&gt; # A mable: 4 x 4</span>
 <span class="co">#&gt; # Key:     Region, State, Purpose [4]</span>
 <span class="co">#&gt;   Region    State    Purpose  `ETS(sqrt(Trips))`</span>
@@ -131,16 +132,18 @@
 <span class="co">#&gt; 1 Melbourne Victoria Business       &lt;ETS(A,N,A)&gt;</span>
 <span class="co">#&gt; 2 Melbourne Victoria Holiday        &lt;ETS(A,A,A)&gt;</span>
 <span class="co">#&gt; 3 Melbourne Victoria Other          &lt;ETS(A,N,N)&gt;</span>
-<span class="co">#&gt; 4 Melbourne Victoria Visiting       &lt;ETS(M,N,A)&gt;</span></pre></body></html></div>
+<span class="co">#&gt; 4 Melbourne Victoria Visiting       &lt;ETS(M,N,A)&gt;</span>
+</pre></div>
 <div id="combining-transformations" class="section level2">
 <h2 class="hasAnchor">
 <a href="#combining-transformations" class="anchor"></a>Combining transformations</h2>
 <p>Multiple transformations can be combined using this interface, allowing more complicated transformations to be used. A simple example of a combined transformation is <span class="math inline">\(f(x) = log(x+1)\)</span>, as it involves both a <code>log</code> transformation, and a <code>+1</code> transformation. This transformation is commonly used to overcome a limitation of using log transformations to preserve non-negativity, on data which contains zeroes.</p>
 <p>Simple combined transformations and backtransformations can be constructed automatically.</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">tsibble</span>)
-<span class="no">tourism</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="no">Region</span> <span class="kw">==</span> <span class="st">"Melbourne"</span>) <span class="kw">%&gt;%</span>
-  <span class="fu">model</span>(<span class="fu"><a href="../reference/ETS.html">ETS</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span>(<span class="no">Trips</span> + <span class="fl">1</span>)))
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://tsibble.tidyverts.org">tsibble</a></span>)
+<span class="kw">tourism</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="kw">Region</span> <span class="op">==</span> <span class="st">"Melbourne"</span>) <span class="op">%&gt;%</span> 
+  <span class="fu">model</span>(<span class="fu"><a href="../reference/ETS.html">ETS</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span>(<span class="kw">Trips</span> <span class="op">+</span> <span class="fl">1</span>)))
 <span class="co">#&gt; # A mable: 4 x 4</span>
 <span class="co">#&gt; # Key:     Region, State, Purpose [4]</span>
 <span class="co">#&gt;   Region    State    Purpose  `ETS(log(Trips + 1))`</span>
@@ -148,7 +151,8 @@
 <span class="co">#&gt; 1 Melbourne Victoria Business          &lt;ETS(A,N,A)&gt;</span>
 <span class="co">#&gt; 2 Melbourne Victoria Holiday           &lt;ETS(M,A,A)&gt;</span>
 <span class="co">#&gt; 3 Melbourne Victoria Other             &lt;ETS(A,N,N)&gt;</span>
-<span class="co">#&gt; 4 Melbourne Victoria Visiting          &lt;ETS(M,N,A)&gt;</span></pre></body></html></div>
+<span class="co">#&gt; 4 Melbourne Victoria Visiting          &lt;ETS(M,N,A)&gt;</span>
+</pre></div>
 </div>
 <div id="custom-transformations" class="section level2">
 <h2 class="hasAnchor">
@@ -158,18 +162,21 @@
 <p><span class="math display">\[f(x) = \log\left(\dfrac{x-a}{b-x}\right)\]</span></p>
 <p>Inverting this transformation gives the appropriate back-transformation of:</p>
 <p><span class="math display">\[f^{-1}(x) = \dfrac{a + be^x}{1 + e^x} = \dfrac{(b-a)e^x}{1 + e^x} + a\]</span> To use this transformation for modelling, we can pair the transformation with its back transformation using the <code>new_transformation</code> function from <code>fabletools</code>. This function which accepts two inputs: first the transformation, and second the back-transformation.</p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="no">scaled_logit</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">x</span>, <span class="no">lower</span><span class="kw">=</span><span class="fl">0</span>, <span class="no">upper</span><span class="kw">=</span><span class="fl">1</span>){
-  <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span>((<span class="no">x</span>-<span class="no">lower</span>)/(<span class="no">upper</span>-<span class="no">x</span>))
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="kw">scaled_logit</span> <span class="op">&lt;-</span> <span class="fu">function</span>(<span class="kw">x</span>, <span class="kw">lower</span>=<span class="fl">0</span>, <span class="kw">upper</span>=<span class="fl">1</span>){
+  <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span>((<span class="kw">x</span><span class="op">-</span><span class="kw">lower</span>)<span class="op">/</span>(<span class="kw">upper</span><span class="op">-</span><span class="kw">x</span>))
 }
-<span class="no">inv_scaled_logit</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">x</span>, <span class="no">lower</span><span class="kw">=</span><span class="fl">0</span>, <span class="no">upper</span><span class="kw">=</span><span class="fl">1</span>){
-  (<span class="no">upper</span>-<span class="no">lower</span>)*<span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span>(<span class="no">x</span>)/(<span class="fl">1</span>+<span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span>(<span class="no">x</span>)) + <span class="no">lower</span>
+<span class="kw">inv_scaled_logit</span> <span class="op">&lt;-</span> <span class="fu">function</span>(<span class="kw">x</span>, <span class="kw">lower</span>=<span class="fl">0</span>, <span class="kw">upper</span>=<span class="fl">1</span>){
+  (<span class="kw">upper</span><span class="op">-</span><span class="kw">lower</span>)<span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span>(<span class="kw">x</span>)<span class="op">/</span>(<span class="fl">1</span><span class="op">+</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span>(<span class="kw">x</span>)) <span class="op">+</span> <span class="kw">lower</span>
 }
-<span class="no">my_scaled_logit</span> <span class="kw">&lt;-</span> <span class="fu">new_transformation</span>(<span class="no">scaled_logit</span>, <span class="no">inv_scaled_logit</span>)</pre></body></html></div>
+<span class="kw">my_scaled_logit</span> <span class="op">&lt;-</span> <span class="fu">new_transformation</span>(<span class="kw">scaled_logit</span>, <span class="kw">inv_scaled_logit</span>)
+</pre></div>
 <p>Once you define your transformation as above, it is ready to use anywhere you would normally use a transformation.</p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span>(<span class="no">mdeaths</span>, <span class="no">fdeaths</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://tsibble.tidyverts.org/reference/as-tsibble.html">as_tsibble</a></span>(<span class="kw">pivot_longer</span> <span class="kw">=</span> <span class="fl">FALSE</span>) <span class="kw">%&gt;%</span>
-  <span class="fu">model</span>(<span class="fu"><a href="../reference/ETS.html">ETS</a></span>(<span class="fu">my_scaled_logit</span>(<span class="no">mdeaths</span>, <span class="fl">750</span>, <span class="fl">3000</span>) ~
-              <span class="fu">error</span>(<span class="st">"A"</span>) + <span class="fu">trend</span>(<span class="st">"N"</span>) + <span class="fu">season</span>(<span class="st">"A"</span>))) <span class="kw">%&gt;%</span>
+<div class="sourceCode" id="cb4"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span>(<span class="kw">mdeaths</span>, <span class="kw">fdeaths</span>) <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://tsibble.tidyverts.org/reference/as-tsibble.html">as_tsibble</a></span>(pivot_longer = <span class="fl">FALSE</span>) <span class="op">%&gt;%</span> 
+  <span class="fu">model</span>(<span class="fu"><a href="../reference/ETS.html">ETS</a></span>(<span class="fu">my_scaled_logit</span>(<span class="kw">mdeaths</span>, <span class="fl">750</span>, <span class="fl">3000</span>) <span class="op">~</span>
+              <span class="fu">error</span>(<span class="st">"A"</span>) <span class="op">+</span> <span class="fu">trend</span>(<span class="st">"N"</span>) <span class="op">+</span> <span class="fu">season</span>(<span class="st">"A"</span>))) <span class="op">%&gt;%</span>
   <span class="fu">report</span>()
 <span class="co">#&gt; Series: mdeaths </span>
 <span class="co">#&gt; Model: ETS(A,N,A) </span>
@@ -187,7 +194,8 @@
 <span class="co">#&gt;   sigma^2:  0.1489</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;      AIC     AICc      BIC </span>
-<span class="co">#&gt; 185.2488 193.8202 219.3988</span></pre></body></html></div>
+<span class="co">#&gt; 185.2488 193.8202 219.3988</span>
+</pre></div>
 </div>
 <div id="forecast-means-and-medians" class="section level2">
 <h2 class="hasAnchor">
@@ -214,7 +222,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

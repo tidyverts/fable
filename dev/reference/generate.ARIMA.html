@@ -157,7 +157,7 @@ contains the <code>.innov</code> column, those values will be treated as innovat
     </div>
 
     <pre class="usage"><span class='co'># S3 method for ARIMA</span>
-<span class='fu'>generate</span>(<span class='no'>x</span>, <span class='no'>new_data</span>, <span class='no'>specials</span>, <span class='kw'>bootstrap</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>generate</span>(<span class='kw'>x</span>, <span class='kw'>new_data</span>, <span class='kw'>specials</span>, bootstrap = <span class='fl'>FALSE</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -189,22 +189,23 @@ contains the <code>.innov</code> column, those values will be treated as innovat
     <div class='dont-index'><p><code><a href='https://fabletools.tidyverts.org/reference/generate.mdl_df.html'>fabletools::generate.mdl_df</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>fable_fit</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='no'>USAccDeaths</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='kw'>model</span> <span class='kw'>=</span> <span class='fu'><a href='ARIMA.html'>ARIMA</a></span>(<span class='no'>value</span> ~ <span class='fl'>0</span> + <span class='fu'>pdq</span>(<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>1</span>) + <span class='fu'>PDQ</span>(<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>1</span>)))
-<span class='no'>fable_fit</span> <span class='kw'>%&gt;%</span> <span class='fu'>generate</span>(<span class='kw'>times</span> <span class='kw'>=</span> <span class='fl'>10</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tsibble: 240 x 4 [1M]</span><span>
+    <pre class="examples"><div class='input'><span class='kw'>fable_fit</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='kw'>USAccDeaths</span>) <span class='op'>%&gt;%</span>
+  <span class='fu'>model</span>(model = <span class='fu'><a href='ARIMA.html'>ARIMA</a></span>(<span class='kw'>value</span> <span class='op'>~</span> <span class='fl'>0</span> <span class='op'>+</span> <span class='fu'>pdq</span>(<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>1</span>) <span class='op'>+</span> <span class='fu'>PDQ</span>(<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>1</span>)))
+<span class='kw'>fable_fit</span> <span class='op'>%&gt;%</span> <span class='fu'>generate</span>(times = <span class='fl'>10</span>)
+</div><div class='output co'>#&gt; <span style='color: #555555;'># A tsibble: 240 x 4 [1M]</span><span>
 #&gt; </span><span style='color: #555555;'># Key:       .model, .rep [10]</span><span>
-#&gt;    .model    index .rep   .sim
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;mth&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> model  1979 Jan 1     </span><span style='text-decoration: underline;'>8</span><span>185.
-#&gt; </span><span style='color: #555555;'> 2</span><span> model  1979 Feb 1     </span><span style='text-decoration: underline;'>7</span><span>037.
-#&gt; </span><span style='color: #555555;'> 3</span><span> model  1979 Mar 1     </span><span style='text-decoration: underline;'>7</span><span>898.
-#&gt; </span><span style='color: #555555;'> 4</span><span> model  1979 Apr 1     </span><span style='text-decoration: underline;'>8</span><span>951.
-#&gt; </span><span style='color: #555555;'> 5</span><span> model  1979 May 1     </span><span style='text-decoration: underline;'>9</span><span>184.
-#&gt; </span><span style='color: #555555;'> 6</span><span> model  1979 Jun 1     </span><span style='text-decoration: underline;'>9</span><span>331.
-#&gt; </span><span style='color: #555555;'> 7</span><span> model  1979 Jul 1     </span><span style='text-decoration: underline;'>9</span><span>999.
-#&gt; </span><span style='color: #555555;'> 8</span><span> model  1979 Aug 1     </span><span style='text-decoration: underline;'>9</span><span>899.
-#&gt; </span><span style='color: #555555;'> 9</span><span> model  1979 Sep 1     </span><span style='text-decoration: underline;'>8</span><span>944.
-#&gt; </span><span style='color: #555555;'>10</span><span> model  1979 Oct 1     </span><span style='text-decoration: underline;'>9</span><span>727.
+#&gt;    .model    index .rep    .sim
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;mth&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> model  1979 Jan 1      </span><span style='text-decoration: underline;'>8</span><span>239.
+#&gt; </span><span style='color: #555555;'> 2</span><span> model  1979 Feb 1      </span><span style='text-decoration: underline;'>8</span><span>186.
+#&gt; </span><span style='color: #555555;'> 3</span><span> model  1979 Mar 1      </span><span style='text-decoration: underline;'>8</span><span>329.
+#&gt; </span><span style='color: #555555;'> 4</span><span> model  1979 Apr 1      </span><span style='text-decoration: underline;'>8</span><span>408.
+#&gt; </span><span style='color: #555555;'> 5</span><span> model  1979 May 1      </span><span style='text-decoration: underline;'>8</span><span>900.
+#&gt; </span><span style='color: #555555;'> 6</span><span> model  1979 Jun 1      </span><span style='text-decoration: underline;'>9</span><span>992.
+#&gt; </span><span style='color: #555555;'> 7</span><span> model  1979 Jul 1     </span><span style='text-decoration: underline;'>11</span><span>007.
+#&gt; </span><span style='color: #555555;'> 8</span><span> model  1979 Aug 1     </span><span style='text-decoration: underline;'>10</span><span>748.
+#&gt; </span><span style='color: #555555;'> 9</span><span> model  1979 Sep 1      </span><span style='text-decoration: underline;'>9</span><span>502.
+#&gt; </span><span style='color: #555555;'>10</span><span> model  1979 Oct 1     </span><span style='text-decoration: underline;'>10</span><span>566.
 #&gt; </span><span style='color: #555555;'># … with 230 more rows</span><span></div><div class='input'>
 </div></span></pre>
   </div>
@@ -222,7 +223,7 @@ contains the <code>.innov</code> column, those values will be treated as innovat
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
