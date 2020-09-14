@@ -186,6 +186,15 @@ estimate_ar <- function(x, p, xreg, constant, fixed) {
   E <- E * x_sd
   x <- x * x_sd
   
+  nx <- length(coef) - p
+  if (!is.null(xreg)) {
+    xcoef <- coef[seq_len(nx)]
+    xm <- drop(X[,seq_len(nx),drop=FALSE] %*% xcoef)
+  } else {
+    xm <- rep(0, nrow(new_data))
+  }
+  xm <- c(rep.int(NA_real_, p), xm)
+  
   # Output model
   structure(
     list(
@@ -193,6 +202,7 @@ estimate_ar <- function(x, p, xreg, constant, fixed) {
       coef.se = coef_se,
       fits = c(rep.int(NA_real_, p), YH),
       resid = c(rep.int(NA_real_, p), E),
+      reg_resid = x - xm*x_sd,
       last = x[(length(E)+1):length(x)],
       sigma2 = drop(varE),
       aic = aic,
@@ -212,9 +222,12 @@ estimate_ar <- function(x, p, xreg, constant, fixed) {
 #'   forecast()
 #' @export
 forecast.AR <- function(object, new_data = NULL, specials = NULL,
-                         bootstrap = FALSE, times = 5000, ...) {
+                        bootstrap = FALSE, times = 5000, ...) {
   if (bootstrap) {
-    abort("Bootstrapped forecasts for ARs are not yet implemented.")
+    sim <- map(seq_len(times), function(x) generate(object, new_data, specials, bootstrap = TRUE)[[".sim"]]) %>%
+      transpose() %>%
+      map(as.numeric)
+    return(distributional::dist_sample(sim))
   }
   
   h <- NROW(new_data)
@@ -246,6 +259,56 @@ forecast.AR <- function(object, new_data = NULL, specials = NULL,
   
   # Output forecasts
   distributional::dist_normal(fc, se)
+}
+
+#' @inherit generate.ARIMA
+#' @examples
+#' as_tsibble(lh) %>%
+#'   model(AR(value ~ order(3))) %>%
+#'   generate()
+#' @export
+generate.AR <- function(object, new_data = NULL, specials = NULL, 
+                        bootstrap = FALSE, ...) {
+  n <- length(object$last)
+  p <- object$p
+  coef <- object$coef
+  
+  # Get xreg
+  h <- max(map_int(key_data(new_data)[[".rows"]], length))
+  xreg <- specials$xreg[[1]]$xreg
+  if(object$constant){
+    xreg <- cbind(constant = rep(1, h), xreg)
+  }
+  
+  # Predict xreg
+  nx <- length(coef) - p
+  if (!is.null(xreg)) {
+    xcoef <- coef[seq_len(nx)]
+    xm <- drop(xreg %*% xcoef)
+  } else {
+    xm <- rep(0, nrow(new_data))
+  }
+  
+  ar <- coef[nx + seq_len(p)]
+  # Generate future innovations if missing
+  if(!(".innov" %in% names(new_data))){
+    if(bootstrap){
+      res <- residuals(x)
+      new_data$.innov <- sample(na.omit(res) - mean(res, na.rm = TRUE),
+                                nrow(new_data), replace = TRUE)
+    }
+    else{
+      new_data$.innov <- stats::rnorm(nrow(new_data), sd = sqrt(object$sigma2))
+    }
+  }
+  
+  new_data %>% 
+    group_by_key() %>% 
+    transmute(".sim" := stats::filter(
+      !!sym(".innov"), ar, method = "recursive", 
+      init = rev(object$reg_resid)[seq_along(ar)])) %>% 
+    dplyr::ungroup() %>% 
+    mutate(".sim" := as.numeric(!!sym(".sim") + !!xm))
 }
 
 #' Refit an AR model
