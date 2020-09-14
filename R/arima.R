@@ -254,7 +254,7 @@ This is generally discouraged, consider removing the constant or reducing the nu
       ar = c(max(pdq$p) > 0, pdq$d, 0, max(PDQ$P) > 0, PDQ$D, 0, constant[1]),
       ma = c(0, pdq$d, max(pdq$q) > 0, 0, PDQ$D, max(PDQ$Q) > 0, constant[1])
     )
-    step_order <- stats::na.omit(match(initial_opts, lapply(split(model_opts, seq_len(NROW(model_opts))), as.numeric)))
+    step_order <- unique(stats::na.omit(match(initial_opts, lapply(split(model_opts, seq_len(NROW(model_opts))), as.numeric))))
     initial <- TRUE
 
     # Stepwise search
