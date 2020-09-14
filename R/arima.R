@@ -194,7 +194,7 @@ train_arima <- function(.data, specials,
     }
     if(inherits(new, "Arima")){
       sm <- selection_metric(new) %||% Inf
-      if (sm < sm_best) {
+      if (sm < sm_best || is.null(best)) {
         best <<- new
         sm_best <<- sm
       }
