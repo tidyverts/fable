@@ -156,12 +156,12 @@ strength (via <code><a href='https://feasts.tidyverts.org/reference/feat_stl.htm
 threshold is used for determining seasonal required differences.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>unitroot_options</span>(
-  ndiffs_alpha = <span class='fl'>0.05</span>,
-  nsdiffs_alpha = <span class='fl'>0.05</span>,
-  ndiffs_pvalue = <span class='op'>~</span><span class='kw'>feasts</span>::<span class='fu'><a href='https://feasts.tidyverts.org/reference/unitroot.html'>unitroot_kpss</a></span>(<span class='kw'>.</span>)[<span class='st'>"kpss_pvalue"</span>],
-  nsdiffs_pvalue = <span class='fu'>ur_seasonal_strength</span>(<span class='fl'>0.64</span>)
-)</pre>
+    <pre class="usage"><span class='fu'>unitroot_options</span><span class='op'>(</span>
+  ndiffs_alpha <span class='op'>=</span> <span class='fl'>0.05</span>,
+  nsdiffs_alpha <span class='op'>=</span> <span class='fl'>0.05</span>,
+  ndiffs_pvalue <span class='op'>=</span> <span class='op'>~</span><span class='fu'>feasts</span><span class='fu'>::</span><span class='fu'><a href='https://feasts.tidyverts.org/reference/unitroot.html'>unitroot_kpss</a></span><span class='op'>(</span><span class='va'>.</span><span class='op'>)</span><span class='op'>[</span><span class='st'>"kpss_pvalue"</span><span class='op'>]</span>,
+  nsdiffs_pvalue <span class='op'>=</span> <span class='fu'>ur_seasonal_strength</span><span class='op'>(</span><span class='fl'>0.64</span><span class='op'>)</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

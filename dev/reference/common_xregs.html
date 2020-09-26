@@ -152,7 +152,7 @@ the model formulae interface." />
 the model formulae interface.</p>
     </div>
 
-    <pre class="usage"><span class='kw'>common_xregs</span></pre>
+    <pre class="usage"><span class='va'>common_xregs</span></pre>
 
 
     <h2 class="hasAnchor" id="specials"><a class="anchor" href="#specials"></a>Specials</h2>
@@ -162,7 +162,7 @@ the model formulae interface.</p>
 
 <h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>trend</h3>
 <p>The <code>trend</code> special includes common linear trend regressors in the model. It also supports piecewise linear trend via the <code>knots</code> argument.</p><pre>
-<span class='fu'>trend</span>(knots = <span class='kw'>NULL</span>, origin = <span class='kw'>NULL</span>)
+<span class='fu'>trend</span><span class='op'>(</span>knots <span class='op'>=</span> <span class='cn'>NULL</span>, origin <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 </pre>
 
 <table class='table'>
@@ -174,7 +174,7 @@ the model formulae interface.</p>
 
 <h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>season</h3>
 <p>The <code>season</code> special includes seasonal dummy variables in the model.</p><pre>
-<span class='fu'>season</span>(period = <span class='kw'>NULL</span>)
+<span class='fu'>season</span><span class='op'>(</span>period <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 </pre>
 
 <table class='table'>
@@ -185,7 +185,7 @@ the model formulae interface.</p>
 
 <h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>fourier</h3>
 <p>The <code>fourier</code> special includes seasonal fourier terms in the model. The maximum order of the fourier terms must be specified using <code>K</code>.</p><pre>
-<span class='fu'>fourier</span>(period = <span class='kw'>NULL</span>, <span class='kw'>K</span>, origin = <span class='kw'>NULL</span>)
+<span class='fu'>fourier</span><span class='op'>(</span>period <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>K</span>, origin <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 </pre>
 
 <table class='table'>

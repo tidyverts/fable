@@ -158,11 +158,11 @@ prediction intervals from an ARIMA(0,0,0)(0,1,0)m model where m is the
 seasonal period.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>RW</span>(<span class='kw'>formula</span>, <span class='kw'>...</span>)
+    <pre class="usage"><span class='fu'>RW</span><span class='op'>(</span><span class='va'>formula</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>NAIVE</span>(<span class='kw'>formula</span>, <span class='kw'>...</span>)
+<span class='fu'>NAIVE</span><span class='op'>(</span><span class='va'>formula</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>SNAIVE</span>(<span class='kw'>formula</span>, <span class='kw'>...</span>)</pre>
+<span class='fu'>SNAIVE</span><span class='op'>(</span><span class='va'>formula</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -198,7 +198,7 @@ where \(Z_t\) is a normal iid error.</p>
 <p>The <code>lag</code> special is used to specify the lag order for the random walk process.
 If left out, this special will automatically be included.</p>
 <pre>
-<span class='fu'><a href='https://dplyr.tidyverse.org/reference/lead-lag.html'>lag</a></span>(lag = <span class='kw'>NULL</span>)
+<span class='fu'><a href='https://dplyr.tidyverse.org/reference/lead-lag.html'>lag</a></span><span class='op'>(</span>lag <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 </pre>
 
 <table class='table'>
@@ -210,7 +210,7 @@ If left out, this special will automatically be included.</p>
 <h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>drift</h3>
 <p>The <code>drift</code> special can be used to include a drift/trend component into the model. By default, drift is not included unless <code>drift()</code> is included in the formula.</p>
 <pre>
-<span class='fu'>drift</span>(drift = <span class='fl'>TRUE</span>)
+<span class='fu'>drift</span><span class='op'>(</span>drift <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 </pre>
 
 <table class='table'>
@@ -224,21 +224,21 @@ If left out, this special will automatically be included.</p>
     <div class='dont-index'><p><a href='https://otexts.com/fpp3/simple-methods.html'>Forecasting: Principles and Practices, Some simple forecasting methods (section 3.2)</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='http://tsibbledata.tidyverts.org'>tsibbledata</a></span>)
-<span class='kw'>aus_production</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>model</span>(rw = <span class='fu'>RW</span>(<span class='kw'>Beer</span> <span class='op'>~</span> <span class='fu'>drift</span>()))
+    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://tsibbledata.tidyverts.org/'>tsibbledata</a></span><span class='op'>)</span>
+<span class='va'>aus_production</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>model</span><span class='op'>(</span>rw <span class='op'>=</span> <span class='fu'>RW</span><span class='op'>(</span><span class='va'>Beer</span> <span class='op'>~</span> <span class='fu'>drift</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span style='color: #555555;'># A mable: 1 x 1</span><span>
 #&gt;              rw
 #&gt;         </span><span style='color: #555555;font-style: italic;'>&lt;model&gt;</span><span>
 #&gt; </span><span style='color: #555555;'>1</span><span> &lt;RW w/ drift&gt;</div><div class='input'>
-<span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='kw'>Nile</span>) <span class='op'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='fu'>NAIVE</span>(<span class='kw'>value</span>))
+<span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span><span class='op'>(</span><span class='va'>Nile</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>model</span><span class='op'>(</span><span class='fu'>NAIVE</span><span class='op'>(</span><span class='va'>value</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; </span><span style='color: #555555;'># A mable: 1 x 1</span><span>
 #&gt;   `NAIVE(value)`
 #&gt;          </span><span style='color: #555555;font-style: italic;'>&lt;model&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span>        &lt;NAIVE&gt;</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='http://tsibbledata.tidyverts.org'>tsibbledata</a></span>)
-<span class='kw'>aus_production</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>model</span>(snaive = <span class='fu'>SNAIVE</span>(<span class='kw'>Beer</span> <span class='op'>~</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/lead-lag.html'>lag</a></span>(<span class='st'>"year"</span>)))
+#&gt; </span><span style='color: #555555;'>1</span><span>        &lt;NAIVE&gt;</div><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://tsibbledata.tidyverts.org/'>tsibbledata</a></span><span class='op'>)</span>
+<span class='va'>aus_production</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>model</span><span class='op'>(</span>snaive <span class='op'>=</span> <span class='fu'>SNAIVE</span><span class='op'>(</span><span class='va'>Beer</span> <span class='op'>~</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/lead-lag.html'>lag</a></span><span class='op'>(</span><span class='st'>"year"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; </span><span style='color: #555555;'># A mable: 1 x 1</span><span>
 #&gt;     snaive
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;model&gt;</span><span>

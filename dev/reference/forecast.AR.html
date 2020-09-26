@@ -151,14 +151,14 @@
     </div>
 
     <pre class="usage"><span class='co'># S3 method for AR</span>
-<span class='fu'>forecast</span>(
-  <span class='kw'>object</span>,
-  new_data = <span class='kw'>NULL</span>,
-  specials = <span class='kw'>NULL</span>,
-  bootstrap = <span class='fl'>FALSE</span>,
-  times = <span class='fl'>5000</span>,
-  <span class='kw'>...</span>
-)</pre>
+<span class='fu'>forecast</span><span class='op'>(</span>
+  <span class='va'>object</span>,
+  new_data <span class='op'>=</span> <span class='cn'>NULL</span>,
+  specials <span class='op'>=</span> <span class='cn'>NULL</span>,
+  bootstrap <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  times <span class='op'>=</span> <span class='fl'>5000</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -194,9 +194,9 @@
     <p>A list of forecasts.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='kw'>lh</span>) <span class='op'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='fu'><a href='AR.html'>AR</a></span>(<span class='kw'>value</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/order.html'>order</a></span>(<span class='fl'>3</span>))) <span class='op'>%&gt;%</span>
-  <span class='fu'>forecast</span>()
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span><span class='op'>(</span><span class='va'>lh</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>model</span><span class='op'>(</span><span class='fu'><a href='AR.html'>AR</a></span><span class='op'>(</span><span class='va'>value</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/order.html'>order</a></span><span class='op'>(</span><span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>forecast</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span style='color: #555555;'># A fable: 2 x 4 [1]</span><span>
 #&gt; </span><span style='color: #555555;'># Key:     .model [1]</span><span>
 #&gt;   .model               index        value .mean

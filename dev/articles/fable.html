@@ -107,18 +107,17 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://fable.tidyverts.org">fable</a></span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://tsibble.tidyverts.org">tsibble</a></span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://dplyr.tidyverse.org">dplyr</a></span>)
-</pre></div>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://fable.tidyverts.org">fable</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tsibble.tidyverts.org">tsibble</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span></pre></div>
 <p>The fable package provides some commonly used univariate and multivariate time series forecasting models which can be used with tidy temporal data in the tsibble format. These models are used within a consistent and tidy modelling framework, allowing several models to be estimated, compared, combined, forecasted and otherwise worked with across many time series.</p>
 <p>Suppose we wanted to forecast the number of domestic travellers to Melbourne, Australia. In the <code><a href="https://tsibble.tidyverts.org/reference/tourism.html">tsibble::tourism</a></code> data set, this can be further broken down into 4 reasons of travel: “business”, “holiday”, “visiting friends and relatives” and “other reasons”. The first observation from each series are shown below.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="kw">tourism_melb</span> <span class="op">&lt;-</span> <span class="kw">tourism</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="kw">Region</span> <span class="op">==</span> <span class="st">"Melbourne"</span>)
-<span class="kw">tourism_melb</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(<span class="kw">Purpose</span>) <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span>(<span class="fl">1</span>)
+<span class="va">tourism_melb</span> <span class="op">&lt;-</span> <span class="va">tourism</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">Region</span> <span class="op">==</span> <span class="st">"Melbourne"</span><span class="op">)</span>
+<span class="va">tourism_melb</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">Purpose</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
 <span class="co">#&gt; # A tsibble: 4 x 5 [1Q]</span>
 <span class="co">#&gt; # Key:       Region, State, Purpose [4]</span>
 <span class="co">#&gt; # Groups:    Purpose [4]</span>
@@ -127,23 +126,21 @@
 <span class="co">#&gt; 1 1998 Q1 Melbourne Victoria Business 405. </span>
 <span class="co">#&gt; 2 1998 Q1 Melbourne Victoria Holiday  428. </span>
 <span class="co">#&gt; 3 1998 Q1 Melbourne Victoria Other     79.9</span>
-<span class="co">#&gt; 4 1998 Q1 Melbourne Victoria Visiting 666.</span>
-</pre></div>
+<span class="co">#&gt; 4 1998 Q1 Melbourne Victoria Visiting 666.</span></pre></div>
 <p>The variable that we’d like to estimate is the number of overnight trips (in thousands) represented by the <code>Trips</code> variable. A plot of the data reveals that some trends and weak seasonality are apparent.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="kw">tourism_melb</span> <span class="op">%&gt;%</span>
-  <span class="fu">autoplot</span>(<span class="kw">Trips</span>)
-</pre></div>
+<span class="va">tourism_melb</span> <span class="op">%&gt;%</span>
+  <span class="fu">autoplot</span><span class="op">(</span><span class="va">Trips</span><span class="op">)</span></pre></div>
 <p><img src="fable_files/figure-html/plot-1.png" width="672"></p>
 <p>Two widely used models available in this package are ETS and ARIMA. These models are specified using a compact formula representation (much like cross-sectional linear models using <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code>). The response variable (<code>Trips</code>) and any transformations are included on the left, while the model specification is on the right of the formula. When a model is not fully specified (or if the formula’s right side is missing completely), the unspecified components will be chosen automatically.</p>
 <p>Suppose we think that the ETS model must have an additive trend, and want the other elements to be chosen automatically. This model would be specified using <code><a href="../reference/ETS.html">ETS(Trips ~ trend("A"))</a></code>. Similarly, a completely automatic ARIMA model (much like <code>auto.arima()</code> from the <code>forecast</code> package) can be specified using <code><a href="../reference/ARIMA.html">ARIMA(Trips)</a></code>. The <code>model()</code> function is used to estimate these model specifications on a particular dataset, and will return a “mable” (model table).</p>
 <div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="kw">fit</span> <span class="op">&lt;-</span> <span class="kw">tourism_melb</span> <span class="op">%&gt;%</span>
-  <span class="fu">model</span>(
-    ets = <span class="fu"><a href="../reference/ETS.html">ETS</a></span>(<span class="kw">Trips</span> <span class="op">~</span> <span class="fu">trend</span>(<span class="st">"A"</span>)),
-    arima = <span class="fu"><a href="../reference/ARIMA.html">ARIMA</a></span>(<span class="kw">Trips</span>)
-  )
-<span class="kw">fit</span>
+<span class="va">fit</span> <span class="op">&lt;-</span> <span class="va">tourism_melb</span> <span class="op">%&gt;%</span>
+  <span class="fu">model</span><span class="op">(</span>
+    ets <span class="op">=</span> <span class="fu"><a href="../reference/ETS.html">ETS</a></span><span class="op">(</span><span class="va">Trips</span> <span class="op">~</span> <span class="fu">trend</span><span class="op">(</span><span class="st">"A"</span><span class="op">)</span><span class="op">)</span>,
+    arima <span class="op">=</span> <span class="fu"><a href="../reference/ARIMA.html">ARIMA</a></span><span class="op">(</span><span class="va">Trips</span><span class="op">)</span>
+  <span class="op">)</span>
+<span class="va">fit</span>
 <span class="co">#&gt; # A mable: 4 x 5</span>
 <span class="co">#&gt; # Key:     Region, State, Purpose [4]</span>
 <span class="co">#&gt;   Region    State    Purpose           ets                             arima</span>
@@ -151,14 +148,13 @@
 <span class="co">#&gt; 1 Melbourne Victoria Business &lt;ETS(A,A,A)&gt; &lt;ARIMA(0,1,2)(1,0,1)[4] w/ drift&gt;</span>
 <span class="co">#&gt; 2 Melbourne Victoria Holiday  &lt;ETS(M,A,A)&gt;           &lt;ARIMA(0,1,1) w/ drift&gt;</span>
 <span class="co">#&gt; 3 Melbourne Victoria Other    &lt;ETS(A,A,N)&gt;           &lt;ARIMA(0,1,1) w/ drift&gt;</span>
-<span class="co">#&gt; 4 Melbourne Victoria Visiting &lt;ETS(M,A,A)&gt;          &lt;ARIMA(0,1,1)(1,0,2)[4]&gt;</span>
-</pre></div>
+<span class="co">#&gt; 4 Melbourne Victoria Visiting &lt;ETS(M,A,A)&gt;          &lt;ARIMA(0,1,1)(1,0,2)[4]&gt;</span></pre></div>
 <p>A mable contains a row for each time series (uniquely identified by the key variables), and a column for each model specification. A model is contained within the cells of each model column. In the example above we can see that the all four ETS models have an additive trend, and the error and seasonality have been chosen automatically. Similarly, the ARIMA model varies between time series as it has been automatically selected.</p>
 <p>The <code><a href="https://rdrr.io/r/stats/coef.html">coef()</a></code> or <code>tidy()</code> function is used to extract the coefficients from the models. It’s possible to use <code><a href="https://dplyr.tidyverse.org/reference/select.html">select()</a></code> and other verbs to focus on the coefficients from a particular model.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="kw">fit</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="kw">Region</span>, <span class="kw">State</span>, <span class="kw">Purpose</span>, <span class="kw">arima</span>) <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span>()
+<span class="va">fit</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">Region</span>, <span class="va">State</span>, <span class="va">Purpose</span>, <span class="va">arima</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 13 x 9</span>
 <span class="co">#&gt;    Region   State   Purpose  .model term   estimate std.error statistic  p.value</span>
 <span class="co">#&gt;    &lt;chr&gt;    &lt;chr&gt;   &lt;chr&gt;    &lt;chr&gt;  &lt;chr&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;</span>
@@ -174,12 +170,11 @@
 <span class="co">#&gt; 10 Melbour… Victor… Visiting arima  ma1      -0.838    0.0652   -12.8   5.03e-21</span>
 <span class="co">#&gt; 11 Melbour… Victor… Visiting arima  sar1      0.659    0.193      3.41  1.03e- 3</span>
 <span class="co">#&gt; 12 Melbour… Victor… Visiting arima  sma1     -0.402    0.206     -1.95  5.47e- 2</span>
-<span class="co">#&gt; 13 Melbour… Victor… Visiting arima  sma2      0.322    0.143      2.26  2.68e- 2</span>
-</pre></div>
+<span class="co">#&gt; 13 Melbour… Victor… Visiting arima  sma2      0.322    0.143      2.26  2.68e- 2</span></pre></div>
 <p>The <code>glance()</code> function provides a one-row summary of each model, and commonly includes descriptions of the model’s fit such as the residual variance and information criteria. Be wary though, as information criteria (AIC, AICc, BIC) are only comparable between the same model class and only if those models share the same response (after transformations and differencing).</p>
 <div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="kw">fit</span> <span class="op">%&gt;%</span>
-  <span class="fu">glance</span>()
+<span class="va">fit</span> <span class="op">%&gt;%</span>
+  <span class="fu">glance</span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 8 x 14</span>
 <span class="co">#&gt;   Region State Purpose .model  sigma2 log_lik   AIC  AICc   BIC   MSE  AMSE</span>
 <span class="co">#&gt;   &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;    &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
@@ -191,14 +186,13 @@
 <span class="co">#&gt; 6 Melbo… Vict… Other   arima  4.89e+2   -356.  718.  719.  725.   NA    NA </span>
 <span class="co">#&gt; 7 Melbo… Vict… Visiti… ets    1.09e-2   -503. 1024. 1026. 1045. 3714. 3860.</span>
 <span class="co">#&gt; 8 Melbo… Vict… Visiti… arima  4.24e+3   -442.  893.  894.  905.   NA    NA </span>
-<span class="co">#&gt; # … with 3 more variables: MAE &lt;dbl&gt;, ar_roots &lt;list&gt;, ma_roots &lt;list&gt;</span>
-</pre></div>
+<span class="co">#&gt; # … with 3 more variables: MAE &lt;dbl&gt;, ar_roots &lt;list&gt;, ma_roots &lt;list&gt;</span></pre></div>
 <p>If you’re working with a single model (or want to look at one model in particular), the <code>report()</code> function gives a familiar and nicely formatted model-specific display.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="kw">fit</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="kw">Purpose</span> <span class="op">==</span> <span class="st">"Holiday"</span>) <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="kw">ets</span>) <span class="op">%&gt;%</span>
-  <span class="fu">report</span>()
+<span class="va">fit</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">Purpose</span> <span class="op">==</span> <span class="st">"Holiday"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">ets</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">report</span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; Series: Trips </span>
 <span class="co">#&gt; Model: ETS(M,A,A) </span>
 <span class="co">#&gt;   Smoothing parameters:</span>
@@ -213,12 +207,11 @@
 <span class="co">#&gt;   sigma^2:  0.011</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;       AIC      AICc       BIC </span>
-<span class="co">#&gt;  991.7305  994.3020 1013.1688</span>
-</pre></div>
+<span class="co">#&gt;  991.7305  994.3020 1013.1688</span></pre></div>
 <p>The fitted values and residuals from a model can obtained using <code><a href="https://rdrr.io/r/stats/fitted.values.html">fitted()</a></code> and <code><a href="https://rdrr.io/r/stats/residuals.html">residuals()</a></code> respectively. Additionally, the <code>augment()</code> function may be more convenient, which provides the original data along with both fitted values and their residuals.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="kw">fit</span> <span class="op">%&gt;%</span>
-  <span class="fu">augment</span>()
+<span class="va">fit</span> <span class="op">%&gt;%</span>
+  <span class="fu">augment</span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; # A tsibble: 640 x 9 [1Q]</span>
 <span class="co">#&gt; # Key:       Region, State, Purpose, .model [8]</span>
 <span class="co">#&gt;    Region    State    Purpose  .model Quarter Trips .fitted  .resid  .innov</span>
@@ -233,13 +226,12 @@
 <span class="co">#&gt;  8 Melbourne Victoria Business ets    1999 Q4  426.    424.    1.49    1.49</span>
 <span class="co">#&gt;  9 Melbourne Victoria Business ets    2000 Q1  495.    364.  130.    130.  </span>
 <span class="co">#&gt; 10 Melbourne Victoria Business ets    2000 Q2  499.    477.   22.0    22.0 </span>
-<span class="co">#&gt; # … with 630 more rows</span>
-</pre></div>
+<span class="co">#&gt; # … with 630 more rows</span></pre></div>
 <p>To compare how well the models fit the data, we can consider some common accuracy measures. It seems that on the training set the ETS model out-performs ARIMA for the series where travellers are on holiday, business, and visiting friends and relatives. The <a href="https://otexts.com/fpp3/evaluation.html"><em>Evaluating modelling accuracy</em></a> chapter from the <a href="https://otexts.com/fpp3/"><em>Forecasting: Principles and Practices (3rd Ed.)</em></a> textbook provides more detail in how modelling and forecasting accuracy is evaluated.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit">
-<span class="kw">fit</span> <span class="op">%&gt;%</span>
-  <span class="fu">accuracy</span>() <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(<span class="kw">MASE</span>)
+<span class="va">fit</span> <span class="op">%&gt;%</span>
+  <span class="fu">accuracy</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">MASE</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 8 x 12</span>
 <span class="co">#&gt;   Region State Purpose .model .type     ME  RMSE   MAE    MPE  MAPE  MASE</span>
 <span class="co">#&gt;   &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
@@ -251,13 +243,12 @@
 <span class="co">#&gt; 6 Melbo… Vict… Other   ets    Trai… -0.142  21.7  17.0 -5.97  19.6  0.767</span>
 <span class="co">#&gt; 7 Melbo… Vict… Visiti… ets    Trai…  8.17   60.9  51.4  0.433  8.28 0.819</span>
 <span class="co">#&gt; 8 Melbo… Vict… Visiti… arima  Trai…  6.89   63.1  51.7  0.106  8.44 0.825</span>
-<span class="co">#&gt; # … with 1 more variable: ACF1 &lt;dbl&gt;</span>
-</pre></div>
+<span class="co">#&gt; # … with 1 more variable: ACF1 &lt;dbl&gt;</span></pre></div>
 <p>Forecasts from these models can be produced directly as our specified models do not require any additional data.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit">
-<span class="kw">fc</span> <span class="op">&lt;-</span> <span class="kw">fit</span> <span class="op">%&gt;%</span>
-  <span class="fu">forecast</span>(h = <span class="st">"5 years"</span>)
-<span class="kw">fc</span>
+<span class="va">fc</span> <span class="op">&lt;-</span> <span class="va">fit</span> <span class="op">%&gt;%</span>
+  <span class="fu">forecast</span><span class="op">(</span>h <span class="op">=</span> <span class="st">"5 years"</span><span class="op">)</span>
+<span class="va">fc</span>
 <span class="co">#&gt; # A fable: 160 x 7 [1Q]</span>
 <span class="co">#&gt; # Key:     Region, State, Purpose, .model [8]</span>
 <span class="co">#&gt;    Region    State    Purpose  .model Quarter        Trips .mean</span>
@@ -272,8 +263,7 @@
 <span class="co">#&gt;  8 Melbourne Victoria Business ets    2019 Q4 N(759, 6181)  759.</span>
 <span class="co">#&gt;  9 Melbourne Victoria Business ets    2020 Q1 N(710, 6786)  710.</span>
 <span class="co">#&gt; 10 Melbourne Victoria Business ets    2020 Q2 N(800, 7458)  800.</span>
-<span class="co">#&gt; # … with 150 more rows</span>
-</pre></div>
+<span class="co">#&gt; # … with 150 more rows</span></pre></div>
 <p>The resulting forecasts are contained in a “fable” (forecast table), and both point forecasts and forecast distributions are available in the table for the next five years. Confidence intervals can be extracted from the distribution using the <code>hilo()</code> function.</p>
 <!-- ```{r dist-hilo} -->
 <!-- fc %>% -->
@@ -281,8 +271,8 @@
 <!-- ``` -->
 <p>The <code>hilo()</code> function can also be used on fable objects, which allows you to extract multiple intervals at once.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit">
-<span class="kw">fc</span> <span class="op">%&gt;%</span>
-  <span class="fu">hilo</span>(level = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">80</span>, <span class="fl">95</span>))
+<span class="va">fc</span> <span class="op">%&gt;%</span>
+  <span class="fu">hilo</span><span class="op">(</span>level <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">80</span>, <span class="fl">95</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; # A tsibble: 160 x 9 [1Q]</span>
 <span class="co">#&gt; # Key:       Region, State, Purpose, .model [8]</span>
 <span class="co">#&gt;    Region State Purpose .model Quarter        Trips .mean                  `80%`</span>
@@ -297,8 +287,7 @@
 <span class="co">#&gt;  8 Melbo… Vict… Busine… ets    2019 Q4 N(759, 6181)  759. [658.1603, 859.6735]80</span>
 <span class="co">#&gt;  9 Melbo… Vict… Busine… ets    2020 Q1 N(710, 6786)  710. [603.9336, 815.0789]80</span>
 <span class="co">#&gt; 10 Melbo… Vict… Busine… ets    2020 Q2 N(800, 7458)  800. [689.3620, 910.7146]80</span>
-<span class="co">#&gt; # … with 150 more rows, and 1 more variable: `95%` &lt;hilo&gt;</span>
-</pre></div>
+<span class="co">#&gt; # … with 150 more rows, and 1 more variable: `95%` &lt;hilo&gt;</span></pre></div>
 <!--
 These intervals can also be unnested if you're looking to obtain the numerical values (`.lower`, `.upper`, and `level`).
 
@@ -312,9 +301,8 @@ fc %>%
 -->
 <p>You can also see a plot of the forecasts using <code>autoplot()</code>. To see the historical data along with the forecasts you can provide it as the first argument to the function.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit">
-<span class="kw">fc</span> <span class="op">%&gt;%</span>
-  <span class="fu">autoplot</span>(<span class="kw">tourism_melb</span>)
-</pre></div>
+<span class="va">fc</span> <span class="op">%&gt;%</span>
+  <span class="fu">autoplot</span><span class="op">(</span><span class="va">tourism_melb</span><span class="op">)</span></pre></div>
 <p><img src="fable_files/figure-html/fc-plot-1.png" width="672"></p>
 <p>More model methods may be supported by particular models, including the ability to <code>refit()</code> the model to new data, <code>stream()</code> in new data to extend the fit, <code>generate()</code> simulated paths from a model, <code>interpolate()</code> missing values, extract <code>components()</code> from the fitted model, and display the model’s <code>equation()</code>.</p>
 <p>More information about modelling time series and using the fable package can be found in <a href="https://otexts.com/fpp3/"><em>Forecasting: Principles and Practices (3rd Ed.)</em></a> and in the <a href="https://fable.tidyverts.org/"><em>pkgdown site</em></a>.</p>

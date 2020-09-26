@@ -156,17 +156,17 @@ using <code><a href='https://rdrr.io/r/stats/arima.html'>stats::arima()</a></cod
 framework.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ARIMA</span>(
-  <span class='kw'>formula</span>,
-  ic = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"aicc"</span>, <span class='st'>"aic"</span>, <span class='st'>"bic"</span>),
-  selection_metric = <span class='fu'>function</span>(<span class='kw'>x</span>) <span class='kw'>x</span>[[<span class='kw'>ic</span>]],
-  stepwise = <span class='fl'>TRUE</span>,
-  greedy = <span class='fl'>TRUE</span>,
-  approximation = <span class='kw'>NULL</span>,
-  order_constraint = <span class='kw'>p</span> <span class='op'>+</span> <span class='kw'>q</span> <span class='op'>+</span> <span class='kw'>P</span> <span class='op'>+</span> <span class='kw'>Q</span> <span class='op'>&lt;=</span> <span class='fl'>6</span> <span class='op'>&amp;</span> (<span class='kw'>constant</span> <span class='op'>+</span> <span class='kw'>d</span> <span class='op'>+</span> <span class='kw'>D</span> <span class='op'>&lt;=</span> <span class='fl'>2</span>),
-  unitroot_spec = <span class='fu'><a href='unitroot_options.html'>unitroot_options</a></span>(),
-  <span class='kw'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>ARIMA</span><span class='op'>(</span>
+  <span class='va'>formula</span>,
+  ic <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"aicc"</span>, <span class='st'>"aic"</span>, <span class='st'>"bic"</span><span class='op'>)</span>,
+  selection_metric <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='va'>x</span><span class='op'>[[</span><span class='va'>ic</span><span class='op'>]</span><span class='op'>]</span>,
+  stepwise <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  greedy <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  approximation <span class='op'>=</span> <span class='cn'>NULL</span>,
+  order_constraint <span class='op'>=</span> <span class='va'>p</span> <span class='op'>+</span> <span class='va'>q</span> <span class='op'>+</span> <span class='va'>P</span> <span class='op'>+</span> <span class='va'>Q</span> <span class='op'>&lt;=</span> <span class='fl'>6</span> <span class='op'>&amp;</span> <span class='op'>(</span><span class='va'>constant</span> <span class='op'>+</span> <span class='va'>d</span> <span class='op'>+</span> <span class='va'>D</span> <span class='op'>&lt;=</span> <span class='fl'>2</span><span class='op'>)</span>,
+  unitroot_spec <span class='op'>=</span> <span class='fu'><a href='unitroot_options.html'>unitroot_options</a></span><span class='op'>(</span><span class='op'>)</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -222,7 +222,7 @@ selection of <code>d</code> and <code>D</code>. See <code><a href='unitroot_opti
 
 
 <p>The fable <code>ARIMA()</code> function uses an alternate parameterisation of constants
-to <code><a href='https://rdrr.io/r/stats/arima.html'>stats::arima()</a></code> and <code><a href='https://rdrr.io/pkg/forecast/man/Arima.html'>forecast::Arima()</a></code>. While the parameterisations
+to <code><a href='https://rdrr.io/r/stats/arima.html'>stats::arima()</a></code> and <code><a href='https://pkg.robjhyndman.com/forecast/reference/Arima.html'>forecast::Arima()</a></code>. While the parameterisations
 are equivalent, the coefficients for the constant/mean will differ.</p>
 <p>In fable, the parameterisation used is:</p>
 <p>$$(1-\phi_1B - \cdots - \phi_p B^p)(1-B)^d y_t = c + (1 + \theta_1 B + \cdots + \theta_q B^q)\varepsilon_t$$</p>
@@ -238,8 +238,8 @@ are equivalent, the coefficients for the constant/mean will differ.</p>
 <p>To specify a model fully (avoid automatic selection), the intercept and <code>pdq()/PDQ()</code> values must be specified: for example <code>formula = response ~ 1 + pdq(1, 1, 1) + PDQ(1, 0, 0)</code>.</p>
 <h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>pdq</h3>
 <p>The <code>pdq</code> special is used to specify non-seasonal components of the model.</p><pre>
-<span class='fu'>pdq</span>(p = <span class='fl'>0</span><span class='op'>:</span><span class='fl'>5</span>, d = <span class='fl'>0</span><span class='op'>:</span><span class='fl'>2</span>, q = <span class='fl'>0</span><span class='op'>:</span><span class='fl'>5</span>,
-    p_init = <span class='fl'>2</span>, q_init = <span class='fl'>2</span>, fixed = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>())
+<span class='fu'>pdq</span><span class='op'>(</span>p <span class='op'>=</span> <span class='fl'>0</span><span class='op'>:</span><span class='fl'>5</span>, d <span class='op'>=</span> <span class='fl'>0</span><span class='op'>:</span><span class='fl'>2</span>, q <span class='op'>=</span> <span class='fl'>0</span><span class='op'>:</span><span class='fl'>5</span>,
+    p_init <span class='op'>=</span> <span class='fl'>2</span>, q_init <span class='op'>=</span> <span class='fl'>2</span>, fixed <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 </pre>
 
 <table class='table'>
@@ -255,8 +255,8 @@ are equivalent, the coefficients for the constant/mean will differ.</p>
 
 <h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>PDQ</h3>
 <p>The <code>PDQ</code> special is used to specify seasonal components of the model. To force a nonseasonal fit, specify <code>PDQ(0, 0, 0)</code> in the RHS of the model formula. Note that simply omitting <code>PDQ</code> from the formula will <em>not</em> result in a nonseasonal fit.</p><pre>
-<span class='fu'>PDQ</span>(P = <span class='fl'>0</span><span class='op'>:</span><span class='fl'>2</span>, D = <span class='fl'>0</span><span class='op'>:</span><span class='fl'>1</span>, Q = <span class='fl'>0</span><span class='op'>:</span><span class='fl'>2</span>, period = <span class='kw'>NULL</span>,
-    P_init = <span class='fl'>1</span>, Q_init = <span class='fl'>1</span>, fixed = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>())
+<span class='fu'>PDQ</span><span class='op'>(</span>P <span class='op'>=</span> <span class='fl'>0</span><span class='op'>:</span><span class='fl'>2</span>, D <span class='op'>=</span> <span class='fl'>0</span><span class='op'>:</span><span class='fl'>1</span>, Q <span class='op'>=</span> <span class='fl'>0</span><span class='op'>:</span><span class='fl'>2</span>, period <span class='op'>=</span> <span class='cn'>NULL</span>,
+    P_init <span class='op'>=</span> <span class='fl'>1</span>, Q_init <span class='op'>=</span> <span class='fl'>1</span>, fixed <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 </pre>
 
 <table class='table'>
@@ -275,7 +275,7 @@ are equivalent, the coefficients for the constant/mean will differ.</p>
 <p>Exogenous regressors can be included in an ARIMA model without explicitly using the <code>xreg()</code> special. Common exogenous regressor specials as specified in <code><a href='common_xregs.html'>common_xregs</a></code> can also be used. These regressors are handled using <code><a href='https://rdrr.io/r/stats/model.frame.html'>stats::model.frame()</a></code>, and so interactions and other functionality behaves similarly to <code><a href='https://rdrr.io/r/stats/lm.html'>stats::lm()</a></code>.</p>
 <p>The inclusion of a constant in the model follows the similar rules to <code><a href='https://rdrr.io/r/stats/lm.html'>stats::lm()</a></code>, where including <code>1</code> will add a constant and <code>0</code> or <code>-1</code> will remove the constant. If left out, the inclusion of a constant will be determined by minimising <code>ic</code>.</p>
 <pre>
-<span class='fu'>xreg</span>(<span class='kw'>...</span>, fixed = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>())
+<span class='fu'>xreg</span><span class='op'>(</span><span class='va'>...</span>, fixed <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 </pre>
 
 <table class='table'>
@@ -292,10 +292,10 @@ are equivalent, the coefficients for the constant/mean will differ.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Manual ARIMA specification</span>
-<span class='kw'>USAccDeaths</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>() <span class='op'>%&gt;%</span>
-  <span class='fu'>model</span>(arima = <span class='fu'>ARIMA</span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='kw'>value</span>) <span class='op'>~</span> <span class='fl'>0</span> <span class='op'>+</span> <span class='fu'>pdq</span>(<span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span>) <span class='op'>+</span> <span class='fu'>PDQ</span>(<span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span>))) <span class='op'>%&gt;%</span>
-  <span class='fu'>report</span>()
+<span class='va'>USAccDeaths</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>model</span><span class='op'>(</span>arima <span class='op'>=</span> <span class='fu'>ARIMA</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>value</span><span class='op'>)</span> <span class='op'>~</span> <span class='fl'>0</span> <span class='op'>+</span> <span class='fu'>pdq</span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'>PDQ</span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>report</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Series: value 
 #&gt; Model: ARIMA(0,1,1)(0,1,1)[12] 
 #&gt; Transformation: log(.x) 
@@ -308,16 +308,16 @@ are equivalent, the coefficients for the constant/mean will differ.</p>
 #&gt; sigma^2 estimated as 0.001379:  log likelihood=109.31
 #&gt; AIC=-212.63   AICc=-212.19   BIC=-206.39</div><div class='input'>
 <span class='co'># Automatic ARIMA specification</span>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://tsibble.tidyverts.org'>tsibble</a></span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://dplyr.tidyverse.org'>dplyr</a></span>)
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tsibble.tidyverts.org'>tsibble</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>Attaching package: ‘dplyr’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:stats’:</span>
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    filter, lag</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
 #&gt; <span class='message'></span>
-#&gt; <span class='message'>    intersect, lag, setdiff, setequal, union</span></div><div class='input'><span class='kw'>tsibbledata</span>::<span class='kw'><a href='https://tsibbledata.tidyverts.org/reference/global_economy.html'>global_economy</a></span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='kw'>Country</span> <span class='op'>==</span> <span class='st'>"Australia"</span>) <span class='op'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='fu'>ARIMA</span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='kw'>GDP</span>) <span class='op'>~</span> <span class='kw'>Population</span>))
+#&gt; <span class='message'>    intersect, lag, setdiff, setequal, union</span></div><div class='input'><span class='fu'>tsibbledata</span><span class='fu'>::</span><span class='va'><a href='https://tsibbledata.tidyverts.org/reference/global_economy.html'>global_economy</a></span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>Country</span> <span class='op'>==</span> <span class='st'>"Australia"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>model</span><span class='op'>(</span><span class='fu'>ARIMA</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>GDP</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>Population</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='warning'>Warning: NaNs produced</span></div><div class='output co'>#&gt; <span style='color: #555555;'># A mable: 1 x 2</span><span>
 #&gt; </span><span style='color: #555555;'># Key:     Country [1]</span><span>
 #&gt;   Country   `ARIMA(log(GDP) ~ Population)`

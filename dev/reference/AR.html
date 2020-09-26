@@ -154,7 +154,7 @@ has lowest AIC, AICc or BIC value. It is implemented using OLS, and behaves
 comparably to <code><a href='https://rdrr.io/r/stats/ar.ols.html'>stats::ar.ols()</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>AR</span>(<span class='kw'>formula</span>, ic = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"aicc"</span>, <span class='st'>"aic"</span>, <span class='st'>"bic"</span>), <span class='kw'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>AR</span><span class='op'>(</span><span class='va'>formula</span>, ic <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"aicc"</span>, <span class='st'>"aic"</span>, <span class='st'>"bic"</span><span class='op'>)</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -187,7 +187,7 @@ formula.</p>
 
 <h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>pdq</h3>
 <p>The <code>order</code> special is used to specify the lag order for the auto-regression.</p><pre>
-<span class='fu'><a href='https://rdrr.io/r/base/order.html'>order</a></span>(p = <span class='fl'>0</span><span class='op'>:</span><span class='fl'>15</span>, fixed = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>())
+<span class='fu'><a href='https://rdrr.io/r/base/order.html'>order</a></span><span class='op'>(</span>p <span class='op'>=</span> <span class='fl'>0</span><span class='op'>:</span><span class='fl'>15</span>, fixed <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 </pre>
 
 <table class='table'>
@@ -201,7 +201,7 @@ formula.</p>
 <p>Exogenous regressors can be included in an ARIMA model without explicitly using the <code>xreg()</code> special. Common exogenous regressor specials as specified in <code><a href='common_xregs.html'>common_xregs</a></code> can also be used. These regressors are handled using <code><a href='https://rdrr.io/r/stats/model.frame.html'>stats::model.frame()</a></code>, and so interactions and other functionality behaves similarly to <code><a href='https://rdrr.io/r/stats/lm.html'>stats::lm()</a></code>.</p>
 <p>The inclusion of a constant in the model follows the similar rules to <code><a href='https://rdrr.io/r/stats/lm.html'>stats::lm()</a></code>, where including <code>1</code> will add a constant and <code>0</code> or <code>-1</code> will remove the constant. If left out, the inclusion of a constant will be determined by minimising <code>ic</code>.</p>
 <pre>
-<span class='fu'>xreg</span>(<span class='kw'>...</span>, fixed = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>())
+<span class='fu'>xreg</span><span class='op'>(</span><span class='va'>...</span>, fixed <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 </pre>
 
 <table class='table'>
@@ -216,11 +216,11 @@ formula.</p>
     <div class='dont-index'><p><a href='https://otexts.com/fpp3/AR.html'>Forecasting: Principles and Practices, Vector autoregressions (section 11.2)</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>luteinizing_hormones</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='kw'>lh</span>)
-<span class='kw'>fit</span> <span class='op'>&lt;-</span> <span class='kw'>luteinizing_hormones</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='fu'>AR</span>(<span class='kw'>value</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/order.html'>order</a></span>(<span class='fl'>3</span>)))
+    <pre class="examples"><div class='input'><span class='va'>luteinizing_hormones</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span><span class='op'>(</span><span class='va'>lh</span><span class='op'>)</span>
+<span class='va'>fit</span> <span class='op'>&lt;-</span> <span class='va'>luteinizing_hormones</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>model</span><span class='op'>(</span><span class='fu'>AR</span><span class='op'>(</span><span class='va'>value</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/order.html'>order</a></span><span class='op'>(</span><span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='fu'>report</span>(<span class='kw'>fit</span>)
+<span class='fu'>report</span><span class='op'>(</span><span class='va'>fit</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Series: value 
 #&gt; Model: AR(3) w/ mean 
 #&gt; 
@@ -230,9 +230,9 @@ formula.</p>
 #&gt; 
 #&gt; sigma^2 estimated as 0.1905
 #&gt; AIC = -14.48	AICc = -13.55	BIC = -7</div><div class='input'>
-<span class='kw'>fit</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>forecast</span>() <span class='op'>%&gt;%</span>
-  <span class='fu'>autoplot</span>(<span class='kw'>luteinizing_hormones</span>)
+<span class='va'>fit</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>forecast</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>autoplot</span><span class='op'>(</span><span class='va'>luteinizing_hormones</span><span class='op'>)</span>
 </div><div class='img'><img src='AR-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

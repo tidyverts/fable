@@ -157,7 +157,7 @@ contains the <code>.innov</code> column, those values will be treated as innovat
     </div>
 
     <pre class="usage"><span class='co'># S3 method for ETS</span>
-<span class='fu'>generate</span>(<span class='kw'>x</span>, <span class='kw'>new_data</span>, <span class='kw'>specials</span>, bootstrap = <span class='fl'>FALSE</span>, <span class='kw'>...</span>)</pre>
+<span class='fu'>generate</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>new_data</span>, <span class='va'>specials</span>, bootstrap <span class='op'>=</span> <span class='cn'>FALSE</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -189,9 +189,9 @@ contains the <code>.innov</code> column, those values will be treated as innovat
     <div class='dont-index'><p><code><a href='https://fabletools.tidyverts.org/reference/generate.mdl_df.html'>fabletools::generate.mdl_df</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='kw'>USAccDeaths</span>) <span class='op'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='fu'><a href='ETS.html'>ETS</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='kw'>value</span>) <span class='op'>~</span> <span class='fu'>season</span>(<span class='st'>"A"</span>))) <span class='op'>%&gt;%</span>
-  <span class='fu'>generate</span>(times = <span class='fl'>100</span>)
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span><span class='op'>(</span><span class='va'>USAccDeaths</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>model</span><span class='op'>(</span><span class='fu'><a href='ETS.html'>ETS</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>value</span><span class='op'>)</span> <span class='op'>~</span> <span class='fu'>season</span><span class='op'>(</span><span class='st'>"A"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>generate</span><span class='op'>(</span>times <span class='op'>=</span> <span class='fl'>100</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span style='color: #555555;'># A tsibble: 2,400 x 4 [1M]</span><span>
 #&gt; </span><span style='color: #555555;'># Key:       .model, .rep [100]</span><span>
 #&gt;    .model                               index .rep    .sim
