@@ -207,15 +207,17 @@ tidy.TSLM <- function(x, ...) {
   se <- rep(NA_real_, nrow(coef))
   se[!is.na(coef)] <- sqrt(diag(R) * x$sigma2) # map(resvar, function(resvar) sqrt(diag(R) * resvar)) #for multiple response tslm
 
-  out <- dplyr::as_tibble(x$coefficients, rownames = "term") %>%
-    tidyr::gather(".response", "estimate", !!!syms(colnames(coef)))
+  out <- tidyr::gather(
+    dplyr::as_tibble(x$coefficients, rownames = "term"),
+    ".response", "estimate", !!!syms(colnames(coef))
+  )
   if (NCOL(coef) == 1) out[[".response"]] <- NULL
-  out %>%
-    mutate(
-      std.error = unlist(se),
-      statistic = !!sym("estimate") / !!sym("std.error"),
-      p.value = 2 * stats::pt(abs(!!sym("statistic")), rdf, lower.tail = FALSE)
-    )
+  mutate(
+    out,
+    std.error = unlist(se),
+    statistic = !!sym("estimate") / !!sym("std.error"),
+    p.value = 2 * stats::pt(abs(!!sym("statistic")), rdf, lower.tail = FALSE)
+  )
 }
 
 #' @export
@@ -288,7 +290,6 @@ forecast.TSLM <- function(object, new_data, specials = NULL, bootstrap = FALSE,
     }) %>%
       transpose() %>%
       map(as.numeric)
-    se <- map_dbl(sim, stats::sd)
     distributional::dist_sample(sim)
   } else {
     fc <- xreg[, piv, drop = FALSE] %*% coef[piv]

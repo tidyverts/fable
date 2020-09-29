@@ -587,11 +587,11 @@ components.ETS <- function(object, ...) {
     seasonalities <- list()
   }
 
-  est_vars <- object$est %>%
-    transmute(
-      !!sym(response),
-      remainder = !!sym(".resid")
-    )
+  est_vars <- transmute(
+    object$est,
+    !!sym(response),
+    remainder = !!sym(".resid")
+  )
 
   out <- left_join(out, est_vars, by = index_var(object$states))
   out <- select(out, intersect(c(expr_text(idx), response, "level", "slope", "season", "remainder"), colnames(out)))

@@ -153,9 +153,7 @@ generate.model_mean <- function(x, new_data, bootstrap = FALSE, ...) {
     }
   }
 
-  new_data %>%
-    group_by_key() %>%
-    transmute(".sim" := f + !!sym(".innov"))
+  transmute(group_by_key(new_data), ".sim" := f + !!sym(".innov"))
 }
 
 #' @inherit interpolate.ARIMA
