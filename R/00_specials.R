@@ -21,13 +21,13 @@ trend <- function(x, knots = NULL, origin = NULL) {
 }
 
 trend.tbl_ts <- function(x, knots = NULL, origin = NULL) {
-  idx_num <- x[[index_var(x)]] %>% as.double()
+  idx_num <- as.double(x[[index_var(x)]])
   knots_num <- if (is.null(knots)) {
     NULL
   } else {
-    knots %>% as.double()
+    as.double(knots)
   }
-  index_interval <- interval(x) %>% default_time_units()
+  index_interval <- default_time_units(interval(x))
   idx_num <- idx_num / index_interval
   knots_num <- knots_num / index_interval
   if (!is.null(origin)) {
@@ -43,9 +43,11 @@ trend.numeric <- function(x, knots = NULL, origin = NULL) {
     x <- x - origin
     knots <- knots - origin
   }
-  knots_exprs <- knots %>%
-    map(function(.x) pmax(0, x - .x)) %>%
-    set_names(map_chr(knots, function(.x) paste0("trend_", format(.x))))
+  knots_exprs <- map(knots, function(.x) pmax(0, x - .x))
+  knots_exprs <- set_names(
+    knots_exprs, 
+    map_chr(knots, function(.x) paste0("trend_", format(.x)))
+  )
   tibble(
     trend = x,
     !!!knots_exprs
@@ -57,8 +59,8 @@ season <- function(x, period) {
 }
 
 season.tbl_ts <- function(x, period) {
-  idx_num <- x[[index_var(x)]] %>% as.double()
-  index_interval <- interval(x) %>% default_time_units()
+  idx_num <- as.double(x[[index_var(x)]])
+  index_interval <- default_time_units(interval(x))
   idx_num <- idx_num / index_interval
   period <- get_frequencies(period, x, .auto = "smallest")
 
@@ -66,9 +68,8 @@ season.tbl_ts <- function(x, period) {
 }
 
 season.numeric <- function(x, period) {
-  season_exprs <- period %>%
-    map(function(.x) expr(factor(floor((x %% (!!.x)) + 1), levels = seq_len(!!.x)))) %>%
-    set_names(names(period) %||% paste0("season_", period))
+  season_exprs <- map(period, function(.x) expr(factor(floor((x %% (!!.x)) + 1), levels = seq_len(!!.x))))
+  season_exprs <- set_names(season_exprs, names(period) %||% paste0("season_", period))
   tibble(!!!season_exprs)
 }
 
@@ -77,8 +78,8 @@ fourier <- function(x, period, K, origin = NULL) {
 }
 
 fourier.tbl_ts <- function(x, period, K, origin = NULL) {
-  idx_num <- x[[index_var(x)]] %>% as.double()
-  index_interval <- interval(x) %>% default_time_units()
+  idx_num <- as.double(x[[index_var(x)]])
+  index_interval <- default_time_units(interval(x))
   idx_num <- idx_num / index_interval
   if (!is.null(origin)) {
     origin <- as.double(origin) / index_interval
@@ -172,10 +173,10 @@ common_xregs <- list(
       }
       origin <- self$origin
     }
-    fable:::trend(self$data, knots, origin) %>% as.matrix()
+    as.matrix(fable:::trend(self$data, knots, origin))
   },
   season = function(period = NULL) {
-    fable:::season(self$data, period) %>% as_model_matrix()
+    as_model_matrix(fable:::season(self$data, period))
   },
   fourier = function(period = NULL, K, origin = NULL) {
     if (is.null(origin)) {
@@ -184,7 +185,7 @@ common_xregs <- list(
       }
       origin <- self$origin
     }
-    fable:::fourier(self$data, period, K, origin) %>% as.matrix()
+    as.matrix(fable:::fourier(self$data, period, K, origin))
   }
 )
 

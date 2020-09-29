@@ -120,7 +120,6 @@ forecast.model_mean <- function(object, new_data, specials = NULL, bootstrap = F
     }) %>%
       transpose() %>%
       map(as.numeric)
-    se <- map_dbl(sim, stats::sd)
     distributional::dist_sample(sim)
   } else {
     fc <- rep(y_mean, h)

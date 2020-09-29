@@ -6,7 +6,7 @@ train_ets <- function(.data, specials, opt_crit,
 
   # Rebuild `ets` arguments
   ets_spec <- specials[c("error", "trend", "season")]
-  ets_spec %>% map(function(.x) {
+  map(ets_spec, function(.x) {
     if (length(.x) > 1) {
       abort("Only one special of each type is allowed for ETS.")
     }
@@ -84,11 +84,11 @@ train_ets <- function(.data, specials, opt_crit,
   structure(
     list(
       par = tibble(term = names(best$par) %||% chr(), estimate = unname(best$par) %||% dbl()),
-      est = dplyr::ungroup(.data) %>%
-        mutate(
-          .fitted = best$fitted,
-          .resid = best$residuals
-        ),
+      est = mutate(
+        dplyr::ungroup(.data),
+        .fitted = best$fitted,
+        .resid = best$residuals
+      ),
       fit = tibble(
         sigma2 = sum(best$residuals^2, na.rm = TRUE) / (length(y) - length(best$par)),
         log_lik = best$loglik, AIC = best$aic, AICc = best$aicc, BIC = best$bic,
@@ -386,10 +386,10 @@ generate.ETS <- function(x, new_data, specials, bootstrap = FALSE, ...) {
   get_par <- function(par) {
     x$par$estimate[x$par$term == par]
   }
-
-  result <- new_data %>%
-    group_by_key() %>%
-    transmute(".sim" := .C(
+  
+  result <- transmute(
+    group_by_key(new_data),
+    ".sim" := .C(
       "etssimulate",
       as.double(initstate),
       as.integer(x$spec$period),
@@ -405,7 +405,7 @@ generate.ETS <- function(x, new_data, specials, bootstrap = FALSE, ...) {
       as.double(!!sym(".innov")),
       PACKAGE = "fable"
     )[[11]])
-
+  
   if (is.na(result[[".sim"]][1])) {
     stop("Problem with multiplicative damped trend")
   }
@@ -444,10 +444,7 @@ refit.ETS <- function(object, new_data, specials = NULL, reestimate = FALSE, rei
     }
   }
 
-  y <- new_data %>%
-    transmute(
-      !!parse_expr(measured_vars(object$est)[1])
-    )
+  y <- transmute(new_data, !!parse_expr(measured_vars(object$est)[1]))
   idx <- unclass(y)[[index_var(y)]]
   y <- unclass(y)[[measured_vars(y)]]
 
@@ -479,11 +476,11 @@ refit.ETS <- function(object, new_data, specials = NULL, reestimate = FALSE, rei
   structure(
     list(
       par = tibble(term = names(best$par) %||% chr(), estimate = unname(best$par) %||% dbl()),
-      est = new_data %>%
-        mutate(
-          .fitted = best$fitted,
-          .resid = best$residuals
-        ),
+      est = mutate(
+        new_data,
+        .fitted = best$fitted,
+        .resid = best$residuals
+      ),
       fit = tibble(
         sigma2 = sum(best$residuals^2, na.rm = TRUE) / (length(y) - length(best$par)),
         log_lik = best$loglik, AIC = best$aic, AICc = best$aicc, BIC = best$bic,

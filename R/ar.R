@@ -302,13 +302,11 @@ generate.AR <- function(object, new_data = NULL, specials = NULL,
     }
   }
   
-  new_data %>% 
-    group_by_key() %>% 
-    transmute(".sim" := stats::filter(
-      !!sym(".innov"), ar, method = "recursive", 
-      init = rev(object$reg_resid)[seq_along(ar)])) %>% 
-    dplyr::ungroup() %>% 
-    mutate(".sim" := as.numeric(!!sym(".sim") + !!xm))
+  new_data <- transmute(group_by_key(new_data),
+            ".sim" := stats::filter(
+              !!sym(".innov"), ar, method = "recursive", 
+              init = rev(object$reg_resid)[seq_along(ar)]))
+  mutate(dplyr::ungroup(new_data), ".sim" := as.numeric(!!sym(".sim") + !!xm))
 }
 
 #' Refit an AR model

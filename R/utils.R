@@ -5,12 +5,10 @@ is.constant <- function(x) {
 }
 
 assignSpecials <- function(x, env = caller_env()) {
-  x %>%
-    imap(function(.x, nm) {
-      if (length(.x) > 1) warn(sprintf("Only one special for `%s` is allowed, defaulting to the first usage", nm))
-      .x[[1]] %>%
-        imap(function(.x, .y) assign(.y, .x, envir = env))
-    })
+  imap(x, function(.x, nm) {
+    if (length(.x) > 1) warn(sprintf("Only one special for `%s` is allowed, defaulting to the first usage", nm))
+    imap(.x[[1]], function(.x, .y) assign(.y, .x, envir = env))
+  })
 }
 
 require_package <- function(pkg) {

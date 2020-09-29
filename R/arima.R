@@ -349,11 +349,12 @@ This is generally discouraged, consider removing the constant or reducing the nu
   best_spec[["period"]] <- period
   structure(
     list(
-      par = tibble(
-        term = names(fit_coef) %||% chr(), estimate = unname(fit_coef) %||% dbl(),
-        std.error = fit_se %||% rep(NA, length(fit_coef))
-      ) %>%
+      par = 
         mutate(
+          tibble(
+            term = names(fit_coef) %||% chr(), estimate = unname(fit_coef) %||% dbl(),
+            std.error = fit_se %||% rep(NA, length(fit_coef))
+          ),
           statistic = !!sym("estimate") / !!sym("std.error"),
           p.value = 2 * stats::pt(abs(!!sym("statistic")),
             best$nobs,
@@ -798,11 +799,11 @@ generate.ARIMA <- function(x, new_data, specials, bootstrap = FALSE, ...){
     }
   }
   
-  new_data %>% 
-    group_by_key() %>% 
-    transmute(".sim" := conditional_arima_sim(x$model, x$est$.regression_resid, !!sym(".innov"))) %>% 
-    dplyr::ungroup() %>% 
-    mutate(".sim" := as.numeric(!!sym(".sim") + xm))
+  new_data <- transmute(
+    group_by_key(new_data), 
+    ".sim" := conditional_arima_sim(x$model, x$est$.regression_resid, !!sym(".innov"))
+  )
+  mutate(dplyr::ungroup(new_data), ".sim" := as.numeric(!!sym(".sim") + xm))
 }
 
 # Version of stats::arima.sim which conditions on past observations

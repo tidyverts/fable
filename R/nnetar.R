@@ -133,9 +133,7 @@ train_nnetar <- function(.data, specials, n_nodes, n_networks, scale_inputs, wts
   }
 
   # Calculate fitted values
-  pred <- map(nn_models, predict) %>%
-    transpose() %>%
-    map_dbl(function(x) mean(unlist(x)))
+  pred <- map_dbl(transpose(map(nn_models, predict)), function(x) mean(unlist(x)))
   fits <- rep(NA_real_, length(y))
   fits_idx <- c(rep(FALSE, maxlag), j)
   fits[fits_idx] <- pred
@@ -300,7 +298,6 @@ forecast.NNETAR <- function(object, new_data, specials = NULL, simulate = TRUE, 
     sim <- sim %>%
       transpose() %>%
       map(as.numeric)
-    se <- map_dbl(sim, stats::sd)
     distributional::dist_sample(sim)
   }
   else {
@@ -390,9 +387,7 @@ generate.NNETAR <- function(x, new_data, specials = NULL, bootstrap = FALSE, ...
     path
   }
 
-  new_data %>%
-    group_by_key() %>%
-    transmute(".sim" := sim_nnetar(!!sym(".innov")))
+  transmute(group_by_key(new_data), ".sim" := sim_nnetar(!!sym(".innov")))
 }
 
 #' @inherit fitted.ARIMA

@@ -212,7 +212,6 @@ forecast.RW <- function(object, new_data, specials = NULL, simulate = FALSE, boo
     }) %>%
       transpose() %>%
       map(as.numeric)
-    se <- map_dbl(sim, stats::sd)
     distributional::dist_sample(sim)
   } else {
     fc <- rep(object$future, fullperiods)[1:h] + steps * b
@@ -279,9 +278,7 @@ generate.RW <- function(x, new_data, bootstrap = FALSE, ...) {
     rep_len(future, length(dx)) + cumulative_e
   }
 
-  new_data %>%
-    group_by_key() %>%
-    transmute(".sim" := sim_rw(!!sym(".innov")))
+  transmute(group_by_key(new_data), ".sim" := sim_rw(!!sym(".innov")))
 }
 
 #' @inherit fitted.ARIMA
