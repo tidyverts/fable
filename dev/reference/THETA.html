@@ -186,7 +186,7 @@ forecasts are then reseasonalized.</p>
 
 <h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>season</h3>
 <p>The <code>season</code> special is used to specify the parameters of the seasonal adjustment via classical decomposition.</p><pre>
-<span class='fu'><a href='https://rdrr.io/r/stats/window.html'>window</a></span><span class='op'>(</span>period <span class='op'>=</span> <span class='cn'>NULL</span>, method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"multiplicative"</span>, <span class='st'>"additive"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'>season</span><span class='op'>(</span>period <span class='op'>=</span> <span class='cn'>NULL</span>, method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"multiplicative"</span>, <span class='st'>"additive"</span><span class='op'>)</span><span class='op'>)</span>
 </pre>
 
 <table class='table'>
@@ -207,6 +207,40 @@ Forecasting</em> <b>16</b>, 521-530.</p>
 
     <p>Rob J Hyndman, Mitchell O'Hara-Wild</p>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='co'># Theta method with transform</span>
+<span class='va'>deaths</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span><span class='op'>(</span><span class='va'>USAccDeaths</span><span class='op'>)</span>
+<span class='va'>deaths</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>model</span><span class='op'>(</span>theta <span class='op'>=</span> <span class='fu'>THETA</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>value</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>forecast</span><span class='op'>(</span>h <span class='op'>=</span> <span class='st'>"4 years"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>autoplot</span><span class='op'>(</span><span class='va'>deaths</span><span class='op'>)</span>
+</div><div class='img'><img src='THETA-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># Compare seasonal specifications</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://tsibbledata.tidyverts.org/'>tsibbledata</a></span><span class='op'>)</span>
+<span class='va'>aus_retail</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>Industry</span> <span class='op'>==</span> <span class='st'>"Clothing retailing"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>model</span><span class='op'>(</span>theta_multiplicative <span class='op'>=</span> <span class='fu'>THETA</span><span class='op'>(</span><span class='va'>Turnover</span> <span class='op'>~</span> <span class='fu'>season</span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"multiplicative"</span><span class='op'>)</span><span class='op'>)</span>,
+        theta_additive <span class='op'>=</span> <span class='fu'>THETA</span><span class='op'>(</span><span class='va'>Turnover</span> <span class='op'>~</span> <span class='fu'>season</span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"additive"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>accuracy</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 16 x 11</span><span>
+#&gt;    State Industry .model .type     ME   RMSE    MAE     MPE  MAPE  MASE     ACF1
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> Aust… Clothin… theta… Trai… 0.073</span><span style='text-decoration: underline;'>2</span><span>  0.889  0.646  0.288   5.80 0.511  0.001</span><span style='text-decoration: underline;'>55</span><span>
+#&gt; </span><span style='color: #555555;'> 2</span><span> Aust… Clothin… theta… Trai… 0.168   1.52   1.03   1.76   10.4  0.812  0.160  
+#&gt; </span><span style='color: #555555;'> 3</span><span> New … Clothin… theta… Trai… 2.49   14.1   10.3    0.688   4.16 0.551 -</span><span style='color: #BB0000;'>0.016</span><span style='color: #BB0000;text-decoration: underline;'>5</span><span> 
+#&gt; </span><span style='color: #555555;'> 4</span><span> New … Clothin… theta… Trai… 4.74   28.0   17.5    2.13    7.38 0.932  0.155  
+#&gt; </span><span style='color: #555555;'> 5</span><span> Nort… Clothin… theta… Trai… 0.026</span><span style='text-decoration: underline;'>6</span><span>  0.422  0.320  0.225   5.67 0.417 -</span><span style='color: #BB0000;'>0.031</span><span style='color: #BB0000;text-decoration: underline;'>1</span><span> 
+#&gt; </span><span style='color: #555555;'> 6</span><span> Nort… Clothin… theta… Trai… 0.032</span><span style='text-decoration: underline;'>4</span><span>  0.506  0.393  0.415   7.60 0.512  0.009</span><span style='text-decoration: underline;'>99</span><span>
+#&gt; </span><span style='color: #555555;'> 7</span><span> Quee… Clothin… theta… Trai… 1.12    9.01   6.13   0.612   4.75 0.497  0.049</span><span style='text-decoration: underline;'>6</span><span> 
+#&gt; </span><span style='color: #555555;'> 8</span><span> Quee… Clothin… theta… Trai… 1.70   16.3   10.8    2.09   10.9  0.874  0.153  
+#&gt; </span><span style='color: #555555;'> 9</span><span> Sout… Clothin… theta… Trai… 0.167   2.95   2.01   0.080</span><span style='text-decoration: underline;'>4</span><span>  5.27 0.400 -</span><span style='color: #BB0000;'>0.019</span><span style='color: #BB0000;text-decoration: underline;'>5</span><span> 
+#&gt; </span><span style='color: #555555;'>10</span><span> Sout… Clothin… theta… Trai… 0.245   4.51   2.96   0.590   7.89 0.591  0.058</span><span style='text-decoration: underline;'>4</span><span> 
+#&gt; </span><span style='color: #555555;'>11</span><span> Tasm… Clothin… theta… Trai… 0.048</span><span style='text-decoration: underline;'>5</span><span>  1.28   0.861 -</span><span style='color: #BB0000;'>0.043</span><span style='color: #BB0000;text-decoration: underline;'>6</span><span>  6.18 0.505  0.054</span><span style='text-decoration: underline;'>4</span><span> 
+#&gt; </span><span style='color: #555555;'>12</span><span> Tasm… Clothin… theta… Trai… 0.078</span><span style='text-decoration: underline;'>0</span><span>  1.77   1.06   0.561   7.36 0.620  0.088</span><span style='text-decoration: underline;'>4</span><span> 
+#&gt; </span><span style='color: #555555;'>13</span><span> Vict… Clothin… theta… Trai… 1.48   10.5    7.75   0.465   4.22 0.476 -</span><span style='color: #BB0000;'>0.043</span><span style='color: #BB0000;text-decoration: underline;'>4</span><span> 
+#&gt; </span><span style='color: #555555;'>14</span><span> Vict… Clothin… theta… Trai… 2.89   20.9   13.8    1.54    7.37 0.845  0.126  
+#&gt; </span><span style='color: #555555;'>15</span><span> West… Clothin… theta… Trai… 0.323   3.82   2.78   0.362   4.49 0.455  0.010</span><span style='text-decoration: underline;'>8</span><span> 
+#&gt; </span><span style='color: #555555;'>16</span><span> West… Clothin… theta… Trai… 0.559   6.44   4.56   1.28    8.13 0.746  0.139  </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
