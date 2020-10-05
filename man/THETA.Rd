@@ -33,7 +33,7 @@ More general theta methods are available in the forecTheta package.
 \subsection{season}{
 The \code{season} special is used to specify the parameters of the seasonal adjustment via classical decomposition.
 \preformatted{
-window(period = NULL, method = c("multiplicative", "additive"))
+season(period = NULL, method = c("multiplicative", "additive"))
 }
 
 \tabular{ll}{
@@ -43,6 +43,22 @@ window(period = NULL, method = c("multiplicative", "additive"))
 }
 }
 
+\examples{
+# Theta method with transform
+deaths <- as_tsibble(USAccDeaths)
+deaths \%>\%
+  model(theta = THETA(log(value))) \%>\%
+  forecast(h = "4 years") \%>\%
+  autoplot(deaths)
+
+# Compare seasonal specifications
+library(tsibbledata)
+aus_retail \%>\%
+  filter(Industry == "Clothing retailing") \%>\%
+  model(theta_multiplicative = THETA(Turnover ~ season(method = "multiplicative")),
+        theta_additive = THETA(Turnover ~ season(method = "additive"))) \%>\%
+  accuracy()
+}
 \references{
 Assimakopoulos, V. and Nikolopoulos, K. (2000). The theta model:
 a decomposition approach to forecasting. \emph{International Journal of
