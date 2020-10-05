@@ -21,7 +21,10 @@ Authors@R:
       person(given = "Gabriel",
              family = "Caceres",
              role = "ctb",
-             comment = "NNETAR implementation"))
+             comment = "NNETAR implementation"),
+      person(given = "Hensel", 
+             family = "Tim-Gunnar", 
+             role = "ctb")
 License: GPL-3
 URL: https://fable.tidyverts.org, https://github.com/tidyverts/fable
 BugReports: https://github.com/tidyverts/fable/issues
