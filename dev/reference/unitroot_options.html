@@ -168,11 +168,11 @@ threshold is used for determining seasonal required differences.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>ndiffs_alpha, nsdiffs_alpha</th>
-      <td><p>The level for the test specified in the <code>pval</code> functions As long as <code>pval &lt; alpha</code>, differences will be added.</p></td>
+      <td><p>The level for the test specified in the <code>pval</code> functions. As long as <code>pval &lt; alpha</code>, differences will be added.</p></td>
     </tr>
     <tr>
       <th>ndiffs_pvalue, nsdiffs_pvalue</th>
-      <td><p>A function (or lambda expression) which returns the probability of the . As long as <code>pval &lt; alpha</code>, differences will be added.</p>
+      <td><p>A function (or lambda expression) that provides a p-value for the unit root test. As long as <code>pval &lt; alpha</code>, differences will be added.</p>
 <p>For the function for the seasonal p-value, the seasonal period will be provided as the <code>.period</code> argument to this function.
 A vector of data to test is available as <code>.</code> or <code>.x</code>.</p></td>
     </tr>
