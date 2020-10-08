@@ -124,6 +124,7 @@ specials_theta <- new_specials(
 #' 
 #' # Compare seasonal specifications
 #' library(tsibbledata)
+#' library(dplyr)
 #' aus_retail %>%
 #'   filter(Industry == "Clothing retailing") %>%
 #'   model(theta_multiplicative = THETA(Turnover ~ season(method = "multiplicative")),
