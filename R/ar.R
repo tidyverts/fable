@@ -267,16 +267,16 @@ forecast.AR <- function(object, new_data = NULL, specials = NULL,
 #'   model(AR(value ~ order(3))) %>%
 #'   generate()
 #' @export
-generate.AR <- function(object, new_data = NULL, specials = NULL, 
+generate.AR <- function(x, new_data = NULL, specials = NULL, 
                         bootstrap = FALSE, ...) {
-  n <- length(object$last)
-  p <- object$p
-  coef <- object$coef
+  n <- length(x$last)
+  p <- x$p
+  coef <- x$coef
   
   # Get xreg
   h <- max(map_int(key_data(new_data)[[".rows"]], length))
   xreg <- specials$xreg[[1]]$xreg
-  if(object$constant){
+  if(x$constant){
     xreg <- cbind(constant = rep(1, h), xreg)
   }
   
@@ -298,14 +298,14 @@ generate.AR <- function(object, new_data = NULL, specials = NULL,
                                 nrow(new_data), replace = TRUE)
     }
     else{
-      new_data$.innov <- stats::rnorm(nrow(new_data), sd = sqrt(object$sigma2))
+      new_data$.innov <- stats::rnorm(nrow(new_data), sd = sqrt(x$sigma2))
     }
   }
   
   new_data <- transmute(group_by_key(new_data),
             ".sim" := stats::filter(
               !!sym(".innov"), ar, method = "recursive", 
-              init = rev(object$reg_resid)[seq_along(ar)]))
+              init = rev(x$reg_resid)[seq_along(ar)]))
   mutate(dplyr::ungroup(new_data), ".sim" := as.numeric(!!sym(".sim") + !!xm))
 }
 
