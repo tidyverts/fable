@@ -24,4 +24,21 @@ Useful links:
 }
 
 }
+\author{
+\strong{Maintainer}: Mitchell O'Hara-Wild \email{mail@mitchelloharawild.com}
+
+Authors:
+\itemize{
+  \item Rob Hyndman
+  \item Earo Wang
+}
+
+Other contributors:
+\itemize{
+  \item Gabriel Caceres (NNETAR implementation) [contributor]
+  \item Hensel Tim-Gunnar [contributor]
+  \item Timothy Hyndman [contributor]
+}
+
+}
 \keyword{internal}
