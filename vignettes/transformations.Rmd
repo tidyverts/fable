@@ -3,7 +3,7 @@ title: "Forecasting with transformations"
 author: "Mitchell O'Hara-Wild"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{transformations}
+  %\VignetteIndexEntry{Forecasting with transformations}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
