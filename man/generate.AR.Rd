@@ -4,9 +4,11 @@
 \alias{generate.AR}
 \title{Generate new data from a fable model}
 \usage{
-\method{generate}{AR}(object, new_data = NULL, specials = NULL, bootstrap = FALSE, ...)
+\method{generate}{AR}(x, new_data = NULL, specials = NULL, bootstrap = FALSE, ...)
 }
 \arguments{
+\item{x}{A fitted model.}
+
 \item{new_data}{A \code{tsibble} containing future information used to forecast.}
 
 \item{specials}{(passed by \code{\link[fabletools:forecast]{fabletools::forecast.mdl_df()}}).}
