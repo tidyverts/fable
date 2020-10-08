@@ -2,7 +2,7 @@
 % Please edit documentation in R/theta.R
 \name{residuals.fable_theta}
 \alias{residuals.fable_theta}
-\title{Extract residuals values from a fable model}
+\title{Extract residuals from a fable model}
 \usage{
 \method{residuals}{fable_theta}(object, ...)
 }

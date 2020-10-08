@@ -25,7 +25,7 @@
 
 \item{bootstrap}{If \code{TRUE}, then forecast distributions are computed using simulation with resampled errors.}
 
-\item{times}{The number of sample paths to use in estimating the forecast distribution when \code{boostrap = TRUE}.}
+\item{times}{The number of sample paths to use in estimating the forecast distribution when \code{bootstrap = TRUE}.}
 
 \item{...}{Additional arguments for forecast model methods.}
 }

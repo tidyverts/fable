@@ -2,7 +2,7 @@
 % Please edit documentation in R/nnetar.R
 \name{residuals.NNETAR}
 \alias{residuals.NNETAR}
-\title{Extract residuals values from a fable model}
+\title{Extract residuals from a fable model}
 \usage{
 \method{residuals}{NNETAR}(object, ...)
 }

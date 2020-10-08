@@ -2,7 +2,7 @@
 % Please edit documentation in R/lagwalk.R
 \name{residuals.RW}
 \alias{residuals.RW}
-\title{Extract residuals values from a fable model}
+\title{Extract residuals from a fable model}
 \usage{
 \method{residuals}{RW}(object, ...)
 }

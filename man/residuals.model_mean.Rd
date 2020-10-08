@@ -2,7 +2,7 @@
 % Please edit documentation in R/mean.R
 \name{residuals.model_mean}
 \alias{residuals.model_mean}
-\title{Extract residuals values from a fable model}
+\title{Extract residuals from a fable model}
 \usage{
 \method{residuals}{model_mean}(object, ...)
 }

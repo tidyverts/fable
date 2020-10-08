@@ -25,11 +25,13 @@ ARIMA(
 \item{selection_metric}{A function used to compute a metric from an \code{Arima}
 object which is minimised to select the best model.}
 
-\item{stepwise}{Should stepwise be used?}
+\item{stepwise}{Should stepwise be used? (Stepwise can be much faster)}
 
 \item{greedy}{Should the stepwise search move to the next best option immediately?}
 
-\item{approximation}{Should CSS (conditional sum of squares) be used during model selection? The default (\code{NULL}) will use the approximation if there are more than 150 observations or if the seasonal period is greater than 12.}
+\item{approximation}{Should CSS (conditional sum of squares) be used during model
+selection? The default (\code{NULL}) will use the approximation if there are more than
+150 observations or if the seasonal period is greater than 12.}
 
 \item{order_constraint}{A logical predicate on the orders of \code{p}, \code{d}, \code{q},
 \code{P}, \code{D}, \code{Q} and \code{constant} to consider in the search. See "Specials" for
@@ -45,7 +47,7 @@ A model specification.
 }
 \description{
 Searches through the model space specified in the specials to identify the
-best ARIMA model which has lowest AIC, AICc or BIC value. It is implemented
+best ARIMA model, with the lowest AIC, AICc or BIC value. It is implemented
 using \code{\link[stats:arima]{stats::arima()}} and allows ARIMA models to be used in the fable
 framework.
 }
@@ -56,7 +58,7 @@ The fable \code{ARIMA()} function uses an alternate parameterisation of constant
 to \code{\link[stats:arima]{stats::arima()}} and \code{\link[forecast:Arima]{forecast::Arima()}}. While the parameterisations
 are equivalent, the coefficients for the constant/mean will differ.
 
-In fable, the parameterisation used is:
+In \code{fable}, the parameterisation used is:
 
 \deqn{(1-\phi_1B - \cdots - \phi_p B^p)(1-B)^d y_t = c + (1 + \theta_1 B + \cdots + \theta_q B^q)\varepsilon_t}
 
@@ -70,9 +72,9 @@ where \eqn{\mu} is the mean of \eqn{(1-B)^d y_t} and \eqn{c = \mu(1-\phi_1 - \cd
 \section{Specials}{
 
 
-The \emph{specials} define the space over which \code{ARIMA} will search for the model that best fits the data. If the RHS of \code{formula} is left blank, the default search space is given by \code{pdq() + PDQ()}: that is, a model with candidate seasonal and nonseasonal terms, but no exogenous regressors. Note that a seasonal model requires at least 2 full seasons' worth of data; if this is not available, \code{ARIMA} will revert to a nonseasonal model with a warning.
+The \emph{specials} define the space over which \code{ARIMA} will search for the model that best fits the data. If the RHS of \code{formula} is left blank, the default search space is given by \code{pdq() + PDQ()}: that is, a model with candidate seasonal and nonseasonal terms, but no exogenous regressors. Note that a seasonal model requires at least 2 full seasons of data; if this is not available, \code{ARIMA} will revert to a nonseasonal model with a warning.
 
-To specify a model fully (avoid automatic selection), the intercept and \code{pdq()/PDQ()} values must be specified: for example \code{formula = response ~ 1 + pdq(1, 1, 1) + PDQ(1, 0, 0)}.
+To specify a model fully (avoid automatic selection), the intercept and \code{pdq()/PDQ()} values must be specified. For example, \code{formula = response ~ 1 + pdq(1, 1, 1) + PDQ(1, 0, 0)}.
 
 \subsection{pdq}{
 The \code{pdq} special is used to specify non-seasonal components of the model.
@@ -87,12 +89,12 @@ pdq(p = 0:5, d = 0:2, q = 0:5,
 \code{q}      \tab The order of the non-seasonal moving average (MA) terms. If multiple values are provided, the one which minimises \code{ic} will be chosen. \cr
 \code{p_init} \tab If \code{stepwise = TRUE}, \code{p_init} provides the initial value for \code{p} for the stepwise search procedure. \cr
 \code{q_init} \tab If \code{stepwise = TRUE}, \code{q_init} provides the initial value for \code{q} for the stepwise search procedure. \cr
-\code{fixed}  \tab A named list of fixed parameters for coefficients. The names identify the coefficient, beginning with either \code{ar} or \code{ma}, and then followed by the lag order. For example, \code{fixed = list(ar1 = 0.3, ma2 = 0)}.
+\code{fixed}  \tab A named list of fixed parameters for coefficients. The names identify the coefficient, beginning with either \code{ar} or \code{ma}, followed by the lag order. For example, \code{fixed = list(ar1 = 0.3, ma2 = 0)}.
 }
 }
 
 \subsection{PDQ}{
-The \code{PDQ} special is used to specify seasonal components of the model. To force a nonseasonal fit, specify \code{PDQ(0, 0, 0)} in the RHS of the model formula. Note that simply omitting \code{PDQ} from the formula will \emph{not} result in a nonseasonal fit.
+The \code{PDQ} special is used to specify seasonal components of the model. To force a non-seasonal fit, specify \code{PDQ(0, 0, 0)} in the RHS of the model formula. Note that simply omitting \code{PDQ} from the formula will \emph{not} result in a non-seasonal fit.
 \preformatted{
 PDQ(P = 0:2, D = 0:1, Q = 0:2, period = NULL,
     P_init = 1, Q_init = 1, fixed = list())
@@ -105,7 +107,7 @@ PDQ(P = 0:2, D = 0:1, Q = 0:2, period = NULL,
 \code{period} \tab The periodic nature of the seasonality. This can be either a number indicating the number of observations in each seasonal period, or text to indicate the duration of the seasonal window (for example, annual seasonality would be "1 year").  \cr
 \code{P_init} \tab If \code{stepwise = TRUE}, \code{P_init} provides the initial value for \code{P} for the stepwise search procedure. \cr
 \code{Q_init} \tab If \code{stepwise = TRUE}, \code{Q_init} provides the initial value for \code{Q} for the stepwise search procedure. \cr
-\code{fixed}  \tab A named list of fixed parameters for coefficients. The names identify the coefficient, beginning with either \code{sar} or \code{sma}, and then followed by the lag order. For example, \code{fixed = list(sar1 = 0.1)}.
+\code{fixed}  \tab A named list of fixed parameters for coefficients. The names identify the coefficient, beginning with either \code{sar} or \code{sma}, followed by the lag order. For example, \code{fixed = list(sar1 = 0.1)}.
 }
 }
 
