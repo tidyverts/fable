@@ -2,7 +2,7 @@
 % Please edit documentation in R/ets.R
 \name{residuals.ETS}
 \alias{residuals.ETS}
-\title{Extract residuals values from a fable model}
+\title{Extract residuals from a fable model}
 \usage{
 \method{residuals}{ETS}(object, ...)
 }

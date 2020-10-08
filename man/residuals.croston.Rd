@@ -2,7 +2,7 @@
 % Please edit documentation in R/croston.R
 \name{residuals.croston}
 \alias{residuals.croston}
-\title{Extract residuals values from a fable model}
+\title{Extract residuals from a fable model}
 \usage{
 \method{residuals}{croston}(object, ...)
 }

@@ -2,14 +2,14 @@
 % Please edit documentation in R/arima.R
 \name{residuals.ARIMA}
 \alias{residuals.ARIMA}
-\title{Extract residuals values from a fable model}
+\title{Extract residuals from a fable model}
 \usage{
 \method{residuals}{ARIMA}(object, type = c("innovation", "regression"), ...)
 }
 \arguments{
 \item{object}{The time series model used to produce the forecasts}
 
-\item{type}{The type of the residuals to extract.}
+\item{type}{The type of residuals to extract.}
 
 \item{...}{Additional arguments for forecast model methods.}
 }

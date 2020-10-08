@@ -2,7 +2,7 @@
 % Please edit documentation in R/var.R
 \name{residuals.VAR}
 \alias{residuals.VAR}
-\title{Extract residuals values from a fable model}
+\title{Extract residuals from a fable model}
 \usage{
 \method{residuals}{VAR}(object, ...)
 }

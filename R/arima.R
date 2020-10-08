@@ -117,7 +117,7 @@ train_arima <- function(.data, specials,
   if (length(PDQ$D) != 1) abort("Could not find appropriate number of seasonal differences.")
   if (length(pdq$d) != 1) abort("Could not find appropriate number of non-seasonal differences.")
   if (PDQ$D >= 2) {
-    warn("Having more than one seasonal differences is not recommended. Please consider using only one seasonal difference.")
+    warn("Having more than one seasonal difference is not recommended. Please consider using only one seasonal difference.")
   } else if (PDQ$D + pdq$d > 2) {
     warn("Having 3 or more differencing operations is not recommended. Please consider reducing the total number of differences.")
   }
@@ -397,7 +397,7 @@ specials_arima <- new_specials(
                  fixed = list()) {
     period <- get_frequencies(period, self$data, .auto = "smallest")
     if (period < 1) {
-      abort("The seasonal period must be greater or equal to 1.")
+      abort("The seasonal period must be greater than or equal to 1.")
     } else if (period == 1) {
       # Not seasonal
       P <- 0
@@ -453,7 +453,7 @@ specials_arima <- new_specials(
 #' Estimate an ARIMA model
 #'
 #' Searches through the model space specified in the specials to identify the
-#' best ARIMA model which has lowest AIC, AICc or BIC value. It is implemented
+#' best ARIMA model, with the lowest AIC, AICc or BIC value. It is implemented
 #' using [`stats::arima()`] and allows ARIMA models to be used in the fable
 #' framework.
 #'
@@ -463,9 +463,11 @@ specials_arima <- new_specials(
 #' @param ic The information criterion used in selecting the model.
 #' @param selection_metric A function used to compute a metric from an `Arima`
 #' object which is minimised to select the best model.
-#' @param stepwise Should stepwise be used?
+#' @param stepwise Should stepwise be used? (Stepwise can be much faster)
 #' @param greedy Should the stepwise search move to the next best option immediately?
-#' @param approximation Should CSS (conditional sum of squares) be used during model selection? The default (`NULL`) will use the approximation if there are more than 150 observations or if the seasonal period is greater than 12.
+#' @param approximation Should CSS (conditional sum of squares) be used during model 
+#' selection? The default (`NULL`) will use the approximation if there are more than 
+#' 150 observations or if the seasonal period is greater than 12.
 #' @param order_constraint A logical predicate on the orders of `p`, `d`, `q`,
 #' `P`, `D`, `Q` and `constant` to consider in the search. See "Specials" for 
 #' the meaning of these terms.
@@ -479,7 +481,7 @@ specials_arima <- new_specials(
 #' to [`stats::arima()`] and [`forecast::Arima()`]. While the parameterisations
 #' are equivalent, the coefficients for the constant/mean will differ.
 #'
-#' In fable, the parameterisation used is:
+#' In `fable`, the parameterisation used is:
 #'
 #' \deqn{(1-\phi_1B - \cdots - \phi_p B^p)(1-B)^d y_t = c + (1 + \theta_1 B + \cdots + \theta_q B^q)\varepsilon_t}
 #'
@@ -491,9 +493,9 @@ specials_arima <- new_specials(
 #'
 #' @section Specials:
 #' 
-#' The _specials_ define the space over which `ARIMA` will search for the model that best fits the data. If the RHS of `formula` is left blank, the default search space is given by `pdq() + PDQ()`: that is, a model with candidate seasonal and nonseasonal terms, but no exogenous regressors. Note that a seasonal model requires at least 2 full seasons' worth of data; if this is not available, `ARIMA` will revert to a nonseasonal model with a warning.
+#' The _specials_ define the space over which `ARIMA` will search for the model that best fits the data. If the RHS of `formula` is left blank, the default search space is given by `pdq() + PDQ()`: that is, a model with candidate seasonal and nonseasonal terms, but no exogenous regressors. Note that a seasonal model requires at least 2 full seasons of data; if this is not available, `ARIMA` will revert to a nonseasonal model with a warning.
 #'
-#' To specify a model fully (avoid automatic selection), the intercept and `pdq()/PDQ()` values must be specified: for example `formula = response ~ 1 + pdq(1, 1, 1) + PDQ(1, 0, 0)`.
+#' To specify a model fully (avoid automatic selection), the intercept and `pdq()/PDQ()` values must be specified. For example, `formula = response ~ 1 + pdq(1, 1, 1) + PDQ(1, 0, 0)`.
 #' 
 #' \subsection{pdq}{
 #' The `pdq` special is used to specify non-seasonal components of the model.
@@ -508,12 +510,12 @@ specials_arima <- new_specials(
 #'   `q`      \tab The order of the non-seasonal moving average (MA) terms. If multiple values are provided, the one which minimises `ic` will be chosen. \cr
 #'   `p_init` \tab If `stepwise = TRUE`, `p_init` provides the initial value for `p` for the stepwise search procedure. \cr
 #'   `q_init` \tab If `stepwise = TRUE`, `q_init` provides the initial value for `q` for the stepwise search procedure. \cr
-#'   `fixed`  \tab A named list of fixed parameters for coefficients. The names identify the coefficient, beginning with either `ar` or `ma`, and then followed by the lag order. For example, `fixed = list(ar1 = 0.3, ma2 = 0)`.
+#'   `fixed`  \tab A named list of fixed parameters for coefficients. The names identify the coefficient, beginning with either `ar` or `ma`, followed by the lag order. For example, `fixed = list(ar1 = 0.3, ma2 = 0)`.
 #' }
 #' }
 #'
 #' \subsection{PDQ}{
-#' The `PDQ` special is used to specify seasonal components of the model. To force a nonseasonal fit, specify `PDQ(0, 0, 0)` in the RHS of the model formula. Note that simply omitting `PDQ` from the formula will _not_ result in a nonseasonal fit.
+#' The `PDQ` special is used to specify seasonal components of the model. To force a non-seasonal fit, specify `PDQ(0, 0, 0)` in the RHS of the model formula. Note that simply omitting `PDQ` from the formula will _not_ result in a non-seasonal fit.
 #' \preformatted{
 #' PDQ(P = 0:2, D = 0:1, Q = 0:2, period = NULL,
 #'     P_init = 1, Q_init = 1, fixed = list())
@@ -526,7 +528,7 @@ specials_arima <- new_specials(
 #'   `period` \tab The periodic nature of the seasonality. This can be either a number indicating the number of observations in each seasonal period, or text to indicate the duration of the seasonal window (for example, annual seasonality would be "1 year").  \cr
 #'   `P_init` \tab If `stepwise = TRUE`, `P_init` provides the initial value for `P` for the stepwise search procedure. \cr
 #'   `Q_init` \tab If `stepwise = TRUE`, `Q_init` provides the initial value for `Q` for the stepwise search procedure. \cr
-#'   `fixed`  \tab A named list of fixed parameters for coefficients. The names identify the coefficient, beginning with either `sar` or `sma`, and then followed by the lag order. For example, `fixed = list(sar1 = 0.1)`.
+#'   `fixed`  \tab A named list of fixed parameters for coefficients. The names identify the coefficient, beginning with either `sar` or `sma`, followed by the lag order. For example, `fixed = list(sar1 = 0.1)`.
 #' }
 #' }
 #'
@@ -606,12 +608,12 @@ fitted.ARIMA <- function(object, ...) {
   object$est[[".fitted"]]
 }
 
-#' Extract residuals values from a fable model
+#' Extract residuals from a fable model
 #'
 #' Extracts the residuals.
 #'
 #' @inheritParams forecast.ARIMA
-#' @param type The type of the residuals to extract.
+#' @param type The type of residuals to extract.
 #'
 #' @return A vector of fitted residuals.
 #'
@@ -701,7 +703,7 @@ report.ARIMA <- function(object, ...) {
 #' @inheritParams fabletools::forecast
 #' @param specials (passed by [`fabletools::forecast.mdl_df()`]).
 #' @param bootstrap If `TRUE`, then forecast distributions are computed using simulation with resampled errors.
-#' @param times The number of sample paths to use in estimating the forecast distribution when `boostrap = TRUE`.
+#' @param times The number of sample paths to use in estimating the forecast distribution when `bootstrap = TRUE`.
 #'
 #' @importFrom stats formula residuals
 #'
@@ -901,7 +903,7 @@ refit.ARIMA <- function(object, new_data, specials = NULL, reestimate = FALSE, .
 
 #' Interpolate missing values from a fable model
 #'
-#' Applies a model specific estimation technique to predict the values of missing values in a `tsibble`, and replace them.
+#' Applies a model-specific estimation technique to predict the values of missing values in a `tsibble`, and replace them.
 #'
 #' @inheritParams forecast.ARIMA
 #'
@@ -985,8 +987,8 @@ arima_constant <- function(n, d, D, period) {
 #' strength (via [`feasts::feat_stl()`] seasonal_strength) being above the 0.64 
 #' threshold is used for determining seasonal required differences.
 #'
-#' @param ndiffs_alpha,nsdiffs_alpha The level for the test specified in the `pval` functions As long as `pval < alpha`, differences will be added.
-#' @param ndiffs_pvalue,nsdiffs_pvalue A function (or lambda expression) which returns the probability of the . As long as `pval < alpha`, differences will be added.
+#' @param ndiffs_alpha,nsdiffs_alpha The level for the test specified in the `pval` functions. As long as `pval < alpha`, differences will be added.
+#' @param ndiffs_pvalue,nsdiffs_pvalue A function (or lambda expression) that provides a p-value for the unit root test. As long as `pval < alpha`, differences will be added.
 #'
 #' For the function for the seasonal p-value, the seasonal period will be provided as the `.period` argument to this function.
 #' A vector of data to test is available as `.` or `.x`.

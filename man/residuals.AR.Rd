@@ -2,14 +2,14 @@
 % Please edit documentation in R/ar.R
 \name{residuals.AR}
 \alias{residuals.AR}
-\title{Extract residuals values from a fable model}
+\title{Extract residuals from a fable model}
 \usage{
 \method{residuals}{AR}(object, type = c("innovation", "regression"), ...)
 }
 \arguments{
 \item{object}{The time series model used to produce the forecasts}
 
-\item{type}{The type of the residuals to extract.}
+\item{type}{The type of residuals to extract.}
 
 \item{...}{Additional arguments for forecast model methods.}
 }
