@@ -891,6 +891,11 @@ refit.ARIMA <- function(object, new_data, specials = NULL, reestimate = FALSE, .
     as.list(object$spec[c("p", "d", "q", "p", "q")])
   specials$PDQ[[1]][c("P", "D", "Q", "period", "P_init", "Q_init")] <-
     as.list(object$spec[c("P", "D", "Q", "period", "P", "Q")])
+  if(is.null(specials$xreg)) { 
+    specials$xreg <- list(list(xreg = NULL, constant = object$spec$constant))
+  } else {
+    specials$xreg[[1]]$constant <- object$spec$constant
+  }
   
   if (reestimate) {
     return(train_arima(new_data, specials, ...))

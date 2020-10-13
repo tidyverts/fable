@@ -14,6 +14,9 @@
 
 * Fixed unnecessary warning when forecasting short horizons using `NNETAR()`.
 * Fixed `generate()` method for NNETAR models when data isn't scaled (#302).
+* Fixed `refit.ARIMA()` re-selecting constant instead of using the provided
+  model's constant usage.
+
 
 # fable 0.2.1
 
