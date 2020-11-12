@@ -27,7 +27,7 @@ train_theta <- function(.data, specials, ...) {
   # Seasonal decomposition
   if (m > 1L) {
     dcmp <- stats::decompose(y, type = specials$season[[1]]$method)
-    if (any(abs(dcmp$seasonal) < 1e-10)) {
+    if (any(abs(dcmp$seasonal) < 1e-4)) {
       warning("Seasonal indexes equal to zero. Using non-seasonal Theta method")
     } else {
       y_sa <- if(dcmp$type == "additive") dcmp$x - dcmp$seasonal else dcmp$x / dcmp$seasonal
