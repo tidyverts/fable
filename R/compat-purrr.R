@@ -224,3 +224,13 @@ compose <- function(...) {
   }
 }
 # nocov end
+
+slide_dbl <- function(.x, .fn, ..., .size = 1, .partial = FALSE) {
+  out <- numeric(if(.partial) length(.x) else length(.x) - .size + 1)
+  for(i in seq_along(out)) {
+    idx <- seq.int(i+.size*(-1L+!.partial) + .partial, i + (.size*!.partial) - 1 + .partial, by = 1L)
+    idx[idx<=0] <- NA_integer_
+    out[i] <- .fn(.x[idx], ...)
+  }
+  out
+}
