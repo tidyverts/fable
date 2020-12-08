@@ -16,7 +16,7 @@
 * Fixed `generate()` method for NNETAR models when data isn't scaled (#302).
 * Fixed `refit.ARIMA()` re-selecting constant instead of using the provided
   model's constant usage.
-
+* Fixed use of exogenous regressors in `AR()` models.
 
 # fable 0.2.1
 

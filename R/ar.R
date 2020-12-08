@@ -94,7 +94,7 @@ specials_ar <- new_specials(
     xreg <- model.frame(model_formula, data = env, na.action = stats::na.pass)
     list(
       constant = if (constant_given) as.logical(terms(xreg) %@% "intercept") else c(TRUE, FALSE),
-      xreg = if (NCOL(xreg) == 0) NULL else xreg,
+      xreg = if (NCOL(xreg) == 0) NULL else as.matrix(xreg),
       fixed = fixed
     )
   },
