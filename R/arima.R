@@ -608,6 +608,27 @@ fitted.ARIMA <- function(object, ...) {
   object$est[[".fitted"]]
 }
 
+#' @export
+hfitted.ARIMA <- function(object, h, ...) {
+  y <- object$est$.fitted+object$est$.resid
+  yx <- object$est$.regression_resid
+  # Get fitted model
+  mod <- object$model$model
+  # Reset model to initial state
+  mod <- makeARIMA(mod$phi, mod$theta, mod$Delta)
+  # Calculate regression component
+  xm <- y-yx
+  # mod_seq <- mod
+  fits <- rep_len(NA_real_, length(y))
+  for(i in seq_len(length(yx) - h)) {
+    fc_mod <- attr(KalmanRun(yx[seq_len(i)], mod, update = TRUE), "mod")
+    fits[i + h] <- KalmanForecast(h, fc_mod)$pred[h] + xm[i+h]
+    # mod_seq <- attr(KalmanRun(yx[i], mod_seq, update = TRUE), "mod")
+    # fits[i + h] <- KalmanForecast(h, mod_seq)$pred[h] + xm[i+h]
+  }
+  fits
+}
+
 #' Extract residuals from a fable model
 #'
 #' Extracts the residuals.
