@@ -620,7 +620,11 @@ hfitted.ARIMA <- function(object, h, ...) {
   xm <- y-yx
   # mod_seq <- mod
   fits <- rep_len(NA_real_, length(y))
-  for(i in seq_len(length(yx) - h)) {
+  
+  start <- length(mod$Delta) + 1
+  end <- length(yx) - h
+  idx <- if(start > end) integer(0L) else start:end
+  for(i in idx) {
     fc_mod <- attr(KalmanRun(yx[seq_len(i)], mod, update = TRUE), "mod")
     fits[i + h] <- KalmanForecast(h, fc_mod)$pred[h] + xm[i+h]
     # mod_seq <- attr(KalmanRun(yx[i], mod_seq, update = TRUE), "mod")
