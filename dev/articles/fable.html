@@ -79,7 +79,7 @@
 </li>
 <li>
   <a href="https://github.com/tidyverts/fable">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -93,8 +93,7 @@
 
       
 
-      </header><script src="fable_files/accessible-code-block-0.0.1/empty-anchor.js"></script><link href="fable_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
-<script src="fable_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
+      </header><script src="fable_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Introduction to fable</h1>
@@ -233,17 +232,17 @@
 <code class="sourceCode R"><span class="va">fit</span> <span class="op">%&gt;%</span>
   <span class="fu">accuracy</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">MASE</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 8 x 12</span>
-<span class="co">#&gt;   Region State Purpose .model .type     ME  RMSE   MAE    MPE  MAPE  MASE</span>
-<span class="co">#&gt;   &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 Melbo… Vict… Holiday ets    Trai…  4.67   50.5  37.2  0.217  7.29 0.675</span>
-<span class="co">#&gt; 2 Melbo… Vict… Busine… ets    Trai…  3.31   56.4  42.9 -0.753  9.31 0.691</span>
-<span class="co">#&gt; 3 Melbo… Vict… Busine… arima  Trai…  2.54   58.2  46.0 -1.17  10.1  0.741</span>
-<span class="co">#&gt; 4 Melbo… Vict… Holiday arima  Trai… -4.64   54.3  41.4 -2.44   8.46 0.752</span>
-<span class="co">#&gt; 5 Melbo… Vict… Other   arima  Trai… -0.344  21.7  17.0 -6.16  19.5  0.763</span>
-<span class="co">#&gt; 6 Melbo… Vict… Other   ets    Trai… -0.142  21.7  17.0 -5.97  19.6  0.767</span>
-<span class="co">#&gt; 7 Melbo… Vict… Visiti… ets    Trai…  8.17   60.9  51.4  0.433  8.28 0.819</span>
-<span class="co">#&gt; 8 Melbo… Vict… Visiti… arima  Trai…  6.89   63.1  51.7  0.106  8.44 0.825</span>
+<span class="co">#&gt; # A tibble: 8 x 13</span>
+<span class="co">#&gt;   Region State Purpose .model .type     ME  RMSE   MAE    MPE  MAPE  MASE RMSSE</span>
+<span class="co">#&gt;   &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 Melbo… Vict… Holiday ets    Trai…  4.67   50.5  37.2  0.217  7.29 0.675 0.697</span>
+<span class="co">#&gt; 2 Melbo… Vict… Busine… ets    Trai…  3.31   56.4  42.9 -0.753  9.31 0.691 0.740</span>
+<span class="co">#&gt; 3 Melbo… Vict… Busine… arima  Trai…  2.54   58.2  46.0 -1.17  10.1  0.741 0.765</span>
+<span class="co">#&gt; 4 Melbo… Vict… Holiday arima  Trai… -4.64   54.3  41.4 -2.44   8.46 0.752 0.751</span>
+<span class="co">#&gt; 5 Melbo… Vict… Other   arima  Trai… -0.344  21.7  17.0 -6.16  19.5  0.763 0.772</span>
+<span class="co">#&gt; 6 Melbo… Vict… Other   ets    Trai… -0.142  21.7  17.0 -5.97  19.6  0.767 0.773</span>
+<span class="co">#&gt; 7 Melbo… Vict… Visiti… ets    Trai…  8.17   60.9  51.4  0.433  8.28 0.819 0.782</span>
+<span class="co">#&gt; 8 Melbo… Vict… Visiti… arima  Trai…  6.89   63.1  51.7  0.106  8.44 0.825 0.809</span>
 <span class="co">#&gt; # … with 1 more variable: ACF1 &lt;dbl&gt;</span></code></pre></div>
 <p>Forecasts from these models can be produced directly as our specified models do not require any additional data.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
