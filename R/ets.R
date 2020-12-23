@@ -511,6 +511,36 @@ fitted.ETS <- function(object, ...) {
   object$est[[".fitted"]]
 }
 
+#' @export
+hfitted.ETS <- function(object, h, ...) {
+  errortype <- object$spec$errortype
+  trendtype <- object$spec$trendtype
+  seasontype <- object$spec$seasontype
+  damped <- object$spec$damped
+  fc_class <- if (errortype == "A" && trendtype %in% c("A", "N") && seasontype %in% c("N", "A")) {
+    ets_fc_class1
+  } else if (errortype == "M" && trendtype %in% c("A", "N") && seasontype %in% c("N", "A")) {
+    ets_fc_class2
+  } else if (errortype == "M" && trendtype != "M" && seasontype == "M") {
+    ets_fc_class3
+  } else {
+    abort(sprintf("Multi-step fits for %s%s%s%s ETS models is not supported."),
+          errortype, trendtype, if(damped) "d" else "", seasontype)
+  }
+  
+  n <- nrow(object$states)-1
+  fits <- rep_len(NA_real_, n)
+  for(i in seq_len(n-h+1)) {
+    fits[i + h - 1] <- fc_class(
+      h = h,
+      last.state = as.numeric(object$states[i, measured_vars(object$states)]),
+      trendtype, seasontype, damped, object$spec$period, object$fit$sigma2,
+      set_names(object$par$estimate, object$par$term)
+    )$mu[h]
+  }
+  fits
+}
+
 #' @inherit residuals.ARIMA
 #'
 #' @examples
