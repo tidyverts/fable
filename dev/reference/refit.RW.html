@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>fable: Forecasting Models for Tidy Time Series — fable-package • fable</title>
+<title>Refit a RW model — refit.RW • fable</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,14 +46,8 @@
 
 
 
-<meta property="og:title" content="fable: Forecasting Models for Tidy Time Series — fable-package" />
-<meta property="og:description" content="
-Provides a collection of commonly used univariate and multivariate
-    time series forecasting models including automatically selected exponential 
-    smoothing (ETS) and autoregressive integrated moving average (ARIMA) models.
-    These models work within the 'fable' framework provided by the 'fabletools'
-    package, which provides the tools to evaluate, visualise, and combine models 
-    in a workflow consistent with the tidyverse." />
+<meta property="og:title" content="Refit a RW model — refit.RW" />
+<meta property="og:description" content="Applies a fitted random walk model to a new dataset." />
 <meta property="og:image" content="https://fable.tidyverts.org/logo.png" />
 
 
@@ -147,48 +141,71 @@ Provides a collection of commonly used univariate and multivariate
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>fable: Forecasting Models for Tidy Time Series</h1>
-    <small class="dont-index">Source: <a href='https://github.com/tidyverts/fable/blob/master/R/fable-package.R'><code>R/fable-package.R</code></a></small>
-    <div class="hidden name"><code>fable-package.Rd</code></div>
+    <h1>Refit a RW model</h1>
+    <small class="dont-index">Source: <a href='https://github.com/tidyverts/fable/blob/master/R/lagwalk.R'><code>R/lagwalk.R</code></a></small>
+    <div class="hidden name"><code>refit.RW.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><img src='figures/logo.png' align='right' alt='logo' width='120' /></p>
-<p>Provides a collection of commonly used univariate and multivariate
-    time series forecasting models including automatically selected exponential 
-    smoothing (ETS) and autoregressive integrated moving average (ARIMA) models.
-    These models work within the 'fable' framework provided by the 'fabletools'
-    package, which provides the tools to evaluate, visualise, and combine models 
-    in a workflow consistent with the tidyverse.</p>
+    <p>Applies a fitted random walk model to a new dataset.</p>
     </div>
 
+    <pre class="usage"><span class='co'># S3 method for RW</span>
+<span class='fu'>refit</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>new_data</span>, specials <span class='op'>=</span> <span class='cn'>NULL</span>, reestimate <span class='op'>=</span> <span class='cn'>FALSE</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>object</th>
+      <td><p>The time series model used to produce the forecasts</p></td>
+    </tr>
+    <tr>
+      <th>new_data</th>
+      <td><p>A <code>tsibble</code> containing future information used to forecast.</p></td>
+    </tr>
+    <tr>
+      <th>specials</th>
+      <td><p>(passed by <code><a href='https://fabletools.tidyverts.org/reference/forecast.html'>fabletools::forecast.mdl_df()</a></code>).</p></td>
+    </tr>
+    <tr>
+      <th>reestimate</th>
+      <td><p>If <code>TRUE</code>, the RW model will be re-estimated
+to suit the new data.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Additional arguments for forecast model methods.</p></td>
+    </tr>
+    </table>
 
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <div class='dont-index'><p>Useful links:</p><ul>
-<li><p><a href='https://fable.tidyverts.org'>https://fable.tidyverts.org</a></p></li>
-<li><p><a href='https://github.com/tidyverts/fable'>https://github.com/tidyverts/fable</a></p></li>
-<li><p>Report bugs at <a href='https://github.com/tidyverts/fable/issues'>https://github.com/tidyverts/fable/issues</a></p></li>
-</ul>
+    <p>The models <code>NAIVE</code> and <code>SNAIVE</code> have no specific model parameters. Using <code>refit</code>
+for one of these models will provide the same estimation results as one would
+use <code><a href='https://fabletools.tidyverts.org/reference/model.html'>fabletools::model(NAIVE(...))</a></code> (or <code><a href='https://fabletools.tidyverts.org/reference/model.html'>fabletools::model(SNAIVE(...))</a></code>.</p>
 
-</div>
-    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='va'>lung_deaths_male</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span><span class='op'>(</span><span class='va'>mdeaths</span><span class='op'>)</span>
+<span class='va'>lung_deaths_female</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span><span class='op'>(</span><span class='va'>fdeaths</span><span class='op'>)</span>
 
-    <p><strong>Maintainer</strong>: Mitchell O'Hara-Wild <a href='mailto:mail@mitchelloharawild.com'>mail@mitchelloharawild.com</a></p>
-<p>Authors:</p><ul>
-<li><p>Rob Hyndman</p></li>
-<li><p>Earo Wang</p></li>
-</ul>
+<span class='va'>fit</span> <span class='op'>&lt;-</span> <span class='va'>lung_deaths_male</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>model</span><span class='op'>(</span><span class='fu'><a href='RW.html'>RW</a></span><span class='op'>(</span><span class='va'>value</span> <span class='op'>~</span> <span class='fu'>drift</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
 
-<p>Other contributors:</p><ul>
-<li><p>Gabriel Caceres (NNETAR implementation) [contributor]</p></li>
-<li><p>Tim-Gunnar Hensel [contributor]</p></li>
-<li><p>Timothy Hyndman [contributor]</p></li>
-</ul>
-
-
-
+<span class='fu'>report</span><span class='op'>(</span><span class='va'>fit</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Series: value 
+#&gt; Model: RW w/ drift 
+#&gt; 
+#&gt; Drift: -11.169 (se: 34.8392)
+#&gt; sigma^2: 86177.8853 </div><div class='input'>
+<span class='va'>fit</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>refit</span><span class='op'>(</span><span class='va'>lung_deaths_female</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>report</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Series: value 
+#&gt; Model: RW w/ drift 
+#&gt; 
+#&gt; Drift: -11.169 (se: 34.8392)
+#&gt; sigma^2: 16043.6423 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
