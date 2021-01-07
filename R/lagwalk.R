@@ -2,7 +2,7 @@ train_lagwalk <- function(.data, specials, ...) {
   if (length(measured_vars(.data)) > 1) {
     abort("Only univariate responses are supported by lagwalks.")
   }
-
+  
   y <- unclass(.data)[[measured_vars(.data)]]
   n <- length(y)
 
@@ -23,16 +23,26 @@ train_lagwalk <- function(.data, specials, ...) {
   }
 
   fitted <- c(rep(NA, min(lag, n)), utils::head(fits, -lag))
-  if (drift) {
-    fit <- summary(stats::lm(y - fitted ~ 1, na.action = stats::na.exclude))
-    b <- fit$coefficients[1, 1]
-    b.se <- fit$coefficients[1, 2]
-    sigma <- fit$sigma
+
+  # In general drift is a logical but could also be a numeric if RW model with drift should not be re-estimated. 
+  if (rlang::is_double(drift)) {
+    b <- drift
+    b.se <- dbl() # updated in refit.RW. 
     fitted <- fitted + b
-  }
-  else {
-    b <- b.se <- dbl()
     sigma <- stats::sd(y - fitted, na.rm = TRUE)
+  } else {
+    # Initial model estimation or re-estimation of RW model (with drift).
+    if (drift) {
+      fit <- summary(stats::lm(y - fitted ~ 1, na.action = stats::na.exclude))
+      b <- fit$coefficients[1, 1]
+      b.se <- fit$coefficients[1, 2]
+      sigma <- fit$sigma
+      fitted <- fitted + b
+    } else {
+      # No drift model.
+      b <- b.se <- dbl()
+      sigma <- stats::sd(y - fitted, na.rm = TRUE)
+    }
   }
   res <- y - fitted
 
@@ -387,4 +397,56 @@ model_sum.RW <- function(x) {
     method <- paste(method, "w/ drift")
   }
   method
+}
+
+#' Refit a RW model
+#'
+#' Applies a fitted random walk model to a new dataset.
+#' 
+#' The models `NAIVE` and `SNAIVE` have no specific model parameters. Using `refit`
+#' for one of these models will provide the same estimation results as one would 
+#' use `fabletools::model(NAIVE(...))` (or `fabletools::model(SNAIVE(...))`. 
+#'
+#' @inheritParams refit.ARIMA
+#' @param reestimate If `TRUE`, the RW model will be re-estimated 
+#' to suit the new data. 
+#' 
+#' @examples
+#' lung_deaths_male <- as_tsibble(mdeaths)
+#' lung_deaths_female <- as_tsibble(fdeaths)
+#'
+#' fit <- lung_deaths_male %>%
+#'   model(RW(value ~ drift()))
+#'
+#' report(fit)
+#'
+#' fit %>%
+#'   refit(lung_deaths_female) %>%
+#'   report()
+#' @export
+refit.RW <- function(object, new_data, specials = NULL, reestimate = FALSE, ...) {
+  
+  # Update specials 'lag'.
+  specials$lag <- object$lag
+  
+  # Case if reestimate = TRUE. 
+  if (reestimate) {
+    # Preparation of specials 'drift', i.e. TRUE or FALSE.
+    specials$drift <- !rlang::is_empty(object$b)
+    return(train_lagwalk(new_data, specials, ...))
+  }
+  
+  # Case if reestimate = FALSE. 
+  # Update drift. 
+  if (rlang::is_empty(object$b)) {
+    specials$drift <- FALSE
+  } else {
+    specials$drift <- object$b
+  }
+  
+  refit <- train_lagwalk(new_data, specials, ...)
+  
+  # b.se could be either a numeric value or an empty numeric (dbl()). 
+  refit$b.se <- object$b.se
+  return(refit)
 }
