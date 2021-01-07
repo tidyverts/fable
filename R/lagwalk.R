@@ -10,7 +10,8 @@ train_lagwalk <- function(.data, specials, ...) {
     abort("All observations are missing, a model cannot be estimated without data.")
   }
 
-  drift <- specials$drift[[1]] %||% FALSE
+  drift <- specials$drift[[1]][[1]] %||% FALSE
+  fixed <- specials$drift[[1]][[2]]
   lag <- specials$lag[[1]]
 
   y_na <- which(is.na(y))
@@ -24,26 +25,23 @@ train_lagwalk <- function(.data, specials, ...) {
 
   fitted <- c(rep(NA, min(lag, n)), utils::head(fits, -lag))
 
-  # In general drift is a logical but could also be a numeric if RW model with drift should not be re-estimated. 
-  if (rlang::is_double(drift)) {
-    b <- drift
-    b.se <- dbl() # updated in refit.RW. 
-    fitted <- fitted + b
-    sigma <- stats::sd(y - fitted, na.rm = TRUE)
-  } else {
-    # Initial model estimation or re-estimation of RW model (with drift).
-    if (drift) {
+  # Initial model estimation or re-estimation of RW model (with drift).
+  if (drift) {
+    if (!rlang::is_null(fixed)) {
+      b <- fixed
+      b.se <- dbl() # updated in refit.RW.
+    } else {
       fit <- summary(stats::lm(y - fitted ~ 1, na.action = stats::na.exclude))
       b <- fit$coefficients[1, 1]
       b.se <- fit$coefficients[1, 2]
-      sigma <- fit$sigma
-      fitted <- fitted + b
-    } else {
-      # No drift model.
-      b <- b.se <- dbl()
-      sigma <- stats::sd(y - fitted, na.rm = TRUE)
     }
+    fitted <- fitted + b
+  } else {
+    # No drift model.
+    b <- b.se <- dbl()
   }
+  
+  sigma <- stats::sd(y - fitted, na.rm = TRUE)
   res <- y - fitted
 
   structure(
@@ -135,8 +133,8 @@ RW <- function(formula, ...) {
         }
         get_frequencies(lag, self$data, .auto = "smallest")
       },
-      drift = function(drift = TRUE) {
-        drift
+      drift = function(drift = TRUE, fixed = NULL) {
+        list(drift = drift, fixed = fixed)
       },
       xreg = no_xreg,
       .required_specials = c("lag")
@@ -177,8 +175,8 @@ SNAIVE <- function(formula, ...) {
         }
         lag
       },
-      drift = function(drift = TRUE) {
-        drift
+      drift = function(drift = TRUE, fixed = NULL) {
+        list(drift = drift, fixed = fixed)
       },
       xreg = no_xreg,
       .required_specials = c("lag")
@@ -428,20 +426,16 @@ refit.RW <- function(object, new_data, specials = NULL, reestimate = FALSE, ...)
   
   # Update specials 'lag'.
   specials$lag <- object$lag
-  
+
   # Case if reestimate = TRUE. 
   if (reestimate) {
-    # Preparation of specials 'drift', i.e. TRUE or FALSE.
-    specials$drift <- !rlang::is_empty(object$b)
     return(train_lagwalk(new_data, specials, ...))
   }
   
   # Case if reestimate = FALSE. 
-  # Update drift. 
-  if (rlang::is_empty(object$b)) {
-    specials$drift <- FALSE
-  } else {
-    specials$drift <- object$b
+  # Update fixed. 
+  if (!rlang::is_empty(object$b)) {
+    specials$drift[[1]][[2]] <- object$b
   }
   
   refit <- train_lagwalk(new_data, specials, ...)
