@@ -397,7 +397,7 @@ model_sum.RW <- function(x) {
   method
 }
 
-#' Refit a RW model
+#' Refit a lag walk model
 #'
 #' Applies a fitted random walk model to a new dataset.
 #' 
@@ -406,7 +406,7 @@ model_sum.RW <- function(x) {
 #' use `fabletools::model(NAIVE(...))` (or `fabletools::model(SNAIVE(...))`. 
 #'
 #' @inheritParams refit.ARIMA
-#' @param reestimate If `TRUE`, the RW model will be re-estimated 
+#' @param reestimate If `TRUE`, the lag walk model will be re-estimated 
 #' to suit the new data. 
 #' 
 #' @examples

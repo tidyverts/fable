@@ -118,7 +118,7 @@ test_that("ARIMA with bad inputs", {
   expect_warning(
     UKLungDeaths %>%
       model(ARIMA(mdeaths ~ pdq(2, 0, 0) + PDQ(2, 2, 0))),
-    "Having more than one seasonal differences is not recommended"
+    "Having more than one seasonal difference is not recommended"
   )
 
   expect_warning(

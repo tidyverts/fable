@@ -2,7 +2,7 @@
 % Please edit documentation in R/lagwalk.R
 \name{refit.RW}
 \alias{refit.RW}
-\title{Refit a RW model}
+\title{Refit a lag walk model}
 \usage{
 \method{refit}{RW}(object, new_data, specials = NULL, reestimate = FALSE, ...)
 }
@@ -13,7 +13,7 @@
 
 \item{specials}{(passed by \code{\link[fabletools:forecast]{fabletools::forecast.mdl_df()}}).}
 
-\item{reestimate}{If \code{TRUE}, the RW model will be re-estimated
+\item{reestimate}{If \code{TRUE}, the lag walk model will be re-estimated
 to suit the new data.}
 
 \item{...}{Additional arguments for forecast model methods.}

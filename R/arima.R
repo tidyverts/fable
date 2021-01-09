@@ -608,6 +608,7 @@ fitted.ARIMA <- function(object, ...) {
   object$est[[".fitted"]]
 }
 
+#' @importFrom stats KalmanForecast KalmanRun makeARIMA
 #' @export
 hfitted.ARIMA <- function(object, h, ...) {
   y <- object$est$.fitted+object$est$.resid
