@@ -5,7 +5,7 @@ train_arima <- function(.data, specials,
                         ic = "aicc", selection_metric = function(x) x[[ic]],
                         stepwise = TRUE, greedy = TRUE, approximation = NULL,
                         order_constraint = p + q + P + Q <= 6 & (constant + d + D <= 2),
-                        unitroot_spec = unitroot_options(),
+                        unitroot_spec = unitroot_options(), trace = FALSE,
                         fixed = NULL, ...) {
   if (length(measured_vars(.data)) > 1) {
     abort("Only univariate responses are supported by ARIMA.")
@@ -201,6 +201,10 @@ train_arima <- function(.data, specials,
     } else {
       sm <- Inf
     }
+    if(trace) {
+      cat(sprintf("ARIMA(%i,%i,%i)(%i,%i,%i)[%i]%s\t%f\n",
+                  p,d,q,P,D,Q,period,if(constant) "+c" else "  ",sm))
+    }
     sm
   }
 
@@ -257,6 +261,10 @@ This is generally discouraged, consider removing the constant or reducing the nu
     step_order <- unique(stats::na.omit(match(initial_opts, lapply(split(model_opts, seq_len(NROW(model_opts))), as.numeric))))
     initial <- TRUE
 
+    if(trace) {
+      cat("Model specification\t\tSelection metric\n")
+    }
+    
     # Stepwise search
     k <- 0
     while (NROW(model_opts[step_order, ]) > 0 && k < 94) {
@@ -297,6 +305,10 @@ This is generally discouraged, consider removing the constant or reducing the nu
   }
 
   if (approximation && !is.null(best$arma)) {
+    if(trace) {
+      cat("\n--- Re-estimating best models without approximation ---\n\n")
+    }
+    
     method <- "CSS-ML"
     best <- NULL
     sm_best <- Inf
@@ -473,6 +485,8 @@ specials_arima <- new_specials(
 #' the meaning of these terms.
 #' @param unitroot_spec A specification of unit root tests to use in the
 #' selection of `d` and `D`. See [`unitroot_options()`] for more details.
+#' @param trace If `TRUE`, the selection_metric of estimated models in the 
+#' selection procedure will be outputted to the console. 
 #' @param ... Further arguments for [`stats::arima()`]
 #'
 #' @section Parameterisation:
@@ -572,7 +586,7 @@ ARIMA <- function(formula, ic = c("aicc", "aic", "bic"),
                   selection_metric = function(x) x[[ic]],
                   stepwise = TRUE, greedy = TRUE, approximation = NULL,
                   order_constraint = p + q + P + Q <= 6 & (constant + d + D <= 2),
-                  unitroot_spec = unitroot_options(), ...) {
+                  unitroot_spec = unitroot_options(), trace = FALSE, ...) {
   ic <- match.arg(ic)
   stopifnot(is.function(selection_metric))
   arima_model <- new_model_class("ARIMA",
@@ -585,7 +599,8 @@ ARIMA <- function(formula, ic = c("aicc", "aic", "bic"),
     stepwise = stepwise, greedy = greedy,
     approximation = approximation,
     order_constraint = enexpr(order_constraint),
-    unitroot_spec = unitroot_spec, ...
+    unitroot_spec = unitroot_spec,
+    trace = trace, ...
   )
 }
 

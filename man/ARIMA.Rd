@@ -41,6 +41,9 @@ the meaning of these terms.}
 selection of \code{d} and \code{D}. See \code{\link[=unitroot_options]{unitroot_options()}} for more details.}
 
 \item{...}{Further arguments for \code{\link[stats:arima]{stats::arima()}}}
+
+\item{trace}{If \code{TRUE}, the selection_metric of estimated models in the
+selection procedure will be outputted to the console.}
 }
 \value{
 A model specification.

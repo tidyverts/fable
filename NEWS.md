@@ -9,6 +9,7 @@
 * Added `refit()` method for MEAN (#289, @Tim-TU).
 * Added `generate()` method for AR, the `forecast()` method now supports
   bootstrap forecasting via this new method.
+* Added `trace` argument for tracing the selection procedure used in `ARIMA()`
 
 ## Bug fixes
 
