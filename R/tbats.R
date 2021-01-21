@@ -13,6 +13,49 @@ train_tbats <- function(.data, specials, ...) {
   )
 }
 
+fit_tbats <- function(y, m, trend, dampen, transform, ar, ma) {
+  # Test inputs
+  # y = USAccDeaths
+  # m = 12
+  # k = 3
+  # trend = TRUE
+  # dampen = TRUE
+  # transform = TRUE
+  # ar = ma = numeric()
+  
+  
+  p = length(ar)
+  q = length(ma)
+  
+  par <- initial_tbats_par(y, m, k, trend, dampen, transform)
+  
+  # Initialise x0 matrix as x0=0 for l, b, s (2*k), p, q
+  x0 <- matrix(c(0, numeric(as.integer(is.null(par$beta))), numeric(2*sum(k)), numeric(p), numeric(q)))
+  
+  # Create transposed w matrix
+  # Inputs represent: level, dampening, fourier harmonics, ar, ma
+  wt <- matrix(c(1, par$phi, rep(rep(c(1,0), length(k)), rep(k, each = 2)), ar, ma),
+               nrow = 1)
+  
+  # Create gamma vector
+  # gamma = c(rep(gamma1[1], k[1]), rep(gamma2[1], k[1]), rep(gamma1[2], k[2]), rep(gamma2[2], k[2]), ...)
+  gamma <- matrix(rep(cbind(par$gamma1,par$gamma2), rep(k, length(k))),
+                  nrow = 1)
+  
+  # Create g vector
+  # Inputs represent: alpha, beta, gamma, <AR(p): 1, 0*p-1>, <MA(q): 1, 0*q-1>
+  g <- matrix(
+    c(par$alpha, par$beta, gamma, 
+      1[p>0], numeric(max(0, p-1)),
+      1[q>0], numeric(max(0, q-1))),
+    ncol = 1)
+  
+  # Create F matrix
+  Fmat <- matrix(0, nrow = nrow(g), ncol = nrow(g))
+  Fmat[1,1] <- 1
+  # to be continued...
+}
+
 initial_tbats_par <- function(y, m, k, trend, dampen, transform) {
   alpha <- 0.09
   beta <- gamma1 <- gamma2 <- lambda <- NULL
