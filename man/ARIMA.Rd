@@ -14,6 +14,7 @@ ARIMA(
   approximation = NULL,
   order_constraint = p + q + P + Q <= 6 & (constant + d + D <= 2),
   unitroot_spec = unitroot_options(),
+  trace = FALSE,
   ...
 )
 }
@@ -40,10 +41,10 @@ the meaning of these terms.}
 \item{unitroot_spec}{A specification of unit root tests to use in the
 selection of \code{d} and \code{D}. See \code{\link[=unitroot_options]{unitroot_options()}} for more details.}
 
-\item{...}{Further arguments for \code{\link[stats:arima]{stats::arima()}}}
-
 \item{trace}{If \code{TRUE}, the selection_metric of estimated models in the
 selection procedure will be outputted to the console.}
+
+\item{...}{Further arguments for \code{\link[stats:arima]{stats::arima()}}}
 }
 \value{
 A model specification.
