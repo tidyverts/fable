@@ -13,6 +13,29 @@ train_tbats <- function(.data, specials, ...) {
   )
 }
 
+initial_tbats_par <- function(y, m, k, trend, dampen, transform) {
+  alpha <- 0.09
+  beta <- gamma1 <- gamma2 <- lambda <- NULL
+  if (trend) {
+    beta <- 0.05
+    if (dampen) {
+      phi <- .999
+    } else {
+      phi <- 1
+    }
+  }
+  if (!is_empty(m)) {
+    gamma1 <- rep(0, length(k))
+    gamma2 <- rep(0, length(k))
+  }
+  if (transform) {
+    require_package("feasts")
+    lambda <- unname(feasts::guerrero(y, lower = 0, upper = 1.5, .period = m))
+  }
+  list(alpha = alpha, beta = beta, phi = phi,
+       gamma1 = gamma1, gamma2 = gamma2, lambda = lambda)
+}
+
 specials_tbats <- new_specials(
   trend = function(include = TRUE, damped = FALSE) {
     as.list(environment())
