@@ -376,7 +376,7 @@ This is generally discouraged, consider removing the constant or reducing the nu
       est = tibble(
         .fitted = as.numeric(y - best$residuals),
         .resid = as.numeric(best$residuals),
-        .regression_resid = reg_resid
+        .regression_resid = as.numeric(reg_resid)
       ),
       fit = tibble(
         sigma2 = best$sigma2,
