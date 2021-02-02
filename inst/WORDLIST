@@ -21,7 +21,7 @@ Koehler
 Kourentzes
 kpss
 KPSS
-lifecycle
+Lifecycle
 mable
 Md
 MMA
@@ -37,9 +37,11 @@ pdq
 pkgdown
 rd
 reseasonalized
+RW
 SAR
 SES
 SMA
+SNAIVE
 STL
 Syntetos
 tibble
