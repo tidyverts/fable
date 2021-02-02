@@ -1,14 +1,30 @@
 # fable (development version)
 
+The release of fabletools v0.3.0 introduced general support for computing h-step 
+ahead fitted values, using the `hfitted(<mdl>, h = ???)` function. This release
+adds model-specific `hfitted()` support to ARIMA and ETS models for improved
+performance and accuracy.
+
+This release adds improved support for refitting models, largely in thanks to
+contributions by @Tim-TU.
+
+It is also now possible to specify an arbitrary model selection criterion 
+function for automatic `ARIMA()` model selection.
+
+## New features
+
+* Added `refit()` method for NNETAR, MEAN, RW, SNAIVE, and NAIVE models 
+  (#287, #289, #321. @Tim-TU).
+* Added `hfitted()` method for ETS and ARIMA, this allows fast estimation of 
+  h-step ahead fitted values.
+* Added `generate()` method for AR, the `forecast()` method now supports
+  bootstrap forecasting via this new method.
+
 ## Improvements
 
 * Added the `selection_metric` argument to `ARIMA()`, which allows more control
   over the measure used to select the best model. By default this function will
   extract the information criteria specified by the `ic` argument.
-* Added `refit()` method for NNETAR (#287, @Tim-TU).
-* Added `refit()` method for MEAN (#289, @Tim-TU).
-* Added `generate()` method for AR, the `forecast()` method now supports
-  bootstrap forecasting via this new method.
 * Added `trace` argument for tracing the selection procedure used in `ARIMA()`
 
 ## Bug fixes
