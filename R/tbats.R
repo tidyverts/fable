@@ -23,6 +23,7 @@ fit_tbats <- function(y, m, trend, dampen, transform, ar, ma) {
   # transform = TRUE
   # ar = ma = numeric()
   
+  tau <- sum(k)*2
   
   p = length(ar)
   q = length(ma)
@@ -39,20 +40,91 @@ fit_tbats <- function(y, m, trend, dampen, transform, ar, ma) {
   
   # Create gamma vector
   # gamma = c(rep(gamma1[1], k[1]), rep(gamma2[1], k[1]), rep(gamma1[2], k[2]), rep(gamma2[2], k[2]), ...)
-  gamma <- matrix(rep(cbind(par$gamma1,par$gamma2), rep(k, length(k))),
-                  nrow = 1)
+  gamma <- rep(cbind(par$gamma1,par$gamma2), rep(k, length(k)))
+  if(!is.null(gamma)) gamma <- matrix(gamma, nrow = 1)
   
   # Create g vector
   # Inputs represent: alpha, beta, gamma, <AR(p): 1, 0*p-1>, <MA(q): 1, 0*q-1>
   g <- matrix(
     c(par$alpha, par$beta, gamma, 
-      1[p>0], numeric(max(0, p-1)),
-      1[q>0], numeric(max(0, q-1))),
+      c(1)[p>0], numeric(max(0, p-1)),
+      c(1)[q>0], numeric(max(0, q-1))
+    ),
     ncol = 1)
   
+  Fmat <- make_tbats_Fmat(par$alpha, par$beta, par$phi, m, k, gamma, ar, ma)
   # Create F matrix
   Fmat <- matrix(0, nrow = nrow(g), ncol = nrow(g))
+  # level
   Fmat[1,1] <- 1
+  # trend
+  if(!is.null(par$beta)) {
+    Fmat[c(2, 1:2 + nrow(Fmat))] <- c(0, par$phi, par$phi)
+  }
+  # fourier
+  if(!is.null(gamma)) {
+    Amat <- matrix(0, tau, tau)
+    fourier_mat <- function(m, k) {
+      Ci <- diag(cos(2*pi*seq_len(k)/m))
+      Si <- diag(sin(2*pi*seq_len(k)/m))
+      Ai <- matrix(nrow = k*2, ncol = k*2)
+      pos1 <- seq_len(k)
+      pos2 <- seq(k+1, length.out = k)
+      Ai[pos1, pos1] <- Ci
+      Ai[pos1, pos2] <- Si
+      Ai[pos2, pos1] <- -Si
+      Ai[pos2, pos2] <- Ci
+      Ai
+    }
+    idx <- c(1,cumsum(2*k))
+    for(i in seq_along(m)) {
+      Amat[idx[i]:idx[i+1],idx[i]:idx[i+1]] <- fourier_mat(m[i], k[i])
+    }
+    Aloc <- seq(2 + !is.null(par$beta), length.out = tau)
+    Fmat[Aloc, Aloc] <-Amat
+  }
+  # ar
+  if(p > 0) {
+    ar_cols <- seq(2 + tau + !is.null(par$beta), length.out = p)
+    
+    # Add ar:level
+    Fmat[1, ar_cols] <- par$alpha * ar # alpha * phi
+    cur_row <- 2
+    # Add ar:trend
+    if(!is.null(par$beta)) {
+      Fmat[cur_row, ar_cols] <- par$beta * ar # beta * phi
+      cur_row <- cur_row + 1
+    }
+    # Add ar:fourier
+    if(!is.null(gamma)) {
+      Fmat[seq(cur_row, length.out = tau), ar_cols] <- t(gamma) %*% ar # B matrix
+      cur_row <- cur_row + tau
+    }
+    # Add ar component
+    Fmat[cur_row, ar_cols] <- ar
+    Fmat[seq(cur_row + 1, length.out = p-1), ar_cols] <- diag(nrow = p-1, ncol = p) # I<p-1,p>
+  }
+  # ma
+  if(q > 0) {
+    ma_cols <- seq(2 + tau + p + !is.null(par$beta), length.out = q)
+    
+    # Add ma:level
+    Fmat[1, ma_cols] <- par$alpha * ma # alpha * theta
+    cur_row <- 2
+    # Add ma:trend
+    if(!is.null(par$beta)) {
+      Fmat[cur_row, ma_cols] <- par$beta * ma # beta * theta
+      cur_row <- cur_row + 1
+    }
+    # Add ar:fourier
+    if(!is.null(gamma)) {
+      Fmat[seq(cur_row, length.out = tau), ma_cols] <- t(gamma) %*% ma # C matrix
+      cur_row <- cur_row + tau
+    }
+    # Add ar component
+    Fmat[cur_row, ma_cols] <- ma
+    Fmat[seq(cur_row + p + 1, length.out = q-1), ma_cols] <- diag(nrow = q-1, ncol = q) # I<p-1,p>
+  }
   # to be continued...
 }
 
