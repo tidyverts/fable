@@ -1,4 +1,4 @@
-# fable (development version)
+# fable 0.3.0
 
 The release of fabletools v0.3.0 introduced general support for computing h-step 
 ahead fitted values, using the `hfitted(<mdl>, h = ???)` function. This release
