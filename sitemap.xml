@@ -103,6 +103,9 @@
     <loc>https://fable.tidyverts.org/reference/forecast.model_mean.html</loc>
   </url>
   <url>
+    <loc>https://fable.tidyverts.org/reference/generate.AR.html</loc>
+  </url>
+  <url>
     <loc>https://fable.tidyverts.org/reference/generate.ARIMA.html</loc>
   </url>
   <url>
@@ -169,7 +172,16 @@
     <loc>https://fable.tidyverts.org/reference/refit.ETS.html</loc>
   </url>
   <url>
+    <loc>https://fable.tidyverts.org/reference/refit.NNETAR.html</loc>
+  </url>
+  <url>
+    <loc>https://fable.tidyverts.org/reference/refit.RW.html</loc>
+  </url>
+  <url>
     <loc>https://fable.tidyverts.org/reference/refit.TSLM.html</loc>
+  </url>
+  <url>
+    <loc>https://fable.tidyverts.org/reference/refit.model_mean.html</loc>
   </url>
   <url>
     <loc>https://fable.tidyverts.org/reference/residuals.AR.html</loc>

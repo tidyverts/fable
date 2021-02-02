@@ -17,23 +17,27 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -44,11 +48,10 @@
 
 <meta property="og:title" content="Estimate an ARIMA model — ARIMA" />
 <meta property="og:description" content="Searches through the model space specified in the specials to identify the
-best ARIMA model which has lowest AIC, AICc or BIC value. It is implemented
+best ARIMA model, with the lowest AIC, AICc or BIC value. It is implemented
 using stats::arima() and allows ARIMA models to be used in the fable
 framework." />
 <meta property="og:image" content="https://fable.tidyverts.org/logo.png" />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -76,7 +79,7 @@ framework." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -90,7 +93,7 @@ framework." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -124,7 +127,7 @@ framework." />
 </li>
 <li>
   <a href="https://github.com/tidyverts/fable">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -148,21 +151,23 @@ framework." />
 
     <div class="ref-description">
     <p>Searches through the model space specified in the specials to identify the
-best ARIMA model which has lowest AIC, AICc or BIC value. It is implemented
+best ARIMA model, with the lowest AIC, AICc or BIC value. It is implemented
 using <code><a href='https://rdrr.io/r/stats/arima.html'>stats::arima()</a></code> and allows ARIMA models to be used in the fable
 framework.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ARIMA</span>(
-  <span class='no'>formula</span>,
-  <span class='kw'>ic</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"aicc"</span>, <span class='st'>"aic"</span>, <span class='st'>"bic"</span>),
-  <span class='kw'>stepwise</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>greedy</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>approximation</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>order_constraint</span> <span class='kw'>=</span> <span class='no'>p</span> + <span class='no'>q</span> + <span class='no'>P</span> + <span class='no'>Q</span> <span class='kw'>&lt;=</span> <span class='fl'>6</span> <span class='kw'>&amp;</span> (!<span class='no'>constant</span> <span class='kw'>|</span> <span class='no'>d</span> + <span class='no'>D</span> <span class='kw'>&lt;</span> <span class='fl'>2</span>),
-  <span class='kw'>unitroot_spec</span> <span class='kw'>=</span> <span class='fu'><a href='unitroot_options.html'>unitroot_options</a></span>(),
-  <span class='no'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>ARIMA</span><span class='op'>(</span>
+  <span class='va'>formula</span>,
+  ic <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"aicc"</span>, <span class='st'>"aic"</span>, <span class='st'>"bic"</span><span class='op'>)</span>,
+  selection_metric <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='va'>x</span><span class='op'>[[</span><span class='va'>ic</span><span class='op'>]</span><span class='op'>]</span>,
+  stepwise <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  greedy <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  approximation <span class='op'>=</span> <span class='cn'>NULL</span>,
+  order_constraint <span class='op'>=</span> <span class='va'>p</span> <span class='op'>+</span> <span class='va'>q</span> <span class='op'>+</span> <span class='va'>P</span> <span class='op'>+</span> <span class='va'>Q</span> <span class='op'>&lt;=</span> <span class='fl'>6</span> <span class='op'>&amp;</span> <span class='op'>(</span><span class='va'>constant</span> <span class='op'>+</span> <span class='va'>d</span> <span class='op'>+</span> <span class='va'>D</span> <span class='op'>&lt;=</span> <span class='fl'>2</span><span class='op'>)</span>,
+  unitroot_spec <span class='op'>=</span> <span class='fu'><a href='unitroot_options.html'>unitroot_options</a></span><span class='op'>(</span><span class='op'>)</span>,
+  trace <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -176,8 +181,13 @@ framework.</p>
       <td><p>The information criterion used in selecting the model.</p></td>
     </tr>
     <tr>
+      <th>selection_metric</th>
+      <td><p>A function used to compute a metric from an <code>Arima</code>
+object which is minimised to select the best model.</p></td>
+    </tr>
+    <tr>
       <th>stepwise</th>
-      <td><p>Should stepwise be used?</p></td>
+      <td><p>Should stepwise be used? (Stepwise can be much faster)</p></td>
     </tr>
     <tr>
       <th>greedy</th>
@@ -185,7 +195,9 @@ framework.</p>
     </tr>
     <tr>
       <th>approximation</th>
-      <td><p>Should CSS (conditional sum of squares) be used during model selection? The default (<code>NULL</code>) will use the approximation if there are more than 150 observations or if the seasonal period is greater than 12.</p></td>
+      <td><p>Should CSS (conditional sum of squares) be used during model
+selection? The default (<code>NULL</code>) will use the approximation if there are more than
+150 observations or if the seasonal period is greater than 12.</p></td>
     </tr>
     <tr>
       <th>order_constraint</th>
@@ -197,6 +209,11 @@ the meaning of these terms.</p></td>
       <th>unitroot_spec</th>
       <td><p>A specification of unit root tests to use in the
 selection of <code>d</code> and <code>D</code>. See <code><a href='unitroot_options.html'>unitroot_options()</a></code> for more details.</p></td>
+    </tr>
+    <tr>
+      <th>trace</th>
+      <td><p>If <code>TRUE</code>, the selection_metric of estimated models in the
+selection procedure will be outputted to the console.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -213,9 +230,9 @@ selection of <code>d</code> and <code>D</code>. See <code><a href='unitroot_opti
 
 
 <p>The fable <code>ARIMA()</code> function uses an alternate parameterisation of constants
-to <code><a href='https://rdrr.io/r/stats/arima.html'>stats::arima()</a></code> and <code><a href='https://rdrr.io/pkg/forecast/man/Arima.html'>forecast::Arima()</a></code>. While the parameterisations
+to <code><a href='https://rdrr.io/r/stats/arima.html'>stats::arima()</a></code> and <code><a href='https://pkg.robjhyndman.com/forecast/reference/Arima.html'>forecast::Arima()</a></code>. While the parameterisations
 are equivalent, the coefficients for the constant/mean will differ.</p>
-<p>In fable, the parameterisation used is:</p>
+<p>In <code>fable</code>, the parameterisation used is:</p>
 <p>$$(1-\phi_1B - \cdots - \phi_p B^p)(1-B)^d y_t = c + (1 + \theta_1 B + \cdots + \theta_q B^q)\varepsilon_t$$</p>
 <p>In stats and forecast, an ARIMA model is parameterised as:</p>
 <p>$$(1-\phi_1B - \cdots - \phi_p B^p)(y_t' - \mu) = (1 + \theta_1 B + \cdots + \theta_q B^q)\varepsilon_t$$</p>
@@ -225,12 +242,12 @@ are equivalent, the coefficients for the constant/mean will differ.</p>
     
 
 
-<p>The <em>specials</em> define the space over which <code>ARIMA</code> will search for the model that best fits the data. If the RHS of <code>formula</code> is left blank, the default search space is given by <code>pdq() + PDQ()</code>: that is, a model with candidate seasonal and nonseasonal terms, but no exogenous regressors. Note that a seasonal model requires at least 2 full seasons' worth of data; if this is not available, <code>ARIMA</code> will revert to a nonseasonal model with a warning.</p>
-<p>To specify a model fully (avoid automatic selection), the intercept and <code>pdq()/PDQ()</code> values must be specified: for example <code>formula = response ~ 1 + pdq(1, 1, 1) + PDQ(1, 0, 0)</code>.</p>
-<h3>pdq</h3>
+<p>The <em>specials</em> define the space over which <code>ARIMA</code> will search for the model that best fits the data. If the RHS of <code>formula</code> is left blank, the default search space is given by <code>pdq() + PDQ()</code>: that is, a model with candidate seasonal and nonseasonal terms, but no exogenous regressors. Note that a seasonal model requires at least 2 full seasons of data; if this is not available, <code>ARIMA</code> will revert to a nonseasonal model with a warning.</p>
+<p>To specify a model fully (avoid automatic selection), the intercept and <code>pdq()/PDQ()</code> values must be specified. For example, <code>formula = response ~ 1 + pdq(1, 1, 1) + PDQ(1, 0, 0)</code>.</p>
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>pdq</h3>
 <p>The <code>pdq</code> special is used to specify non-seasonal components of the model.</p><pre>
-pdq(p = 0:5, d = 0:2, q = 0:5,
-    p_init = 2, q_init = 2, fixed = list())
+<span class='fu'>pdq</span><span class='op'>(</span>p <span class='op'>=</span> <span class='fl'>0</span><span class='op'>:</span><span class='fl'>5</span>, d <span class='op'>=</span> <span class='fl'>0</span><span class='op'>:</span><span class='fl'>2</span>, q <span class='op'>=</span> <span class='fl'>0</span><span class='op'>:</span><span class='fl'>5</span>,
+    p_init <span class='op'>=</span> <span class='fl'>2</span>, q_init <span class='op'>=</span> <span class='fl'>2</span>, fixed <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 </pre>
 
 <table class='table'>
@@ -239,15 +256,15 @@ pdq(p = 0:5, d = 0:2, q = 0:5,
 <tr><td><code>q</code></td><td>The order of the non-seasonal moving average (MA) terms. If multiple values are provided, the one which minimises <code>ic</code> will be chosen.</td></tr>
 <tr><td><code>p_init</code></td><td>If <code>stepwise = TRUE</code>, <code>p_init</code> provides the initial value for <code>p</code> for the stepwise search procedure.</td></tr>
 <tr><td><code>q_init</code></td><td>If <code>stepwise = TRUE</code>, <code>q_init</code> provides the initial value for <code>q</code> for the stepwise search procedure.</td></tr>
-<tr><td><code>fixed</code></td><td>A named list of fixed parameters for coefficients. The names identify the coefficient, beginning with either <code>ar</code> or <code>ma</code>, and then followed by the lag order. For example, <code>fixed = list(ar1 = 0.3, ma2 = 0)</code>.</td></tr>
+<tr><td><code>fixed</code></td><td>A named list of fixed parameters for coefficients. The names identify the coefficient, beginning with either <code>ar</code> or <code>ma</code>, followed by the lag order. For example, <code>fixed = list(ar1 = 0.3, ma2 = 0)</code>.</td></tr>
 </table>
 
 
 
-<h3>PDQ</h3>
-<p>The <code>PDQ</code> special is used to specify seasonal components of the model. To force a nonseasonal fit, specify <code>PDQ(0, 0, 0)</code> in the RHS of the model formula. Note that simply omitting <code>PDQ</code> from the formula will <em>not</em> result in a nonseasonal fit.</p><pre>
-PDQ(P = 0:2, D = 0:1, Q = 0:2, period = NULL,
-    P_init = 1, Q_init = 1, fixed = list())
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>PDQ</h3>
+<p>The <code>PDQ</code> special is used to specify seasonal components of the model. To force a non-seasonal fit, specify <code>PDQ(0, 0, 0)</code> in the RHS of the model formula. Note that simply omitting <code>PDQ</code> from the formula will <em>not</em> result in a non-seasonal fit.</p><pre>
+<span class='fu'>PDQ</span><span class='op'>(</span>P <span class='op'>=</span> <span class='fl'>0</span><span class='op'>:</span><span class='fl'>2</span>, D <span class='op'>=</span> <span class='fl'>0</span><span class='op'>:</span><span class='fl'>1</span>, Q <span class='op'>=</span> <span class='fl'>0</span><span class='op'>:</span><span class='fl'>2</span>, period <span class='op'>=</span> <span class='cn'>NULL</span>,
+    P_init <span class='op'>=</span> <span class='fl'>1</span>, Q_init <span class='op'>=</span> <span class='fl'>1</span>, fixed <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 </pre>
 
 <table class='table'>
@@ -257,16 +274,16 @@ PDQ(P = 0:2, D = 0:1, Q = 0:2, period = NULL,
 <tr><td><code>period</code></td><td>The periodic nature of the seasonality. This can be either a number indicating the number of observations in each seasonal period, or text to indicate the duration of the seasonal window (for example, annual seasonality would be "1 year").</td></tr>
 <tr><td><code>P_init</code></td><td>If <code>stepwise = TRUE</code>, <code>P_init</code> provides the initial value for <code>P</code> for the stepwise search procedure.</td></tr>
 <tr><td><code>Q_init</code></td><td>If <code>stepwise = TRUE</code>, <code>Q_init</code> provides the initial value for <code>Q</code> for the stepwise search procedure.</td></tr>
-<tr><td><code>fixed</code></td><td>A named list of fixed parameters for coefficients. The names identify the coefficient, beginning with either <code>sar</code> or <code>sma</code>, and then followed by the lag order. For example, <code>fixed = list(sar1 = 0.1)</code>.</td></tr>
+<tr><td><code>fixed</code></td><td>A named list of fixed parameters for coefficients. The names identify the coefficient, beginning with either <code>sar</code> or <code>sma</code>, followed by the lag order. For example, <code>fixed = list(sar1 = 0.1)</code>.</td></tr>
 </table>
 
 
 
-<h3>xreg</h3>
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>xreg</h3>
 <p>Exogenous regressors can be included in an ARIMA model without explicitly using the <code>xreg()</code> special. Common exogenous regressor specials as specified in <code><a href='common_xregs.html'>common_xregs</a></code> can also be used. These regressors are handled using <code><a href='https://rdrr.io/r/stats/model.frame.html'>stats::model.frame()</a></code>, and so interactions and other functionality behaves similarly to <code><a href='https://rdrr.io/r/stats/lm.html'>stats::lm()</a></code>.</p>
 <p>The inclusion of a constant in the model follows the similar rules to <code><a href='https://rdrr.io/r/stats/lm.html'>stats::lm()</a></code>, where including <code>1</code> will add a constant and <code>0</code> or <code>-1</code> will remove the constant. If left out, the inclusion of a constant will be determined by minimising <code>ic</code>.</p>
 <pre>
-xreg(..., fixed = list())
+<span class='fu'>xreg</span><span class='op'>(</span><span class='va'>...</span>, fixed <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 </pre>
 
 <table class='table'>
@@ -283,12 +300,13 @@ xreg(..., fixed = list())
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Manual ARIMA specification</span>
-<span class='no'>USAccDeaths</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='kw'>arima</span> <span class='kw'>=</span> <span class='fu'>ARIMA</span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>value</span>) ~ <span class='fl'>0</span> + <span class='fu'>pdq</span>(<span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span>) + <span class='fu'>PDQ</span>(<span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span>))) <span class='kw'>%&gt;%</span>
-  <span class='fu'>report</span>()</div><div class='output co'>#&gt; Series: value 
+<span class='va'>USAccDeaths</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>model</span><span class='op'>(</span>arima <span class='op'>=</span> <span class='fu'>ARIMA</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>value</span><span class='op'>)</span> <span class='op'>~</span> <span class='fl'>0</span> <span class='op'>+</span> <span class='fu'>pdq</span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'>PDQ</span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>report</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Series: value 
 #&gt; Model: ARIMA(0,1,1)(0,1,1)[12] 
-#&gt; Transformation: log(.x) 
+#&gt; Transformation: log(value) 
 #&gt; 
 #&gt; Coefficients:
 #&gt;           ma1     sma1
@@ -298,31 +316,26 @@ xreg(..., fixed = list())
 #&gt; sigma^2 estimated as 0.001379:  log likelihood=109.31
 #&gt; AIC=-212.63   AICc=-212.19   BIC=-206.39</div><div class='input'>
 <span class='co'># Automatic ARIMA specification</span>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibble</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)</div><div class='output co'>#&gt; <span class='message'></span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tsibble.tidyverts.org'>tsibble</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>Attaching package: ‘dplyr’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:stats’:</span>
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    filter, lag</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
 #&gt; <span class='message'></span>
-#&gt; <span class='message'>    intersect, lag, setdiff, setequal, union</span></div><div class='input'><span class='kw pkg'>tsibbledata</span><span class='kw ns'>::</span><span class='no'><a href='https://tsibbledata.tidyverts.org/reference/global_economy.html'>global_economy</a></span> <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>Country</span> <span class='kw'>==</span> <span class='st'>"Australia"</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(<span class='fu'>ARIMA</span>(<span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span>(<span class='no'>GDP</span>) ~ <span class='no'>Population</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: NaNs produced</span></div><div class='output co'>#&gt; <span style='color: #555555;'># A mable: 1 x 2</span><span>
+#&gt; <span class='message'>    intersect, lag, setdiff, setequal, union</span></div><div class='input'><span class='fu'>tsibbledata</span><span class='fu'>::</span><span class='va'><a href='https://tsibbledata.tidyverts.org/reference/global_economy.html'>global_economy</a></span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>Country</span> <span class='op'>==</span> <span class='st'>"Australia"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>model</span><span class='op'>(</span><span class='fu'>ARIMA</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>GDP</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>Population</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: NaNs produced</span></div><div class='output co'>#&gt; <span style='color: #555555;'># A mable: 1 x 2</span><span>
 #&gt; </span><span style='color: #555555;'># Key:     Country [1]</span><span>
 #&gt;   Country   `ARIMA(log(GDP) ~ Population)`
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>                            </span><span style='color: #555555;font-style: italic;'>&lt;model&gt;</span><span>
 #&gt; </span><span style='color: #555555;'>1</span><span> Australia    &lt;LM w/ ARIMA(2,0,0) errors&gt;</div></span></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#parameterisation">Parameterisation</a></li>
-      <li><a href="#specials">Specials</a></li>
-      <li><a href="#see-also">See also</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -333,7 +346,7 @@ xreg(..., fixed = list())
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

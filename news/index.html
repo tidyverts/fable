@@ -17,23 +17,27 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -44,7 +48,6 @@
 
 <meta property="og:title" content="Changelog" />
 <meta property="og:image" content="https://fable.tidyverts.org/logo.png" />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -72,7 +75,7 @@
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-news">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -86,7 +89,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -120,7 +123,7 @@
 </li>
 <li>
   <a href="https://github.com/tidyverts/fable">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -137,25 +140,61 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Changelog <small></small></h1>
+      <h1 data-toc-skip>Changelog <small></small></h1>
       <small>Source: <a href='https://github.com/tidyverts/fable/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="fable-021" class="section level1">
-<h1 class="page-header">
-<a href="#fable-021" class="anchor"></a>fable 0.2.1<small> Unreleased </small>
+    <div id="fable-030" class="section level1">
+<h1 class="page-header" data-toc-text="0.3.0">
+<a href="#fable-030" class="anchor"></a>fable 0.3.0<small> Unreleased </small>
 </h1>
-<p>This release coincides with v0.2.0 of the fabletools package, which contains some substantial changes to the output of <code>forecast()</code> methods. These changes to fabletools emphasise the distribution in the fable object. The most noticeable is a change in column names of the fable, with the distribution now stored in the column matching the response variable, and the forecast mean now stored in the <code>.mean</code> column. For a complete summary of these changes, refer to the fabletools v0.2.0 release news: <a href="https://fabletools.tidyverts.org/news/index.html" class="uri">https://fabletools.tidyverts.org/news/index.html</a></p>
+<p>The release of fabletools v0.3.0 introduced general support for computing h-step ahead fitted values, using the <code>hfitted(&lt;mdl&gt;, h = ???)</code> function. This release adds model-specific <code>hfitted()</code> support to ARIMA and ETS models for improved performance and accuracy.</p>
+<p>This release adds improved support for refitting models, largely in thanks to contributions by <a href='https://github.com/Tim-TU'>@Tim-TU</a>.</p>
+<p>It is also now possible to specify an arbitrary model selection criterion function for automatic <code><a href="../reference/ARIMA.html">ARIMA()</a></code> model selection.</p>
 <div id="new-features" class="section level2">
 <h2 class="hasAnchor">
 <a href="#new-features" class="anchor"></a>New features</h2>
 <ul>
-<li>Added the <code><a href="../reference/THETA.html">THETA()</a></code> method.</li>
+<li>Added <code>refit()</code> method for NNETAR, MEAN, RW, SNAIVE, and NAIVE models (<a href='https://github.com/tidyverts/fable/issues/287'>#287</a>, <a href='https://github.com/tidyverts/fable/issues/289'>#289</a>, <a href='https://github.com/tidyverts/fable/issues/321'>#321</a>. <a href='https://github.com/Tim-TU'>@Tim-TU</a>).</li>
+<li>Added <code>hfitted()</code> method for ETS and ARIMA, this allows fast estimation of h-step ahead fitted values.</li>
+<li>Added <code>generate()</code> method for AR, the <code>forecast()</code> method now supports bootstrap forecasting via this new method.</li>
 </ul>
 </div>
 <div id="improvements" class="section level2">
 <h2 class="hasAnchor">
 <a href="#improvements" class="anchor"></a>Improvements</h2>
+<ul>
+<li>Added the <code>selection_metric</code> argument to <code><a href="../reference/ARIMA.html">ARIMA()</a></code>, which allows more control over the measure used to select the best model. By default this function will extract the information criteria specified by the <code>ic</code> argument.</li>
+<li>Added <code>trace</code> argument for tracing the selection procedure used in <code><a href="../reference/ARIMA.html">ARIMA()</a></code>
+</li>
+</ul>
+</div>
+<div id="bug-fixes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes" class="anchor"></a>Bug fixes</h2>
+<ul>
+<li>Fixed unnecessary warning when forecasting short horizons using <code><a href="../reference/NNETAR.html">NNETAR()</a></code>.</li>
+<li>Fixed <code>generate()</code> method for NNETAR models when data isn’t scaled (<a href='https://github.com/tidyverts/fable/issues/302'>#302</a>).</li>
+<li>Fixed <code><a href="../reference/refit.ARIMA.html">refit.ARIMA()</a></code> re-selecting constant instead of using the provided model’s constant usage.</li>
+<li>Fixed use of exogenous regressors in <code><a href="../reference/AR.html">AR()</a></code> models.</li>
+</ul>
+</div>
+</div>
+    <div id="fable-021" class="section level1">
+<h1 class="page-header" data-toc-text="0.2.1">
+<a href="#fable-021" class="anchor"></a>fable 0.2.1<small> 2020-06-16 </small>
+</h1>
+<p>This release coincides with v0.2.0 of the fabletools package, which contains some substantial changes to the output of <code>forecast()</code> methods. These changes to fabletools emphasise the distribution in the fable object. The most noticeable is a change in column names of the fable, with the distribution now stored in the column matching the response variable, and the forecast mean now stored in the <code>.mean</code> column. For a complete summary of these changes, refer to the fabletools v0.2.0 release news: <a href="https://fabletools.tidyverts.org/news/index.html" class="uri">https://fabletools.tidyverts.org/news/index.html</a></p>
+<div id="new-features-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features-1" class="anchor"></a>New features</h2>
+<ul>
+<li>Added the <code><a href="../reference/THETA.html">THETA()</a></code> method.</li>
+</ul>
+</div>
+<div id="improvements-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#improvements-1" class="anchor"></a>Improvements</h2>
 <ul>
 <li>Forecasts distributions are now provided by the distributional package. They are now more space efficient and allows calculation of distributional statistics including the <code><a href="https://rdrr.io/r/base/mean.html">mean()</a></code>, <code><a href="https://rdrr.io/r/stats/median.html">median()</a></code>, <code>variance()</code>, <code><a href="https://rdrr.io/r/stats/quantile.html">quantile()</a></code>, <code>cdf()</code>, and <code><a href="https://rdrr.io/r/stats/density.html">density()</a></code>.</li>
 <li>The uncertainty of the drift parameter in random walk models (<code><a href="../reference/RW.html">RW()</a></code>, <code><a href="../reference/RW.html">NAIVE()</a></code> and <code><a href="../reference/RW.html">SNAIVE()</a></code>) is now included in data generated with <code>generate()</code>.</li>
@@ -163,9 +202,9 @@
 <li>Performance improvements.</li>
 </ul>
 </div>
-<div id="bug-fixes" class="section level2">
+<div id="bug-fixes-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-1" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>Fixed issue with approximation being used when refitting ARIMA models and when a specific model is requested.</li>
 <li>Fixed <code>glance()</code> for <code><a href="../reference/TSLM.html">TSLM()</a></code> models when the data contains missing values.</li>
@@ -181,12 +220,12 @@
 </div>
 </div>
     <div id="fable-020" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.2.0">
 <a href="#fable-020" class="anchor"></a>fable 0.2.0<small> 2020-04-22 </small>
 </h1>
-<div id="improvements-1" class="section level2">
+<div id="improvements-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#improvements-1" class="anchor"></a>Improvements</h2>
+<a href="#improvements-2" class="anchor"></a>Improvements</h2>
 <ul>
 <li>Added autoregressive modelling with <code><a href="../reference/AR.html">AR()</a></code>.</li>
 <li>Better handling of rank deficiency in <code><a href="../reference/ARIMA.html">ARIMA()</a></code>.</li>
@@ -199,20 +238,20 @@
 </div>
 </div>
     <div id="fable-012" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.1.2">
 <a href="#fable-012" class="anchor"></a>fable 0.1.2<small> 2020-01-29 </small>
 </h1>
-<div id="improvements-2" class="section level2">
+<div id="improvements-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#improvements-2" class="anchor"></a>Improvements</h2>
+<a href="#improvements-3" class="anchor"></a>Improvements</h2>
 <ul>
 <li>Added <code><a href="../reference/CROSTON.html">CROSTON()</a></code> for Croston’s method of intermittent demand forecasting.</li>
 <li>Documentation improvements</li>
 </ul>
 </div>
-<div id="bug-fixes-1" class="section level2">
+<div id="bug-fixes-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-1" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-2" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>Fixed NNETAR &amp; VAR handling of missing values (<a href='https://github.com/tidyverts/fable/issues/215'>#215</a>).</li>
 <li>Fix ETS forecasting with forecast horizons less than the seasonal period (<a href='https://github.com/tidyverts/fable/issues/219'>#219</a>).</li>
@@ -222,35 +261,35 @@
 </div>
 </div>
     <div id="fable-011" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.1.1">
 <a href="#fable-011" class="anchor"></a>fable 0.1.1<small> 2019-12-06 </small>
 </h1>
-<div id="improvements-3" class="section level2">
+<div id="improvements-4" class="section level2">
 <h2 class="hasAnchor">
-<a href="#improvements-3" class="anchor"></a>Improvements</h2>
+<a href="#improvements-4" class="anchor"></a>Improvements</h2>
 <ul>
 <li>Added interpolation method for <code><a href="../reference/MEAN.html">MEAN()</a></code> model (<a href='https://github.com/tidyverts/fable/issues/203'>#203</a>).</li>
 <li>Added rolling mean option for <code><a href="../reference/MEAN.html">MEAN()</a></code> model (<a href='https://github.com/tidyverts/fable/issues/204'>#204</a>).</li>
 </ul>
 </div>
-<div id="bug-fixes-2" class="section level2">
+<div id="bug-fixes-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-2" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-3" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>Corrected forecast standard error for drift models.</li>
 </ul>
 </div>
 </div>
     <div id="fable-010" class="section level1">
-<h1 class="page-header">
+<h1 class="page-header" data-toc-text="0.1.0">
 <a href="#fable-010" class="anchor"></a>fable 0.1.0<small> 2019-09-23 </small>
 </h1>
 <ul>
 <li>First release.</li>
 </ul>
-<div id="new-features-1" class="section level2">
+<div id="new-features-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features-1" class="anchor"></a>New features</h2>
+<a href="#new-features-2" class="anchor"></a>New features</h2>
 <ul>
 <li>Support for 9 models and relevant methods: <code>ARIMA</code>, <code>ETS</code>, <code>TSLM</code>, <code>MEAN</code>, <code>RW</code>, <code>NAIVE</code>, <code>SNAIVE</code>, <code>NNETAR</code>, <code>VAR</code>.</li>
 </ul>
@@ -258,17 +297,10 @@
 </div>
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <div id="tocnav">
-      <h2>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-        <li><a href="#fable-021">0.2.1</a></li>
-        <li><a href="#fable-020">0.2.0</a></li>
-        <li><a href="#fable-012">0.1.2</a></li>
-        <li><a href="#fable-011">0.1.1</a></li>
-        <li><a href="#fable-010">0.1.0</a></li>
-      </ul>
-    </div>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 
 </div>
@@ -280,7 +312,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

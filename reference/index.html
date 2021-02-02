@@ -17,23 +17,27 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -44,7 +48,6 @@
 
 <meta property="og:title" content="Function reference" />
 <meta property="og:image" content="https://fable.tidyverts.org/logo.png" />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -72,7 +75,7 @@
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-index">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -86,7 +89,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -120,7 +123,7 @@
 </li>
 <li>
   <a href="https://github.com/tidyverts/fable">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -155,6 +158,11 @@
           <p class="section-desc"><p>The ARIMA model and its supported methods.</p></p>
         </th>
       </tr>
+      
+      
+    </tbody><tbody>
+      
+      
       <tr>
         
         <td>
@@ -190,7 +198,7 @@
         <td>
           <p><code><a href="residuals.ARIMA.html">residuals(<i>&lt;ARIMA&gt;</i>)</a></code> </p>
         </td>
-        <td><p>Extract residuals values from a fable model</p></td>
+        <td><p>Extract residuals from a fable model</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -199,6 +207,11 @@
           <p class="section-desc"><p>Exponential smoothing state space models.</p></p>
         </th>
       </tr>
+      
+      
+    </tbody><tbody>
+      
+      
       <tr>
         
         <td>
@@ -234,7 +247,7 @@
         <td>
           <p><code><a href="residuals.ETS.html">residuals(<i>&lt;ETS&gt;</i>)</a></code> </p>
         </td>
-        <td><p>Extract residuals values from a fable model</p></td>
+        <td><p>Extract residuals from a fable model</p></td>
       </tr><tr>
         
         <td>
@@ -249,6 +262,11 @@
           <p class="section-desc"><p>Time series linear models.</p></p>
         </th>
       </tr>
+      
+      
+    </tbody><tbody>
+      
+      
       <tr>
         
         <td>
@@ -290,7 +308,7 @@
         <td>
           <p><code><a href="residuals.TSLM.html">residuals(<i>&lt;TSLM&gt;</i>)</a></code> </p>
         </td>
-        <td><p>Extract residuals values from a fable model</p></td>
+        <td><p>Extract residuals from a fable model</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -299,6 +317,11 @@
           <p class="section-desc"><p>A collection of simple forecasting methods that are commonly used as benchmarks.</p></p>
         </th>
       </tr>
+      
+      
+    </tbody><tbody>
+      
+      
       <tr>
         
         <td>
@@ -323,6 +346,12 @@
           <p><code><a href="forecast.RW.html">forecast(<i>&lt;RW&gt;</i>)</a></code> </p>
         </td>
         <td><p>Forecast a model from the fable package</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="refit.model_mean.html">refit(<i>&lt;model_mean&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Refit a MEAN model</p></td>
       </tr><tr>
         
         <td>
@@ -352,13 +381,13 @@
         <td>
           <p><code><a href="residuals.model_mean.html">residuals(<i>&lt;model_mean&gt;</i>)</a></code> </p>
         </td>
-        <td><p>Extract residuals values from a fable model</p></td>
+        <td><p>Extract residuals from a fable model</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="residuals.RW.html">residuals(<i>&lt;RW&gt;</i>)</a></code> </p>
         </td>
-        <td><p>Extract residuals values from a fable model</p></td>
+        <td><p>Extract residuals from a fable model</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -367,6 +396,11 @@
           <p class="section-desc"><p>Feed-forward neural networks with a single hidden layer and lagged inputs for forecasting univariate time series.</p></p>
         </th>
       </tr>
+      
+      
+    </tbody><tbody>
+      
+      
       <tr>
         
         <td>
@@ -379,6 +413,12 @@
           <p><code><a href="forecast.NNETAR.html">forecast(<i>&lt;NNETAR&gt;</i>)</a></code> </p>
         </td>
         <td><p>Forecast a model from the fable package</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="refit.NNETAR.html">refit(<i>&lt;NNETAR&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Refit a NNETAR model</p></td>
       </tr><tr>
         
         <td>
@@ -396,7 +436,7 @@
         <td>
           <p><code><a href="residuals.NNETAR.html">residuals(<i>&lt;NNETAR&gt;</i>)</a></code> </p>
         </td>
-        <td><p>Extract residuals values from a fable model</p></td>
+        <td><p>Extract residuals from a fable model</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -405,6 +445,11 @@
           <p class="section-desc"><p>Croston’s (1972) method for intermittent demand forecasting</p></p>
         </th>
       </tr>
+      
+      
+    </tbody><tbody>
+      
+      
       <tr>
         
         <td>
@@ -428,7 +473,7 @@
         <td>
           <p><code><a href="residuals.croston.html">residuals(<i>&lt;croston&gt;</i>)</a></code> </p>
         </td>
-        <td><p>Extract residuals values from a fable model</p></td>
+        <td><p>Extract residuals from a fable model</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -437,6 +482,11 @@
           <p class="section-desc"><p>The Theta method of Assimakopoulos and Nikolopoulos (2000)</p></p>
         </th>
       </tr>
+      
+      
+    </tbody><tbody>
+      
+      
       <tr>
         
         <td>
@@ -451,6 +501,11 @@
           <p class="section-desc"><p>Autoregressive time series models</p></p>
         </th>
       </tr>
+      
+      
+    </tbody><tbody>
+      
+      
       <tr>
         
         <td>
@@ -472,6 +527,12 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="generate.AR.html">generate(<i>&lt;AR&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Generate new data from a fable model</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="fitted.AR.html">fitted(<i>&lt;AR&gt;</i>)</a></code> </p>
         </td>
         <td><p>Extract fitted values from a fable model</p></td>
@@ -480,7 +541,7 @@
         <td>
           <p><code><a href="residuals.AR.html">residuals(<i>&lt;AR&gt;</i>)</a></code> </p>
         </td>
-        <td><p>Extract residuals values from a fable model</p></td>
+        <td><p>Extract residuals from a fable model</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -489,6 +550,11 @@
           <p class="section-desc"><p>Estimates a VAR(p) model with support for exogenous regressors.</p></p>
         </th>
       </tr>
+      
+      
+    </tbody><tbody>
+      
+      
       <tr>
         
         <td>
@@ -512,25 +578,16 @@
         <td>
           <p><code><a href="residuals.VAR.html">residuals(<i>&lt;VAR&gt;</i>)</a></code> </p>
         </td>
-        <td><p>Extract residuals values from a fable model</p></td>
+        <td><p>Extract residuals from a fable model</p></td>
       </tr>
     </tbody>
     </table>
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-arima">ARIMA</a></li>
-      <li><a href="#section-ets">ETS</a></li>
-      <li><a href="#section-tslm">TSLM</a></li>
-      <li><a href="#section-simple-forecasting-methods">Simple forecasting methods</a></li>
-      <li><a href="#section-neural-network-autoregression">Neural network autoregression</a></li>
-      <li><a href="#section-croston-s-method">Croston's method</a></li>
-      <li><a href="#section-theta-method">Theta method</a></li>
-      <li><a href="#section-autoregression">Autoregression</a></li>
-      <li><a href="#section-vector-autoregression">Vector autoregression</a></li>
-    </ul>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -541,7 +598,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

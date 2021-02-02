@@ -17,23 +17,27 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -47,7 +51,6 @@
 simple exponential smoothing with drift. This is demonstrated in Hyndman and
 Billah (2003)." />
 <meta property="og:image" content="https://fable.tidyverts.org/logo.png" />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -75,7 +78,7 @@ Billah (2003)." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -89,7 +92,7 @@ Billah (2003)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -123,7 +126,7 @@ Billah (2003)." />
 </li>
 <li>
   <a href="https://github.com/tidyverts/fable">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -151,7 +154,7 @@ simple exponential smoothing with drift. This is demonstrated in Hyndman and
 Billah (2003).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>THETA</span>(<span class='no'>formula</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>THETA</span><span class='op'>(</span><span class='va'>formula</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -181,9 +184,9 @@ forecasts are then reseasonalized.</p>
     
 
 
-<h3>season</h3>
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>season</h3>
 <p>The <code>season</code> special is used to specify the parameters of the seasonal adjustment via classical decomposition.</p><pre>
-window(period = NULL, method = c("multiplicative", "additive"))
+<span class='fu'>season</span><span class='op'>(</span>period <span class='op'>=</span> <span class='cn'>NULL</span>, method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"multiplicative"</span>, <span class='st'>"additive"</span><span class='op'>)</span><span class='op'>)</span>
 </pre>
 
 <table class='table'>
@@ -200,20 +203,51 @@ a decomposition approach to forecasting. <em>International Journal of
 Forecasting</em> <b>16</b>, 521-530.</p>
 <p>Hyndman, R.J., and Billah, B. (2003) Unmasking the Theta method.
 <em>International J. Forecasting</em>, <b>19</b>, 287-290.</p>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
-  </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#details">Details</a></li>
-      <li><a href="#specials">Specials</a></li>
-      <li><a href="#references">References</a></li>
-    </ul>
-
-    <h2>Author</h2>
     <p>Rob J Hyndman, Mitchell O'Hara-Wild</p>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='co'># Theta method with transform</span>
+<span class='va'>deaths</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span><span class='op'>(</span><span class='va'>USAccDeaths</span><span class='op'>)</span>
+<span class='va'>deaths</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>model</span><span class='op'>(</span>theta <span class='op'>=</span> <span class='fu'>THETA</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>value</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>forecast</span><span class='op'>(</span>h <span class='op'>=</span> <span class='st'>"4 years"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>autoplot</span><span class='op'>(</span><span class='va'>deaths</span><span class='op'>)</span>
+</div><div class='img'><img src='THETA-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># Compare seasonal specifications</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://tsibbledata.tidyverts.org/'>tsibbledata</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
+<span class='va'>aus_retail</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>Industry</span> <span class='op'>==</span> <span class='st'>"Clothing retailing"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>model</span><span class='op'>(</span>theta_multiplicative <span class='op'>=</span> <span class='fu'>THETA</span><span class='op'>(</span><span class='va'>Turnover</span> <span class='op'>~</span> <span class='fu'>season</span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"multiplicative"</span><span class='op'>)</span><span class='op'>)</span>,
+        theta_additive <span class='op'>=</span> <span class='fu'>THETA</span><span class='op'>(</span><span class='va'>Turnover</span> <span class='op'>~</span> <span class='fu'>season</span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"additive"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>accuracy</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 16 x 12</span><span>
+#&gt;    State Industry .model .type     ME   RMSE    MAE     MPE  MAPE  MASE RMSSE
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> Aust… Clothin… theta… Trai… 0.073</span><span style='text-decoration: underline;'>2</span><span>  0.889  0.646  0.288   5.80 0.511 0.508
+#&gt; </span><span style='color: #555555;'> 2</span><span> Aust… Clothin… theta… Trai… 0.168   1.52   1.03   1.76   10.4  0.812 0.871
+#&gt; </span><span style='color: #555555;'> 3</span><span> New … Clothin… theta… Trai… 2.49   14.1   10.3    0.688   4.16 0.551 0.576
+#&gt; </span><span style='color: #555555;'> 4</span><span> New … Clothin… theta… Trai… 4.74   28.0   17.5    2.13    7.38 0.932 1.15 
+#&gt; </span><span style='color: #555555;'> 5</span><span> Nort… Clothin… theta… Trai… 0.026</span><span style='text-decoration: underline;'>6</span><span>  0.422  0.320  0.225   5.67 0.417 0.418
+#&gt; </span><span style='color: #555555;'> 6</span><span> Nort… Clothin… theta… Trai… 0.032</span><span style='text-decoration: underline;'>4</span><span>  0.506  0.393  0.415   7.60 0.512 0.501
+#&gt; </span><span style='color: #555555;'> 7</span><span> Quee… Clothin… theta… Trai… 1.12    9.01   6.13   0.612   4.75 0.497 0.539
+#&gt; </span><span style='color: #555555;'> 8</span><span> Quee… Clothin… theta… Trai… 1.70   16.3   10.8    2.09   10.9  0.874 0.978
+#&gt; </span><span style='color: #555555;'> 9</span><span> Sout… Clothin… theta… Trai… 0.167   2.95   2.01   0.080</span><span style='text-decoration: underline;'>4</span><span>  5.27 0.400 0.406
+#&gt; </span><span style='color: #555555;'>10</span><span> Sout… Clothin… theta… Trai… 0.245   4.51   2.96   0.590   7.89 0.591 0.621
+#&gt; </span><span style='color: #555555;'>11</span><span> Tasm… Clothin… theta… Trai… 0.048</span><span style='text-decoration: underline;'>5</span><span>  1.28   0.861 -</span><span style='color: #BB0000;'>0.043</span><span style='color: #BB0000;text-decoration: underline;'>6</span><span>  6.18 0.505 0.470
+#&gt; </span><span style='color: #555555;'>12</span><span> Tasm… Clothin… theta… Trai… 0.078</span><span style='text-decoration: underline;'>0</span><span>  1.77   1.06   0.561   7.36 0.620 0.649
+#&gt; </span><span style='color: #555555;'>13</span><span> Vict… Clothin… theta… Trai… 1.48   10.5    7.75   0.465   4.22 0.476 0.473
+#&gt; </span><span style='color: #555555;'>14</span><span> Vict… Clothin… theta… Trai… 2.89   20.9   13.8    1.54    7.37 0.845 0.939
+#&gt; </span><span style='color: #555555;'>15</span><span> West… Clothin… theta… Trai… 0.323   3.82   2.78   0.362   4.49 0.455 0.481
+#&gt; </span><span style='color: #555555;'>16</span><span> West… Clothin… theta… Trai… 0.559   6.44   4.56   1.28    8.13 0.746 0.812
+#&gt; </span><span style='color: #555555;'># … with 1 more variable: ACF1 </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span></div></span></pre>
+  </div>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -224,7 +258,7 @@ Forecasting</em> <b>16</b>, 521-530.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
