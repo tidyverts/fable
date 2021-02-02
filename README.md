@@ -11,7 +11,7 @@ status](https://github.com/tidyverts/fable/workflows/R-CMD-check/badge.svg)
 status](https://codecov.io/gh/tidyverts/fable/branch/master/graph/badge.svg)](https://codecov.io/github/tidyverts/fable?branch=master)
 [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/fable)](https://cran.r-project.org/package=fable)
 [![Lifecycle:
-maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
+maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 <!-- badges: end -->
 
 The R package *fable* provides a collection of commonly used univariate
@@ -66,20 +66,20 @@ aus_retail %>%
 
 ## Learning to forecast with fable
 
-  - The pkgdown site describes all models provided by fable, and how
-    they are used: <http://fable.tidyverts.org/>
-  - The forecasting principles and practices online textbook provides an
+-   The pkgdown site describes all models provided by fable, and how
+    they are used: <https://fable.tidyverts.org/>
+-   The forecasting principles and practices online textbook provides an
     introduction to time series forecasting using fable:
     <https://otexts.com/fpp3/> (WIP)
     <!-- - A quick start functionality guide can be found here: https://tidyverts.github.io/tidy-forecasting-principles/ (WIP) -->
 
 ## Getting help
 
-  - Questions about forecasting can be asked on [Cross
-    Validated](http://stats.stackexchange.com/tags/forecasting).
+-   Questions about forecasting can be asked on [Cross
+    Validated](https://stats.stackexchange.com/tags/forecasting).
 
-  - Common questions about the fable package are often found on [Stack
-    Overflow](http://stackoverflow.com/tags/fable+r). You can use this
+-   Common questions about the fable package are often found on [Stack
+    Overflow](https://stackoverflow.com/tags/fable+r). You can use this
     to ask for help if the question isn’t already answered. A [minimally
     reproducible example](https://www.tidyverse.org/help/) that
-    describes your issue is the best way to ask for help\!
+    describes your issue is the best way to ask for help!

@@ -98,5 +98,5 @@ Forecasting}, \bold{24}, 389-402.
 
 Kourentzes, N. (2014) "On intermittent demand model optimisation and
 selection". \emph{International Journal of Production Economics}, \bold{156},
-180-190. \url{http://dx.doi.org/10.1016/j.ijpe.2014.06.007}.
+180-190. \doi{10.1016/j.ijpe.2014.06.007}.
 }
