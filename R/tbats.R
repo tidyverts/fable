@@ -15,15 +15,15 @@ train_tbats <- function(.data, specials, ...) {
 
 fit_tbats <- function(y, m, trend, dampen, transform, ar, ma) {
   # Test inputs
-  # y = USAccDeaths
-  # m = 12
-  # k = 3
-  # trend = TRUE
-  # dampen = TRUE
-  # transform = TRUE
-  # ar = ma = numeric()
-  
+  y = USAccDeaths
+  m = 12
+  k = 3
   tau <- sum(k)*2
+  trend = TRUE
+  dampen = TRUE
+  transform = TRUE
+  bc_lambda = NULL
+  ar = ma = numeric()
   
   p = length(ar)
   q = length(ma)
@@ -31,7 +31,7 @@ fit_tbats <- function(y, m, trend, dampen, transform, ar, ma) {
   par <- initial_tbats_par(y, m, k, trend, dampen, transform)
   
   # Initialise x0 matrix as x0=0 for l, b, s (2*k), p, q
-  x0 <- matrix(c(0, numeric(as.integer(is.null(par$beta))), numeric(2*sum(k)), numeric(p), numeric(q)))
+  x0 <- matrix(c(0, numeric(as.integer(!is.null(par$beta))), numeric(tau), numeric(p), numeric(q)))
   
   # Create transposed w matrix
   # Inputs represent: level, dampening, fourier harmonics, ar, ma
@@ -53,6 +53,58 @@ fit_tbats <- function(y, m, trend, dampen, transform, ar, ma) {
     ncol = 1)
   
   Fmat <- make_tbats_Fmat(par$alpha, par$beta, par$phi, m, k, gamma, ar, ma)
+  
+  Dmat <- F - g%*%wt
+  
+  y_trans <- if(is.null(bc_lambda)) y else box_cox(y, lambda = bc_lambda) 
+  
+  # Calculate (initial?) yhat - \tilde{y}
+  # y_tilde <- filter_tbats(y_trans, x0, Fmat, g, wt)
+  
+  ## Initialise states (and 'find the seed states'?)
+  len <- length(y_trans)
+  x <- matrix(nrow = nrow(x0), ncol = len)
+  y_hat <- y_tilde <- matrix(nrow = 1, ncol = len)
+  y_hat[1] <- wt %*% x0
+  y_tilde[1] <- y_trans[1] - y_hat[1]
+  x[,1] <- Fmat %*% x0 + g%*%y_tilde[1]
+  ## Filter series
+  for (t in 2:len) {
+    y_hat[t] <- wt %*% x[,t-1]
+    y_tilde[t] <- y_trans[t] - y_hat[t]
+    x[,t] <- Fmat %*% x[,t-1] + g%*%y_tilde[t]
+  }
+  
+  # to be continued...
+}
+
+initial_tbats_par <- function(y, m, k, trend, dampen, transform) {
+  alpha <- 0.09
+  beta <- gamma1 <- gamma2 <- lambda <- NULL
+  if (trend) {
+    beta <- 0.05
+    if (dampen) {
+      phi <- .999
+    } else {
+      phi <- 1
+    }
+  }
+  if (!is_empty(m)) {
+    gamma1 <- rep(0, length(k))
+    gamma2 <- rep(0, length(k))
+  }
+  if (transform) {
+    require_package("feasts")
+    lambda <- unname(feasts::guerrero(y, lower = 0, upper = 1.5, .period = m))
+  }
+  list(alpha = alpha, beta = beta, phi = phi,
+       gamma1 = gamma1, gamma2 = gamma2, lambda = lambda)
+}
+
+make_tbats_Fmat <- function(alpha, beta, phi, m, k, gamma, ar, ma) {
+  p <- length(ar)
+  q <- length(ma)
+  tau <- length(gamma)
   # Create F matrix
   Fmat <- matrix(0, nrow = nrow(g), ncol = nrow(g))
   # level
@@ -125,30 +177,7 @@ fit_tbats <- function(y, m, trend, dampen, transform, ar, ma) {
     Fmat[cur_row, ma_cols] <- ma
     Fmat[seq(cur_row + p + 1, length.out = q-1), ma_cols] <- diag(nrow = q-1, ncol = q) # I<p-1,p>
   }
-  # to be continued...
-}
-
-initial_tbats_par <- function(y, m, k, trend, dampen, transform) {
-  alpha <- 0.09
-  beta <- gamma1 <- gamma2 <- lambda <- NULL
-  if (trend) {
-    beta <- 0.05
-    if (dampen) {
-      phi <- .999
-    } else {
-      phi <- 1
-    }
-  }
-  if (!is_empty(m)) {
-    gamma1 <- rep(0, length(k))
-    gamma2 <- rep(0, length(k))
-  }
-  if (transform) {
-    require_package("feasts")
-    lambda <- unname(feasts::guerrero(y, lower = 0, upper = 1.5, .period = m))
-  }
-  list(alpha = alpha, beta = beta, phi = phi,
-       gamma1 = gamma1, gamma2 = gamma2, lambda = lambda)
+  Fmat
 }
 
 specials_tbats <- new_specials(
