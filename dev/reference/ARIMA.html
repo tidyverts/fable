@@ -165,6 +165,7 @@ framework.</p>
   approximation <span class='op'>=</span> <span class='cn'>NULL</span>,
   order_constraint <span class='op'>=</span> <span class='va'>p</span> <span class='op'>+</span> <span class='va'>q</span> <span class='op'>+</span> <span class='va'>P</span> <span class='op'>+</span> <span class='va'>Q</span> <span class='op'>&lt;=</span> <span class='fl'>6</span> <span class='op'>&amp;</span> <span class='op'>(</span><span class='va'>constant</span> <span class='op'>+</span> <span class='va'>d</span> <span class='op'>+</span> <span class='va'>D</span> <span class='op'>&lt;=</span> <span class='fl'>2</span><span class='op'>)</span>,
   unitroot_spec <span class='op'>=</span> <span class='fu'><a href='unitroot_options.html'>unitroot_options</a></span><span class='op'>(</span><span class='op'>)</span>,
+  trace <span class='op'>=</span> <span class='cn'>FALSE</span>,
   <span class='va'>...</span>
 <span class='op'>)</span></pre>
 
@@ -210,13 +211,13 @@ the meaning of these terms.</p></td>
 selection of <code>d</code> and <code>D</code>. See <code><a href='unitroot_options.html'>unitroot_options()</a></code> for more details.</p></td>
     </tr>
     <tr>
-      <th>...</th>
-      <td><p>Further arguments for <code><a href='https://rdrr.io/r/stats/arima.html'>stats::arima()</a></code></p></td>
-    </tr>
-    <tr>
       <th>trace</th>
       <td><p>If <code>TRUE</code>, the selection_metric of estimated models in the
 selection procedure will be outputted to the console.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Further arguments for <code><a href='https://rdrr.io/r/stats/arima.html'>stats::arima()</a></code></p></td>
     </tr>
     </table>
 
