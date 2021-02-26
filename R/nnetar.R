@@ -96,6 +96,7 @@ train_nnetar <- function(.data, specials, n_nodes, n_networks, scale_inputs, wts
   }
 
   maxlag <- max(lags)
+  future_x <- utils::tail(x, maxlag)
   nlag <- length(lags)
   x_lags <- matrix(NA_real_, ncol = nlag, nrow = n - maxlag)
   for (i in 1:nlag) {
@@ -151,7 +152,7 @@ train_nnetar <- function(.data, specials, n_nodes, n_networks, scale_inputs, wts
       fit = tibble(sigma2 = stats::var(res, na.rm = TRUE)),
       spec = tibble(period = period, p = p, P = P, size = n_nodes, lags = list(lags)),
       scales = scales,
-      future = utils::tail(x, maxlag)
+      future = future_x
     ),
     class = "NNETAR"
   )

@@ -1,5 +1,10 @@
 # fable (development version)
 
+## Bug fixes
+
+* Fixed error with forecasting and simulating from `NNETAR()` estimated using
+  a short series (#326).
+
 # fable 0.3.0
 
 The release of fabletools v0.3.0 introduced general support for computing h-step 
