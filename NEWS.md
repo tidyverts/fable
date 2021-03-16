@@ -1,5 +1,10 @@
 # fable (development version)
 
+## Improvements
+
+* Using `.` in a model formula to specify all variables in the dataset is now
+  possible for `TSLM()` models (fabletools/#276).
+
 ## Bug fixes
 
 * Fixed error with forecasting and simulating from `NNETAR()` estimated using
