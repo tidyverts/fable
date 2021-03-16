@@ -45,7 +45,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.1.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -176,16 +176,16 @@
 <code class="sourceCode R"><span class="va">fit</span> <span class="op">%&gt;%</span>
   <span class="fu">glance</span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 8 x 14</span>
-<span class="co">#&gt;   Region State Purpose .model  sigma2 log_lik   AIC  AICc   BIC   MSE  AMSE</span>
-<span class="co">#&gt;   &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;    &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 Melbo… Vict… Busine… ets    3.53e+3   -498. 1014. 1016. 1035. 3180. 3520.</span>
-<span class="co">#&gt; 2 Melbo… Vict… Busine… arima  3.67e+3   -435.  882.  883.  896.   NA    NA </span>
-<span class="co">#&gt; 3 Melbo… Vict… Holiday ets    1.10e-2   -487.  992.  994. 1013. 2548. 2574.</span>
-<span class="co">#&gt; 4 Melbo… Vict… Holiday arima  3.07e+3   -429.  864.  865.  872.   NA    NA </span>
-<span class="co">#&gt; 5 Melbo… Vict… Other   ets    4.97e+2   -422.  853.  854.  865.  472.  512.</span>
-<span class="co">#&gt; 6 Melbo… Vict… Other   arima  4.89e+2   -356.  718.  719.  725.   NA    NA </span>
-<span class="co">#&gt; 7 Melbo… Vict… Visiti… ets    1.09e-2   -503. 1024. 1026. 1045. 3714. 3860.</span>
-<span class="co">#&gt; 8 Melbo… Vict… Visiti… arima  4.24e+3   -442.  893.  894.  905.   NA    NA </span>
+<span class="co">#&gt;   Region   State   Purpose .model   sigma2 log_lik   AIC  AICc   BIC   MSE  AMSE</span>
+<span class="co">#&gt;   &lt;chr&gt;    &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 Melbour… Victor… Busine… ets     3.53e+3   -498. 1014. 1016. 1035. 3180. 3520.</span>
+<span class="co">#&gt; 2 Melbour… Victor… Busine… arima   3.67e+3   -435.  882.  883.  896.   NA    NA </span>
+<span class="co">#&gt; 3 Melbour… Victor… Holiday ets     1.10e-2   -487.  992.  994. 1013. 2548. 2574.</span>
+<span class="co">#&gt; 4 Melbour… Victor… Holiday arima   3.07e+3   -429.  864.  865.  872.   NA    NA </span>
+<span class="co">#&gt; 5 Melbour… Victor… Other   ets     4.97e+2   -422.  853.  854.  865.  472.  512.</span>
+<span class="co">#&gt; 6 Melbour… Victor… Other   arima   4.89e+2   -356.  718.  719.  725.   NA    NA </span>
+<span class="co">#&gt; 7 Melbour… Victor… Visiti… ets     1.09e-2   -503. 1024. 1026. 1045. 3714. 3860.</span>
+<span class="co">#&gt; 8 Melbour… Victor… Visiti… arima   4.24e+3   -442.  893.  894.  905.   NA    NA </span>
 <span class="co">#&gt; # … with 3 more variables: MAE &lt;dbl&gt;, ar_roots &lt;list&gt;, ma_roots &lt;list&gt;</span></code></pre></div>
 <p>If you’re working with a single model (or want to look at one model in particular), the <code>report()</code> function gives a familiar and nicely formatted model-specific display.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
@@ -233,16 +233,16 @@
   <span class="fu">accuracy</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">MASE</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 8 x 13</span>
-<span class="co">#&gt;   Region State Purpose .model .type     ME  RMSE   MAE    MPE  MAPE  MASE RMSSE</span>
-<span class="co">#&gt;   &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 Melbo… Vict… Holiday ets    Trai…  4.67   50.5  37.2  0.217  7.29 0.675 0.697</span>
-<span class="co">#&gt; 2 Melbo… Vict… Busine… ets    Trai…  3.31   56.4  42.9 -0.753  9.31 0.691 0.740</span>
-<span class="co">#&gt; 3 Melbo… Vict… Busine… arima  Trai…  2.54   58.2  46.0 -1.17  10.1  0.741 0.765</span>
-<span class="co">#&gt; 4 Melbo… Vict… Holiday arima  Trai… -4.64   54.3  41.4 -2.44   8.46 0.752 0.751</span>
-<span class="co">#&gt; 5 Melbo… Vict… Other   arima  Trai… -0.344  21.7  17.0 -6.16  19.5  0.763 0.772</span>
-<span class="co">#&gt; 6 Melbo… Vict… Other   ets    Trai… -0.142  21.7  17.0 -5.97  19.6  0.767 0.773</span>
-<span class="co">#&gt; 7 Melbo… Vict… Visiti… ets    Trai…  8.17   60.9  51.4  0.433  8.28 0.819 0.782</span>
-<span class="co">#&gt; 8 Melbo… Vict… Visiti… arima  Trai…  6.89   63.1  51.7  0.106  8.44 0.825 0.809</span>
+<span class="co">#&gt;   Region  State Purpose .model .type     ME  RMSE   MAE    MPE  MAPE  MASE RMSSE</span>
+<span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 Melbou… Vict… Holiday ets    Trai…  4.67   50.5  37.2  0.217  7.29 0.675 0.697</span>
+<span class="co">#&gt; 2 Melbou… Vict… Busine… ets    Trai…  3.31   56.4  42.9 -0.753  9.31 0.691 0.740</span>
+<span class="co">#&gt; 3 Melbou… Vict… Busine… arima  Trai…  2.54   58.2  46.0 -1.17  10.1  0.741 0.765</span>
+<span class="co">#&gt; 4 Melbou… Vict… Holiday arima  Trai… -4.64   54.3  41.4 -2.44   8.46 0.752 0.751</span>
+<span class="co">#&gt; 5 Melbou… Vict… Other   arima  Trai… -0.344  21.7  17.0 -6.16  19.5  0.763 0.772</span>
+<span class="co">#&gt; 6 Melbou… Vict… Other   ets    Trai… -0.142  21.7  17.0 -5.97  19.6  0.767 0.773</span>
+<span class="co">#&gt; 7 Melbou… Vict… Visiti… ets    Trai…  8.17   60.9  51.4  0.433  8.28 0.819 0.782</span>
+<span class="co">#&gt; 8 Melbou… Vict… Visiti… arima  Trai…  6.89   63.1  51.7  0.106  8.44 0.825 0.809</span>
 <span class="co">#&gt; # … with 1 more variable: ACF1 &lt;dbl&gt;</span></code></pre></div>
 <p>Forecasts from these models can be produced directly as our specified models do not require any additional data.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">

@@ -89,7 +89,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.1.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -148,6 +148,18 @@
 <h1 class="page-header" data-toc-text="development version">
 <a href="#fable-development-version" class="anchor"></a>fable (development version)<small> Unreleased </small>
 </h1>
+<div id="bug-fixes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes" class="anchor"></a>Bug fixes</h2>
+<ul>
+<li>Fixed error with forecasting and simulating from <code><a href="../reference/NNETAR.html">NNETAR()</a></code> estimated using a short series (<a href='https://github.com/tidyverts/fable/issues/326'>#326</a>).</li>
+</ul>
+</div>
+</div>
+    <div id="fable-030" class="section level1">
+<h1 class="page-header" data-toc-text="0.3.0">
+<a href="#fable-030" class="anchor"></a>fable 0.3.0<small> 2021-02-03 </small>
+</h1>
 <p>The release of fabletools v0.3.0 introduced general support for computing h-step ahead fitted values, using the <code>hfitted(&lt;mdl&gt;, h = ???)</code> function. This release adds model-specific <code>hfitted()</code> support to ARIMA and ETS models for improved performance and accuracy.</p>
 <p>This release adds improved support for refitting models, largely in thanks to contributions by <a href='https://github.com/Tim-TU'>@Tim-TU</a>.</p>
 <p>It is also now possible to specify an arbitrary model selection criterion function for automatic <code><a href="../reference/ARIMA.html">ARIMA()</a></code> model selection.</p>
@@ -169,9 +181,9 @@
 </li>
 </ul>
 </div>
-<div id="bug-fixes" class="section level2">
+<div id="bug-fixes-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-1" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>Fixed unnecessary warning when forecasting short horizons using <code><a href="../reference/NNETAR.html">NNETAR()</a></code>.</li>
 <li>Fixed <code>generate()</code> method for NNETAR models when data isn’t scaled (<a href='https://github.com/tidyverts/fable/issues/302'>#302</a>).</li>
@@ -202,9 +214,9 @@
 <li>Performance improvements.</li>
 </ul>
 </div>
-<div id="bug-fixes-1" class="section level2">
+<div id="bug-fixes-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-1" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-2" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>Fixed issue with approximation being used when refitting ARIMA models and when a specific model is requested.</li>
 <li>Fixed <code>glance()</code> for <code><a href="../reference/TSLM.html">TSLM()</a></code> models when the data contains missing values.</li>
@@ -249,9 +261,9 @@
 <li>Documentation improvements</li>
 </ul>
 </div>
-<div id="bug-fixes-2" class="section level2">
+<div id="bug-fixes-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-2" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-3" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>Fixed NNETAR &amp; VAR handling of missing values (<a href='https://github.com/tidyverts/fable/issues/215'>#215</a>).</li>
 <li>Fix ETS forecasting with forecast horizons less than the seasonal period (<a href='https://github.com/tidyverts/fable/issues/219'>#219</a>).</li>
@@ -272,9 +284,9 @@
 <li>Added rolling mean option for <code><a href="../reference/MEAN.html">MEAN()</a></code> model (<a href='https://github.com/tidyverts/fable/issues/204'>#204</a>).</li>
 </ul>
 </div>
-<div id="bug-fixes-3" class="section level2">
+<div id="bug-fixes-4" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-3" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-4" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>Corrected forecast standard error for drift models.</li>
 </ul>

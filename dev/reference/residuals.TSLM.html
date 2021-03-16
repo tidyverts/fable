@@ -90,7 +90,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.1.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.3.0.9000</span>
       </span>
     </div>
 
@@ -174,21 +174,21 @@
     <pre class="examples"><div class='input'><span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span><span class='op'>(</span><span class='va'>USAccDeaths</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'>model</span><span class='op'>(</span>lm <span class='op'>=</span> <span class='fu'><a href='TSLM.html'>TSLM</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>value</span><span class='op'>)</span> <span class='op'>~</span> <span class='fu'>trend</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'>season</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='https://rdrr.io/r/stats/residuals.html'>residuals</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #555555;'># A tsibble: 72 x 3 [1M]</span><span>
-#&gt; </span><span style='color: #555555;'># Key:       .model [1]</span><span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tsibble: 72 x 3 [1M]</span><span>
+#&gt; </span><span style='color: #949494;'># Key:       .model [1]</span><span>
 #&gt;    .model    index .resid
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;mth&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> lm     1973 Jan 0.075</span><span style='text-decoration: underline;'>9</span><span>
-#&gt; </span><span style='color: #555555;'> 2</span><span> lm     1973 Feb 0.069</span><span style='text-decoration: underline;'>9</span><span>
-#&gt; </span><span style='color: #555555;'> 3</span><span> lm     1973 Mar 0.064</span><span style='text-decoration: underline;'>6</span><span>
-#&gt; </span><span style='color: #555555;'> 4</span><span> lm     1973 Apr 0.061</span><span style='text-decoration: underline;'>6</span><span>
-#&gt; </span><span style='color: #555555;'> 5</span><span> lm     1973 May 0.055</span><span style='text-decoration: underline;'>9</span><span>
-#&gt; </span><span style='color: #555555;'> 6</span><span> lm     1973 Jun 0.083</span><span style='text-decoration: underline;'>8</span><span>
-#&gt; </span><span style='color: #555555;'> 7</span><span> lm     1973 Jul 0.041</span><span style='text-decoration: underline;'>6</span><span>
-#&gt; </span><span style='color: #555555;'> 8</span><span> lm     1973 Aug 0.059</span><span style='text-decoration: underline;'>8</span><span>
-#&gt; </span><span style='color: #555555;'> 9</span><span> lm     1973 Sep 0.073</span><span style='text-decoration: underline;'>5</span><span>
-#&gt; </span><span style='color: #555555;'>10</span><span> lm     1973 Oct 0.063</span><span style='text-decoration: underline;'>0</span><span>
-#&gt; </span><span style='color: #555555;'># … with 62 more rows</span><span></div></span></pre>
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;mth&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> lm     1973 Jan 0.075</span><span style='text-decoration: underline;'>9</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> lm     1973 Feb 0.069</span><span style='text-decoration: underline;'>9</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> lm     1973 Mar 0.064</span><span style='text-decoration: underline;'>6</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> lm     1973 Apr 0.061</span><span style='text-decoration: underline;'>6</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> lm     1973 May 0.055</span><span style='text-decoration: underline;'>9</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> lm     1973 Jun 0.083</span><span style='text-decoration: underline;'>8</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> lm     1973 Jul 0.041</span><span style='text-decoration: underline;'>6</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> lm     1973 Aug 0.059</span><span style='text-decoration: underline;'>8</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> lm     1973 Sep 0.073</span><span style='text-decoration: underline;'>5</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> lm     1973 Oct 0.063</span><span style='text-decoration: underline;'>0</span><span>
+#&gt; </span><span style='color: #949494;'># … with 62 more rows</span><span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
