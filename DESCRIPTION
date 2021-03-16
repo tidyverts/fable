@@ -33,7 +33,7 @@ URL: https://fable.tidyverts.org, https://github.com/tidyverts/fable
 BugReports: https://github.com/tidyverts/fable/issues
 Depends:
     R (>= 3.4.0),
-    fabletools (>= 0.3.0)
+    fabletools (>= 0.3.0.9000)
 Imports:
     Rcpp (>= 0.11.0),
     rlang (>= 0.4.6),
@@ -54,6 +54,8 @@ Suggests:
     spelling,
     testthat,
     tsibbledata (>= 0.2.0)
+Remotes:
+    tidyverts/fabletools
 LinkingTo:
     Rcpp (>= 0.11.0)
 VignetteBuilder: 
