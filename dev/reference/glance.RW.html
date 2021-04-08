@@ -180,7 +180,7 @@ Contains the variance of residuals (<code>sigma2</code>).</p>
 #&gt;   .model       sigma2
 #&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>         </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; </span><span style='color: #BCBCBC;'>1</span><span> NAIVE(value) </span><span style='text-decoration: underline;'>28</span><span>268.</div><div class='input'>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://tsibbledata.tidyverts.org/'>tsibbledata</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tsibbledata.tidyverts.org/'>tsibbledata</a></span><span class='op'>)</span>
 <span class='va'>aus_production</span> <span class='op'>%&gt;%</span>
   <span class='fu'>model</span><span class='op'>(</span>snaive <span class='op'>=</span> <span class='fu'><a href='RW.html'>SNAIVE</a></span><span class='op'>(</span><span class='va'>Beer</span> <span class='op'>~</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/lead-lag.html'>lag</a></span><span class='op'>(</span><span class='st'>"year"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'>glance</span><span class='op'>(</span><span class='op'>)</span>
