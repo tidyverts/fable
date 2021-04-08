@@ -400,3 +400,51 @@ refit.TSLM <- function(object, new_data, specials = NULL, reestimate = FALSE, ..
 model_sum.TSLM <- function(x) {
   "TSLM"
 }
+
+#' @inherit lmtest::bgtest
+#' @export
+breusch_godfrey <- function(x, ...){
+  UseMethod("breusch_godfrey")
+}
+
+#' @export
+breusch_godfrey.TSLM <- function(x, order = 1, type = c("Chisq", "F")){
+  # Lag order
+  order <- seq_len(order)
+  m <- length(order)
+  
+  # Innovation residuals
+  res <- residuals(x)
+  n <- length(res)
+  
+  # Exogenous regressors
+  X <- qr.X(x$qr)
+  Z <- sapply(order, function(x) c(rep(0, length.out = x), res[1:(n - x)]))
+  
+  if (any(na <- !complete.cases(Z))) {
+    X <- X[!na, , drop = FALSE]
+    Z <- Z[!na, , drop = FALSE]
+    res <- res[!na]
+    n <- length(res)
+  }
+  
+  auxfit <- lm.fit(cbind(X, Z), res)
+  cf <- auxfit$coefficients
+  vc <- chol2inv(auxfit$qr$qr) * sum(auxfit$residuals^2)/auxfit$df.residual
+  switch(match.arg(type), Chisq = {
+    bg <- n * sum(auxfit$fitted.values^2)/sum(res^2)
+    null_dist <- distributional::dist_chisq(m)
+    pv <- pchisq(bg, m, lower.tail = FALSE)
+  }, F = {
+    ures <- auxfit$residuals
+    bg <- ((sum(res^2) - sum(ures^2))/m)/(sum(ures^2)/(n - k - m))
+    null_dist <- distributional::dist_f(df1 = m, df2 = n - k - m)
+    pv <- pf(bg, df1 = m, df2 = n - k - m, lower.tail = FALSE)
+  })
+  tibble(
+    statistic = bg, 
+    order = max(order),
+    null_dist = null_dist,
+    p.value = pv
+  )
+}
