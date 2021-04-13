@@ -687,7 +687,7 @@ report.ETS <- function(object, ...) {
   }
 
   cat("\n  Initial states:\n")
-  print.data.frame(object$states[1, measured_vars(object$states)], row.names = FALSE)
+  print.data.frame(initial_ets_states(object), row.names = FALSE)
 
   cat("\n  sigma^2:  ")
   cat(round(object$fit$sigma2, 4))
@@ -696,4 +696,15 @@ report.ETS <- function(object, ...) {
     cat("\n\n")
     print(stats)
   }
+}
+
+initial_ets_states <- function(object) {
+  states_init <- object$states[1, measured_vars(object$states)]
+  states_type <- substring(colnames(states_init), 1, 1)
+  states_names <- lapply(
+    split(states_type, states_type),
+    function(x) paste0(x, "[", seq(0, by = -1, along = x), "]")
+  )
+  colnames(states_init) <- unsplit(states_names, states_type)
+  states_init
 }
