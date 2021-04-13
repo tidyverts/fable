@@ -580,7 +580,13 @@ glance.ETS <- function(x, ...) {
 #'   tidy()
 #' @export
 tidy.ETS <- function(x, ...) {
-  x$par
+  length(measured_vars(x$states))
+  init <- initial_ets_states(x)
+  n_coef <- nrow(x$par) - (ncol(init)-1)
+  dplyr::bind_rows(
+    x$par[seq_len(n_coef),],
+    tidyr::pivot_longer(init, seq_along(init), names_to = "term", values_to = "estimate")
+  )
 }
 
 #' Extract estimated states from an ETS model.

@@ -5,7 +5,7 @@
 * Using `.` in a model formula to specify all variables in the dataset is now
   possible for `TSLM()` models (fabletools/#276).
 * Display of ETS initial states now use a `state[t]` notation to describe the
-  state's position in time (#329).
+  state's position in time (#329, #261).
 
 ## Bug fixes
 
