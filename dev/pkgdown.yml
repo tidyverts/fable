@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   fable: fable.html
   transformations: transformations.html
-last_built: 2021-04-13T06:57Z
+last_built: 2021-04-13T07:07Z
 urls:
   reference: https://fable.tidyverts.org/reference
   article: https://fable.tidyverts.org/articles
