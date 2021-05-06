@@ -63,7 +63,6 @@ VignetteBuilder:
 ByteCompile: true
 Encoding: UTF-8
 Language: en-GB
-LazyData: true
 Roxygen: list(markdown = TRUE, roclets=c('rd', 'collate',
     'namespace'))
 RoxygenNote: 7.1.1
