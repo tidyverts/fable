@@ -7,6 +7,7 @@
 * Display of ETS initial states now use a `state[t]` notation to describe the
   state's position in time (#329, #261).
 * Allowed specifying `method` argument in `ARIMA()` (#330).
+* Improved handling of missing values in `NNETAR()` (#327).
 
 ## Bug fixes
 
