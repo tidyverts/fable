@@ -6,6 +6,7 @@
   possible for `TSLM()` models (fabletools/#276).
 * Display of ETS initial states now use a `state[t]` notation to describe the
   state's position in time (#329, #261).
+* Allowed specifying `method` argument in `ARIMA()` (#330).
 
 ## Bug fixes
 
