@@ -401,12 +401,24 @@ model_sum.TSLM <- function(x) {
   "TSLM"
 }
 
-#' @inherit lmtest::bgtest
+#' Breusch-Godfrey Test
+#' 
+#' Breusch-Godfrey test for higher-order serial correlation.
+#' 
+#' @param x A model object to be tested.
+#' @param ... Further arguments for methods.
+#' 
+#' @seealso [`lmtest::bgtest()`]
+#'
 #' @export
 breusch_godfrey <- function(x, ...){
   UseMethod("breusch_godfrey")
 }
 
+#' @param order The maximum order of serial correlation to test for.
+#' @param type The type of test statistic to use.
+#' 
+#' @rdname breusch_godfrey
 #' @export
 breusch_godfrey.TSLM <- function(x, order = 1, type = c("Chisq", "F")){
   # Lag order

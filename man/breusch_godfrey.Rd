@@ -2,76 +2,25 @@
 % Please edit documentation in R/lm.R
 \name{breusch_godfrey}
 \alias{breusch_godfrey}
+\alias{breusch_godfrey.TSLM}
 \title{Breusch-Godfrey Test}
 \usage{
 breusch_godfrey(x, ...)
+
+\method{breusch_godfrey}{TSLM}(x, order = 1, type = c("Chisq", "F"))
 }
-\value{
-A list with class \code{"bgtest"} inheriting from \code{"htest"} containing the
- following components:
-  \item{statistic}{the value of the test statistic.}
-  \item{p.value}{the p-value of the test.}
-  \item{parameter}{degrees of freedom.}
-  \item{method}{a character string indicating what type of test was
-    performed.}
-  \item{data.name}{a character string giving the name(s) of the data.}
-  \item{coefficients}{coefficient estimates from the auxiliary regression.}
-  \item{vcov}{corresponding covariance matrix estimate.}
+\arguments{
+\item{x}{A model object to be tested.}
+
+\item{...}{Further arguments for methods.}
+
+\item{order}{The maximum order of serial correlation to test for.}
+
+\item{type}{The type of test statistic to use.}
 }
 \description{
-\code{bgtest} performs the Breusch-Godfrey test for higher-order
- serial correlation.
-}
-\details{
-Under \eqn{H_0} the test statistic is asymptotically Chi-squared with
-  degrees of freedom as given in \code{parameter}.
-  If \code{type} is set to \code{"F"} the function returns
-  a finite sample version of the test statistic, employing an \eqn{F}
-  distribution with degrees of freedom as given in \code{parameter}.
-
-  By default, the starting values for the lagged residuals in the auxiliary
-  regression are chosen to be 0 (as in Godfrey 1978) but could also be
-  set to \code{NA} to omit them.
-
-  \code{bgtest} also returns the coefficients and estimated covariance
-  matrix from the auxiliary regression that includes the lagged residuals.
-  Hence, \code{\link[lmtest]{coeftest}} can be used to inspect the results. (Note,
-  however, that standard theory does not always apply to the standard errors
-  and t-statistics in this regression.)
-}
-\examples{
-## Generate a stationary and an AR(1) series
-     x <- rep(c(1, -1), 50)
-
-     y1 <- 1 + x + rnorm(100)
-
-     ## Perform Breusch-Godfrey test for first-order serial correlation:
-     bgtest(y1 ~ x)
-     ## or for fourth-order serial correlation
-     bgtest(y1 ~ x, order = 4)
-     ## Compare with Durbin-Watson test results:
-     dwtest(y1 ~ x)
-
-     y2 <- filter(y1, 0.5, method = "recursive")
-     bgtest(y2 ~ x)
-     bg4 <- bgtest(y2 ~ x, order = 4)
-     bg4
-     coeftest(bg4)
-}
-\references{
-Breusch, T.S. (1978): Testing for Autocorrelation in Dynamic Linear
-  Models, \emph{Australian Economic Papers}, 17, 334-355.
-
-  Godfrey, L.G. (1978): Testing Against General Autoregressive and
-  Moving Average Error Models when the Regressors Include Lagged
-  Dependent Variables', \emph{Econometrica}, 46, 1293-1301.
-
-  Wooldridge, J.M. (2013): \emph{Introductory Econometrics: A Modern Approach},
-    5th edition, South-Western College.
+Breusch-Godfrey test for higher-order serial correlation.
 }
 \seealso{
-\code{\link[lmtest]{dwtest}}
-}
-\author{
-David Mitchell <david.mitchell@dotars.gov.au>, Achim Zeileis
+\code{\link[lmtest:bgtest]{lmtest::bgtest()}}
 }
