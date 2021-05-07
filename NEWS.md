@@ -13,6 +13,7 @@
 
 * Fixed error with forecasting and simulating from `NNETAR()` estimated using
   a short series (#326).
+* Fixed `AR()` fitted values not being re-scaled to match original data (#318).
 
 # fable 0.3.0
 

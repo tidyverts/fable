@@ -183,6 +183,7 @@ estimate_ar <- function(x, p, xreg, constant, fixed) {
   coef[seq_len(ncol(xreg))] <- coef[seq_len(ncol(xreg))]*x_sd
   coef_se[seq_len(ncol(xreg))] <- coef_se[seq_len(ncol(xreg))]*x_sd
   varE <- varE * x_sd^2
+  YH <- YH * x_sd
   E <- E * x_sd
   x <- x * x_sd
   
