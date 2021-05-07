@@ -582,7 +582,7 @@ glance.ETS <- function(x, ...) {
 tidy.ETS <- function(x, ...) {
   length(measured_vars(x$states))
   init <- initial_ets_states(x)
-  n_coef <- nrow(x$par) - (ncol(init)-1)
+  n_coef <- nrow(x$par) - (ncol(init)-(x$spec$seasontype!="N"))
   dplyr::bind_rows(
     x$par[seq_len(n_coef),],
     tidyr::pivot_longer(init, seq_along(init), names_to = "term", values_to = "estimate")
