@@ -7,7 +7,7 @@
 \usage{
 breusch_godfrey(x, ...)
 
-\method{breusch_godfrey}{TSLM}(x, order = 1, type = c("Chisq", "F"))
+\method{breusch_godfrey}{TSLM}(x, order = 1, type = c("Chisq", "F"), ...)
 }
 \arguments{
 \item{x}{A model object to be tested.}
@@ -20,6 +20,13 @@ breusch_godfrey(x, ...)
 }
 \description{
 Breusch-Godfrey test for higher-order serial correlation.
+}
+\examples{
+
+as_tsibble(USAccDeaths) \%>\%
+  model(TSLM(value)) \%>\%
+  hypothesize(breusch_godfrey)
+
 }
 \seealso{
 \code{\link[lmtest:bgtest]{lmtest::bgtest()}}

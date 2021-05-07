@@ -410,6 +410,12 @@ model_sum.TSLM <- function(x) {
 #' 
 #' @seealso [`lmtest::bgtest()`]
 #'
+#' @examples 
+#' 
+#' as_tsibble(USAccDeaths) %>%
+#'   model(TSLM(value)) %>%
+#'   hypothesize(breusch_godfrey)
+#'
 #' @export
 breusch_godfrey <- function(x, ...){
   UseMethod("breusch_godfrey")
@@ -420,7 +426,9 @@ breusch_godfrey <- function(x, ...){
 #' 
 #' @rdname breusch_godfrey
 #' @export
-breusch_godfrey.TSLM <- function(x, order = 1, type = c("Chisq", "F")){
+breusch_godfrey.TSLM <- function(x, order = 1, type = c("Chisq", "F"), ...){
+  type <- match.arg(type)
+  
   # Lag order
   order <- seq_len(order)
   m <- length(order)
@@ -439,20 +447,23 @@ breusch_godfrey.TSLM <- function(x, order = 1, type = c("Chisq", "F")){
     res <- res[!na]
     n <- length(res)
   }
+  k <- ncol(X)
   
-  auxfit <- lm.fit(cbind(X, Z), res)
+  auxfit <- stats::lm.fit(cbind(X, Z), res)
   cf <- auxfit$coefficients
   vc <- chol2inv(auxfit$qr$qr) * sum(auxfit$residuals^2)/auxfit$df.residual
-  switch(match.arg(type), Chisq = {
+  
+  if(type == "Chisq") {
     bg <- n * sum(auxfit$fitted.values^2)/sum(res^2)
     null_dist <- distributional::dist_chisq(m)
-    pv <- pchisq(bg, m, lower.tail = FALSE)
-  }, F = {
+    pv <- stats::pchisq(bg, m, lower.tail = FALSE)
+  } else if (type == "F") {
     ures <- auxfit$residuals
     bg <- ((sum(res^2) - sum(ures^2))/m)/(sum(ures^2)/(n - k - m))
     null_dist <- distributional::dist_f(df1 = m, df2 = n - k - m)
-    pv <- pf(bg, df1 = m, df2 = n - k - m, lower.tail = FALSE)
-  })
+    pv <- stats::pf(bg, df1 = m, df2 = n - k - m, lower.tail = FALSE)
+  }
+  
   tibble(
     statistic = bg, 
     order = max(order),
