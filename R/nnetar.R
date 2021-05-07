@@ -84,7 +84,7 @@ train_nnetar <- function(.data, specials, n_nodes, n_networks, scale_inputs, wts
     else {
       y_sa <- x
     }
-    p <- max(length(ar(y_sa, na.action=na.pass)$ar), 1)
+    p <- max(length(ar(y_sa, na.action=stats::na.pass)$ar), 1)
   }
   if (p >= n) {
     warn("Reducing number of lagged inputs due to short series")
