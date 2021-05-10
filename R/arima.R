@@ -218,19 +218,23 @@ train_arima <- function(.data, specials,
     }
     if (approximation) {
       method <- "CSS"
-      offset <- with(
-        stats::arima(y,
-                     order = c(0, pdq$d, 0), xreg = xreg,
-                     include.mean = all(constant)
-        ),
-        -2 * loglik - NROW(data) * log(sigma2)
-      )
     } else {
       method <- "CSS-ML"
     }
   } else {
     if(isTRUE(approximation)) warn("Estimating ARIMA models with approximation is not supported when `method` is specified.")
     approximation <- FALSE
+  }
+  
+  # Compute offset for CSS to approximate ic values
+  if(method == "CSS") {
+    offset <- with(
+      stats::arima(y,
+                   order = c(0, pdq$d, 0), xreg = xreg,
+                   include.mean = all(constant)
+      ),
+      -2 * loglik - NROW(data) * log(sigma2)
+    )
   }
 
   
