@@ -1,6 +1,6 @@
 Package: fable
 Title: Forecasting Models for Tidy Time Series
-Version: 0.3.0.9000
+Version: 0.3.1
 Description: Provides a collection of commonly used univariate and multivariate
     time series forecasting models including automatically selected exponential 
     smoothing (ETS) and autoregressive integrated moving average (ARIMA) models.
