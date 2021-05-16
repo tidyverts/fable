@@ -90,7 +90,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
       </span>
     </div>
 
@@ -197,21 +197,21 @@
     <pre class="examples"><div class='input'><span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span><span class='op'>(</span><span class='va'>USAccDeaths</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'>model</span><span class='op'>(</span>lm <span class='op'>=</span> <span class='fu'><a href='TSLM.html'>TSLM</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>value</span><span class='op'>)</span> <span class='op'>~</span> <span class='fu'>trend</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'>season</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'>forecast</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #555555;'># A fable: 24 x 4 [1M]</span><span>
-#&gt; </span><span style='color: #555555;'># Key:     .model [1]</span><span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A fable: 24 x 4 [1M]</span><span>
+#&gt; </span><span style='color: #949494;'># Key:     .model [1]</span><span>
 #&gt;    .model    index            value .mean
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;mth&gt;</span><span>           </span><span style='color: #555555;font-style: italic;'>&lt;dist&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> lm     1979 Jan t(N(8.9, 0.003)) </span><span style='text-decoration: underline;'>7</span><span>620.
-#&gt; </span><span style='color: #555555;'> 2</span><span> lm     1979 Feb t(N(8.8, 0.003)) </span><span style='text-decoration: underline;'>6</span><span>899.
-#&gt; </span><span style='color: #555555;'> 3</span><span> lm     1979 Mar t(N(8.9, 0.003)) </span><span style='text-decoration: underline;'>7</span><span>639.
-#&gt; </span><span style='color: #555555;'> 4</span><span> lm     1979 Apr   t(N(9, 0.003)) </span><span style='text-decoration: underline;'>7</span><span>841.
-#&gt; </span><span style='color: #555555;'> 5</span><span> lm     1979 May t(N(9.1, 0.003)) </span><span style='text-decoration: underline;'>8</span><span>645.
-#&gt; </span><span style='color: #555555;'> 6</span><span> lm     1979 Jun t(N(9.1, 0.003)) </span><span style='text-decoration: underline;'>9</span><span>087.
-#&gt; </span><span style='color: #555555;'> 7</span><span> lm     1979 Jul t(N(9.2, 0.003)) </span><span style='text-decoration: underline;'>9</span><span>908.
-#&gt; </span><span style='color: #555555;'> 8</span><span> lm     1979 Aug t(N(9.1, 0.003)) </span><span style='text-decoration: underline;'>9</span><span>237.
-#&gt; </span><span style='color: #555555;'> 9</span><span> lm     1979 Sep   t(N(9, 0.003)) </span><span style='text-decoration: underline;'>8</span><span>237.
-#&gt; </span><span style='color: #555555;'>10</span><span> lm     1979 Oct   t(N(9, 0.003)) </span><span style='text-decoration: underline;'>8</span><span>516.
-#&gt; </span><span style='color: #555555;'># … with 14 more rows</span><span></div></span></pre>
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;mth&gt;</span><span>           </span><span style='color: #949494;font-style: italic;'>&lt;dist&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> lm     1979 Jan t(N(8.9, 0.003)) </span><span style='text-decoration: underline;'>7</span><span>620.
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> lm     1979 Feb t(N(8.8, 0.003)) </span><span style='text-decoration: underline;'>6</span><span>899.
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> lm     1979 Mar t(N(8.9, 0.003)) </span><span style='text-decoration: underline;'>7</span><span>639.
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> lm     1979 Apr   t(N(9, 0.003)) </span><span style='text-decoration: underline;'>7</span><span>841.
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> lm     1979 May t(N(9.1, 0.003)) </span><span style='text-decoration: underline;'>8</span><span>645.
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> lm     1979 Jun t(N(9.1, 0.003)) </span><span style='text-decoration: underline;'>9</span><span>087.
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> lm     1979 Jul t(N(9.2, 0.003)) </span><span style='text-decoration: underline;'>9</span><span>908.
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> lm     1979 Aug t(N(9.1, 0.003)) </span><span style='text-decoration: underline;'>9</span><span>237.
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> lm     1979 Sep   t(N(9, 0.003)) </span><span style='text-decoration: underline;'>8</span><span>237.
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> lm     1979 Oct   t(N(9, 0.003)) </span><span style='text-decoration: underline;'>8</span><span>516.
+#&gt; </span><span style='color: #949494;'># … with 14 more rows</span><span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

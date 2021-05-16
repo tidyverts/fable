@@ -90,7 +90,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
       </span>
     </div>
 
@@ -181,10 +181,10 @@ and information criterion (<code>AIC</code>, <code>AICc</code>, <code>BIC</code>
 <span class='va'>lung_deaths</span> <span class='op'>%&gt;%</span>
   <span class='fu'>model</span><span class='op'>(</span><span class='fu'><a href='VAR.html'>VAR</a></span><span class='op'>(</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/vars.html'>vars</a></span><span class='op'>(</span><span class='va'>mdeaths</span>, <span class='va'>fdeaths</span><span class='op'>)</span> <span class='op'>~</span> <span class='fu'><a href='AR.html'>AR</a></span><span class='op'>(</span><span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'>glance</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 1 x 6</span><span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 6</span><span>
 #&gt;   .model                              sigma2           log_lik   AIC  AICc   BIC
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                               </span><span style='color: #555555;font-style: italic;'>&lt;list&gt;</span><span>             </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) </span><span style='color: #555555;'>&lt;dbl[,2] [2 × 2</span><span>…   -</span><span style='color: #BB0000;'>812.</span><span> </span><span style='text-decoration: underline;'>1</span><span>661. </span><span style='text-decoration: underline;'>1</span><span>674. </span><span style='text-decoration: underline;'>1</span><span>701.</div></span></pre>
+#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                               </span><span style='color: #949494;font-style: italic;'>&lt;list&gt;</span><span>             </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) </span><span style='color: #949494;'>&lt;dbl[,2] [2 × 2</span><span>…   -</span><span style='color: #BB0000;'>812.</span><span> </span><span style='text-decoration: underline;'>1</span><span>661. </span><span style='text-decoration: underline;'>1</span><span>674. </span><span style='text-decoration: underline;'>1</span><span>701.</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
