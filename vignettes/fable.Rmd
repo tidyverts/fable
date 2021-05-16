@@ -2,7 +2,7 @@
 title: "Introduction to fable"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{fable}
+  %\VignetteIndexEntry{Introduction to fable}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
