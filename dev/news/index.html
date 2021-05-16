@@ -148,11 +148,11 @@
 <h1 class="page-header" data-toc-text="development version">
 <a href="#fable-development-version" class="anchor"></a>fable (development version)<small> Unreleased </small>
 </h1>
+<p>Small release to resolve check issues with the development and patched versions of R. The release includes some minor improvements to the output consistency of initial states in <code><a href="../reference/ETS.html">ETS()</a></code> models, the passing of arguments in <code><a href="../reference/ARIMA.html">ARIMA()</a></code> models, and handling of missing values in <code><a href="../reference/NNETAR.html">NNETAR()</a></code>.</p>
 <div id="improvements" class="section level2">
 <h2 class="hasAnchor">
 <a href="#improvements" class="anchor"></a>Improvements</h2>
 <ul>
-<li>Using <code>.</code> in a model formula to specify all variables in the dataset is now possible for <code><a href="../reference/TSLM.html">TSLM()</a></code> models (fabletools/<a href='https://github.com/tidyverts/fable/issues/276'>#276</a>).</li>
 <li>Display of ETS initial states now use a <code>state[t]</code> notation to describe the state’s position in time (<a href='https://github.com/tidyverts/fable/issues/329'>#329</a>, <a href='https://github.com/tidyverts/fable/issues/261'>#261</a>).</li>
 <li>Allowed specifying <code>method</code> argument in <code><a href="../reference/ARIMA.html">ARIMA()</a></code> (<a href='https://github.com/tidyverts/fable/issues/330'>#330</a>).</li>
 <li>Improved handling of missing values in <code><a href="../reference/NNETAR.html">NNETAR()</a></code> (<a href='https://github.com/tidyverts/fable/issues/327'>#327</a>).</li>
