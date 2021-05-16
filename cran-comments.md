@@ -1,5 +1,7 @@
 ## Submission
 
+This submission resolves issues on the CRAN check page.
+
 ## Test environments
 * local ubuntu 18.04 install, R 3.6.3
 * ubuntu 16.04 (on GitHub actions), R 4.0.0, R 3.6.3, R 3.5.3
@@ -13,6 +15,4 @@
 
 ## revdep checks
 
-All revdeps have been checked. All changes to worse are due
-to upstream changes in tsibble v0.9.0, and have fixed versions ready for 
-submission.
+All revdeps have been checked.

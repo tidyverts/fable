@@ -1,5 +1,10 @@
 # fable (development version)
 
+Small release to resolve check issues with the development and patched versions 
+of R. The release includes some minor improvements to the output consistency of
+initial states in `ETS()` models, the passing of arguments in `ARIMA()` models,
+and handling of missing values in `NNETAR()`.
+
 ## Improvements
 
 * Using `.` in a model formula to specify all variables in the dataset is now
