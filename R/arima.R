@@ -452,7 +452,9 @@ specials_arima <- new_specials(
       rhs = reduce(dots, function(.x, .y) call2("+", .x, .y))
     )
 
-    env$lag <- lag # Mask user defined lag to retain history when forecasting
+    # Mask user defined lag to retain history when forecasting
+    env <- env_bury(env, lag = lag)
+    
     xreg <- model.frame(model_formula, data = env, na.action = stats::na.pass)
     tm <- terms(xreg)
     constant <- as.logical(tm %@% "intercept")
