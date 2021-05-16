@@ -21,13 +21,6 @@ breusch_godfrey(x, ...)
 \description{
 Breusch-Godfrey test for higher-order serial correlation.
 }
-\examples{
-
-as_tsibble(USAccDeaths) \%>\%
-  model(TSLM(value)) \%>\%
-  hypothesize(breusch_godfrey)
-
-}
 \seealso{
 \code{\link[lmtest:bgtest]{lmtest::bgtest()}}
 }

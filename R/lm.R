@@ -425,12 +425,6 @@ model_sum.TSLM <- function(x) {
 #' 
 #' @seealso [`lmtest::bgtest()`]
 #'
-#' @examples 
-#' 
-#' as_tsibble(USAccDeaths) %>%
-#'   model(TSLM(value)) %>%
-#'   hypothesize(breusch_godfrey)
-#'
 #' @export
 breusch_godfrey <- function(x, ...){
   UseMethod("breusch_godfrey")

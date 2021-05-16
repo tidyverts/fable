@@ -87,7 +87,7 @@ fit %>%
   augment()
 ```
 
-To compare how well the models fit the data, we can consider some common accuracy measures. It seems that on the training set the ETS model out-performs ARIMA for the series where travellers are on holiday, business, and visiting friends and relatives. The [*Evaluating modelling accuracy*](https://otexts.com/fpp3/evaluation.html) chapter from the [*Forecasting: Principles and Practices (3rd Ed.)*](https://otexts.com/fpp3/) textbook provides more detail in how modelling and forecasting accuracy is evaluated.
+To compare how well the models fit the data, we can consider some common accuracy measures. It seems that on the training set the ETS model out-performs ARIMA for the series where travellers are on holiday, business, and visiting friends and relatives. The [*Evaluating modelling accuracy*](https://otexts.com/fpp3/accuracy.html) chapter from the [*Forecasting: Principles and Practices (3rd Ed.)*](https://otexts.com/fpp3/) textbook provides more detail in how modelling and forecasting accuracy is evaluated.
 
 ```{r accuracy}
 fit %>%

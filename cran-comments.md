@@ -15,4 +15,5 @@ This submission resolves issues on the CRAN check page.
 
 ## revdep checks
 
-All revdeps have been checked.
+All revdeps have been checked, and no package check results are changed to 
+worse.
