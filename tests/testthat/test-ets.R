@@ -7,7 +7,7 @@ test_that("Automatic ETS selection", {
 
   expect_equivalent(
     tidy(fable_fit$ets[[1]]$fit)$estimate,
-    coef(forecast_fit)
+    c(coef(forecast_fit), -sum(coef(forecast_fit)[-(1:3)]))
   )
 
   # Short series
@@ -24,7 +24,7 @@ test_that("Manual ETS selection", {
 
   expect_equivalent(
     tidy(fable_fit$ets[[1]]$fit)$estimate,
-    coef(forecast_fit)
+    c(coef(forecast_fit), -sum(coef(forecast_fit)[-(1:3)]))
   )
 
   expect_identical(
@@ -50,7 +50,7 @@ test_that("Manual ETS selection", {
   # Test refit
   expect_identical(
     tidy(refit(fable_fit, USAccDeaths_tbl))$estimate == tidy(fable_fit)$estimate,
-    c(rep(TRUE, 2), rep(FALSE, 12))
+    c(rep(TRUE, 2), rep(FALSE, 13))
   )
   expect_identical(
     tidy(refit(fable_fit, USAccDeaths_tbl, reinitialise = FALSE))$estimate,
@@ -90,7 +90,7 @@ test_that("Manual ETS selection", {
   )
   expect_identical(
     coef$term,
-    c("alpha", "beta", "gamma", "phi", "l", "b", paste0("s", 0:10))
+    c("alpha", "beta", "gamma", "phi", "l[0]", "b[0]", sprintf("s[%i]", 0:-11))
   )
 })
 
@@ -162,3 +162,4 @@ test_that("Multiplicative ETS models", {
     "fbl_ts"
   )
 })
+
