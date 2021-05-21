@@ -1,5 +1,9 @@
 # fable (development version)
 
+## Improvements
+
+* Documentation improvements.
+
 # fable 0.3.1
 
 Small release to resolve check issues with the development and patched versions 

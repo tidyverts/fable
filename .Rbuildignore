@@ -16,3 +16,4 @@ Makefile
 ^Meta$
 ^.github$
 ^\.lintr$
+^CRAN-RELEASE$
