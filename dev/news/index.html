@@ -89,7 +89,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.3.0.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.3.1.9000</span>
       </span>
     </div>
 
@@ -148,10 +148,22 @@
 <h1 class="page-header" data-toc-text="development version">
 <a href="#fable-development-version" class="anchor"></a>fable (development version)<small> Unreleased </small>
 </h1>
-<p>Small release to resolve check issues with the development and patched versions of R. The release includes some minor improvements to the output consistency of initial states in <code><a href="../reference/ETS.html">ETS()</a></code> models, the passing of arguments in <code><a href="../reference/ARIMA.html">ARIMA()</a></code> models, and handling of missing values in <code><a href="../reference/NNETAR.html">NNETAR()</a></code>.</p>
 <div id="improvements" class="section level2">
 <h2 class="hasAnchor">
 <a href="#improvements" class="anchor"></a>Improvements</h2>
+<ul>
+<li>Documentation improvements.</li>
+</ul>
+</div>
+</div>
+    <div id="fable-031" class="section level1">
+<h1 class="page-header" data-toc-text="0.3.1">
+<a href="#fable-031" class="anchor"></a>fable 0.3.1<small> 2021-05-16 </small>
+</h1>
+<p>Small release to resolve check issues with the development and patched versions of R. The release includes some minor improvements to the output consistency of initial states in <code><a href="../reference/ETS.html">ETS()</a></code> models, the passing of arguments in <code><a href="../reference/ARIMA.html">ARIMA()</a></code> models, and handling of missing values in <code><a href="../reference/NNETAR.html">NNETAR()</a></code>.</p>
+<div id="improvements-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#improvements-1" class="anchor"></a>Improvements</h2>
 <ul>
 <li>Display of ETS initial states now use a <code>state[t]</code> notation to describe the state’s position in time (<a href='https://github.com/tidyverts/fable/issues/329'>#329</a>, <a href='https://github.com/tidyverts/fable/issues/261'>#261</a>).</li>
 <li>Allowed specifying <code>method</code> argument in <code><a href="../reference/ARIMA.html">ARIMA()</a></code> (<a href='https://github.com/tidyverts/fable/issues/330'>#330</a>).</li>
@@ -183,9 +195,9 @@
 <li>Added <code>generate()</code> method for AR, the <code>forecast()</code> method now supports bootstrap forecasting via this new method.</li>
 </ul>
 </div>
-<div id="improvements-1" class="section level2">
+<div id="improvements-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#improvements-1" class="anchor"></a>Improvements</h2>
+<a href="#improvements-2" class="anchor"></a>Improvements</h2>
 <ul>
 <li>Added the <code>selection_metric</code> argument to <code><a href="../reference/ARIMA.html">ARIMA()</a></code>, which allows more control over the measure used to select the best model. By default this function will extract the information criteria specified by the <code>ic</code> argument.</li>
 <li>Added <code>trace</code> argument for tracing the selection procedure used in <code><a href="../reference/ARIMA.html">ARIMA()</a></code>
@@ -215,9 +227,9 @@
 <li>Added the <code><a href="../reference/THETA.html">THETA()</a></code> method.</li>
 </ul>
 </div>
-<div id="improvements-2" class="section level2">
+<div id="improvements-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#improvements-2" class="anchor"></a>Improvements</h2>
+<a href="#improvements-3" class="anchor"></a>Improvements</h2>
 <ul>
 <li>Forecasts distributions are now provided by the distributional package. They are now more space efficient and allows calculation of distributional statistics including the <code><a href="https://rdrr.io/r/base/mean.html">mean()</a></code>, <code><a href="https://rdrr.io/r/stats/median.html">median()</a></code>, <code>variance()</code>, <code><a href="https://rdrr.io/r/stats/quantile.html">quantile()</a></code>, <code>cdf()</code>, and <code><a href="https://rdrr.io/r/stats/density.html">density()</a></code>.</li>
 <li>The uncertainty of the drift parameter in random walk models (<code><a href="../reference/RW.html">RW()</a></code>, <code><a href="../reference/RW.html">NAIVE()</a></code> and <code><a href="../reference/RW.html">SNAIVE()</a></code>) is now included in data generated with <code>generate()</code>.</li>
@@ -246,9 +258,9 @@
 <h1 class="page-header" data-toc-text="0.2.0">
 <a href="#fable-020" class="anchor"></a>fable 0.2.0<small> 2020-04-22 </small>
 </h1>
-<div id="improvements-3" class="section level2">
+<div id="improvements-4" class="section level2">
 <h2 class="hasAnchor">
-<a href="#improvements-3" class="anchor"></a>Improvements</h2>
+<a href="#improvements-4" class="anchor"></a>Improvements</h2>
 <ul>
 <li>Added autoregressive modelling with <code><a href="../reference/AR.html">AR()</a></code>.</li>
 <li>Better handling of rank deficiency in <code><a href="../reference/ARIMA.html">ARIMA()</a></code>.</li>
@@ -264,9 +276,9 @@
 <h1 class="page-header" data-toc-text="0.1.2">
 <a href="#fable-012" class="anchor"></a>fable 0.1.2<small> 2020-01-29 </small>
 </h1>
-<div id="improvements-4" class="section level2">
+<div id="improvements-5" class="section level2">
 <h2 class="hasAnchor">
-<a href="#improvements-4" class="anchor"></a>Improvements</h2>
+<a href="#improvements-5" class="anchor"></a>Improvements</h2>
 <ul>
 <li>Added <code><a href="../reference/CROSTON.html">CROSTON()</a></code> for Croston’s method of intermittent demand forecasting.</li>
 <li>Documentation improvements</li>
@@ -287,9 +299,9 @@
 <h1 class="page-header" data-toc-text="0.1.1">
 <a href="#fable-011" class="anchor"></a>fable 0.1.1<small> 2019-12-06 </small>
 </h1>
-<div id="improvements-5" class="section level2">
+<div id="improvements-6" class="section level2">
 <h2 class="hasAnchor">
-<a href="#improvements-5" class="anchor"></a>Improvements</h2>
+<a href="#improvements-6" class="anchor"></a>Improvements</h2>
 <ul>
 <li>Added interpolation method for <code><a href="../reference/MEAN.html">MEAN()</a></code> model (<a href='https://github.com/tidyverts/fable/issues/203'>#203</a>).</li>
 <li>Added rolling mean option for <code><a href="../reference/MEAN.html">MEAN()</a></code> model (<a href='https://github.com/tidyverts/fable/issues/204'>#204</a>).</li>

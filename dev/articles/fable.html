@@ -45,7 +45,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.3.0.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.3.1.9000</span>
       </span>
     </div>
 
@@ -227,7 +227,7 @@
 <span class="co">#&gt;  9 Melbourne Victoria Business ets    2000 Q1  495.    364.  130.    130.  </span>
 <span class="co">#&gt; 10 Melbourne Victoria Business ets    2000 Q2  499.    477.   22.0    22.0 </span>
 <span class="co">#&gt; # … with 630 more rows</span></code></pre></div>
-<p>To compare how well the models fit the data, we can consider some common accuracy measures. It seems that on the training set the ETS model out-performs ARIMA for the series where travellers are on holiday, business, and visiting friends and relatives. The <a href="https://otexts.com/fpp3/evaluation.html"><em>Evaluating modelling accuracy</em></a> chapter from the <a href="https://otexts.com/fpp3/"><em>Forecasting: Principles and Practices (3rd Ed.)</em></a> textbook provides more detail in how modelling and forecasting accuracy is evaluated.</p>
+<p>To compare how well the models fit the data, we can consider some common accuracy measures. It seems that on the training set the ETS model out-performs ARIMA for the series where travellers are on holiday, business, and visiting friends and relatives. The <a href="https://otexts.com/fpp3/accuracy.html"><em>Evaluating modelling accuracy</em></a> chapter from the <a href="https://otexts.com/fpp3/"><em>Forecasting: Principles and Practices (3rd Ed.)</em></a> textbook provides more detail in how modelling and forecasting accuracy is evaluated.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fit</span> <span class="op">%&gt;%</span>
   <span class="fu">accuracy</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
