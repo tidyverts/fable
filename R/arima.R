@@ -394,6 +394,7 @@ This is generally discouraged, consider removing the constant or reducing the nu
         AIC = best$aic, AICc = best$aicc, BIC = best$bic,
         ar_roots = list(arroot), ma_roots = list(maroot)
       ),
+      tsp = range(unclass(.data)[[index_var(.data)]]),
       spec = best_spec,
       model = best
     ),
@@ -770,6 +771,12 @@ report.ARIMA <- function(object, ...) {
 #' @export
 forecast.ARIMA <- function(object, new_data = NULL, specials = NULL,
                            bootstrap = FALSE, times = 5000, ...) {
+  # Check position of new_data in model history
+  fc_start <- object$tsp[2]+(diff(object$tsp)+1)/nrow(object$est)
+  if (unclass(new_data)[[index_var(new_data)]][1] != fc_start) {
+    abort("Forecasts from an ARIMA model must start one step beyond the end of the trained data.")
+  }
+  
   if (bootstrap) {
     sim <- map(seq_len(times), function(x) generate(object, new_data, specials, bootstrap = TRUE)[[".sim"]]) %>%
       transpose() %>%
