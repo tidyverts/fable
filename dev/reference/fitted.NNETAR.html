@@ -124,7 +124,7 @@
 </li>
 <li>
   <a href="https://github.com/tidyverts/fable">
-    <span class="fas fa-github fa-lg"></span>
+    <span class="fa fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -174,21 +174,21 @@
     <pre class="examples"><div class='input'><span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span><span class='op'>(</span><span class='va'>airmiles</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'>model</span><span class='op'>(</span>nn <span class='op'>=</span> <span class='fu'><a href='NNETAR.html'>NNETAR</a></span><span class='op'>(</span><span class='fu'>box_cox</span><span class='op'>(</span><span class='va'>value</span>, <span class='fl'>0.15</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='https://rdrr.io/r/stats/fitted.values.html'>fitted</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tsibble: 24 x 3 [1Y]</span><span>
-#&gt; </span><span style='color: #949494;'># Key:       .model [1]</span><span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tsibble: 24 x 3 [1Y]</span>
+#&gt; <span style='color: #949494;'># Key:       .model [1]</span>
 #&gt;    .model index .fitted
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>937     </span><span style='color: #BB0000;'>NA</span><span> 
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>938    571.
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>939    655.
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>940    906.
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>941   </span><span style='text-decoration: underline;'>1</span><span>359.
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>942   </span><span style='text-decoration: underline;'>1</span><span>768.
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>943   </span><span style='text-decoration: underline;'>1</span><span>808.
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>944   </span><span style='text-decoration: underline;'>2</span><span>073.
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>945   </span><span style='text-decoration: underline;'>2</span><span>740.
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> nn      </span><span style='text-decoration: underline;'>1</span><span>946   </span><span style='text-decoration: underline;'>4</span><span>183.
-#&gt; </span><span style='color: #949494;'># … with 14 more rows</span><span></div></span></pre>
+#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'> 1</span> nn      <span style='text-decoration: underline;'>1</span>937     <span style='color: #BB0000;'>NA</span> 
+#&gt; <span style='color: #BCBCBC;'> 2</span> nn      <span style='text-decoration: underline;'>1</span>938    571.
+#&gt; <span style='color: #BCBCBC;'> 3</span> nn      <span style='text-decoration: underline;'>1</span>939    655.
+#&gt; <span style='color: #BCBCBC;'> 4</span> nn      <span style='text-decoration: underline;'>1</span>940    906.
+#&gt; <span style='color: #BCBCBC;'> 5</span> nn      <span style='text-decoration: underline;'>1</span>941   <span style='text-decoration: underline;'>1</span>359.
+#&gt; <span style='color: #BCBCBC;'> 6</span> nn      <span style='text-decoration: underline;'>1</span>942   <span style='text-decoration: underline;'>1</span>768.
+#&gt; <span style='color: #BCBCBC;'> 7</span> nn      <span style='text-decoration: underline;'>1</span>943   <span style='text-decoration: underline;'>1</span>808.
+#&gt; <span style='color: #BCBCBC;'> 8</span> nn      <span style='text-decoration: underline;'>1</span>944   <span style='text-decoration: underline;'>2</span>073.
+#&gt; <span style='color: #BCBCBC;'> 9</span> nn      <span style='text-decoration: underline;'>1</span>945   <span style='text-decoration: underline;'>2</span>740.
+#&gt; <span style='color: #BCBCBC;'>10</span> nn      <span style='text-decoration: underline;'>1</span>946   <span style='text-decoration: underline;'>4</span>183.
+#&gt; <span style='color: #949494;'># … with 14 more rows</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

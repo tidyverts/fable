@@ -124,7 +124,7 @@
 </li>
 <li>
   <a href="https://github.com/tidyverts/fable">
-    <span class="fas fa-github fa-lg"></span>
+    <span class="fa fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -173,23 +173,23 @@
 <span class='va'>lung_deaths</span> <span class='op'>%&gt;%</span>
   <span class='fu'>model</span><span class='op'>(</span><span class='fu'><a href='VAR.html'>VAR</a></span><span class='op'>(</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/vars.html'>vars</a></span><span class='op'>(</span><span class='va'>mdeaths</span>, <span class='va'>fdeaths</span><span class='op'>)</span> <span class='op'>~</span> <span class='fu'><a href='AR.html'>AR</a></span><span class='op'>(</span><span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'>tidy</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 14 x 7</span><span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 14 x 7</span>
 #&gt;    .model               term      .response estimate std.error statistic p.value
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>        </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> VAR(vars(mdeaths, f… lag(mdea… mdeaths     0.667      0.355     1.88  6.48</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-2</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> VAR(vars(mdeaths, f… lag(fdea… mdeaths     0.807      0.835     0.967 3.37</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-1</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> VAR(vars(mdeaths, f… lag(mdea… mdeaths     0.368      0.352     1.04  3.01</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-1</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> VAR(vars(mdeaths, f… lag(fdea… mdeaths    -</span><span style='color: #BB0000;'>1.45</span><span>       0.809    -</span><span style='color: #BB0000;'>1.80</span><span>  7.71</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-2</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> VAR(vars(mdeaths, f… lag(mdea… mdeaths     0.261      0.342     0.761 4.50</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-1</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> VAR(vars(mdeaths, f… lag(fdea… mdeaths    -</span><span style='color: #BB0000;'>1.12</span><span>       0.814    -</span><span style='color: #BB0000;'>1.38</span><span>  1.73</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-1</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> VAR(vars(mdeaths, f… constant  mdeaths   539.       137.        3.93  2.17</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-4</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> VAR(vars(mdeaths, f… lag(mdea… fdeaths     0.214      0.146     1.46  1.48</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-1</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> VAR(vars(mdeaths, f… lag(fdea… fdeaths     0.456      0.343     1.33  1.89</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-1</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> VAR(vars(mdeaths, f… lag(mdea… fdeaths     0.093</span><span style='text-decoration: underline;'>7</span><span>     0.145     0.646 5.20</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-1</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>11</span><span> VAR(vars(mdeaths, f… lag(fdea… fdeaths    -</span><span style='color: #BB0000;'>0.398</span><span>      0.333    -</span><span style='color: #BB0000;'>1.20</span><span>  2.36</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-1</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>12</span><span> VAR(vars(mdeaths, f… lag(mdea… fdeaths     0.025</span><span style='text-decoration: underline;'>0</span><span>     0.141     0.178 8.60</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-1</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>13</span><span> VAR(vars(mdeaths, f… lag(fdea… fdeaths    -</span><span style='color: #BB0000;'>0.315</span><span>      0.335    -</span><span style='color: #BB0000;'>0.940</span><span> 3.51</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-1</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>14</span><span> VAR(vars(mdeaths, f… constant  fdeaths   202.        56.4       3.58  6.72</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-4</span><span></div></span></pre>
+#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'> 1</span> VAR(vars(mdeaths, f… lag(mdea… mdeaths     0.667      0.355     1.88  6.48<span style='color: #949494;'>e</span><span style='color: #BB0000;'>-2</span>
+#&gt; <span style='color: #BCBCBC;'> 2</span> VAR(vars(mdeaths, f… lag(fdea… mdeaths     0.807      0.835     0.967 3.37<span style='color: #949494;'>e</span><span style='color: #BB0000;'>-1</span>
+#&gt; <span style='color: #BCBCBC;'> 3</span> VAR(vars(mdeaths, f… lag(mdea… mdeaths     0.368      0.352     1.04  3.01<span style='color: #949494;'>e</span><span style='color: #BB0000;'>-1</span>
+#&gt; <span style='color: #BCBCBC;'> 4</span> VAR(vars(mdeaths, f… lag(fdea… mdeaths    -<span style='color: #BB0000;'>1.45</span>       0.809    -<span style='color: #BB0000;'>1.80</span>  7.71<span style='color: #949494;'>e</span><span style='color: #BB0000;'>-2</span>
+#&gt; <span style='color: #BCBCBC;'> 5</span> VAR(vars(mdeaths, f… lag(mdea… mdeaths     0.261      0.342     0.761 4.50<span style='color: #949494;'>e</span><span style='color: #BB0000;'>-1</span>
+#&gt; <span style='color: #BCBCBC;'> 6</span> VAR(vars(mdeaths, f… lag(fdea… mdeaths    -<span style='color: #BB0000;'>1.12</span>       0.814    -<span style='color: #BB0000;'>1.38</span>  1.73<span style='color: #949494;'>e</span><span style='color: #BB0000;'>-1</span>
+#&gt; <span style='color: #BCBCBC;'> 7</span> VAR(vars(mdeaths, f… constant  mdeaths   539.       137.        3.93  2.17<span style='color: #949494;'>e</span><span style='color: #BB0000;'>-4</span>
+#&gt; <span style='color: #BCBCBC;'> 8</span> VAR(vars(mdeaths, f… lag(mdea… fdeaths     0.214      0.146     1.46  1.48<span style='color: #949494;'>e</span><span style='color: #BB0000;'>-1</span>
+#&gt; <span style='color: #BCBCBC;'> 9</span> VAR(vars(mdeaths, f… lag(fdea… fdeaths     0.456      0.343     1.33  1.89<span style='color: #949494;'>e</span><span style='color: #BB0000;'>-1</span>
+#&gt; <span style='color: #BCBCBC;'>10</span> VAR(vars(mdeaths, f… lag(mdea… fdeaths     0.093<span style='text-decoration: underline;'>7</span>     0.145     0.646 5.20<span style='color: #949494;'>e</span><span style='color: #BB0000;'>-1</span>
+#&gt; <span style='color: #BCBCBC;'>11</span> VAR(vars(mdeaths, f… lag(fdea… fdeaths    -<span style='color: #BB0000;'>0.398</span>      0.333    -<span style='color: #BB0000;'>1.20</span>  2.36<span style='color: #949494;'>e</span><span style='color: #BB0000;'>-1</span>
+#&gt; <span style='color: #BCBCBC;'>12</span> VAR(vars(mdeaths, f… lag(mdea… fdeaths     0.025<span style='text-decoration: underline;'>0</span>     0.141     0.178 8.60<span style='color: #949494;'>e</span><span style='color: #BB0000;'>-1</span>
+#&gt; <span style='color: #BCBCBC;'>13</span> VAR(vars(mdeaths, f… lag(fdea… fdeaths    -<span style='color: #BB0000;'>0.315</span>      0.335    -<span style='color: #BB0000;'>0.940</span> 3.51<span style='color: #949494;'>e</span><span style='color: #BB0000;'>-1</span>
+#&gt; <span style='color: #BCBCBC;'>14</span> VAR(vars(mdeaths, f… constant  fdeaths   202.        56.4       3.58  6.72<span style='color: #949494;'>e</span><span style='color: #BB0000;'>-4</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

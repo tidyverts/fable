@@ -127,7 +127,7 @@ framework." />
 </li>
 <li>
   <a href="https://github.com/tidyverts/fable">
-    <span class="fas fa-github fa-lg"></span>
+    <span class="fa fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -329,11 +329,11 @@ are equivalent, the coefficients for the constant/mean will differ.</p>
 #&gt; <span class='message'>    intersect, setdiff, setequal, union</span></div><div class='input'><span class='fu'>tsibbledata</span><span class='fu'>::</span><span class='va'><a href='https://tsibbledata.tidyverts.org/reference/global_economy.html'>global_economy</a></span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>Country</span> <span class='op'>==</span> <span class='st'>"Australia"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'>model</span><span class='op'>(</span><span class='fu'>ARIMA</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>GDP</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>Population</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: NaNs produced</span></div><div class='output co'>#&gt; <span style='color: #949494;'># A mable: 1 x 2</span><span>
-#&gt; </span><span style='color: #949494;'># Key:     Country [1]</span><span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: NaNs produced</span></div><div class='output co'>#&gt; <span style='color: #949494;'># A mable: 1 x 2</span>
+#&gt; <span style='color: #949494;'># Key:     Country [1]</span>
 #&gt;   Country   `ARIMA(log(GDP) ~ Population)`
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span>                            </span><span style='color: #949494;font-style: italic;'>&lt;model&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> Australia    &lt;LM w/ ARIMA(2,0,0) errors&gt;</div></span></pre>
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>                            <span style='color: #949494; font-style: italic;'>&lt;model&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>1</span> Australia    &lt;LM w/ ARIMA(2,0,0) errors&gt;</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
