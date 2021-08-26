@@ -3,6 +3,12 @@
 ## Improvements
 
 * Documentation improvements.
+* Added `approx_normal` argument to `forecast(<TSLM>)`. This allows you to
+  optionally return forecasts from the more appropriate Student's T distribution
+  instead of approximating to a Normal distribution. The default behaviour 
+  remains the same, which is to provide approximate Normal distribution 
+  forecasts which are nicer to work with in model combination and reconciliation
+  (#343).
 
 ## Bug fixes
 

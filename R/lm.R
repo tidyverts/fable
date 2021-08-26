@@ -262,7 +262,14 @@ report.TSLM <- function(object, digits = max(3, getOption("digits") - 3), ...) {
 }
 
 #' @inherit forecast.ARIMA
+#' 
 #' @importFrom stats predict
+#'
+#' @param approx_normal Should the resulting forecast distributions be
+#'   approximated as a Normal distribution instead of a Student T distribution.
+#'   Returning Normal distributions (the default) is a useful approximation to
+#'   make it easier for using TSLM models in model combinations or 
+#'   reconciliation processes.
 #'
 #' @examples
 #' as_tsibble(USAccDeaths) %>%
@@ -270,7 +277,7 @@ report.TSLM <- function(object, digits = max(3, getOption("digits") - 3), ...) {
 #'   forecast()
 #' @export
 forecast.TSLM <- function(object, new_data, specials = NULL, bootstrap = FALSE,
-                          times = 5000, ...) {
+                          approx_normal = TRUE, times = 5000, ...) {
   coef <- object$coefficients
   rank <- object$rank
   qr <- object$qr
@@ -292,7 +299,7 @@ forecast.TSLM <- function(object, new_data, specials = NULL, bootstrap = FALSE,
       map(as.numeric)
     distributional::dist_sample(sim)
   } else {
-    fc <- xreg[, piv, drop = FALSE] %*% coef[piv]
+    fc <- drop(xreg[, piv, drop = FALSE] %*% coef[piv])
     resvar <- object$sigma2
 
     if (rank > 0) {
@@ -303,8 +310,12 @@ forecast.TSLM <- function(object, new_data, specials = NULL, bootstrap = FALSE,
       ip <- rep(0, length(fc))
     }
 
-    se <- sqrt(ip + resvar)
-    distributional::dist_normal(drop(fc), drop(se))
+    se <- drop(sqrt(ip + resvar))
+    if(approx_normal){
+      distributional::dist_normal(fc, se)
+    } else {
+      distributional::dist_student_t(object$df.residual, fc, se)
+    }
   }
 }
 
