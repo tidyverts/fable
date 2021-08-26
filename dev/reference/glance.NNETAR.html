@@ -176,7 +176,7 @@ Contains the variance of residuals (<code>sigma2</code>).</p>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span><span class='op'>(</span><span class='va'>airmiles</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'>model</span><span class='op'>(</span>nn <span class='op'>=</span> <span class='fu'><a href='NNETAR.html'>NNETAR</a></span><span class='op'>(</span><span class='fu'>box_cox</span><span class='op'>(</span><span class='va'>value</span>, <span class='fl'>0.15</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'>glance</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 2</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 × 2</span>
 #&gt;   .model sigma2
 #&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
 #&gt; <span style='color: #BCBCBC;'>1</span> nn      0.211</div></pre>
