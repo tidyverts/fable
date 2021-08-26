@@ -266,10 +266,10 @@ report.TSLM <- function(object, digits = max(3, getOption("digits") - 3), ...) {
 #' @importFrom stats predict
 #'
 #' @param approx_normal Should the resulting forecast distributions be
-#'   approximated as a Normal distribution instead of a Student T distribution.
-#'   Returning Normal distributions (the default) is a useful approximation to
-#'   make it easier for using TSLM models in model combinations or 
-#'   reconciliation processes.
+#'   approximated as a Normal distribution instead of a Student's T 
+#'   distribution. Returning Normal distributions (the default) is a useful 
+#'   approximation to make it easier for using TSLM models in model combinations 
+#'   or reconciliation processes.
 #'
 #' @examples
 #' as_tsibble(USAccDeaths) %>%

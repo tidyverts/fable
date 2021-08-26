@@ -24,10 +24,10 @@
 \item{bootstrap}{If \code{TRUE}, then forecast distributions are computed using simulation with resampled errors.}
 
 \item{approx_normal}{Should the resulting forecast distributions be
-approximated as a Normal distribution instead of a Student T distribution.
-Returning Normal distributions (the default) is a useful approximation to
-make it easier for using TSLM models in model combinations or
-reconciliation processes.}
+approximated as a Normal distribution instead of a Student's T
+distribution. Returning Normal distributions (the default) is a useful
+approximation to make it easier for using TSLM models in model combinations
+or reconciliation processes.}
 
 \item{times}{The number of sample paths to use in estimating the forecast distribution when \code{bootstrap = TRUE}.}
 
