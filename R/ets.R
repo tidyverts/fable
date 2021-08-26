@@ -131,6 +131,9 @@ specials_ets <- new_specials(
     if (phi_range[1] > phi_range[2]) {
       abort("Lower phi limits must be less than upper limits")
     }
+    if(!is.null(alpha)) alpha_range <- rep(alpha, 2)
+    if(!is.null(beta)) beta_range <- rep(beta, 2)
+    if(!is.null(phi)) phi_range <- rep(phi, 2)
     list(
       method = method,
       alpha = alpha, alpha_range = alpha_range,
@@ -146,6 +149,7 @@ specials_ets <- new_specials(
     if (gamma_range[1] > gamma_range[2]) {
       abort("Lower gamma limits must be less than upper limits")
     }
+    if(!is.null(gamma)) gamma_range <- rep(gamma, 2)
 
     m <- get_frequencies(period, self$data, .auto = "smallest")
     if (m <= 1 || (NROW(self$data) <= m && self$stage %in% c("estimate", "refit"))) {

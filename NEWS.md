@@ -9,6 +9,8 @@
   remains the same, which is to provide approximate Normal distribution 
   forecasts which are nicer to work with in model combination and reconciliation
   (#343).
+* `ETS()` will now ignore the smoothing parameter's range when specific 
+  parameter value is given (#317).
 
 ## Bug fixes
 
