@@ -156,6 +156,7 @@
   <span class='va'>new_data</span>,
   specials <span class='op'>=</span> <span class='cn'>NULL</span>,
   bootstrap <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  approx_normal <span class='op'>=</span> <span class='cn'>TRUE</span>,
   times <span class='op'>=</span> <span class='fl'>5000</span>,
   <span class='va'>...</span>
 <span class='op'>)</span></pre>
@@ -178,6 +179,14 @@
     <tr>
       <th>bootstrap</th>
       <td><p>If <code>TRUE</code>, then forecast distributions are computed using simulation with resampled errors.</p></td>
+    </tr>
+    <tr>
+      <th>approx_normal</th>
+      <td><p>Should the resulting forecast distributions be
+approximated as a Normal distribution instead of a Student T distribution.
+Returning Normal distributions (the default) is a useful approximation to
+make it easier for using TSLM models in model combinations or
+reconciliation processes.</p></td>
     </tr>
     <tr>
       <th>times</th>

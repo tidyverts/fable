@@ -153,6 +153,7 @@
 <a href="#improvements" class="anchor"></a>Improvements</h2>
 <ul>
 <li>Documentation improvements.</li>
+<li>Added <code>approx_normal</code> argument to <code>forecast(&lt;TSLM&gt;)</code>. This allows you to optionally return forecasts from the more appropriate Student’s T distribution instead of approximating to a Normal distribution. The default behaviour remains the same, which is to provide approximate Normal distribution forecasts which are nicer to work with in model combination and reconciliation (<a href='https://github.com/tidyverts/fable/issues/343'>#343</a>).</li>
 </ul>
 </div>
 <div id="bug-fixes" class="section level2">
