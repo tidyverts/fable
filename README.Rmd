@@ -25,7 +25,7 @@ The R package *fable* provides a collection of commonly used univariate and mult
 
 ## Installation
 
-The can install the **stable** version from [CRAN](https://cran.r-project.org/package=fable):
+You can install the **stable** version from [CRAN](https://cran.r-project.org/package=fable):
 
 ```{r cran-installation, eval = FALSE}
 install.packages("fable")

@@ -23,7 +23,7 @@ the tidyverse.
 
 ## Installation
 
-The can install the **stable** version from
+You can install the **stable** version from
 [CRAN](https://cran.r-project.org/package=fable):
 
 ``` r
