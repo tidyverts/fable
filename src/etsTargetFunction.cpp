@@ -282,7 +282,7 @@ bool EtsTargetFunction::admissible() {
 		std::vector<double> op_new(m+2, alpha+beta-alpha*phi);
 		// P <- c(phi*(1-alpha-gamma),alpha+beta-alpha*phi+gamma-1,rep(alpha+beta-alpha*phi,m-2),(alpha+beta-phi),1)
 		op_new[0] = phi*(1-alpha-gamma);
-		op_new[1] = phi*(alpha+beta-alpha*phi+gamma-1);
+		op_new[1] = alpha+beta-alpha*phi+gamma-1;
 		op_new[m] = alpha+beta-phi;
 		op_new[m+1] = 1;
 		

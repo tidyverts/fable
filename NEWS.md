@@ -4,6 +4,11 @@
 
 * Documentation improvements.
 
+## Bug fixes
+
+* Fixed issue with characteristic equation test for admissibility of ETS 
+  parameters (#341).
+
 # fable 0.3.1
 
 Small release to resolve check issues with the development and patched versions 
