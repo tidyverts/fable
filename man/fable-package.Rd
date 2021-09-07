@@ -36,6 +36,7 @@ Authors:
 Other contributors:
 \itemize{
   \item Gabriel Caceres (NNETAR implementation) [contributor]
+  \item Christoph Bergmeir (\href{https://orcid.org/0000-0002-3665-9021}{ORCID}) [contributor]
   \item Tim-Gunnar Hensel [contributor]
   \item Timothy Hyndman [contributor]
 }
