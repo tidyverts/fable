@@ -166,14 +166,21 @@
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
+
+    <p>A data frame with 1 row, with columns:</p><dl>
+<dt>sigma2</dt><dd><p>The unbiased variance of residuals. Calculated as <code>sum(residuals^2) / (num_observations - num_pararameters + 1)</code></p></dd>
+<dt>log_lik</dt><dd><p>The log-likelihood</p></dd>
+<dt>AIC</dt><dd><p>Akaike information criterion</p></dd>
+<dt>AICc</dt><dd><p>Akaike information criterion, corrected for small sample sizes</p></dd>
+<dt>BIC</dt><dd><p>Bayesian information criterion</p></dd>
+<dt>ar_roots,ma_roots</dt><dd><p>The model's characteristic roots</p></dd>
+
+</dl>
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A one row tibble summarising the model's fit.</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>Contains the variance of residuals (<code>sigma2</code>), the log-likelihood (<code>log_lik</code>),
-information criterion (<code>AIC</code>, <code>AICc</code>, <code>BIC</code>) and the characteristic roots
-(<code>ar_roots</code> and <code>ma_roots</code>).</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='va'>USAccDeaths</span> <span class='op'>%&gt;%</span>
