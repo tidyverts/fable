@@ -3,6 +3,17 @@
 \name{glance.ARIMA}
 \alias{glance.ARIMA}
 \title{Glance an ARIMA model}
+\format{
+A data frame with 1 row, with columns:
+\describe{
+\item{sigma2}{The unbiased variance of residuals. Calculated as \code{sum(residuals^2) / (num_observations - num_pararameters + 1)}}
+\item{log_lik}{The log-likelihood}
+\item{AIC}{Akaike information criterion}
+\item{AICc}{Akaike information criterion, corrected for small sample sizes}
+\item{BIC}{Bayesian information criterion}
+\item{ar_roots,ma_roots}{The model's characteristic roots}
+}
+}
 \usage{
 \method{glance}{ARIMA}(x, ...)
 }
@@ -16,11 +27,6 @@ A one row tibble summarising the model's fit.
 }
 \description{
 Construct a single row summary of the ARIMA model.
-}
-\details{
-Contains the variance of residuals (\code{sigma2}), the log-likelihood (\code{log_lik}),
-information criterion (\code{AIC}, \code{AICc}, \code{BIC}) and the characteristic roots
-(\code{ar_roots} and \code{ma_roots}).
 }
 \examples{
 USAccDeaths \%>\%
