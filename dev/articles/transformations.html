@@ -108,7 +108,7 @@
     
     
 <p>All fable models with formula-based model specification support a highly flexible specification of transformations. Specified transformations are automatically back-transformed and bias adjusted to produce forecast means and fitted values on the original scale of the data.</p>
-<p>The transformation used for the model is defined on the left of the tilde (<code><a href="https://rdrr.io/r/base/tilde.html">~</a></code>) in the formula. For example, when forecasting Melbourne <code>Trips</code> from the <code><a href="https://tsibble.tidyverts.org/reference/tourism.html">tsibble::tourism</a></code> dataset, a square root transformation can applied using <code><a href="https://rdrr.io/r/base/MathFun.html">sqrt(Trips)</a></code>.</p>
+<p>The transformation used for the model is defined on the left of the tilde (<code>~</code>) in the formula. For example, when forecasting Melbourne <code>Trips</code> from the <code><a href="https://tsibble.tidyverts.org/reference/tourism.html">tsibble::tourism</a></code> dataset, a square root transformation can applied using <code>sqrt(Trips)</code>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://fable.tidyverts.org">fable</a></span><span class="op">)</span>
 <span class="co">#&gt; Loading required package: fabletools</span>
@@ -127,9 +127,9 @@
 <span class="co">#&gt; The following objects are masked from 'package:base':</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;     intersect, setdiff, setequal, union</span>
-<span class="va">tourism</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">Region</span> <span class="op">==</span> <span class="st">"Melbourne"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu">model</span><span class="op">(</span><span class="fu"><a href="../reference/ETS.html">ETS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="va">Trips</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+<span class="va">tourism</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">Region</span> <span class="op">==</span> <span class="st">"Melbourne"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://fabletools.tidyverts.org/reference/model.html">model</a></span><span class="op">(</span><span class="fu"><a href="../reference/ETS.html">ETS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="va">Trips</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; # A mable: 4 x 4</span>
 <span class="co">#&gt; # Key:     Region, State, Purpose [4]</span>
 <span class="co">#&gt;   Region    State    Purpose  `ETS(sqrt(Trips))`</span>
@@ -145,9 +145,9 @@
 <p>Simple combined transformations and backtransformations can be constructed automatically.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tsibble.tidyverts.org">tsibble</a></span><span class="op">)</span>
-<span class="va">tourism</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">Region</span> <span class="op">==</span> <span class="st">"Melbourne"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu">model</span><span class="op">(</span><span class="fu"><a href="../reference/ETS.html">ETS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">Trips</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+<span class="va">tourism</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">Region</span> <span class="op">==</span> <span class="st">"Melbourne"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://fabletools.tidyverts.org/reference/model.html">model</a></span><span class="op">(</span><span class="fu"><a href="../reference/ETS.html">ETS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">Trips</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; # A mable: 4 x 4</span>
 <span class="co">#&gt; # Key:     Region, State, Purpose [4]</span>
 <span class="co">#&gt;   Region    State    Purpose  `ETS(log(Trips + 1))`</span>
@@ -172,14 +172,14 @@
 <span class="va">inv_scaled_logit</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">lower</span><span class="op">=</span><span class="fl">0</span>, <span class="va">upper</span><span class="op">=</span><span class="fl">1</span><span class="op">)</span><span class="op">{</span>
   <span class="op">(</span><span class="va">upper</span><span class="op">-</span><span class="va">lower</span><span class="op">)</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="fl">1</span><span class="op">+</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="va">lower</span>
 <span class="op">}</span>
-<span class="va">my_scaled_logit</span> <span class="op">&lt;-</span> <span class="fu">new_transformation</span><span class="op">(</span><span class="va">scaled_logit</span>, <span class="va">inv_scaled_logit</span><span class="op">)</span></code></pre></div>
+<span class="va">my_scaled_logit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://fabletools.tidyverts.org/reference/new_transformation.html">new_transformation</a></span><span class="op">(</span><span class="va">scaled_logit</span>, <span class="va">inv_scaled_logit</span><span class="op">)</span></code></pre></div>
 <p>Once you define your transformation as above, it is ready to use anywhere you would normally use a transformation.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">mdeaths</span>, <span class="va">fdeaths</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://tsibble.tidyverts.org/reference/as-tsibble.html">as_tsibble</a></span><span class="op">(</span>pivot_longer <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu">model</span><span class="op">(</span><span class="fu"><a href="../reference/ETS.html">ETS</a></span><span class="op">(</span><span class="fu">my_scaled_logit</span><span class="op">(</span><span class="va">mdeaths</span>, <span class="fl">750</span>, <span class="fl">3000</span><span class="op">)</span> <span class="op">~</span>
-              <span class="fu">error</span><span class="op">(</span><span class="st">"A"</span><span class="op">)</span> <span class="op">+</span> <span class="fu">trend</span><span class="op">(</span><span class="st">"N"</span><span class="op">)</span> <span class="op">+</span> <span class="fu">season</span><span class="op">(</span><span class="st">"A"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu">report</span><span class="op">(</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">mdeaths</span>, <span class="va">fdeaths</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://tsibble.tidyverts.org/reference/as-tsibble.html">as_tsibble</a></span><span class="op">(</span>pivot_longer <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://fabletools.tidyverts.org/reference/model.html">model</a></span><span class="op">(</span><span class="fu"><a href="../reference/ETS.html">ETS</a></span><span class="op">(</span><span class="fu">my_scaled_logit</span><span class="op">(</span><span class="va">mdeaths</span>, <span class="fl">750</span>, <span class="fl">3000</span><span class="op">)</span> <span class="op">~</span>
+              <span class="fu">error</span><span class="op">(</span><span class="st">"A"</span><span class="op">)</span> <span class="op">+</span> <span class="fu">trend</span><span class="op">(</span><span class="st">"N"</span><span class="op">)</span> <span class="op">+</span> <span class="fu">season</span><span class="op">(</span><span class="st">"A"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://fabletools.tidyverts.org/reference/report.html">report</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; Series: mdeaths </span>
 <span class="co">#&gt; Model: ETS(A,N,A) </span>
 <span class="co">#&gt; Transformation: my_scaled_logit(mdeaths, 750, 3000) </span>

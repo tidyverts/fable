@@ -287,7 +287,7 @@ are equivalent, the coefficients for the constant/mean will differ.</p>
 </pre>
 
 <table class='table'>
-<tr><td><code>...</code></td><td>Bare expressions for the exogenous regressors (such as <code><a href='https://rdrr.io/r/base/Log.html'>log(x)</a></code>)</td></tr>
+<tr><td><code>...</code></td><td>Bare expressions for the exogenous regressors (such as <code>log(x)</code>)</td></tr>
 <tr><td><code>fixed</code></td><td>A named list of fixed parameters for coefficients. The names identify the coefficient, and should match the name of the regressor. For example, <code>fixed = list(constant = 20)</code>.</td></tr>
 </table>
 
@@ -299,41 +299,49 @@ are equivalent, the coefficients for the constant/mean will differ.</p>
 <a href='https://otexts.com/fpp3/dynamic.html'>Forecasting: Principles and Practices, Dynamic regression models (chapter 10)</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Manual ARIMA specification</span>
-<span class='va'>USAccDeaths</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>model</span><span class='op'>(</span>arima <span class='op'>=</span> <span class='fu'>ARIMA</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>value</span><span class='op'>)</span> <span class='op'>~</span> <span class='fl'>0</span> <span class='op'>+</span> <span class='fu'>pdq</span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'>PDQ</span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>report</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Series: value 
-#&gt; Model: ARIMA(0,1,1)(0,1,1)[12] 
-#&gt; Transformation: log(value) 
-#&gt; 
-#&gt; Coefficients:
-#&gt;           ma1     sma1
-#&gt;       -0.4713  -0.5926
-#&gt; s.e.   0.1230   0.1933
-#&gt; 
-#&gt; sigma^2 estimated as 0.001379:  log likelihood=109.31
-#&gt; AIC=-212.63   AICc=-212.19   BIC=-206.39</div><div class='input'>
-<span class='co'># Automatic ARIMA specification</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tsibble.tidyverts.org'>tsibble</a></span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘tsibble’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    intersect, setdiff, union</span></div><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘dplyr’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:stats’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    filter, lag</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    intersect, setdiff, setequal, union</span></div><div class='input'><span class='fu'>tsibbledata</span><span class='fu'>::</span><span class='va'><a href='https://tsibbledata.tidyverts.org/reference/global_economy.html'>global_economy</a></span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>Country</span> <span class='op'>==</span> <span class='st'>"Australia"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>model</span><span class='op'>(</span><span class='fu'>ARIMA</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>GDP</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>Population</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: NaNs produced</span></div><div class='output co'>#&gt; <span style='color: #949494;'># A mable: 1 x 2</span>
-#&gt; <span style='color: #949494;'># Key:     Country [1]</span>
-#&gt;   Country   `ARIMA(log(GDP) ~ Population)`
-#&gt;   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>                            <span style='color: #949494; font-style: italic;'>&lt;model&gt;</span>
-#&gt; <span style='color: #BCBCBC;'>1</span> Australia    &lt;LM w/ ARIMA(2,0,0) errors&gt;</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'># Manual ARIMA specification</span></span>
+<span class='r-in'><span class='va'>USAccDeaths</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://fabletools.tidyverts.org/reference/model.html'>model</a></span><span class='op'>(</span>arima <span class='op'>=</span> <span class='fu'>ARIMA</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>value</span><span class='op'>)</span> <span class='op'>~</span> <span class='fl'>0</span> <span class='op'>+</span> <span class='fu'>pdq</span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'>PDQ</span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://fabletools.tidyverts.org/reference/report.html'>report</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Series: value </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Model: ARIMA(0,1,1)(0,1,1)[12] </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Transformation: log(value) </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Coefficients:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>           ma1     sma1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       -0.4713  -0.5926</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> s.e.   0.1230   0.1933</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> sigma^2 estimated as 0.001379:  log likelihood=109.31</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> AIC=-212.63   AICc=-212.19   BIC=-206.39</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Automatic ARIMA specification</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tsibble.tidyverts.org'>tsibble</a></span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Attaching package: ‘tsibble’</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> The following objects are masked from ‘package:base’:</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     intersect, setdiff, union</span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Attaching package: ‘dplyr’</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> The following objects are masked from ‘package:stats’:</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     filter, lag</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> The following objects are masked from ‘package:base’:</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     intersect, setdiff, setequal, union</span>
+<span class='r-in'><span class='fu'>tsibbledata</span><span class='fu'>::</span><span class='va'><a href='https://tsibbledata.tidyverts.org/reference/global_economy.html'>global_economy</a></span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>Country</span> <span class='op'>==</span> <span class='st'>"Australia"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://fabletools.tidyverts.org/reference/model.html'>model</a></span><span class='op'>(</span><span class='fu'>ARIMA</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>GDP</span><span class='op'>)</span> <span class='op'>~</span> <span class='va'>Population</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>NaNs produced</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A mable: 1 x 2</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># Key:     Country [1]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Country   `ARIMA(log(GDP) ~ Population)`</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>                            <span style='color: #949494; font-style: italic;'>&lt;model&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span> Australia    &lt;LM w/ ARIMA(2,0,0) errors&gt;</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

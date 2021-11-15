@@ -151,7 +151,7 @@
     </div>
 
     <pre class="usage"><span class='co'># S3 method for TSLM</span>
-<span class='fu'>refit</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>new_data</span>, specials <span class='op'>=</span> <span class='cn'>NULL</span>, reestimate <span class='op'>=</span> <span class='cn'>FALSE</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+<span class='fu'><a href='https://generics.r-lib.org/reference/refit.html'>refit</a></span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>new_data</span>, specials <span class='op'>=</span> <span class='cn'>NULL</span>, reestimate <span class='op'>=</span> <span class='cn'>FALSE</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -180,72 +180,74 @@
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>lung_deaths_male</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span><span class='op'>(</span><span class='va'>mdeaths</span><span class='op'>)</span>
-<span class='va'>lung_deaths_female</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span><span class='op'>(</span><span class='va'>fdeaths</span><span class='op'>)</span>
-
-<span class='va'>fit</span> <span class='op'>&lt;-</span> <span class='va'>lung_deaths_male</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>model</span><span class='op'>(</span><span class='fu'><a href='TSLM.html'>TSLM</a></span><span class='op'>(</span><span class='va'>value</span> <span class='op'>~</span> <span class='fu'>trend</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'>season</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-
-<span class='fu'>report</span><span class='op'>(</span><span class='va'>fit</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Series: value 
-#&gt; Model: TSLM 
-#&gt; 
-#&gt; Residuals:
-#&gt;       Min        1Q    Median        3Q       Max 
-#&gt; -422.6976  -58.6048   -0.1143   64.2905  644.0310 
-#&gt; 
-#&gt; Coefficients:
-#&gt;                  Estimate Std. Error t value Pr(&gt;|t|)    
-#&gt; (Intercept)     2257.1179    74.8463  30.157  &lt; 2e-16 ***
-#&gt; trend()           -4.1060     0.9662  -4.250 7.72e-05 ***
-#&gt; season()year2    -44.3940    97.0086  -0.458  0.64890    
-#&gt; season()year3   -151.1214    97.0230  -1.558  0.12468    
-#&gt; season()year4   -460.1821    97.0471  -4.742 1.38e-05 ***
-#&gt; season()year5   -799.2429    97.0807  -8.233 2.21e-11 ***
-#&gt; season()year6   -922.4702    97.1240  -9.498 1.71e-13 ***
-#&gt; season()year7   -968.5310    97.1768  -9.967 2.91e-14 ***
-#&gt; season()year8  -1063.4250    97.2393 -10.936 8.09e-16 ***
-#&gt; season()year9  -1075.3190    97.3112 -11.050 5.34e-16 ***
-#&gt; season()year10  -851.7131    97.3927  -8.745 3.04e-12 ***
-#&gt; season()year11  -711.1071    97.4838  -7.295 8.57e-10 ***
-#&gt; season()year12  -288.1679    97.5843  -2.953  0.00451 ** 
-#&gt; ---
-#&gt; Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
-#&gt; 
-#&gt; Residual standard error: 168 on 59 degrees of freedom
-#&gt; Multiple R-squared: 0.875,	Adjusted R-squared: 0.8495
-#&gt; F-statistic: 34.41 on 12 and 59 DF, p-value: &lt; 2.22e-16</div><div class='input'>
-<span class='va'>fit</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>refit</span><span class='op'>(</span><span class='va'>lung_deaths_female</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>report</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Series: value 
-#&gt; Model: TSLM 
-#&gt; 
-#&gt; Residuals:
-#&gt;     Min      1Q  Median      3Q     Max 
-#&gt; -1515.5 -1123.7  -897.9  -748.7  -505.5 
-#&gt; 
-#&gt; Coefficients:
-#&gt;                 Estimate Std. Error t value Pr(&gt;|t|)    
-#&gt; (Intercept)     2257.118    475.866   4.743 1.38e-05 ***
-#&gt; trend()           -4.106      6.143  -0.668   0.5065    
-#&gt; season()year2    -44.394    616.772  -0.072   0.9429    
-#&gt; season()year3   -151.121    616.864  -0.245   0.8073    
-#&gt; season()year4   -460.182    617.017  -0.746   0.4587    
-#&gt; season()year5   -799.243    617.231  -1.295   0.2004    
-#&gt; season()year6   -922.470    617.506  -1.494   0.1405    
-#&gt; season()year7   -968.531    617.842  -1.568   0.1223    
-#&gt; season()year8  -1063.425    618.238  -1.720   0.0907 .  
-#&gt; season()year9  -1075.319    618.696  -1.738   0.0874 .  
-#&gt; season()year10  -851.713    619.214  -1.375   0.1742    
-#&gt; season()year11  -711.107    619.793  -1.147   0.2559    
-#&gt; season()year12  -288.168    620.432  -0.464   0.6440    
-#&gt; ---
-#&gt; Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
-#&gt; 
-#&gt; Residual standard error: 1068 on 59 degrees of freedom
-#&gt; Multiple R-squared: 0.1476,	Adjusted R-squared: -0.0258
-#&gt; F-statistic: 0.8512 on 12 and 59 DF, p-value: 0.59898</div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>lung_deaths_male</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span><span class='op'>(</span><span class='va'>mdeaths</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>lung_deaths_female</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span><span class='op'>(</span><span class='va'>fdeaths</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>fit</span> <span class='op'>&lt;-</span> <span class='va'>lung_deaths_male</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://fabletools.tidyverts.org/reference/model.html'>model</a></span><span class='op'>(</span><span class='fu'><a href='TSLM.html'>TSLM</a></span><span class='op'>(</span><span class='va'>value</span> <span class='op'>~</span> <span class='fu'>trend</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'>season</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='https://fabletools.tidyverts.org/reference/report.html'>report</a></span><span class='op'>(</span><span class='va'>fit</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Series: value </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Model: TSLM </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Residuals:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       Min        1Q    Median        3Q       Max </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -422.6976  -58.6048   -0.1143   64.2905  644.0310 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Coefficients:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                  Estimate Std. Error t value Pr(&gt;|t|)    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> (Intercept)     2257.1179    74.8463  30.157  &lt; 2e-16 ***</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> trend()           -4.1060     0.9662  -4.250 7.72e-05 ***</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> season()year2    -44.3940    97.0086  -0.458  0.64890    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> season()year3   -151.1214    97.0230  -1.558  0.12468    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> season()year4   -460.1821    97.0471  -4.742 1.38e-05 ***</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> season()year5   -799.2429    97.0807  -8.233 2.21e-11 ***</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> season()year6   -922.4702    97.1240  -9.498 1.71e-13 ***</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> season()year7   -968.5310    97.1768  -9.967 2.91e-14 ***</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> season()year8  -1063.4250    97.2393 -10.936 8.09e-16 ***</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> season()year9  -1075.3190    97.3112 -11.050 5.34e-16 ***</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> season()year10  -851.7131    97.3927  -8.745 3.04e-12 ***</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> season()year11  -711.1071    97.4838  -7.295 8.57e-10 ***</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> season()year12  -288.1679    97.5843  -2.953  0.00451 ** </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ---</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Residual standard error: 168 on 59 degrees of freedom</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Multiple R-squared: 0.875,	Adjusted R-squared: 0.8495</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> F-statistic: 34.41 on 12 and 59 DF, p-value: &lt; 2.22e-16</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>fit</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://generics.r-lib.org/reference/refit.html'>refit</a></span><span class='op'>(</span><span class='va'>lung_deaths_female</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://fabletools.tidyverts.org/reference/report.html'>report</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Series: value </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Model: TSLM </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Residuals:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     Min      1Q  Median      3Q     Max </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> -1515.5 -1123.7  -897.9  -748.7  -505.5 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Coefficients:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                 Estimate Std. Error t value Pr(&gt;|t|)    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> (Intercept)     2257.118    475.866   4.743 1.38e-05 ***</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> trend()           -4.106      6.143  -0.668   0.5065    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> season()year2    -44.394    616.772  -0.072   0.9429    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> season()year3   -151.121    616.864  -0.245   0.8073    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> season()year4   -460.182    617.017  -0.746   0.4587    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> season()year5   -799.243    617.231  -1.295   0.2004    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> season()year6   -922.470    617.506  -1.494   0.1405    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> season()year7   -968.531    617.842  -1.568   0.1223    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> season()year8  -1063.425    618.238  -1.720   0.0907 .  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> season()year9  -1075.319    618.696  -1.738   0.0874 .  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> season()year10  -851.713    619.214  -1.375   0.1742    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> season()year11  -711.107    619.793  -1.147   0.2559    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> season()year12  -288.168    620.432  -0.464   0.6440    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ---</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Residual standard error: 1068 on 59 degrees of freedom</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Multiple R-squared: 0.1476,	Adjusted R-squared: -0.0258</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> F-statistic: 0.8512 on 12 and 59 DF, p-value: 0.59898</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -151,7 +151,7 @@
     </div>
 
     <pre class="usage"><span class='co'># S3 method for ARIMA</span>
-<span class='fu'>refit</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>new_data</span>, specials <span class='op'>=</span> <span class='cn'>NULL</span>, reestimate <span class='op'>=</span> <span class='cn'>FALSE</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+<span class='fu'><a href='https://generics.r-lib.org/reference/refit.html'>refit</a></span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>new_data</span>, specials <span class='op'>=</span> <span class='cn'>NULL</span>, reestimate <span class='op'>=</span> <span class='cn'>FALSE</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -183,36 +183,38 @@
     <p>A refitted model.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>lung_deaths_male</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span><span class='op'>(</span><span class='va'>mdeaths</span><span class='op'>)</span>
-<span class='va'>lung_deaths_female</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span><span class='op'>(</span><span class='va'>fdeaths</span><span class='op'>)</span>
-
-<span class='va'>fit</span> <span class='op'>&lt;-</span> <span class='va'>lung_deaths_male</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>model</span><span class='op'>(</span><span class='fu'><a href='ARIMA.html'>ARIMA</a></span><span class='op'>(</span><span class='va'>value</span> <span class='op'>~</span> <span class='fl'>1</span> <span class='op'>+</span> <span class='fu'>pdq</span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'>PDQ</span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>1</span>, <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-
-<span class='fu'>report</span><span class='op'>(</span><span class='va'>fit</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Series: value 
-#&gt; Model: ARIMA(2,0,0)(2,1,0)[12] w/ drift 
-#&gt; 
-#&gt; Coefficients:
-#&gt;          ar1      ar2     sar1     sar2   constant
-#&gt;       0.2480  -0.3326  -0.9903  -0.4766  -146.0254
-#&gt; s.e.  0.1392   0.1393   0.1340   0.1356    25.6430
-#&gt; 
-#&gt; sigma^2 estimated as 28448:  log likelihood=-397.01
-#&gt; AIC=806.03   AICc=807.61   BIC=818.59</div><div class='input'>
-<span class='va'>fit</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>refit</span><span class='op'>(</span><span class='va'>lung_deaths_female</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>report</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Series: value 
-#&gt; Model: ARIMA(2,0,0)(2,1,0)[12] w/ drift 
-#&gt; 
-#&gt; Coefficients:
-#&gt;          ar1      ar2     sar1     sar2   constant
-#&gt;       0.2480  -0.3326  -0.9903  -0.4766  -146.0254
-#&gt; s.e.  0.1392   0.1393   0.1340   0.1356    25.6430
-#&gt; 
-#&gt; sigma^2 estimated as 14165:  log likelihood=-378.7
-#&gt; AIC=759.41   AICc=759.48   BIC=761.5</div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>lung_deaths_male</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span><span class='op'>(</span><span class='va'>mdeaths</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>lung_deaths_female</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span><span class='op'>(</span><span class='va'>fdeaths</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>fit</span> <span class='op'>&lt;-</span> <span class='va'>lung_deaths_male</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://fabletools.tidyverts.org/reference/model.html'>model</a></span><span class='op'>(</span><span class='fu'><a href='ARIMA.html'>ARIMA</a></span><span class='op'>(</span><span class='va'>value</span> <span class='op'>~</span> <span class='fl'>1</span> <span class='op'>+</span> <span class='fu'>pdq</span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'>PDQ</span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>1</span>, <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='https://fabletools.tidyverts.org/reference/report.html'>report</a></span><span class='op'>(</span><span class='va'>fit</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Series: value </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Model: ARIMA(2,0,0)(2,1,0)[12] w/ drift </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Coefficients:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          ar1      ar2     sar1     sar2   constant</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       0.2480  -0.3326  -0.9903  -0.4766  -146.0254</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> s.e.  0.1392   0.1393   0.1340   0.1356    25.6430</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> sigma^2 estimated as 28448:  log likelihood=-397.01</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> AIC=806.03   AICc=807.61   BIC=818.59</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>fit</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://generics.r-lib.org/reference/refit.html'>refit</a></span><span class='op'>(</span><span class='va'>lung_deaths_female</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://fabletools.tidyverts.org/reference/report.html'>report</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Series: value </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Model: ARIMA(2,0,0)(2,1,0)[12] w/ drift </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Coefficients:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          ar1      ar2     sar1     sar2   constant</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       0.2480  -0.3326  -0.9903  -0.4766  -146.0254</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> s.e.  0.1392   0.1393   0.1340   0.1356    25.6430</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> sigma^2 estimated as 14165:  log likelihood=-378.7</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> AIC=759.41   AICc=759.48   BIC=761.5</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

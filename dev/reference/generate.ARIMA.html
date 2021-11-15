@@ -157,7 +157,7 @@ contains the <code>.innov</code> column, those values will be treated as innovat
     </div>
 
     <pre class="usage"><span class='co'># S3 method for ARIMA</span>
-<span class='fu'>generate</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>new_data</span>, <span class='va'>specials</span>, bootstrap <span class='op'>=</span> <span class='cn'>FALSE</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+<span class='fu'><a href='https://generics.r-lib.org/reference/generate.html'>generate</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>new_data</span>, <span class='va'>specials</span>, bootstrap <span class='op'>=</span> <span class='cn'>FALSE</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -189,25 +189,26 @@ contains the <code>.innov</code> column, those values will be treated as innovat
     <div class='dont-index'><p><code><a href='https://fabletools.tidyverts.org/reference/generate.mdl_df.html'>fabletools::generate.mdl_df</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>fable_fit</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span><span class='op'>(</span><span class='va'>USAccDeaths</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>model</span><span class='op'>(</span>model <span class='op'>=</span> <span class='fu'><a href='ARIMA.html'>ARIMA</a></span><span class='op'>(</span><span class='va'>value</span> <span class='op'>~</span> <span class='fl'>0</span> <span class='op'>+</span> <span class='fu'>pdq</span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>1</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'>PDQ</span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>fable_fit</span> <span class='op'>%&gt;%</span> <span class='fu'>generate</span><span class='op'>(</span>times <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tsibble: 240 x 4 [1M]</span>
-#&gt; <span style='color: #949494;'># Key:       .model, .rep [10]</span>
-#&gt;    .model    index .rep    .sim
-#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;mth&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'> 1</span> model  1979 Jan 1      <span style='text-decoration: underline;'>8</span>239.
-#&gt; <span style='color: #BCBCBC;'> 2</span> model  1979 Feb 1      <span style='text-decoration: underline;'>8</span>186.
-#&gt; <span style='color: #BCBCBC;'> 3</span> model  1979 Mar 1      <span style='text-decoration: underline;'>8</span>329.
-#&gt; <span style='color: #BCBCBC;'> 4</span> model  1979 Apr 1      <span style='text-decoration: underline;'>8</span>408.
-#&gt; <span style='color: #BCBCBC;'> 5</span> model  1979 May 1      <span style='text-decoration: underline;'>8</span>900.
-#&gt; <span style='color: #BCBCBC;'> 6</span> model  1979 Jun 1      <span style='text-decoration: underline;'>9</span>992.
-#&gt; <span style='color: #BCBCBC;'> 7</span> model  1979 Jul 1     <span style='text-decoration: underline;'>11</span>007.
-#&gt; <span style='color: #BCBCBC;'> 8</span> model  1979 Aug 1     <span style='text-decoration: underline;'>10</span>748.
-#&gt; <span style='color: #BCBCBC;'> 9</span> model  1979 Sep 1      <span style='text-decoration: underline;'>9</span>502.
-#&gt; <span style='color: #BCBCBC;'>10</span> model  1979 Oct 1     <span style='text-decoration: underline;'>10</span>566.
-#&gt; <span style='color: #949494;'># … with 230 more rows</span></div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>fable_fit</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span><span class='op'>(</span><span class='va'>USAccDeaths</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://fabletools.tidyverts.org/reference/model.html'>model</a></span><span class='op'>(</span>model <span class='op'>=</span> <span class='fu'><a href='ARIMA.html'>ARIMA</a></span><span class='op'>(</span><span class='va'>value</span> <span class='op'>~</span> <span class='fl'>0</span> <span class='op'>+</span> <span class='fu'>pdq</span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>1</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'>PDQ</span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>fable_fit</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'><a href='https://generics.r-lib.org/reference/generate.html'>generate</a></span><span class='op'>(</span>times <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tsibble: 240 x 4 [1M]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># Key:       .model, .rep [10]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    .model    index .rep    .sim</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;mth&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 1</span> model  1979 Jan 1      <span style='text-decoration: underline;'>8</span>239.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 2</span> model  1979 Feb 1      <span style='text-decoration: underline;'>8</span>186.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 3</span> model  1979 Mar 1      <span style='text-decoration: underline;'>8</span>329.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 4</span> model  1979 Apr 1      <span style='text-decoration: underline;'>8</span>408.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 5</span> model  1979 May 1      <span style='text-decoration: underline;'>8</span>900.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 6</span> model  1979 Jun 1      <span style='text-decoration: underline;'>9</span>992.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 7</span> model  1979 Jul 1     <span style='text-decoration: underline;'>11</span>007.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 8</span> model  1979 Aug 1     <span style='text-decoration: underline;'>10</span>748.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 9</span> model  1979 Sep 1      <span style='text-decoration: underline;'>9</span>502.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>10</span> model  1979 Oct 1     <span style='text-decoration: underline;'>10</span>566.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># … with 230 more rows</span></span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

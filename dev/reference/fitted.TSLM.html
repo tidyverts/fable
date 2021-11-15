@@ -171,24 +171,25 @@
     <p>A vector of fitted values.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span><span class='op'>(</span><span class='va'>USAccDeaths</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>model</span><span class='op'>(</span>lm <span class='op'>=</span> <span class='fu'><a href='TSLM.html'>TSLM</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>value</span><span class='op'>)</span> <span class='op'>~</span> <span class='fu'>trend</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'>season</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/r/stats/fitted.values.html'>fitted</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tsibble: 72 x 3 [1M]</span>
-#&gt; <span style='color: #949494;'># Key:       .model [1]</span>
-#&gt;    .model    index .fitted
-#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;mth&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'> 1</span> lm     1973 Jan   <span style='text-decoration: underline;'>8</span>349.
-#&gt; <span style='color: #BCBCBC;'> 2</span> lm     1973 Feb   <span style='text-decoration: underline;'>7</span>559.
-#&gt; <span style='color: #BCBCBC;'> 3</span> lm     1973 Mar   <span style='text-decoration: underline;'>8</span>370.
-#&gt; <span style='color: #BCBCBC;'> 4</span> lm     1973 Apr   <span style='text-decoration: underline;'>8</span>591.
-#&gt; <span style='color: #BCBCBC;'> 5</span> lm     1973 May   <span style='text-decoration: underline;'>9</span>472.
-#&gt; <span style='color: #BCBCBC;'> 6</span> lm     1973 Jun   <span style='text-decoration: underline;'>9</span>956.
-#&gt; <span style='color: #BCBCBC;'> 7</span> lm     1973 Jul  <span style='text-decoration: underline;'>10</span>856.
-#&gt; <span style='color: #BCBCBC;'> 8</span> lm     1973 Aug  <span style='text-decoration: underline;'>10</span>121.
-#&gt; <span style='color: #BCBCBC;'> 9</span> lm     1973 Sep   <span style='text-decoration: underline;'>9</span>025.
-#&gt; <span style='color: #BCBCBC;'>10</span> lm     1973 Oct   <span style='text-decoration: underline;'>9</span>331.
-#&gt; <span style='color: #949494;'># … with 62 more rows</span></div></pre>
+    <pre class="examples"><span class='r-in'><span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span><span class='op'>(</span><span class='va'>USAccDeaths</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://fabletools.tidyverts.org/reference/model.html'>model</a></span><span class='op'>(</span>lm <span class='op'>=</span> <span class='fu'><a href='TSLM.html'>TSLM</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>value</span><span class='op'>)</span> <span class='op'>~</span> <span class='fu'>trend</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'>season</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/stats/fitted.values.html'>fitted</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tsibble: 72 x 3 [1M]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># Key:       .model [1]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    .model    index .fitted</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;mth&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 1</span> lm     1973 Jan   <span style='text-decoration: underline;'>8</span>349.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 2</span> lm     1973 Feb   <span style='text-decoration: underline;'>7</span>559.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 3</span> lm     1973 Mar   <span style='text-decoration: underline;'>8</span>370.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 4</span> lm     1973 Apr   <span style='text-decoration: underline;'>8</span>591.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 5</span> lm     1973 May   <span style='text-decoration: underline;'>9</span>472.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 6</span> lm     1973 Jun   <span style='text-decoration: underline;'>9</span>956.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 7</span> lm     1973 Jul  <span style='text-decoration: underline;'>10</span>856.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 8</span> lm     1973 Aug  <span style='text-decoration: underline;'>10</span>121.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 9</span> lm     1973 Sep   <span style='text-decoration: underline;'>9</span>025.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>10</span> lm     1973 Oct   <span style='text-decoration: underline;'>9</span>331.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># … with 62 more rows</span></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

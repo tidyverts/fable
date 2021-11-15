@@ -202,7 +202,7 @@ formula.</p>
 </pre>
 
 <table class='table'>
-<tr><td><code>...</code></td><td>Bare expressions for the exogenous regressors (such as <code><a href='https://rdrr.io/r/base/Log.html'>log(x)</a></code>)</td></tr>
+<tr><td><code>...</code></td><td>Bare expressions for the exogenous regressors (such as <code>log(x)</code>)</td></tr>
 </table>
 
 
@@ -212,44 +212,46 @@ formula.</p>
     <div class='dont-index'><p><a href='https://otexts.com/fpp2/VAR.html'>Forecasting: Principles and Practices, Vector autoregressions (section 11.2)</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='va'>lung_deaths</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span><span class='op'>(</span><span class='va'>mdeaths</span>, <span class='va'>fdeaths</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span><span class='op'>(</span>pivot_longer <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-
-<span class='va'>fit</span> <span class='op'>&lt;-</span> <span class='va'>lung_deaths</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>model</span><span class='op'>(</span><span class='fu'>VAR</span><span class='op'>(</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/vars.html'>vars</a></span><span class='op'>(</span><span class='va'>mdeaths</span>, <span class='va'>fdeaths</span><span class='op'>)</span> <span class='op'>~</span> <span class='fu'><a href='AR.html'>AR</a></span><span class='op'>(</span><span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-
-<span class='fu'>report</span><span class='op'>(</span><span class='va'>fit</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Series: mdeaths, fdeaths 
-#&gt; Model: VAR(3) w/ mean 
-#&gt; 
-#&gt; Coefficients for mdeaths:
-#&gt;       lag(mdeaths,1)  lag(fdeaths,1)  lag(mdeaths,2)  lag(fdeaths,2)
-#&gt;               0.6675          0.8074          0.3677         -1.4540
-#&gt; s.e.          0.3550          0.8347          0.3525          0.8088
-#&gt;       lag(mdeaths,3)  lag(fdeaths,3)  constant
-#&gt;               0.2606         -1.1214  538.7817
-#&gt; s.e.          0.3424          0.8143  137.1047
-#&gt; 
-#&gt; Coefficients for fdeaths:
-#&gt;       lag(mdeaths,1)  lag(fdeaths,1)  lag(mdeaths,2)  lag(fdeaths,2)
-#&gt;               0.2138          0.4563          0.0937         -0.3984
-#&gt; s.e.          0.1460          0.3434          0.1450          0.3328
-#&gt;       lag(mdeaths,3)  lag(fdeaths,3)  constant
-#&gt;               0.0250          -0.315  202.0027
-#&gt; s.e.          0.1409           0.335   56.4065
-#&gt; 
-#&gt; Residual covariance matrix:
-#&gt;          mdeaths  fdeaths
-#&gt; mdeaths 58985.95 22747.94
-#&gt; fdeaths 22747.94  9983.95
-#&gt; 
-#&gt; log likelihood = -812.35
-#&gt; AIC = 1660.69	AICc = 1674.37	BIC = 1700.9</div><div class='input'>
-<span class='va'>fit</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>forecast</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>autoplot</span><span class='op'>(</span><span class='va'>lung_deaths</span><span class='op'>)</span>
-</div><div class='img'><img src='VAR-1.png' alt='' width='700' height='433' /></div></pre>
+    <pre class="examples"><span class='r-in'></span>
+<span class='r-in'><span class='va'>lung_deaths</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span><span class='op'>(</span><span class='va'>mdeaths</span>, <span class='va'>fdeaths</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span><span class='op'>(</span>pivot_longer <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>fit</span> <span class='op'>&lt;-</span> <span class='va'>lung_deaths</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://fabletools.tidyverts.org/reference/model.html'>model</a></span><span class='op'>(</span><span class='fu'>VAR</span><span class='op'>(</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/vars.html'>vars</a></span><span class='op'>(</span><span class='va'>mdeaths</span>, <span class='va'>fdeaths</span><span class='op'>)</span> <span class='op'>~</span> <span class='fu'><a href='AR.html'>AR</a></span><span class='op'>(</span><span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='https://fabletools.tidyverts.org/reference/report.html'>report</a></span><span class='op'>(</span><span class='va'>fit</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Series: mdeaths, fdeaths </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Model: VAR(3) w/ mean </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Coefficients for mdeaths:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       lag(mdeaths,1)  lag(fdeaths,1)  lag(mdeaths,2)  lag(fdeaths,2)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>               0.6675          0.8074          0.3677         -1.4540</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> s.e.          0.3550          0.8347          0.3525          0.8088</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       lag(mdeaths,3)  lag(fdeaths,3)  constant</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>               0.2606         -1.1214  538.7817</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> s.e.          0.3424          0.8143  137.1047</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Coefficients for fdeaths:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       lag(mdeaths,1)  lag(fdeaths,1)  lag(mdeaths,2)  lag(fdeaths,2)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>               0.2138          0.4563          0.0937         -0.3984</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> s.e.          0.1460          0.3434          0.1450          0.3328</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       lag(mdeaths,3)  lag(fdeaths,3)  constant</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>               0.0250          -0.315  202.0027</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> s.e.          0.1409           0.335   56.4065</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Residual covariance matrix:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          mdeaths  fdeaths</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> mdeaths 58985.95 22747.94</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> fdeaths 22747.94  9983.95</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> log likelihood = -812.35</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> AIC = 1660.69	AICc = 1674.37	BIC = 1700.9</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>fit</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://fabletools.tidyverts.org/reference/forecast.html'>forecast</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/autoplot.html'>autoplot</a></span><span class='op'>(</span><span class='va'>lung_deaths</span><span class='op'>)</span></span>
+<span class='r-plt img'><img src='VAR-1.png' alt='' width='700' height='433' /></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

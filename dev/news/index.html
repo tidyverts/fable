@@ -193,16 +193,16 @@
 <h1 class="page-header" data-toc-text="0.3.0">
 <a href="#fable-030" class="anchor"></a>fable 0.3.0<small> 2021-02-03 </small>
 </h1>
-<p>The release of fabletools v0.3.0 introduced general support for computing h-step ahead fitted values, using the <code>hfitted(&lt;mdl&gt;, h = ???)</code> function. This release adds model-specific <code>hfitted()</code> support to ARIMA and ETS models for improved performance and accuracy.</p>
+<p>The release of fabletools v0.3.0 introduced general support for computing h-step ahead fitted values, using the <code>hfitted(&lt;mdl&gt;, h = ???)</code> function. This release adds model-specific <code><a href="https://fabletools.tidyverts.org/reference/fitted.mdl_df.html">hfitted()</a></code> support to ARIMA and ETS models for improved performance and accuracy.</p>
 <p>This release adds improved support for refitting models, largely in thanks to contributions by <a href='https://github.com/Tim-TU'>@Tim-TU</a>.</p>
 <p>It is also now possible to specify an arbitrary model selection criterion function for automatic <code><a href="../reference/ARIMA.html">ARIMA()</a></code> model selection.</p>
 <div id="new-features" class="section level2">
 <h2 class="hasAnchor">
 <a href="#new-features" class="anchor"></a>New features</h2>
 <ul>
-<li>Added <code>refit()</code> method for NNETAR, MEAN, RW, SNAIVE, and NAIVE models (<a href='https://github.com/tidyverts/fable/issues/287'>#287</a>, <a href='https://github.com/tidyverts/fable/issues/289'>#289</a>, <a href='https://github.com/tidyverts/fable/issues/321'>#321</a>. <a href='https://github.com/Tim-TU'>@Tim-TU</a>).</li>
-<li>Added <code>hfitted()</code> method for ETS and ARIMA, this allows fast estimation of h-step ahead fitted values.</li>
-<li>Added <code>generate()</code> method for AR, the <code>forecast()</code> method now supports bootstrap forecasting via this new method.</li>
+<li>Added <code><a href="https://generics.r-lib.org/reference/refit.html">refit()</a></code> method for NNETAR, MEAN, RW, SNAIVE, and NAIVE models (<a href='https://github.com/tidyverts/fable/issues/287'>#287</a>, <a href='https://github.com/tidyverts/fable/issues/289'>#289</a>, <a href='https://github.com/tidyverts/fable/issues/321'>#321</a>. <a href='https://github.com/Tim-TU'>@Tim-TU</a>).</li>
+<li>Added <code><a href="https://fabletools.tidyverts.org/reference/fitted.mdl_df.html">hfitted()</a></code> method for ETS and ARIMA, this allows fast estimation of h-step ahead fitted values.</li>
+<li>Added <code><a href="https://generics.r-lib.org/reference/generate.html">generate()</a></code> method for AR, the <code><a href="https://fabletools.tidyverts.org/reference/forecast.html">forecast()</a></code> method now supports bootstrap forecasting via this new method.</li>
 </ul>
 </div>
 <div id="improvements-2" class="section level2">
@@ -219,7 +219,7 @@
 <a href="#bug-fixes-2" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>Fixed unnecessary warning when forecasting short horizons using <code><a href="../reference/NNETAR.html">NNETAR()</a></code>.</li>
-<li>Fixed <code>generate()</code> method for NNETAR models when data isn’t scaled (<a href='https://github.com/tidyverts/fable/issues/302'>#302</a>).</li>
+<li>Fixed <code><a href="https://generics.r-lib.org/reference/generate.html">generate()</a></code> method for NNETAR models when data isn’t scaled (<a href='https://github.com/tidyverts/fable/issues/302'>#302</a>).</li>
 <li>Fixed <code><a href="../reference/refit.ARIMA.html">refit.ARIMA()</a></code> re-selecting constant instead of using the provided model’s constant usage.</li>
 <li>Fixed use of exogenous regressors in <code><a href="../reference/AR.html">AR()</a></code> models.</li>
 </ul>
@@ -229,7 +229,7 @@
 <h1 class="page-header" data-toc-text="0.2.1">
 <a href="#fable-021" class="anchor"></a>fable 0.2.1<small> 2020-06-16 </small>
 </h1>
-<p>This release coincides with v0.2.0 of the fabletools package, which contains some substantial changes to the output of <code>forecast()</code> methods. These changes to fabletools emphasise the distribution in the fable object. The most noticeable is a change in column names of the fable, with the distribution now stored in the column matching the response variable, and the forecast mean now stored in the <code>.mean</code> column. For a complete summary of these changes, refer to the fabletools v0.2.0 release news: <a href="https://fabletools.tidyverts.org/news/index.html" class="uri">https://fabletools.tidyverts.org/news/index.html</a></p>
+<p>This release coincides with v0.2.0 of the fabletools package, which contains some substantial changes to the output of <code><a href="https://fabletools.tidyverts.org/reference/forecast.html">forecast()</a></code> methods. These changes to fabletools emphasise the distribution in the fable object. The most noticeable is a change in column names of the fable, with the distribution now stored in the column matching the response variable, and the forecast mean now stored in the <code>.mean</code> column. For a complete summary of these changes, refer to the fabletools v0.2.0 release news: <a href="https://fabletools.tidyverts.org/news/index.html" class="uri">https://fabletools.tidyverts.org/news/index.html</a></p>
 <div id="new-features-1" class="section level2">
 <h2 class="hasAnchor">
 <a href="#new-features-1" class="anchor"></a>New features</h2>
@@ -242,7 +242,7 @@
 <a href="#improvements-3" class="anchor"></a>Improvements</h2>
 <ul>
 <li>Forecasts distributions are now provided by the distributional package. They are now more space efficient and allows calculation of distributional statistics including the <code><a href="https://rdrr.io/r/base/mean.html">mean()</a></code>, <code><a href="https://rdrr.io/r/stats/median.html">median()</a></code>, <code>variance()</code>, <code><a href="https://rdrr.io/r/stats/quantile.html">quantile()</a></code>, <code>cdf()</code>, and <code><a href="https://rdrr.io/r/stats/density.html">density()</a></code>.</li>
-<li>The uncertainty of the drift parameter in random walk models (<code><a href="../reference/RW.html">RW()</a></code>, <code><a href="../reference/RW.html">NAIVE()</a></code> and <code><a href="../reference/RW.html">SNAIVE()</a></code>) is now included in data generated with <code>generate()</code>.</li>
+<li>The uncertainty of the drift parameter in random walk models (<code><a href="../reference/RW.html">RW()</a></code>, <code><a href="../reference/RW.html">NAIVE()</a></code> and <code><a href="../reference/RW.html">SNAIVE()</a></code>) is now included in data generated with <code><a href="https://generics.r-lib.org/reference/generate.html">generate()</a></code>.</li>
 <li>Added Syntetos-Boylan and Shale-Boylan-Johnston variants of <code><a href="../reference/CROSTON.html">CROSTON()</a></code> method.</li>
 <li>Performance improvements.</li>
 </ul>
@@ -252,8 +252,8 @@
 <a href="#bug-fixes-3" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>Fixed issue with approximation being used when refitting ARIMA models and when a specific model is requested.</li>
-<li>Fixed <code>glance()</code> for <code><a href="../reference/TSLM.html">TSLM()</a></code> models when the data contains missing values.</li>
-<li>Fixed typo in <code>glance()</code> output of <code><a href="../reference/ETS.html">ETS()</a></code> models.</li>
+<li>Fixed <code><a href="https://generics.r-lib.org/reference/glance.html">glance()</a></code> for <code><a href="../reference/TSLM.html">TSLM()</a></code> models when the data contains missing values.</li>
+<li>Fixed typo in <code><a href="https://generics.r-lib.org/reference/glance.html">glance()</a></code> output of <code><a href="../reference/ETS.html">ETS()</a></code> models.</li>
 </ul>
 </div>
 <div id="breaking-changes" class="section level2">

@@ -151,7 +151,7 @@
     </div>
 
     <pre class="usage"><span class='co'># S3 method for croston</span>
-<span class='fu'>forecast</span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>new_data</span>, specials <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+<span class='fu'><a href='https://fabletools.tidyverts.org/reference/forecast.html'>forecast</a></span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>new_data</span>, specials <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -179,31 +179,32 @@
     <p>A list of forecasts.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tsibble.tidyverts.org'>tsibble</a></span><span class='op'>)</span>
-<span class='va'>sim_poisson</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://tsibble.tidyverts.org/reference/tsibble.html'>tsibble</a></span><span class='op'>(</span>
-  time <span class='op'>=</span> <span class='fu'><a href='https://tsibble.tidyverts.org/reference/year-month.html'>yearmonth</a></span><span class='op'>(</span><span class='st'>"2012 Dec"</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq_len</a></span><span class='op'>(</span><span class='fl'>24</span><span class='op'>)</span>,
-  count <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Poisson.html'>rpois</a></span><span class='op'>(</span><span class='fl'>24</span>, lambda <span class='op'>=</span> <span class='fl'>0.3</span><span class='op'>)</span>,
-  index <span class='op'>=</span> <span class='va'>time</span>
-<span class='op'>)</span>
-
-<span class='va'>sim_poisson</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>model</span><span class='op'>(</span><span class='fu'><a href='CROSTON.html'>CROSTON</a></span><span class='op'>(</span><span class='va'>count</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>forecast</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A fable: 24 x 4 [1M]</span>
-#&gt; <span style='color: #949494;'># Key:     .model [1]</span>
-#&gt;    .model             time  count .mean
-#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>             <span style='color: #949494; font-style: italic;'>&lt;mth&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dist&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'> 1</span> CROSTON(count) 2015 Jan    0.5   0.5
-#&gt; <span style='color: #BCBCBC;'> 2</span> CROSTON(count) 2015 Feb    0.5   0.5
-#&gt; <span style='color: #BCBCBC;'> 3</span> CROSTON(count) 2015 Mar    0.5   0.5
-#&gt; <span style='color: #BCBCBC;'> 4</span> CROSTON(count) 2015 Apr    0.5   0.5
-#&gt; <span style='color: #BCBCBC;'> 5</span> CROSTON(count) 2015 May    0.5   0.5
-#&gt; <span style='color: #BCBCBC;'> 6</span> CROSTON(count) 2015 Jun    0.5   0.5
-#&gt; <span style='color: #BCBCBC;'> 7</span> CROSTON(count) 2015 Jul    0.5   0.5
-#&gt; <span style='color: #BCBCBC;'> 8</span> CROSTON(count) 2015 Aug    0.5   0.5
-#&gt; <span style='color: #BCBCBC;'> 9</span> CROSTON(count) 2015 Sep    0.5   0.5
-#&gt; <span style='color: #BCBCBC;'>10</span> CROSTON(count) 2015 Oct    0.5   0.5
-#&gt; <span style='color: #949494;'># … with 14 more rows</span></div></pre>
+    <pre class="examples"><span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tsibble.tidyverts.org'>tsibble</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>sim_poisson</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://tsibble.tidyverts.org/reference/tsibble.html'>tsibble</a></span><span class='op'>(</span></span>
+<span class='r-in'>  time <span class='op'>=</span> <span class='fu'><a href='https://tsibble.tidyverts.org/reference/year-month.html'>yearmonth</a></span><span class='op'>(</span><span class='st'>"2012 Dec"</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq_len</a></span><span class='op'>(</span><span class='fl'>24</span><span class='op'>)</span>,</span>
+<span class='r-in'>  count <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Poisson.html'>rpois</a></span><span class='op'>(</span><span class='fl'>24</span>, lambda <span class='op'>=</span> <span class='fl'>0.3</span><span class='op'>)</span>,</span>
+<span class='r-in'>  index <span class='op'>=</span> <span class='va'>time</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>sim_poisson</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://fabletools.tidyverts.org/reference/model.html'>model</a></span><span class='op'>(</span><span class='fu'><a href='CROSTON.html'>CROSTON</a></span><span class='op'>(</span><span class='va'>count</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://fabletools.tidyverts.org/reference/forecast.html'>forecast</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A fable: 24 x 4 [1M]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># Key:     .model [1]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    .model             time  count .mean</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>             <span style='color: #949494; font-style: italic;'>&lt;mth&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dist&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 1</span> CROSTON(count) 2015 Jan    0.5   0.5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 2</span> CROSTON(count) 2015 Feb    0.5   0.5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 3</span> CROSTON(count) 2015 Mar    0.5   0.5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 4</span> CROSTON(count) 2015 Apr    0.5   0.5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 5</span> CROSTON(count) 2015 May    0.5   0.5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 6</span> CROSTON(count) 2015 Jun    0.5   0.5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 7</span> CROSTON(count) 2015 Jul    0.5   0.5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 8</span> CROSTON(count) 2015 Aug    0.5   0.5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 9</span> CROSTON(count) 2015 Sep    0.5   0.5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>10</span> CROSTON(count) 2015 Oct    0.5   0.5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># … with 14 more rows</span></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

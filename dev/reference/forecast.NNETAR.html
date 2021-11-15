@@ -151,7 +151,7 @@
     </div>
 
     <pre class="usage"><span class='co'># S3 method for NNETAR</span>
-<span class='fu'>forecast</span><span class='op'>(</span>
+<span class='fu'><a href='https://fabletools.tidyverts.org/reference/forecast.html'>forecast</a></span><span class='op'>(</span>
   <span class='va'>object</span>,
   <span class='va'>new_data</span>,
   specials <span class='op'>=</span> <span class='cn'>NULL</span>,
@@ -199,15 +199,16 @@
     <p>A list of forecasts.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span><span class='op'>(</span><span class='va'>airmiles</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>model</span><span class='op'>(</span>nn <span class='op'>=</span> <span class='fu'><a href='NNETAR.html'>NNETAR</a></span><span class='op'>(</span><span class='fu'>box_cox</span><span class='op'>(</span><span class='va'>value</span>, <span class='fl'>0.15</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>forecast</span><span class='op'>(</span>times <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A fable: 2 x 4 [1Y]</span>
-#&gt; <span style='color: #949494;'># Key:     .model [1]</span>
-#&gt;   .model index         value  .mean
-#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;dist&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'>1</span> nn      <span style='text-decoration: underline;'>1</span>961 t(sample[10]) <span style='text-decoration: underline;'>31</span>100.
-#&gt; <span style='color: #BCBCBC;'>2</span> nn      <span style='text-decoration: underline;'>1</span>962 t(sample[10]) <span style='text-decoration: underline;'>33</span>951.</div></pre>
+    <pre class="examples"><span class='r-in'><span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span><span class='op'>(</span><span class='va'>airmiles</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://fabletools.tidyverts.org/reference/model.html'>model</a></span><span class='op'>(</span>nn <span class='op'>=</span> <span class='fu'><a href='NNETAR.html'>NNETAR</a></span><span class='op'>(</span><span class='fu'><a href='https://fabletools.tidyverts.org/reference/box_cox.html'>box_cox</a></span><span class='op'>(</span><span class='va'>value</span>, <span class='fl'>0.15</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://fabletools.tidyverts.org/reference/forecast.html'>forecast</a></span><span class='op'>(</span>times <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A fable: 2 x 4 [1Y]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># Key:     .model [1]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   .model index         value  .mean</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;dist&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span> nn      <span style='text-decoration: underline;'>1</span>961 t(sample[10]) <span style='text-decoration: underline;'>31</span>100.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>2</span> nn      <span style='text-decoration: underline;'>1</span>962 t(sample[10]) <span style='text-decoration: underline;'>33</span>951.</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

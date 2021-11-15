@@ -151,7 +151,7 @@
     </div>
 
     <pre class="usage"><span class='co'># S3 method for ETS</span>
-<span class='fu'>forecast</span><span class='op'>(</span>
+<span class='fu'><a href='https://fabletools.tidyverts.org/reference/forecast.html'>forecast</a></span><span class='op'>(</span>
   <span class='va'>object</span>,
   <span class='va'>new_data</span>,
   specials <span class='op'>=</span> <span class='cn'>NULL</span>,
@@ -199,24 +199,25 @@
     <p>A list of forecasts.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span><span class='op'>(</span><span class='va'>USAccDeaths</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>model</span><span class='op'>(</span>ets <span class='op'>=</span> <span class='fu'><a href='ETS.html'>ETS</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>value</span><span class='op'>)</span> <span class='op'>~</span> <span class='fu'>season</span><span class='op'>(</span><span class='st'>"A"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>forecast</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A fable: 24 x 4 [1M]</span>
-#&gt; <span style='color: #949494;'># Key:     .model [1]</span>
-#&gt;    .model    index             value  .mean
-#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;mth&gt;</span>            <span style='color: #949494; font-style: italic;'>&lt;dist&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'> 1</span> ets    1979 Jan   t(N(9, 0.0011))  <span style='text-decoration: underline;'>8</span>296.
-#&gt; <span style='color: #BCBCBC;'> 2</span> ets    1979 Feb t(N(8.9, 0.0014))  <span style='text-decoration: underline;'>7</span>524.
-#&gt; <span style='color: #BCBCBC;'> 3</span> ets    1979 Mar   t(N(9, 0.0018))  <span style='text-decoration: underline;'>8</span>366.
-#&gt; <span style='color: #BCBCBC;'> 4</span> ets    1979 Apr t(N(9.1, 0.0022))  <span style='text-decoration: underline;'>8</span>622.
-#&gt; <span style='color: #BCBCBC;'> 5</span> ets    1979 May t(N(9.2, 0.0026))  <span style='text-decoration: underline;'>9</span>532.
-#&gt; <span style='color: #BCBCBC;'> 6</span> ets    1979 Jun  t(N(9.2, 0.003)) <span style='text-decoration: underline;'>10</span>049.
-#&gt; <span style='color: #BCBCBC;'> 7</span> ets    1979 Jul t(N(9.3, 0.0035)) <span style='text-decoration: underline;'>10</span>976.
-#&gt; <span style='color: #BCBCBC;'> 8</span> ets    1979 Aug  t(N(9.2, 0.004)) <span style='text-decoration: underline;'>10</span>252.
-#&gt; <span style='color: #BCBCBC;'> 9</span> ets    1979 Sep t(N(9.1, 0.0045))  <span style='text-decoration: underline;'>9</span>169.
-#&gt; <span style='color: #BCBCBC;'>10</span> ets    1979 Oct  t(N(9.2, 0.005))  <span style='text-decoration: underline;'>9</span>499.
-#&gt; <span style='color: #949494;'># … with 14 more rows</span></div></pre>
+    <pre class="examples"><span class='r-in'><span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span><span class='op'>(</span><span class='va'>USAccDeaths</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://fabletools.tidyverts.org/reference/model.html'>model</a></span><span class='op'>(</span>ets <span class='op'>=</span> <span class='fu'><a href='ETS.html'>ETS</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>value</span><span class='op'>)</span> <span class='op'>~</span> <span class='fu'>season</span><span class='op'>(</span><span class='st'>"A"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://fabletools.tidyverts.org/reference/forecast.html'>forecast</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A fable: 24 x 4 [1M]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># Key:     .model [1]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    .model    index             value  .mean</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;mth&gt;</span>            <span style='color: #949494; font-style: italic;'>&lt;dist&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 1</span> ets    1979 Jan   t(N(9, 0.0011))  <span style='text-decoration: underline;'>8</span>296.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 2</span> ets    1979 Feb t(N(8.9, 0.0014))  <span style='text-decoration: underline;'>7</span>524.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 3</span> ets    1979 Mar   t(N(9, 0.0018))  <span style='text-decoration: underline;'>8</span>366.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 4</span> ets    1979 Apr t(N(9.1, 0.0022))  <span style='text-decoration: underline;'>8</span>622.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 5</span> ets    1979 May t(N(9.2, 0.0026))  <span style='text-decoration: underline;'>9</span>532.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 6</span> ets    1979 Jun  t(N(9.2, 0.003)) <span style='text-decoration: underline;'>10</span>049.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 7</span> ets    1979 Jul t(N(9.3, 0.0035)) <span style='text-decoration: underline;'>10</span>976.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 8</span> ets    1979 Aug  t(N(9.2, 0.004)) <span style='text-decoration: underline;'>10</span>252.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 9</span> ets    1979 Sep t(N(9.1, 0.0045))  <span style='text-decoration: underline;'>9</span>169.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>10</span> ets    1979 Oct  t(N(9.2, 0.005))  <span style='text-decoration: underline;'>9</span>499.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># … with 14 more rows</span></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

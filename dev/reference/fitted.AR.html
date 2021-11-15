@@ -171,24 +171,25 @@
     <p>A vector of fitted values.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span><span class='op'>(</span><span class='va'>lh</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>model</span><span class='op'>(</span><span class='fu'><a href='AR.html'>AR</a></span><span class='op'>(</span><span class='va'>value</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/order.html'>order</a></span><span class='op'>(</span><span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/r/stats/fitted.values.html'>fitted</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tsibble: 48 x 3 [1]</span>
-#&gt; <span style='color: #949494;'># Key:       .model [1]</span>
-#&gt;    .model               index .fitted
-#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'> 1</span> AR(value ~ order(3))     1   <span style='color: #BB0000;'>NA</span>   
-#&gt; <span style='color: #BCBCBC;'> 2</span> AR(value ~ order(3))     2   <span style='color: #BB0000;'>NA</span>   
-#&gt; <span style='color: #BCBCBC;'> 3</span> AR(value ~ order(3))     3   <span style='color: #BB0000;'>NA</span>   
-#&gt; <span style='color: #BCBCBC;'> 4</span> AR(value ~ order(3))     4    2.39
-#&gt; <span style='color: #BCBCBC;'> 5</span> AR(value ~ order(3))     5    2.26
-#&gt; <span style='color: #BCBCBC;'> 6</span> AR(value ~ order(3))     6    2.21
-#&gt; <span style='color: #BCBCBC;'> 7</span> AR(value ~ order(3))     7    1.87
-#&gt; <span style='color: #BCBCBC;'> 8</span> AR(value ~ order(3))     8    2.46
-#&gt; <span style='color: #BCBCBC;'> 9</span> AR(value ~ order(3))     9    2.55
-#&gt; <span style='color: #BCBCBC;'>10</span> AR(value ~ order(3))    10    2.49
-#&gt; <span style='color: #949494;'># … with 38 more rows</span></div></pre>
+    <pre class="examples"><span class='r-in'><span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span><span class='op'>(</span><span class='va'>lh</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://fabletools.tidyverts.org/reference/model.html'>model</a></span><span class='op'>(</span><span class='fu'><a href='AR.html'>AR</a></span><span class='op'>(</span><span class='va'>value</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/order.html'>order</a></span><span class='op'>(</span><span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/stats/fitted.values.html'>fitted</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tsibble: 48 x 3 [1]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># Key:       .model [1]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    .model               index .fitted</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 1</span> AR(value ~ order(3))     1   <span style='color: #BB0000;'>NA</span>   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 2</span> AR(value ~ order(3))     2   <span style='color: #BB0000;'>NA</span>   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 3</span> AR(value ~ order(3))     3   <span style='color: #BB0000;'>NA</span>   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 4</span> AR(value ~ order(3))     4    2.39</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 5</span> AR(value ~ order(3))     5    2.26</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 6</span> AR(value ~ order(3))     6    2.21</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 7</span> AR(value ~ order(3))     7    1.87</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 8</span> AR(value ~ order(3))     8    2.46</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 9</span> AR(value ~ order(3))     9    2.55</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>10</span> AR(value ~ order(3))    10    2.49</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># … with 38 more rows</span></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
