@@ -394,7 +394,10 @@ This is generally discouraged, consider removing the constant or reducing the nu
         AIC = best$aic, AICc = best$aicc, BIC = best$bic,
         ar_roots = list(arroot), ma_roots = list(maroot)
       ),
-      tsp = range(unclass(.data)[[index_var(.data)]]),
+      tsp = list(
+        range = range(unclass(.data)[[index_var(.data)]]), 
+        interval = interval(.data)
+      ),
       spec = best_spec,
       model = best
     ),
@@ -778,7 +781,16 @@ report.ARIMA <- function(object, ...) {
 forecast.ARIMA <- function(object, new_data = NULL, specials = NULL,
                            bootstrap = FALSE, times = 5000, ...) {
   # Check position of new_data in model history
-  fc_start <- object$tsp[2]+(diff(object$tsp)+1)/nrow(object$est)
+  if(inherits_any(object$tsp$range, c("yearweek", "yearmonth", "yearquarter"))) {
+    fc_start <- object$tsp$range[2]+round((diff(object$tsp$range)+1)/nrow(object$est), 6)
+  } else {
+    # Try to use difftime
+    interval <- unclass(object$tsp$interval)
+    interval <- Filter(function(x) x!=0, interval)
+    time_unit <- switch(names(interval), day = "days", hour = "hours", minute = "mins", second = "secs")
+    fc_start <- object$tsp$range[2] + as.difftime(interval[[1]], units = time_unit)
+  }
+  
   if (unclass(new_data)[[index_var(new_data)]][1] != fc_start) {
     abort("Forecasts from an ARIMA model must start one step beyond the end of the trained data.")
   }
@@ -975,7 +987,15 @@ refit.ARIMA <- function(object, new_data, specials = NULL, reestimate = FALSE, .
 #' @export
 stream.ARIMA <- function(object, new_data, specials = NULL, ...){
   # Check position of new_data in model history
-  stream_start <- object$tsp[2]+(diff(object$tsp)+1)/nrow(object$est)
+  if(inherits_any(object$tsp$range, c("yearweek", "yearmonth", "yearquarter"))) {
+    stream_start <- object$tsp$range[2]+round((diff(object$tsp$range)+1)/nrow(object$est), 6)
+  } else {
+    # Try to use difftime
+    interval <- unclass(object$tsp$interval)
+    interval <- Filter(function(x) x!=0, interval)
+    time_unit <- switch(names(interval), day = "days", hour = "hours", minute = "mins", second = "secs")
+    stream_start <- object$tsp$range[2] + as.difftime(interval[[1]], units = time_unit)
+  }
   if (unclass(new_data)[[index_var(new_data)]][1] != stream_start) {
     abort("Streaming to an ARIMA model must start one step beyond the end of the trained data.")
   }
@@ -1046,7 +1066,7 @@ stream.ARIMA <- function(object, new_data, specials = NULL, ...){
     .resid = resid, 
     .regression_resid = c(object$est$.regression_resid, reg_resid)
   )
-  object$tsp[2] <- max(new_data[[index_var(new_data)]])
+  object$tsp$range[2] <- max(new_data[[index_var(new_data)]])
   object
 }
 
