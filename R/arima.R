@@ -367,8 +367,17 @@ This is generally discouraged, consider removing the constant or reducing the nu
   }
 
   # Output model
-  best_spec <- as_tibble(model_opts[which.min(est_ic),])
-  best_spec[["period"]] <- period
+  best_spec <- tibble(
+    p = sum(grepl("^ar\\d+$", names(fit_coef))),
+    d = pdq$d,
+    q = sum(grepl("^ma\\d+$", names(fit_coef))),
+    P = sum(grepl("^sar\\d+$", names(fit_coef))),
+    D = PDQ$D,
+    Q = sum(grepl("^sma\\d+$", names(fit_coef))),
+    constant = "constant" %in% names(fit_coef),
+    period = period
+  )
+    
   structure(
     list(
       par = 
