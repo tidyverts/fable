@@ -64,6 +64,22 @@ train_arima <- function(.data, specials,
   else {
     xreg <- NULL
   }
+  
+  mostly_specified <- length(constant) == 2 && length(pdq$p) + length(pdq$d) + length(pdq$q) + length(PDQ$P) + length(PDQ$D) + length(PDQ$Q) == 6
+  mostly_specified_msg <- "It looks like you're trying to fully specify your ARIMA model but have not said if a constant should be included.\nYou can include a constant using `ARIMA(y~1)` to the formula or exclude it by adding `ARIMA(y~0)`."
+  model_opts <- expand.grid(p = pdq$p, d = pdq$d, q = pdq$q, P = PDQ$P, D = PDQ$D, Q = PDQ$Q, constant = constant)
+  
+  if (NROW(model_opts) > 1) {
+    model_opts <- filter(model_opts, !!enexpr(order_constraint))
+    if (NROW(model_opts) == 0) {
+      if (mostly_specified) warn(mostly_specified_msg)
+      abort("There are no ARIMA models to choose from after imposing the `order_constraint`, please consider allowing more models.")
+    }
+    wrap_arima <- possibly(quietly(stats::arima), NULL)
+  }
+  else {
+    wrap_arima <- stats::arima
+  }
 
   diff <- function(x, differences, ...) {
     if (differences == 0) {
@@ -73,52 +89,54 @@ train_arima <- function(.data, specials,
   }
 
   # Choose seasonal differencing
-  if (length(PDQ$D) > 1) {
+  if (length(seas_D <- unique(model_opts$D)) > 1) {
     require_package("feasts")
     # Valid xregs
 
     if (!is.null(xreg)) {
-      keep <- map_lgl(PDQ$D, function(.x) {
+      keep <- map_lgl(seas_D, function(.x) {
         if(.x*period >= nrow(xreg)) return(FALSE)
         diff_xreg <- diff(xreg, lag = period, differences = .x)
         !any(apply(diff_xreg, 2, is.constant))
       })
-      PDQ$D <- PDQ$D[keep]
+      seas_D <- seas_D[keep]
     }
-    PDQ$D <- unname(feasts::unitroot_nsdiffs(stats::na.contiguous(x),
+    seas_D <- unname(feasts::unitroot_nsdiffs(stats::na.contiguous(x),
       alpha = unitroot_spec$nsdiffs_alpha,
       unitroot_fn = unitroot_spec$nsdiffs_pvalue,
-      differences = PDQ$D, .period = period
+      differences = seas_D, .period = period
     ))
+    model_opts <- model_opts[model_opts$D == seas_D,]
   }
-  x <- diff(x, lag = period, differences = PDQ$D)
-  diff_xreg <- diff(xreg, lag = period, differences = PDQ$D)
-  if (length(pdq$d) > 1) {
+  x <- diff(x, lag = period, differences = seas_D)
+  diff_xreg <- diff(xreg, lag = period, differences = seas_D)
+  if (length(seas_d <- unique(model_opts$d)) > 1) {
     require_package("feasts")
 
     # Valid xregs
     if (!is.null(xreg)) {
-      keep <- map_lgl(pdq$d, function(.x) {
+      keep <- map_lgl(seas_d, function(.x) {
         if(.x >= nrow(diff_xreg)) return(FALSE)
         diff_xreg <- diff(diff_xreg, differences = .x)
         !any(apply(diff_xreg, 2, is.constant))
       })
-      pdq$d <- pdq$d[keep]
+      seas_d <- seas_d[keep]
     }
 
-    pdq$d <- unname(feasts::unitroot_ndiffs(stats::na.contiguous(x),
+    seas_d <- unname(feasts::unitroot_ndiffs(stats::na.contiguous(x),
       alpha = unitroot_spec$ndiffs_alpha,
       unitroot_fn = unitroot_spec$ndiffs_pvalue,
-      differences = pdq$d
+      differences = seas_d
     ))
+    model_opts <- model_opts[model_opts$d == seas_d,]
   }
 
   # Check number of differences selected
-  if (length(PDQ$D) != 1) abort("Could not find appropriate number of seasonal differences.")
-  if (length(pdq$d) != 1) abort("Could not find appropriate number of non-seasonal differences.")
-  if (PDQ$D >= 2) {
+  if (length(seas_D) != 1) abort("Could not find appropriate number of seasonal differences.")
+  if (length(seas_d) != 1) abort("Could not find appropriate number of non-seasonal differences.")
+  if (seas_D >= 2) {
     warn("Having more than one seasonal difference is not recommended. Please consider using only one seasonal difference.")
-  } else if (PDQ$D + pdq$d > 2) {
+  } else if (seas_D + seas_d > 2) {
     warn("Having 3 or more differencing operations is not recommended. Please consider reducing the total number of differences.")
   }
 
@@ -207,10 +225,6 @@ train_arima <- function(.data, specials,
     }
     sm
   }
-
-  mostly_specified <- length(constant) == 2 && length(pdq$p) + length(pdq$d) + length(pdq$q) + length(PDQ$P) + length(PDQ$D) + length(PDQ$Q) == 6
-  mostly_specified_msg <- "It looks like you're trying to fully specify your ARIMA model but have not said if a constant should be included.\nYou can include a constant using `ARIMA(y~1)` to the formula or exclude it by adding `ARIMA(y~0)`."
-  model_opts <- expand.grid(p = pdq$p, d = pdq$d, q = pdq$q, P = PDQ$P, D = PDQ$D, Q = PDQ$Q, constant = constant)
   
   if(is.null(method)){
     if (is.null(approximation)) {
@@ -230,26 +244,13 @@ train_arima <- function(.data, specials,
   if(method == "CSS") {
     offset <- with(
       stats::arima(y,
-                   order = c(0, pdq$d, 0), xreg = xreg,
+                   order = c(0, seas_d, 0), xreg = xreg,
                    include.mean = all(constant)
       ),
       -2 * loglik - NROW(data) * log(sigma2)
     )
   }
-
   
-  if (NROW(model_opts) > 1) {
-    model_opts <- filter(model_opts, !!enexpr(order_constraint))
-    if (NROW(model_opts) == 0) {
-      if (mostly_specified) warn(mostly_specified_msg)
-      abort("There are no ARIMA models to choose from after imposing the `order_constraint`, please consider allowing more models.")
-    }
-    wrap_arima <- possibly(quietly(stats::arima), NULL)
-  }
-  else {
-    wrap_arima <- stats::arima
-  }
-
   if (any((model_opts$d + model_opts$D > 1) & model_opts$constant)) {
     warn("Model specification induces a quadratic or higher order polynomial trend. 
 This is generally discouraged, consider removing the constant or reducing the number of differences.")
@@ -263,10 +264,10 @@ This is generally discouraged, consider removing the constant or reducing the nu
 
     # Initial 4 models
     initial_opts <- list(
-      start = c(pdq$p_init, pdq$d, pdq$q_init, PDQ$P_init, PDQ$D, PDQ$Q_init, constant[1]),
-      null = c(0, pdq$d, 0, 0, PDQ$D, 0, constant[1]),
-      ar = c(max(pdq$p) > 0, pdq$d, 0, max(PDQ$P) > 0, PDQ$D, 0, constant[1]),
-      ma = c(0, pdq$d, max(pdq$q) > 0, 0, PDQ$D, max(PDQ$Q) > 0, constant[1])
+      start = c(pdq$p_init, seas_d, pdq$q_init, PDQ$P_init, seas_D, PDQ$Q_init, constant[1]),
+      null = c(0, seas_d, 0, 0, seas_D, 0, constant[1]),
+      ar = c(max(pdq$p) > 0, seas_d, 0, max(PDQ$P) > 0, seas_D, 0, constant[1]),
+      ma = c(0, seas_d, max(pdq$q) > 0, 0, seas_D, max(PDQ$Q) > 0, constant[1])
     )
     step_order <- unique(stats::na.omit(match(initial_opts, lapply(split(model_opts, seq_len(NROW(model_opts))), as.numeric))))
     initial <- TRUE
@@ -360,7 +361,7 @@ This is generally discouraged, consider removing the constant or reducing the nu
   # Compute regression residuals
   reg_resid <- as.numeric(y)
   if (model_opts[which.min(est_ic), "constant"]) {
-    xreg <- cbind(xreg, constant = arima_constant(length(y), pdq$d, PDQ$D, period))
+    xreg <- cbind(xreg, constant = arima_constant(length(y), seas_d, seas_D, period))
   }
   if (!is.null(xreg)) {
     reg_resid <- reg_resid - xreg %*% as.matrix(best$coef[(sum(best$arma[1:4]) + 1):length(best$coef)])
@@ -369,10 +370,10 @@ This is generally discouraged, consider removing the constant or reducing the nu
   # Output model
   best_spec <- tibble(
     p = sum(grepl("^ar\\d+$", names(fit_coef))),
-    d = pdq$d,
+    d = seas_d,
     q = sum(grepl("^ma\\d+$", names(fit_coef))),
     P = sum(grepl("^sar\\d+$", names(fit_coef))),
-    D = PDQ$D,
+    D = seas_D,
     Q = sum(grepl("^sma\\d+$", names(fit_coef))),
     constant = "constant" %in% names(fit_coef),
     period = period

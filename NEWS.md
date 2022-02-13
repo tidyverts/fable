@@ -16,6 +16,8 @@
 
 * Fixed issue with characteristic equation test for admissibility of ETS 
   parameters (#341).
+* Fixed ARIMA selecting differences that don't satisfy the `order_constraint` 
+  (#360).
 
 # fable 0.3.1
 
