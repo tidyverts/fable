@@ -797,7 +797,8 @@ forecast.ARIMA <- function(object, new_data = NULL, specials = NULL,
     interval <- unclass(object$tsp$interval)
     interval <- Filter(function(x) x!=0, interval)
     time_unit <- switch(names(interval), day = "days", hour = "hours", minute = "mins", second = "secs")
-    fc_start <- object$tsp$range[2] + as.difftime(interval[[1]], units = time_unit)
+    if(!is.null(time_unit)) interval[[1]] <- as.difftime(interval[[1]], units = time_unit)
+    fc_start <- object$tsp$range[2] + interval[[1]]
   }
   
   if (unclass(new_data)[[index_var(new_data)]][1] != fc_start) {
