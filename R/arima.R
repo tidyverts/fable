@@ -792,7 +792,7 @@ forecast.ARIMA <- function(object, new_data = NULL, specials = NULL,
                            bootstrap = FALSE, times = 5000, ...) {
   # Check position of new_data in model history
   if(inherits_any(object$tsp$range, c("yearweek", "yearmonth", "yearquarter"))) {
-    fc_start <- object$tsp$range[2]+round((diff(object$tsp$range)+1)/nrow(object$est), 6)
+    fc_start <- object$tsp$range[2]+round(as.numeric(diff(object$tsp$range)+1)/nrow(object$est), 6)
   } else {
     # Try to use difftime
     interval <- unclass(object$tsp$interval)
