@@ -443,6 +443,9 @@ specials_arima <- new_specials(
     else {
       P <- P[P <= floor(NROW(self$data) / 3 / period)]
       Q <- Q[Q <= floor(NROW(self$data) / 3 / period)]
+      if(length(P) == 0 || length(Q) == 0) {
+        abort("Not enough data to estimate a model with those options of P and Q. Consider allowing smaller values of P and Q to be selected.")
+      }
     }
     P_init <- P[which.min(abs(P - P_init))]
     Q_init <- Q[which.min(abs(Q - Q_init))]
