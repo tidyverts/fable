@@ -26,7 +26,7 @@ etsmodel <- function(y, m, errortype, trendtype, seasontype, damped,
   upper <- c(alpharange[2], betarange[2], gammarange[2], phirange[2])
 
   # Initialize smoothing parameters
-  par <- initparam(alpha, beta, gamma, phi, trendtype, seasontype, damped, lower, upper, m)
+  par <- initparam(alpha, beta, gamma, phi, trendtype, seasontype, damped, lower, upper, m, bounds)
   names(alpha) <- names(beta) <- names(gamma) <- names(phi) <- NULL
   par.noopt <- c(alpha = alpha, beta = beta, gamma = gamma, phi = phi)
   if (!is.null(par.noopt)) {
@@ -254,8 +254,11 @@ etsTargetFunctionInit <- function(par, y, nstate, errortype, trendtype, seasonty
   res
 }
 
-initparam <- function(alpha, beta, gamma, phi, trendtype, seasontype, damped, lower, upper, m) {
-  if (any(lower > upper)) {
+initparam <- function(alpha, beta, gamma, phi, trendtype, seasontype, damped, lower, upper, m, bounds) {
+  if(bounds == "admissible") {
+    lower[1L:3L] <- 0
+    upper[1L:3L] <- 1e-3
+  } else if (any(lower > upper)) {
     stop("Inconsistent parameter boundaries")
   }
 
