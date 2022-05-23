@@ -314,7 +314,7 @@ This is generally discouraged, consider removing the constant or reducing the nu
   else {
     est_ic <- pmap_dbl(model_opts, compare_arima)
   }
-
+  
   if (approximation && !is.null(best$arma)) {
     if(trace) {
       cat("\n--- Re-estimating best models without approximation ---\n\n")
@@ -368,16 +368,8 @@ This is generally discouraged, consider removing the constant or reducing the nu
   }
 
   # Output model
-  best_spec <- tibble(
-    p = sum(grepl("^ar\\d+$", names(fit_coef))),
-    d = seas_d,
-    q = sum(grepl("^ma\\d+$", names(fit_coef))),
-    P = sum(grepl("^sar\\d+$", names(fit_coef))),
-    D = seas_D,
-    Q = sum(grepl("^sma\\d+$", names(fit_coef))),
-    constant = "constant" %in% names(fit_coef),
-    period = period
-  )
+  best_spec <- model_opts[mod_spec, ]
+  best_spec$period <- period
     
   structure(
     list(
@@ -830,7 +822,7 @@ forecast.ARIMA <- function(object, new_data = NULL, specials = NULL,
     xreg <- if (is.null(xreg)) {
       matrix(intercept, dimnames = list(NULL, "constant"))
     } else {
-      xreg <- cbind(xreg, intercept = intercept)
+      cbind(xreg, intercept = intercept)
     }
   }
   # Produce predictions

@@ -19,6 +19,8 @@
   parameters (#341).
 * Fixed ARIMA selecting differences that don't satisfy the `order_constraint` 
   (#360).
+* Fixed issue with forecasting ARIMA models with intercept and exogenous 
+  regressors.
 
 # fable 0.3.1
 
