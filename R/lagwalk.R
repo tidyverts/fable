@@ -223,7 +223,8 @@ forecast.RW <- function(object, new_data, specials = NULL, simulate = FALSE, boo
     distributional::dist_sample(sim)
   } else {
     fc <- rep(object$future, fullperiods)[1:h] + steps * b
-    mse <- mean(residuals(object)^2, na.rm = TRUE)
+    res <- residuals(object)
+    mse <- sum(res^2, na.rm = TRUE)/(sum(!is.na(res)) - (b != 0))
     if (is.nan(mse)) mse <- NA
     # Adjust prediction intervals to allow for drift coefficient standard error
     se <- sqrt(mse * steps + (steps * b.se)^2)
