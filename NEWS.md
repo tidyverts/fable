@@ -21,6 +21,8 @@
   (#360).
 * Fixed issue with forecasting ARIMA models with intercept and exogenous 
   regressors.
+* Fixed issue with VAR models not storing lagged regressor data for forecasting.
+
 
 # fable 0.3.1
 

@@ -95,7 +95,10 @@ specials_var <- new_specials(
     env <- map(enquos(...), get_env)
     env[map_lgl(env, compose(is_empty, env_parents))] <- NULL
     env <- if (!is_empty(env)) get_env(env[[1]]) else base_env()
-
+    
+    # Mask user defined lag to retain history when forecasting
+    env <- env_bury(env, lag = lag)
+    
     constants <- map_lgl(dots, inherits, "numeric")
     constant_given <- any(map_lgl(dots[constants], `%in%`, -1:1))
 
