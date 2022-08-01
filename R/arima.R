@@ -332,6 +332,8 @@ This is generally discouraged, consider removing the constant or reducing the nu
         break
       }
     }
+  } else {
+    mod_spec <- which.min(est_ic)
   }
 
   if (is.null(best)) {
