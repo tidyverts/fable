@@ -5,11 +5,10 @@
 
 <!-- badges: start -->
 
-![R build
-status](https://github.com/tidyverts/fable/workflows/R-CMD-check/badge.svg)
+[![R-CMD-check](https://github.com/tidyverts/fable/workflows/R-CMD-check/badge.svg)](https://github.com/tidyverts/fable/actions)
 [![Coverage
 status](https://codecov.io/gh/tidyverts/fable/branch/master/graph/badge.svg)](https://codecov.io/github/tidyverts/fable?branch=master)
-[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/fable)](https://cran.r-project.org/package=fable)
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/fable)](https://cran.r-project.org/package=fable)
 [![Lifecycle:
 maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 <!-- badges: end -->

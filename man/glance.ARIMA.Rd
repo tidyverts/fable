@@ -11,7 +11,7 @@ A data frame with 1 row, with columns:
 \item{AIC}{Akaike information criterion}
 \item{AICc}{Akaike information criterion, corrected for small sample sizes}
 \item{BIC}{Bayesian information criterion}
-\item{ar_roots,ma_roots}{The model's characteristic roots}
+\item{ar_roots, ma_roots}{The model's characteristic roots}
 }
 }
 \usage{
