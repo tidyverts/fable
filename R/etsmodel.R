@@ -12,13 +12,13 @@ etsmodel <- function(y, m, errortype, trendtype, seasontype, damped,
 
   # Modify limits if alpha, beta or gamma have been specified.
   if (!is.null(alpha)) {
-    betarange[2] <- min(alpha, betarange[2])
-    gammarange[2] <- min(1 - alpha, gammarange[2])
+    if(is.null(beta)) betarange[2] <- min(alpha, betarange[2])
+    if(is.null(gamma)) gammarange[2] <- min(1 - alpha, gammarange[2])
   }
-  if (!is.null(beta)) {
+  if (is.null(alpha) && !is.null(beta)) {
     alpharange[1] <- max(beta, alpharange[1])
   }
-  if (!is.null(gamma)) {
+  if (is.null(alpha) && !is.null(gamma)) {
     alpharange[2] <- min(1 - gamma, alpharange[2])
   }
 
