@@ -163,7 +163,7 @@ fourier.numeric <- function(x, period, K, origin = NULL) {
 #' }
 #'
 #' @format NULL
-#'
+#' @keywords internal
 #' @rdname common_xregs
 common_xregs <- list(
   trend = function(knots = NULL, origin = NULL) {

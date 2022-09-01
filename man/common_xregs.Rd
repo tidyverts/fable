@@ -51,4 +51,4 @@ fourier(period = NULL, K, origin = NULL)
 }
 }
 
-\keyword{datasets}
+\keyword{internal}

@@ -41,92 +41,52 @@ reference:
   desc: >
     The ARIMA model and its supported methods.
   contents:
-    - ARIMA
-    - forecast.ARIMA
-    - refit.ARIMA
-    - interpolate.ARIMA
-    - fitted.ARIMA
-    - residuals.ARIMA
+    - ends_with("ARIMA")
+    - unitroot_options
 - title: ETS
   desc: >
     Exponential smoothing state space models.
   contents:
-    - ETS
-    - forecast.ETS
-    - refit.ETS
-    - generate.ETS
-    - fitted.ETS
-    - residuals.ETS
-    - components.ETS
+    - ends_with("ETS")
 - title: TSLM
   desc: >
     Time series linear models.
   contents:
-    - TSLM
-    - forecast.TSLM
-    - refit.TSLM
-    - generate.TSLM
-    - interpolate.TSLM
-    - fitted.TSLM
-    - residuals.TSLM
+    - ends_with("TSLM")
+    - breusch_godfrey
 - title: Simple forecasting methods
   desc: >
     A collection of simple forecasting methods that are commonly used as benchmarks.
   contents:
     - MEAN
-    - RW
+    - ends_with("model_mean")
+    - ends_with("RW")
     - NAIVE
     - SNAIVE
-    - forecast.model_mean
-    - forecast.RW
-    - refit.model_mean
-    - generate.model_mean
-    - generate.RW
-    - fitted.model_mean
-    - fitted.RW
-    - residuals.model_mean
-    - residuals.RW
 - title: Neural network autoregression
   desc: >
     Feed-forward neural networks with a single hidden layer and lagged inputs for forecasting univariate time series.
   contents:
-    - NNETAR
-    - forecast.NNETAR
-    - refit.NNETAR
-    - generate.NNETAR
-    - fitted.NNETAR
-    - residuals.NNETAR
+    - ends_with("NNETAR")
 - title: Croston's method
   desc: >
     Croston's (1972) method for intermittent demand forecasting
   contents:
     - CROSTON
-    - forecast.croston
-    - fitted.croston
-    - residuals.croston
+    - ends_with("croston")
 - title: Theta method
   desc: >
     The Theta method of Assimakopoulos and Nikolopoulos (2000)
   contents:
     - THETA
-    - forecast.model_theta
-    - fitted.model_theta
-    - residuals.mode_theta
+    - ends_with("fable_theta")
 - title: Autoregression
   desc: >
     Autoregressive time series models
   contents:
-    - AR
-    - forecast.AR
-    - refit.AR
-    - generate.AR
-    - fitted.AR
-    - residuals.AR
+    - ends_with("AR")
 - title: Vector autoregression
   desc: >
     Estimates a VAR(p) model with support for exogenous regressors.
   contents:
-    - VAR
-    - forecast.VAR
-    - fitted.VAR
-    - residuals.VAR
+    - ends_with("VAR")
