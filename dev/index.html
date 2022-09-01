@@ -38,6 +38,8 @@
 </script>
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -63,7 +65,7 @@
   <a href="news/index.html">Changelog</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Vignettes
      
     <span class="caret"></span>
@@ -80,10 +82,10 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://docs.google.com/forms/d/e/1FAIpQLSfc66U8e8e-x_7TeWpuBAtxqdJD4UXozdkLgmBI3mlRuKPkzA/viewform?usp=sf_link">Feedback</a>
+  <a href="https://docs.google.com/forms/d/e/1FAIpQLSfc66U8e8e-x_7TeWpuBAtxqdJD4UXozdkLgmBI3mlRuKPkzA/viewform?usp=sf_link" class="external-link">Feedback</a>
 </li>
 <li>
-  <a href="https://github.com/tidyverts/fable">
+  <a href="https://github.com/tidyverts/fable" class="external-link">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -100,64 +102,63 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="fable-" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#fable-" class="anchor"></a>fable <a href="https://fable.tidyverts.org"><img src="reference/figures/logo.png" align="right" height="138.5"></a>
+<div class="section level1">
+<div class="page-header"><h1 id="fable-">fable <a href="https://fable.tidyverts.org"><img src="reference/figures/logo.png" align="right" height="138.5"></a>
+<a class="anchor" aria-label="anchor" href="#fable-"></a>
 </h1></div>
 <!-- badges: start -->
-
 <p>The R package <em>fable</em> provides a collection of commonly used univariate and multivariate time series forecasting models including exponential smoothing via state space models and automatic ARIMA modelling. These models work within the fable framework, which provides the tools to evaluate, visualise, and combine models in a workflow consistent with the tidyverse.</p>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
-<p>You can install the <strong>stable</strong> version from <a href="https://cran.r-project.org/package=fable">CRAN</a>:</p>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<p>You can install the <strong>stable</strong> version from <a href="https://cran.r-project.org/package=fable" class="external-link">CRAN</a>:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"fable"</span><span class="op">)</span></code></pre></div>
-<p>You can install the <strong>development</strong> version from <a href="https://github.com/tidyverts/fable">GitHub</a></p>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"fable"</span><span class="op">)</span></span></code></pre></div>
+<p>You can install the <strong>development</strong> version from <a href="https://github.com/tidyverts/fable" class="external-link">GitHub</a></p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># install.packages("remotes")</span>
-<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"tidyverts/fable"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"tidyverts/fable"</span><span class="op">)</span></span></code></pre></div>
 <p>Installing this software requires a compiler</p>
 </div>
-<div id="example" class="section level2">
-<h2 class="hasAnchor">
-<a href="#example" class="anchor"></a>Example</h2>
+<div class="section level2">
+<h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
+</h2>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://fable.tidyverts.org">fable</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tsibble.tidyverts.org">tsibble</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tsibbledata.tidyverts.org/">tsibbledata</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://lubridate.tidyverse.org">lubridate</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
-<span class="va">aus_retail</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span>
-    <span class="va">State</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"New South Wales"</span>, <span class="st">"Victoria"</span><span class="op">)</span>,
-    <span class="va">Industry</span> <span class="op">==</span> <span class="st">"Department stores"</span>
-  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="https://fabletools.tidyverts.org/reference/model.html">model</a></span><span class="op">(</span>
-    ets <span class="op">=</span> <span class="fu"><a href="reference/ETS.html">ETS</a></span><span class="op">(</span><span class="fu"><a href="https://fabletools.tidyverts.org/reference/box_cox.html">box_cox</a></span><span class="op">(</span><span class="va">Turnover</span>, <span class="fl">0.3</span><span class="op">)</span><span class="op">)</span>,
-    arima <span class="op">=</span> <span class="fu"><a href="reference/ARIMA.html">ARIMA</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">Turnover</span><span class="op">)</span><span class="op">)</span>,
-    snaive <span class="op">=</span> <span class="fu"><a href="reference/RW.html">SNAIVE</a></span><span class="op">(</span><span class="va">Turnover</span><span class="op">)</span>
-  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="https://fabletools.tidyverts.org/reference/forecast.html">forecast</a></span><span class="op">(</span>h <span class="op">=</span> <span class="st">"2 years"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">aus_retail</span>, <span class="fu"><a href="https://lubridate.tidyverse.org/reference/year.html">year</a></span><span class="op">(</span><span class="va">Month</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">2010</span><span class="op">)</span>, level <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://fable.tidyverts.org">fable</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tsibble.tidyverts.org" class="external-link">tsibble</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tsibbledata.tidyverts.org/" class="external-link">tsibbledata</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://lubridate.tidyverse.org" class="external-link">lubridate</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span><span class="va">aus_retail</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span></span>
+<span>    <span class="va">State</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"New South Wales"</span>, <span class="st">"Victoria"</span><span class="op">)</span>,</span>
+<span>    <span class="va">Industry</span> <span class="op">==</span> <span class="st">"Department stores"</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://fabletools.tidyverts.org/reference/model.html" class="external-link">model</a></span><span class="op">(</span></span>
+<span>    ets <span class="op">=</span> <span class="fu"><a href="reference/ETS.html">ETS</a></span><span class="op">(</span><span class="fu"><a href="https://fabletools.tidyverts.org/reference/box_cox.html" class="external-link">box_cox</a></span><span class="op">(</span><span class="va">Turnover</span>, <span class="fl">0.3</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    arima <span class="op">=</span> <span class="fu"><a href="reference/ARIMA.html">ARIMA</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">Turnover</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    snaive <span class="op">=</span> <span class="fu"><a href="reference/RW.html">SNAIVE</a></span><span class="op">(</span><span class="va">Turnover</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://fabletools.tidyverts.org/reference/forecast.html" class="external-link">forecast</a></span><span class="op">(</span>h <span class="op">=</span> <span class="st">"2 years"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">aus_retail</span>, <span class="fu"><a href="https://lubridate.tidyverse.org/reference/year.html" class="external-link">year</a></span><span class="op">(</span><span class="va">Month</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">2010</span><span class="op">)</span>, level <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-example-1.png" width="100%"></p>
 </div>
-<div id="learning-to-forecast-with-fable" class="section level2">
-<h2 class="hasAnchor">
-<a href="#learning-to-forecast-with-fable" class="anchor"></a>Learning to forecast with fable</h2>
+<div class="section level2">
+<h2 id="learning-to-forecast-with-fable">Learning to forecast with fable<a class="anchor" aria-label="anchor" href="#learning-to-forecast-with-fable"></a>
+</h2>
 <ul>
 <li>The pkgdown site describes all models provided by fable, and how they are used: <a href="https://fable.tidyverts.org/" class="uri">https://fable.tidyverts.org/</a>
 </li>
-<li>The forecasting principles and practices online textbook provides an introduction to time series forecasting using fable: <a href="https://otexts.com/fpp3/" class="uri">https://otexts.com/fpp3/</a> (WIP) <!-- - A quick start functionality guide can be found here: https://tidyverts.github.io/tidy-forecasting-principles/ (WIP) -->
+<li>The forecasting principles and practices online textbook provides an introduction to time series forecasting using fable: <a href="https://otexts.com/fpp3/" class="external-link uri">https://otexts.com/fpp3/</a> (WIP) <!-- - A quick start functionality guide can be found here: https://tidyverts.github.io/tidy-forecasting-principles/ (WIP) -->
 </li>
 </ul>
 </div>
-<div id="getting-help" class="section level2">
-<h2 class="hasAnchor">
-<a href="#getting-help" class="anchor"></a>Getting help</h2>
+<div class="section level2">
+<h2 id="getting-help">Getting help<a class="anchor" aria-label="anchor" href="#getting-help"></a>
+</h2>
 <ul>
-<li><p>Questions about forecasting can be asked on <a href="https://stats.stackexchange.com/tags/forecasting">Cross Validated</a>.</p></li>
-<li><p>Common questions about the fable package are often found on <a href="https://stackoverflow.com/tags/fable+r">Stack Overflow</a>. You can use this to ask for help if the question isn’t already answered. A <a href="https://www.tidyverse.org/help/">minimally reproducible example</a> that describes your issue is the best way to ask for help!</p></li>
+<li><p>Questions about forecasting can be asked on <a href="https://stats.stackexchange.com/tags/forecasting" class="external-link">Cross Validated</a>.</p></li>
+<li><p>Common questions about the fable package are often found on <a href="https://stackoverflow.com/tags/fable+r" class="external-link">Stack Overflow</a>. You can use this to ask for help if the question isn’t already answered. A <a href="https://www.tidyverse.org/help/" class="external-link">minimally reproducible example</a> that describes your issue is the best way to ask for help!</p></li>
 </ul>
 </div>
 </div>
@@ -165,54 +166,65 @@
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=fable">https://​cloud.r-project.org/​package=fable</a>
-</li>
-<li>Browse source code at <br><a href="https://github.com/tidyverts/fable/">https://​github.com/​tidyverts/​fable/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/tidyverts/fable/issues">https://​github.com/​tidyverts/​fable/​issues</a>
-</li>
-</ul>
-</div>
-<div class="license">
-<h2>License</h2>
-<ul class="list-unstyled">
-<li><a href="LICENSE.html">Full license</a></li>
-<li><small><a href="https://www.r-project.org/Licenses/GPL-3">GPL-3</a></small></li>
-</ul>
-</div>
-<div class="developers">
-<h2>Developers</h2>
-<ul class="list-unstyled">
-<li>
-<a href="https://mitchelloharawild.com">Mitchell O'Hara-Wild</a> <br><small class="roles"> Author, maintainer </small>  </li>
-<li>
-<a href="http://robjhyndman.com">Rob Hyndman</a> <br><small class="roles"> Author </small>  </li>
-<li>
-<a href="https://earo.me">Earo Wang</a> <br><small class="roles"> Author </small>  </li>
-<li><a href="authors.html">All authors...</a></li>
+<li><a href="https://cloud.r-project.org/package=fable" class="external-link">View on CRAN</a></li>
+<li><a href="https://github.com/tidyverts/fable/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/tidyverts/fable/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="license">
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
-<li><a href="https://codecov.io/github/tidyverts/fable?branch=master"><img src="https://codecov.io/gh/tidyverts/fable/branch/master/graph/badge.svg" alt="Coverage status"></a></li>
-<li><a href="https://cran.r-project.org/package=fable"><img src="http://www.r-pkg.org/badges/version/fable" alt="CRAN_Status_Badge"></a></li>
-<li><a href="https://lifecycle.r-lib.org/articles/stages.html"><img src="https://img.shields.io/badge/lifecycle-maturing-blue.svg" alt="Lifecycle: maturing"></a></li>
+<li><a href="LICENSE.html">Full license</a></li>
+<li><small><a href="https://www.r-project.org/Licenses/GPL-3" class="external-link">GPL-3</a></small></li>
 </ul>
 </div>
+
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing fable</a></li>
+</ul>
 </div>
+
+<div class="developers">
+<h2 data-toc-skip>Developers</h2>
+<ul class="list-unstyled">
+<li>
+<a href="https://mitchelloharawild.com" class="external-link">Mitchell O'Hara-Wild</a> <br><small class="roles"> Author, maintainer </small>  </li>
+<li>
+<a href="http://robjhyndman.com" class="external-link">Rob Hyndman</a> <br><small class="roles"> Author </small>  </li>
+<li>
+<a href="https://earo.me" class="external-link">Earo Wang</a> <br><small class="roles"> Author </small>  </li>
+<li><a href="authors.html">More about authors...</a></li>
+</ul>
+</div>
+
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://github.com/tidyverts/fable/actions" class="external-link"><img src="https://github.com/tidyverts/fable/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
+<li><a href="https://codecov.io/github/tidyverts/fable?branch=master" class="external-link"><img src="https://codecov.io/gh/tidyverts/fable/branch/master/graph/badge.svg" alt="Coverage status"></a></li>
+<li><a href="https://cran.r-project.org/package=fable" class="external-link"><img src="http://www.r-pkg.org/badges/version/fable" alt="CRAN_Status_Badge"></a></li>
+<li><a href="https://lifecycle.r-lib.org/articles/stages.html" class="external-link"><img src="https://img.shields.io/badge/lifecycle-maturing-blue.svg" alt="Lifecycle: maturing"></a></li>
+</ul>
+</div>
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by <a href="https://mitchelloharawild.com">Mitchell O'Hara-Wild</a>, <a href="http://robjhyndman.com">Rob Hyndman</a>, <a href="https://earo.me">Earo Wang</a>.</p>
+  <p></p>
+<p>Developed by <a href="https://mitchelloharawild.com" class="external-link">Mitchell O’Hara-Wild</a>, <a href="http://robjhyndman.com" class="external-link">Rob Hyndman</a>, <a href="https://earo.me" class="external-link">Earo Wang</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>
@@ -220,6 +232,8 @@
 
   
 
+
+  
 
   </body>
 </html>
