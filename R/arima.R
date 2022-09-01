@@ -994,91 +994,91 @@ refit.ARIMA <- function(object, new_data, specials = NULL, reestimate = FALSE, .
   out
 }
 
-#' @export
-stream.ARIMA <- function(object, new_data, specials = NULL, ...){
-  # Check position of new_data in model history
-  if(inherits_any(object$tsp$range, c("yearweek", "yearmonth", "yearquarter"))) {
-    stream_start <- object$tsp$range[2]+round((diff(object$tsp$range)+1)/nrow(object$est), 6)
-  } else {
-    # Try to use difftime
-    interval <- unclass(object$tsp$interval)
-    interval <- Filter(function(x) x!=0, interval)
-    time_unit <- switch(names(interval), day = "days", hour = "hours", minute = "mins", second = "secs")
-    stream_start <- object$tsp$range[2] + as.difftime(interval[[1]], units = time_unit)
-  }
-  if (unclass(new_data)[[index_var(new_data)]][1] != stream_start) {
-    abort("Streaming to an ARIMA model must start one step beyond the end of the trained data.")
-  }
-  
-  y <- unclass(new_data)[[measured_vars(new_data)]]
-  coef <- object$model$coef
-  
-  xreg <- specials$xreg[[1]]$xreg
-  # Drop unused rank deficient xreg
-  xreg <- xreg[,colnames(xreg) %in% names(object$model$coef), drop = FALSE]
-  
-  if (object$spec$constant) {
-    intercept <- arima_constant(
-      NROW(object$est) + NROW(new_data),
-      object$spec$d, object$spec$D,
-      object$spec$period
-    )[NROW(object$est) + seq_len(NROW(new_data))]
-    
-    xreg <- if (is.null(xreg)) {
-      matrix(intercept, dimnames = list(NULL, "constant"))
-    } else {
-      xreg <- cbind(xreg, intercept = intercept)
-    }
-  }
-  
-  if (ncol(xreg)%||%0 > 0) {
-    reg_resid <- y - xreg %*% coef[narma + (1L:ncxreg)]
-  } else {
-    reg_resid <- y
-  }
-  
-  mod <- object$model$model
-  
-  old_n.used <- sum(!is.na(object$est$.regression_resid)) - length(mod$Delta)
-  new_n.used <- sum(!is.na(reg_resid)) - length(mod$Delta)
-  n.used <- old_n.used + new_n.used + length(mod$Delta)
-
-  fit <- KalmanRun(reg_resid, mod, nit = -1, update = TRUE)
-  fit$values[["Lik"]]
-  resid <- c(object$est$.resid, fit$resid)
-  
-  nstar <- nrow(object$est) + length(y) - object$spec$d - object$spec$D * object$spec$period
-  npar <- length(object$model$coef[object$model$mask]) + 1
-  
-  # 2 * n.used * res$value
-  old_val <- (object$model$loglik/(-0.5) - old_n.used - old_n.used * log(2 * pi))/(2*old_n.used)
-  new_val <- fit$values[["Lik"]]
-  
-  old_sumlog <- (old_val*2 - log(mean(object$est$.resid^2, na.rm=TRUE)))*sum(!is.na(object$est$.resid))
-  new_sumlog <- (fit$values[["Lik"]]*2 - log(mean(fit$resid^2, na.rm = TRUE)))*sum(!is.na(fit$resid))
-  n_known <- sum(!is.na(resid))
-  
-  lik <- 0.5*(log(sum(resid^2)/n.used) + (old_sumlog + new_sumlog)/n.used)
-  
-  # 0.5 * (log(s2) + res[2L]/res[3L])
-  
-  value <- 2 * n.used * lik + n.used + n.used * log(2 * pi)
-  object$log_lik <- -0.5*lik
-  object$AIC <- aic <- value + 2 * sum(object$model$mask) + 2
-  object$BIC <- aic + npar * (log(nstar) - 2)
-  object$AICc <- aic + 2 * npar * (npar + 1) / (nstar - npar - 1)
-  # Adjust residual variance to be unbiased
-  fit$sigma2 <- sum(resid^2, na.rm = TRUE) / (nstar - npar + 1)
-  
-  object$model$model <- attr(fit, "mod")
-  object$est <- tibble(
-    .fitted = c(object$est$.fitted, y - fit$resid),
-    .resid = resid, 
-    .regression_resid = c(object$est$.regression_resid, reg_resid)
-  )
-  object$tsp$range[2] <- max(new_data[[index_var(new_data)]])
-  object
-}
+# #' @export
+# stream.ARIMA <- function(object, new_data, specials = NULL, ...){
+#   # Check position of new_data in model history
+#   if(inherits_any(object$tsp$range, c("yearweek", "yearmonth", "yearquarter"))) {
+#     stream_start <- object$tsp$range[2]+round((diff(object$tsp$range)+1)/nrow(object$est), 6)
+#   } else {
+#     # Try to use difftime
+#     interval <- unclass(object$tsp$interval)
+#     interval <- Filter(function(x) x!=0, interval)
+#     time_unit <- switch(names(interval), day = "days", hour = "hours", minute = "mins", second = "secs")
+#     stream_start <- object$tsp$range[2] + as.difftime(interval[[1]], units = time_unit)
+#   }
+#   if (unclass(new_data)[[index_var(new_data)]][1] != stream_start) {
+#     abort("Streaming to an ARIMA model must start one step beyond the end of the trained data.")
+#   }
+#   
+#   y <- unclass(new_data)[[measured_vars(new_data)]]
+#   coef <- object$model$coef
+#   
+#   xreg <- specials$xreg[[1]]$xreg
+#   # Drop unused rank deficient xreg
+#   xreg <- xreg[,colnames(xreg) %in% names(object$model$coef), drop = FALSE]
+#   
+#   if (object$spec$constant) {
+#     intercept <- arima_constant(
+#       NROW(object$est) + NROW(new_data),
+#       object$spec$d, object$spec$D,
+#       object$spec$period
+#     )[NROW(object$est) + seq_len(NROW(new_data))]
+#     
+#     xreg <- if (is.null(xreg)) {
+#       matrix(intercept, dimnames = list(NULL, "constant"))
+#     } else {
+#       xreg <- cbind(xreg, intercept = intercept)
+#     }
+#   }
+#   
+#   if (ncol(xreg)%||%0 > 0) {
+#     reg_resid <- y - xreg %*% coef[narma + (1L:ncxreg)]
+#   } else {
+#     reg_resid <- y
+#   }
+#   
+#   mod <- object$model$model
+#   
+#   old_n.used <- sum(!is.na(object$est$.regression_resid)) - length(mod$Delta)
+#   new_n.used <- sum(!is.na(reg_resid)) - length(mod$Delta)
+#   n.used <- old_n.used + new_n.used + length(mod$Delta)
+# 
+#   fit <- KalmanRun(reg_resid, mod, nit = -1, update = TRUE)
+#   fit$values[["Lik"]]
+#   resid <- c(object$est$.resid, fit$resid)
+#   
+#   nstar <- nrow(object$est) + length(y) - object$spec$d - object$spec$D * object$spec$period
+#   npar <- length(object$model$coef[object$model$mask]) + 1
+#   
+#   # 2 * n.used * res$value
+#   old_val <- (object$model$loglik/(-0.5) - old_n.used - old_n.used * log(2 * pi))/(2*old_n.used)
+#   new_val <- fit$values[["Lik"]]
+#   
+#   old_sumlog <- (old_val*2 - log(mean(object$est$.resid^2, na.rm=TRUE)))*sum(!is.na(object$est$.resid))
+#   new_sumlog <- (fit$values[["Lik"]]*2 - log(mean(fit$resid^2, na.rm = TRUE)))*sum(!is.na(fit$resid))
+#   n_known <- sum(!is.na(resid))
+#   
+#   lik <- 0.5*(log(sum(resid^2)/n.used) + (old_sumlog + new_sumlog)/n.used)
+#   
+#   # 0.5 * (log(s2) + res[2L]/res[3L])
+#   
+#   value <- 2 * n.used * lik + n.used + n.used * log(2 * pi)
+#   object$log_lik <- -0.5*lik
+#   object$AIC <- aic <- value + 2 * sum(object$model$mask) + 2
+#   object$BIC <- aic + npar * (log(nstar) - 2)
+#   object$AICc <- aic + 2 * npar * (npar + 1) / (nstar - npar - 1)
+#   # Adjust residual variance to be unbiased
+#   fit$sigma2 <- sum(resid^2, na.rm = TRUE) / (nstar - npar + 1)
+#   
+#   object$model$model <- attr(fit, "mod")
+#   object$est <- tibble(
+#     .fitted = c(object$est$.fitted, y - fit$resid),
+#     .resid = resid, 
+#     .regression_resid = c(object$est$.regression_resid, reg_resid)
+#   )
+#   object$tsp$range[2] <- max(new_data[[index_var(new_data)]])
+#   object
+# }
 
 #' Interpolate missing values from a fable model
 #'
