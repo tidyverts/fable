@@ -111,7 +111,7 @@ test_that("ARIMA with bad inputs", {
 
   expect_warning(
     UKLungDeaths %>%
-      model(ARIMA(mdeaths ~ pdq(2, 2, 0) + PDQ(2, 1, 0))),
+      model(ARIMA(mdeaths ~ 0 + pdq(2, 2, 0) + PDQ(2, 1, 0))),
     "Having 3 or more differencing operations is not recommended"
   )
 

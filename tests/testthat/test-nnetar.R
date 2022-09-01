@@ -19,8 +19,8 @@ test_that("Automatic NNETAR selection", {
   fc_boot <- air_fit %>%
     forecast(h = 10, times = 5, bootstrap = TRUE)
   expect_equal(
-    fc_sim$value,
-    fc_boot$value,
+    mean(fc_sim$value),
+    mean(fc_boot$value),
     tolerance = 100
   )
 
