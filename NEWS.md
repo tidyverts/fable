@@ -12,6 +12,8 @@
 * `ETS()` will now ignore the smoothing parameter's range when specific 
   parameter value is given (#317).
 * Modified initial parameter values for `ETS()` when bounds = "admissible".
+* Added support for `.` in the formula of `TSLM()`, which adds all non-index and
+  non-key variables into the model.
 
 ## Bug fixes
 

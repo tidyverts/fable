@@ -81,15 +81,26 @@ train_tslm <- function(.data, specials, ...) {
 specials_tslm <- new_specials(
   common_xregs,
   xreg = function(...) {
+    terms <- enexprs(...)
+    is_dot <- vapply(terms, function(x) expr_text(x) == ".", logical(1L))
+    if(any(is_dot)) {
+      new_dot <- reduce(syms(c(".", index_var(self$data), key_vars(self$data))), call2, .fn = "-")
+      terms <- c(new_dot, terms[!is_dot])
+    }
     model_formula <- new_formula(
-      lhs = NULL,
-      rhs = reduce(enexprs(...), function(.x, .y) call2("+", .x, .y))
+      lhs = f_lhs(self$formula),
+      rhs = reduce(terms, function(.x, .y) call2("+", .x, .y))
     )
-    env <- parent.frame()
+    env <- self$env
     if (!exists("list", env)) env <- base_env()
 
     env$lag <- lag # Mask user defined lag to retain history when forecasting
-    xreg <- model.frame(model_formula, data = env, na.action = stats::na.pass)
+    env <- new_environment(list(.formula = model_formula, .data = self$data), parent = env)
+    xreg <- with_env(
+      env,
+      model.frame(.formula, data = .data, na.action = stats::na.pass)
+    )
+    
     mm <- model.matrix(terms(xreg), xreg)
     if (NROW(mm) == 0 && identical(colnames(mm), "(Intercept)")) {
       return(matrix(data = 1, nrow = NROW(self$data), dimnames = list(NULL, "(Intercept)")))
