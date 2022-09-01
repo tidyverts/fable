@@ -12,6 +12,7 @@
 * `ETS()` will now ignore the smoothing parameter's range when specific 
   parameter value is given (#317).
 * Modified initial parameter values for `ETS()` when bounds = "admissible".
+* Updated RW forecasts to use an unbiased estimate of sigma2 (#368).
 
 ## Bug fixes
 
