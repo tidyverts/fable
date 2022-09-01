@@ -1,4 +1,4 @@
-# fable (development version)
+# fable 0.3.2
 
 ## Improvements
 
