@@ -36,17 +36,10 @@ test_that("RW w/ drift", {
     unclass(forecast_fc$mean)
   )
 
-  # if(packageVersion("fabletools") > "0.1.3"){
-  #   expect_equivalent(
-  #     unclass(hilo(fable_fc)$`80%`)$upper,
-  #     unclass(forecast_fc$upper[, 1])
-  #   )
-  # } else {
-  #   expect_equivalent(
-  #     hilo(fable_fc)$`80%`$.upper,
-  #     unclass(forecast_fc$upper[, 1])
-  #   )
-  # }
+  expect_equivalent(
+    unclass(hilo(fable_fc)$`80%`)$upper,
+    unclass(forecast_fc$upper[, 1])
+  )
 
   expect_identical(
     model_sum(fable_fit$rw[[1]]),
