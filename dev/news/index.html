@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.3.1.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.3.2.9000</span>
       </span>
     </div>
 
@@ -69,10 +69,11 @@
       <small>Source: <a href="https://github.com/tidyverts/fable/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2"><h2 class="page-header" data-toc-text="development version" id="fable-development-version">fable (development version)<a class="anchor" aria-label="anchor" href="#fable-development-version"></a></h2></div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="development version" id="fable-development-version">fable (development version)<a class="anchor" aria-label="anchor" href="#fable-development-version"></a></h2>
+<h2 class="page-header" data-toc-text="0.3.2" id="fable-032">fable 0.3.2<small>2022-09-01</small><a class="anchor" aria-label="anchor" href="#fable-032"></a></h2>
 <div class="section level3">
-<h3 id="improvements-development-version">Improvements<a class="anchor" aria-label="anchor" href="#improvements-development-version"></a></h3>
+<h3 id="improvements-0-3-2">Improvements<a class="anchor" aria-label="anchor" href="#improvements-0-3-2"></a></h3>
 <ul><li>Documentation improvements.</li>
 <li>Added <code>approx_normal</code> argument to <code>forecast(&lt;TSLM&gt;)</code>. This allows you to optionally return forecasts from the more appropriate Student’s T distribution instead of approximating to a Normal distribution. The default behaviour remains the same, which is to provide approximate Normal distribution forecasts which are nicer to work with in model combination and reconciliation (<a href="https://github.com/tidyverts/fable/issues/343" class="external-link">#343</a>).</li>
 <li>
@@ -81,7 +82,7 @@
 <li>Updated RW forecasts to use an unbiased estimate of sigma2 (<a href="https://github.com/tidyverts/fable/issues/368" class="external-link">#368</a>).</li>
 </ul></div>
 <div class="section level3">
-<h3 id="bug-fixes-development-version">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-development-version"></a></h3>
+<h3 id="bug-fixes-0-3-2">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-3-2"></a></h3>
 <ul><li>Fixed issue with characteristic equation test for admissibility of ETS parameters (<a href="https://github.com/tidyverts/fable/issues/341" class="external-link">#341</a>).</li>
 <li>Fixed ARIMA selecting differences that don’t satisfy the <code>order_constraint</code> (<a href="https://github.com/tidyverts/fable/issues/360" class="external-link">#360</a>).</li>
 <li>Fixed issue with forecasting ARIMA models with intercept and exogenous regressors.</li>
