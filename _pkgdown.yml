@@ -3,7 +3,9 @@ url: https://fable.tidyverts.org
 template:
   params:
     bootswatch: cosmo
-    ganalytics: UA-145057858-1
+  includes:
+    in_header: |
+      <script defer data-domain="fable.tidyverts.org" src="https://track.mitchelloharawild.com/js/plausible.js"></script>
 
 development:
   mode: auto
