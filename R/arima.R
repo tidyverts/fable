@@ -891,9 +891,9 @@ generate.ARIMA <- function(x, new_data, specials, bootstrap = FALSE, ...){
   
   new_data <- transmute(
     group_by_key(new_data), 
-    ".sim" := conditional_arima_sim(x$model, x$est$.regression_resid, !!sym(".innov"))
+    ".sim" := conditional_arima_sim(!!x$model, !!x$est$.regression_resid, !!sym(".innov"))
   )
-  mutate(dplyr::ungroup(new_data), ".sim" := as.numeric(!!sym(".sim") + xm))
+  mutate(dplyr::ungroup(new_data), ".sim" := as.numeric(!!sym(".sim") + !!xm))
 }
 
 # Version of stats::arima.sim which conditions on past observations
