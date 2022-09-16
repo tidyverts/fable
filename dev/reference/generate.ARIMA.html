@@ -113,18 +113,18 @@ contains the <code>.innov</code> column, those values will be treated as innovat
 <span class="r-in"><span><span class="va">fable_fit</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://generics.r-lib.org/reference/generate.html" class="external-link">generate</a></span><span class="op">(</span>times <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tsibble: 240 x 4 [1M]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Key:       .model, .rep [10]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    .model    index .rep   .sim</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;mth&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> model  1979 Jan 1     <span style="text-decoration: underline;">8</span>036.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> model  1979 Feb 1     <span style="text-decoration: underline;">7</span>293.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> model  1979 Mar 1     <span style="text-decoration: underline;">7</span>835.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> model  1979 Apr 1     <span style="text-decoration: underline;">8</span>301.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> model  1979 May 1     <span style="text-decoration: underline;">8</span>980.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> model  1979 Jun 1     <span style="text-decoration: underline;">9</span>828.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> model  1979 Jul 1     <span style="text-decoration: underline;">9</span>965.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> model  1979 Aug 1     <span style="text-decoration: underline;">8</span>890.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> model  1979 Sep 1     <span style="text-decoration: underline;">7</span>515.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> model  1979 Oct 1     <span style="text-decoration: underline;">7</span>857.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    .model    index .rep    .sim</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;mth&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> model  1979 Jan 1      <span style="text-decoration: underline;">8</span>542.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> model  1979 Feb 1      <span style="text-decoration: underline;">7</span>182.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> model  1979 Mar 1      <span style="text-decoration: underline;">8</span>379.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> model  1979 Apr 1      <span style="text-decoration: underline;">9</span>061.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> model  1979 May 1      <span style="text-decoration: underline;">9</span>750.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> model  1979 Jun 1      <span style="text-decoration: underline;">9</span>501.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> model  1979 Jul 1     <span style="text-decoration: underline;">10</span>571.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> model  1979 Aug 1      <span style="text-decoration: underline;">9</span>765.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> model  1979 Sep 1      <span style="text-decoration: underline;">8</span>281.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> model  1979 Oct 1      <span style="text-decoration: underline;">8</span>634.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 230 more rows</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
