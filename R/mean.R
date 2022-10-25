@@ -55,9 +55,6 @@ specials_mean <- new_specials(
 #'
 #' \code{MEAN()} returns an iid model applied to the formula's response variable.
 #'
-#' The model does not use any specials, and so everything on the formula's
-#' right-hand-side will be ignored.
-#'
 #' @aliases report.model_mean
 #'
 #' @param formula Model specification.

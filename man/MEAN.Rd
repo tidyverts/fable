@@ -18,10 +18,6 @@ A model specification.
 \description{
 \code{MEAN()} returns an iid model applied to the formula's response variable.
 }
-\details{
-The model does not use any specials, and so everything on the formula's
-right-hand-side will be ignored.
-}
 \section{Specials}{
 
 
