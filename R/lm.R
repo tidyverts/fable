@@ -70,11 +70,11 @@ train_tslm <- function(.data, specials, ...) {
     fit$coefficients <- as.matrix(fit$coefficients)
   }
   colnames(fit$coefficients) <- colnames(y)
-  
+
   # Remove unused structure
   fit$effects <- NULL
-  fit$sigma2 <- sum(resid^2, na.rm = TRUE)/fit$df.residual 
-  
+  fit$sigma2 <- sum(resid^2, na.rm = TRUE)/fit$df.residual
+
   structure(fit, class = "TSLM")
 }
 
@@ -247,13 +247,13 @@ report.TSLM <- function(object, digits = max(3, getOption("digits") - 3), ...) {
 }
 
 #' @inherit forecast.ARIMA
-#' 
+#'
 #' @importFrom stats predict
 #'
 #' @param approx_normal Should the resulting forecast distributions be
-#'   approximated as a Normal distribution instead of a Student's T 
-#'   distribution. Returning Normal distributions (the default) is a useful 
-#'   approximation to make it easier for using TSLM models in model combinations 
+#'   approximated as a Normal distribution instead of a Student's T
+#'   distribution. Returning Normal distributions (the default) is a useful
+#'   approximation to make it easier for using TSLM models in model combinations
 #'   or reconciliation processes.
 #'
 #' @examples
@@ -328,7 +328,7 @@ generate.TSLM <- function(x, new_data, specials, bootstrap = FALSE, ...) {
       )
     }
     else {
-      vars <- x$sigma2 / x$df.residual
+      vars <- x$sigma2
       new_data$.innov <- stats::rnorm(length(pred), sd = sqrt(vars))
     }
   }
@@ -402,7 +402,7 @@ refit.TSLM <- function(object, new_data, specials = NULL, reestimate = FALSE, ..
   piv <- fit$qr$pivot[seq_len(fit$rank)]
   fit$fitted.values <- xreg[, piv, drop = FALSE] %*% coef[piv]
   fit$residuals <- y - fit$fitted.values
-  fit$sigma2 <- sum(fit$residuals^2, na.rm = TRUE)/fit$df.residual 
+  fit$sigma2 <- sum(fit$residuals^2, na.rm = TRUE)/fit$df.residual
 
   structure(fit, class = "TSLM")
 }
@@ -413,12 +413,12 @@ model_sum.TSLM <- function(x) {
 }
 
 #' Breusch-Godfrey Test
-#' 
+#'
 #' Breusch-Godfrey test for higher-order serial correlation.
-#' 
+#'
 #' @param x A model object to be tested.
 #' @param ... Further arguments for methods.
-#' 
+#'
 #' @seealso [`lmtest::bgtest()`]
 #'
 #' @export
@@ -428,24 +428,24 @@ breusch_godfrey <- function(x, ...){
 
 #' @param order The maximum order of serial correlation to test for.
 #' @param type The type of test statistic to use.
-#' 
+#'
 #' @rdname breusch_godfrey
 #' @export
 breusch_godfrey.TSLM <- function(x, order = 1, type = c("Chisq", "F"), ...){
   type <- match.arg(type)
-  
+
   # Lag order
   order <- seq_len(order)
   m <- length(order)
-  
+
   # Innovation residuals
   res <- residuals(x)
   n <- length(res)
-  
+
   # Exogenous regressors
   X <- qr.X(x$qr)
   Z <- sapply(order, function(x) c(rep(0, length.out = x), res[1:(n - x)]))
-  
+
   if (any(na <- !complete.cases(Z))) {
     X <- X[!na, , drop = FALSE]
     Z <- Z[!na, , drop = FALSE]
@@ -453,11 +453,11 @@ breusch_godfrey.TSLM <- function(x, order = 1, type = c("Chisq", "F"), ...){
     n <- length(res)
   }
   k <- ncol(X)
-  
+
   auxfit <- stats::lm.fit(cbind(X, Z), res)
   cf <- auxfit$coefficients
   vc <- chol2inv(auxfit$qr$qr) * sum(auxfit$residuals^2)/auxfit$df.residual
-  
+
   if(type == "Chisq") {
     bg <- n * sum(auxfit$fitted.values^2)/sum(res^2)
     null_dist <- distributional::dist_chisq(m)
@@ -468,9 +468,9 @@ breusch_godfrey.TSLM <- function(x, order = 1, type = c("Chisq", "F"), ...){
     null_dist <- distributional::dist_f(df1 = m, df2 = n - k - m)
     pv <- stats::pf(bg, df1 = m, df2 = n - k - m, lower.tail = FALSE)
   }
-  
+
   tibble(
-    statistic = bg, 
+    statistic = bg,
     order = max(order),
     null_dist = null_dist,
     p.value = pv
