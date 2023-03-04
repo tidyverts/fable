@@ -1,4 +1,5 @@
 context("test-lm.R")
+skip_if_not_installed("forecast")
 
 test_that("LM", {
   # NULL model selection
