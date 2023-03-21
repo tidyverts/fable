@@ -7,11 +7,11 @@
 \method{residuals}{ARIMA}(object, type = c("innovation", "regression"), ...)
 }
 \arguments{
-\item{object}{The time series model used to produce the forecasts}
+\item{object}{A model for which forecasts are required.}
 
 \item{type}{The type of residuals to extract.}
 
-\item{...}{Additional arguments for forecast model methods.}
+\item{...}{Other arguments passed to methods}
 }
 \value{
 A vector of fitted residuals.

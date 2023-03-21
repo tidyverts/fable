@@ -15,9 +15,7 @@
 )
 }
 \arguments{
-\item{object}{The time series model used to produce the forecasts}
-
-\item{new_data}{A \code{tsibble} containing future information used to forecast.}
+\item{object}{A model for which forecasts are required.}
 
 \item{specials}{(passed by \code{\link[fabletools:forecast]{fabletools::forecast.mdl_df()}}).}
 
@@ -31,7 +29,7 @@ or reconciliation processes.}
 
 \item{times}{The number of sample paths to use in estimating the forecast distribution when \code{bootstrap = TRUE}.}
 
-\item{...}{Additional arguments for forecast model methods.}
+\item{...}{Other arguments passed to methods}
 }
 \value{
 A list of forecasts.

@@ -14,9 +14,7 @@
 )
 }
 \arguments{
-\item{object}{The time series model used to produce the forecasts}
-
-\item{new_data}{A \code{tsibble} containing future information used to forecast.}
+\item{object}{A model for which forecasts are required.}
 
 \item{specials}{(passed by \code{\link[fabletools:forecast]{fabletools::forecast.mdl_df()}}).}
 
@@ -24,7 +22,7 @@
 
 \item{reinitialise}{If TRUE, the initial parameters will be re-estimated to suit the new data.}
 
-\item{...}{Additional arguments for forecast model methods.}
+\item{...}{Other arguments passed to methods}
 }
 \description{
 Applies a fitted ETS model to a new dataset.

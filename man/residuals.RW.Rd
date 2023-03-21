@@ -7,9 +7,9 @@
 \method{residuals}{RW}(object, ...)
 }
 \arguments{
-\item{object}{The time series model used to produce the forecasts}
+\item{object}{A model for which forecasts are required.}
 
-\item{...}{Additional arguments for forecast model methods.}
+\item{...}{Other arguments passed to methods}
 }
 \value{
 A vector of fitted residuals.
