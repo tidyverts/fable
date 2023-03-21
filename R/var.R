@@ -310,7 +310,7 @@ model_sum.VAR <- function(x) {
 #'   model(VAR(vars(mdeaths, fdeaths) ~ AR(3))) %>%
 #'   tidy()
 #' @export
-tidy.VAR <- function(x) {
+tidy.VAR <- function(x, ...) {
   rdf <- x$model$df.residual
   res <- split(x$resid, col(x$resid))
   rss <- map_dbl(res, function(resid) sum(resid^2, na.rm = TRUE))

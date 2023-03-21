@@ -397,7 +397,7 @@ model_sum.AR <- function(x) {
 #'   model(AR(value ~ order(3))) %>%
 #'   tidy()
 #' @export
-tidy.AR <- function(x) {
+tidy.AR <- function(x, ...) {
   out <- tibble::enframe(drop(x$coef), "term", "estimate")
   out$std.error <- x$coef.se 
   out$statistic <- out$estimate / out$std.error

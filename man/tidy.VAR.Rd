@@ -4,10 +4,12 @@
 \alias{tidy.VAR}
 \title{Tidy a fable model}
 \usage{
-\method{tidy}{VAR}(x)
+\method{tidy}{VAR}(x, ...)
 }
 \arguments{
 \item{x}{An object to be converted into a tidy \code{\link[tibble:tibble]{tibble::tibble()}}.}
+
+\item{...}{Additional arguments to tidying method.}
 }
 \value{
 The model's coefficients in a \code{tibble}.
