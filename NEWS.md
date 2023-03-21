@@ -1,5 +1,16 @@
 # fable (development version)
 
+Small patch to resolve CRAN check issues.
+
+## Improvements
+
+* Documentation improvements.
+
+## Bug fixes
+
+* Fixed `generate(<ARIMA>)` method for some variable names.
+* Fixed df in `generate(<TSLM>)`.
+
 # fable 0.3.2
 
 ## Improvements
