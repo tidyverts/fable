@@ -9,6 +9,8 @@
 \arguments{
 \item{x}{A fitted model.}
 
+\item{new_data}{A tsibble containing the time points and exogenous regressors to produce forecasts for.}
+
 \item{bootstrap}{If \code{TRUE}, then forecast distributions are computed using simulation with resampled errors.}
 
 \item{...}{Other arguments passed to methods}

@@ -9,6 +9,8 @@
 \arguments{
 \item{object}{A model for which forecasts are required.}
 
+\item{new_data}{A tsibble containing the time points and exogenous regressors to produce forecasts for.}
+
 \item{specials}{(passed by \code{\link[fabletools:forecast]{fabletools::forecast.mdl_df()}}).}
 
 \item{reestimate}{If \code{TRUE}, the mean for the fitted model will be re-estimated

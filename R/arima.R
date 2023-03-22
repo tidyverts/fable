@@ -773,6 +773,7 @@ report.ARIMA <- function(object, ...) {
 #' Produces forecasts from a trained model.
 #'
 #' @inheritParams generics::forecast
+#' @param new_data A tsibble containing the time points and exogenous regressors to produce forecasts for.
 #' @param specials (passed by [`fabletools::forecast.mdl_df()`]).
 #' @param bootstrap If `TRUE`, then forecast distributions are computed using simulation with resampled errors.
 #' @param times The number of sample paths to use in estimating the forecast distribution when `bootstrap = TRUE`.
