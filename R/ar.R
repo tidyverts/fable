@@ -203,7 +203,7 @@ estimate_ar <- function(x, p, xreg, constant, fixed) {
       coef.se = coef_se,
       fits = c(rep.int(NA_real_, p), YH),
       resid = c(rep.int(NA_real_, p), E),
-      reg_resid = x - xm*x_sd,
+      reg_resid = x - xm,
       last = x[(length(E)+1):length(x)],
       sigma2 = drop(varE),
       aic = aic,
@@ -283,14 +283,14 @@ generate.AR <- function(x, new_data = NULL, specials = NULL,
   
   # Predict xreg
   nx <- length(coef) - p
+  ar <- coef[nx + seq_len(p)]
   if (!is.null(xreg)) {
     xcoef <- coef[seq_len(nx)]
-    xm <- drop(xreg %*% xcoef)
+    xm <- drop(xreg %*% xcoef) / (1 - sum(ar))
   } else {
     xm <- rep(0, nrow(new_data))
   }
   
-  ar <- coef[nx + seq_len(p)]
   # Generate future innovations if missing
   if(!(".innov" %in% names(new_data))){
     if(bootstrap){
