@@ -8,7 +8,7 @@ test_that("MEAN", {
   )
 
   expect_equivalent(
-    glance(fit)$sigma2, var(scale(USAccDeaths_tbl$value, scale = FALSE))
+    glance(fit)$sigma2, mean(scale(USAccDeaths_tbl$value, scale = FALSE)^2)
   )
 
   expect_identical(
