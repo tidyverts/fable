@@ -97,6 +97,7 @@ test_that("SNAIVE", {
   #   fable_fc_sim$value
   # )
 
+  skip_if_not_installed("tsibbledata")
   expect_warning(
     tsibbledata::vic_elec %>%
       tsibble::index_by(date = as.Date(Time)) %>%
