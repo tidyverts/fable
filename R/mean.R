@@ -25,7 +25,7 @@ train_mean <- function(.data, specials, ...) {
     fits <- dplyr::lag(fits)
   }
   res <- y - fits
-  sigma <- sqrt(mean(res^2, na.rm = TRUE))
+  sigma <- sd(res, na.rm = TRUE)
 
   structure(
     list(
