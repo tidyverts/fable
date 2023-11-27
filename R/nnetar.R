@@ -264,12 +264,16 @@ NNETAR <- function(formula, n_nodes = NULL, n_networks = 20, scale_inputs = TRUE
 
 #' @inherit forecast.ETS
 #'
+#' @param simulate If `TRUE`, forecast distributions are produced by sampling from a normal distribution. Without simulation, forecast uncertainty cannot be estimated for this model and instead a degenerate distribution with the forecast mean will be produced.
+#' @param bootstrap If `TRUE`, forecast distributions are produced by sampling from the model's training residuals.
+#' @param times The number of sample paths to use in producing the forecast distribution. Setting `simulate = FALSE` or `times = 0` will produce degenerate forecast distributions of the forecast mean.
+#'
 #' @examples
 #' as_tsibble(airmiles) %>%
 #'   model(nn = NNETAR(box_cox(value, 0.15))) %>%
 #'   forecast(times = 10)
 #' @export
-forecast.NNETAR <- function(object, new_data, specials = NULL, simulate = TRUE, bootstrap = FALSE, times = 1000, ...) {
+forecast.NNETAR <- function(object, new_data, specials = NULL, simulate = TRUE, bootstrap = FALSE, times = 5000, ...) {
   require_package("nnet")
 
   # Prepare xreg

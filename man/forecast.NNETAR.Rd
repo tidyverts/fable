@@ -10,7 +10,7 @@
   specials = NULL,
   simulate = TRUE,
   bootstrap = FALSE,
-  times = 1000,
+  times = 5000,
   ...
 )
 }
@@ -21,11 +21,11 @@
 
 \item{specials}{(passed by \code{\link[fabletools:forecast]{fabletools::forecast.mdl_df()}}).}
 
-\item{simulate}{If \code{TRUE}, prediction intervals are produced by simulation rather than using analytic formulae.}
+\item{simulate}{If \code{TRUE}, forecast distributions are produced by sampling from a normal distribution. Without simulation, forecast uncertainty cannot be estimated for this model and instead a degenerate distribution with the forecast mean will be produced.}
 
-\item{bootstrap}{If \code{TRUE}, then forecast distributions are computed using simulation with resampled errors.}
+\item{bootstrap}{If \code{TRUE}, forecast distributions are produced by sampling from the model's training residuals.}
 
-\item{times}{The number of sample paths to use in estimating the forecast distribution if simulated intervals are used.}
+\item{times}{The number of sample paths to use in producing the forecast distribution. Setting \code{simulate = FALSE} or \code{times = 0} will produce degenerate forecast distributions of the forecast mean.}
 
 \item{...}{Other arguments passed to methods}
 }
