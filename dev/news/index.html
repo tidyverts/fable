@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.3.2.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.3.3.9000</span>
       </span>
     </div>
 
@@ -63,7 +63,26 @@
       <small>Source: <a href="https://github.com/tidyverts/fable/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
-    <div class="section level2"><h2 class="page-header" data-toc-text="development version" id="fable-development-version">fable (development version)<a class="anchor" aria-label="anchor" href="#fable-development-version"></a></h2></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="development version" id="fable-development-version">fable (development version)<a class="anchor" aria-label="anchor" href="#fable-development-version"></a></h2>
+<div class="section level3">
+<h3 id="improvements-development-version">Improvements<a class="anchor" aria-label="anchor" href="#improvements-development-version"></a></h3>
+<ul><li>Documentation improvements.</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.3.3" id="fable-033">fable 0.3.3<small>2023-03-22</small><a class="anchor" aria-label="anchor" href="#fable-033"></a></h2>
+<p>Small patch to resolve CRAN check issues.</p>
+<div class="section level3">
+<h3 id="improvements-0-3-3">Improvements<a class="anchor" aria-label="anchor" href="#improvements-0-3-3"></a></h3>
+<ul><li>Documentation improvements.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="bug-fixes-0-3-3">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-3-3"></a></h3>
+<ul><li>Fixed <code>generate(&lt;ARIMA&gt;)</code> method for some variable names.</li>
+<li>Fixed df in <code>generate(&lt;TSLM&gt;)</code>.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.3.2" id="fable-032">fable 0.3.2<small>2022-09-01</small><a class="anchor" aria-label="anchor" href="#fable-032"></a></h2>
 <div class="section level3">
@@ -107,7 +126,7 @@
 <h3 id="new-features-0-3-0">New features<a class="anchor" aria-label="anchor" href="#new-features-0-3-0"></a></h3>
 <ul><li>Added <code><a href="https://generics.r-lib.org/reference/refit.html" class="external-link">refit()</a></code> method for NNETAR, MEAN, RW, SNAIVE, and NAIVE models (<a href="https://github.com/tidyverts/fable/issues/287" class="external-link">#287</a>, <a href="https://github.com/tidyverts/fable/issues/289" class="external-link">#289</a>, <a href="https://github.com/tidyverts/fable/issues/321" class="external-link">#321</a>. <a href="https://github.com/Tim-TU" class="external-link">@Tim-TU</a>).</li>
 <li>Added <code><a href="https://fabletools.tidyverts.org/reference/fitted.mdl_df.html" class="external-link">hfitted()</a></code> method for ETS and ARIMA, this allows fast estimation of h-step ahead fitted values.</li>
-<li>Added <code><a href="https://generics.r-lib.org/reference/generate.html" class="external-link">generate()</a></code> method for AR, the <code><a href="https://fabletools.tidyverts.org/reference/forecast.html" class="external-link">forecast()</a></code> method now supports bootstrap forecasting via this new method.</li>
+<li>Added <code><a href="https://generics.r-lib.org/reference/generate.html" class="external-link">generate()</a></code> method for AR, the <code><a href="https://generics.r-lib.org/reference/forecast.html" class="external-link">forecast()</a></code> method now supports bootstrap forecasting via this new method.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="improvements-0-3-0">Improvements<a class="anchor" aria-label="anchor" href="#improvements-0-3-0"></a></h3>
@@ -125,10 +144,11 @@
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.2.1" id="fable-021">fable 0.2.1<small>2020-06-16</small><a class="anchor" aria-label="anchor" href="#fable-021"></a></h2>
-<p>This release coincides with v0.2.0 of the fabletools package, which contains some substantial changes to the output of <code><a href="https://fabletools.tidyverts.org/reference/forecast.html" class="external-link">forecast()</a></code> methods. These changes to fabletools emphasise the distribution in the fable object. The most noticeable is a change in column names of the fable, with the distribution now stored in the column matching the response variable, and the forecast mean now stored in the <code>.mean</code> column. For a complete summary of these changes, refer to the fabletools v0.2.0 release news: <a href="https://fabletools.tidyverts.org/news/index.html" class="external-link uri">https://fabletools.tidyverts.org/news/index.html</a></p>
+<p>This release coincides with v0.2.0 of the fabletools package, which contains some substantial changes to the output of <code><a href="https://generics.r-lib.org/reference/forecast.html" class="external-link">forecast()</a></code> methods. These changes to fabletools emphasise the distribution in the fable object. The most noticeable is a change in column names of the fable, with the distribution now stored in the column matching the response variable, and the forecast mean now stored in the <code>.mean</code> column. For a complete summary of these changes, refer to the fabletools v0.2.0 release news: <a href="https://fabletools.tidyverts.org/news/index.html" class="external-link uri">https://fabletools.tidyverts.org/news/index.html</a></p>
 <div class="section level3">
 <h3 id="new-features-0-2-1">New features<a class="anchor" aria-label="anchor" href="#new-features-0-2-1"></a></h3>
-<ul><li>Added the <code><a href="../reference/THETA.html">THETA()</a></code> method.</li></ul></div>
+<ul><li>Added the <code><a href="../reference/THETA.html">THETA()</a></code> method.</li>
+</ul></div>
 <div class="section level3">
 <h3 id="improvements-0-2-1">Improvements<a class="anchor" aria-label="anchor" href="#improvements-0-2-1"></a></h3>
 <ul><li>Forecasts distributions are now provided by the distributional package. They are now more space efficient and allows calculation of distributional statistics including the <code><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean()</a></code>, <code><a href="https://rdrr.io/r/stats/median.html" class="external-link">median()</a></code>, <code>variance()</code>, <code><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile()</a></code>, <code>cdf()</code>, and <code><a href="https://rdrr.io/r/stats/density.html" class="external-link">density()</a></code>.</li>
@@ -144,7 +164,8 @@
 </ul></div>
 <div class="section level3">
 <h3 id="breaking-changes-0-2-1">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-0-2-1"></a></h3>
-<ul><li>The sample path means are now used instead of analytical means when forecasts are produced from sample paths.</li></ul></div>
+<ul><li>The sample path means are now used instead of analytical means when forecasts are produced from sample paths.</li>
+</ul></div>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.2.0" id="fable-020">fable 0.2.0<small>2020-04-22</small><a class="anchor" aria-label="anchor" href="#fable-020"></a></h2>
@@ -183,13 +204,16 @@
 </ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-0-1-1">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-1-1"></a></h3>
-<ul><li>Corrected forecast standard error for drift models.</li></ul></div>
+<ul><li>Corrected forecast standard error for drift models.</li>
+</ul></div>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.1.0" id="fable-010">fable 0.1.0<small>2019-09-23</small><a class="anchor" aria-label="anchor" href="#fable-010"></a></h2>
-<ul><li>First release.</li></ul><div class="section level3">
+<ul><li>First release.</li>
+</ul><div class="section level3">
 <h3 id="new-features-0-1-0">New features<a class="anchor" aria-label="anchor" href="#new-features-0-1-0"></a></h3>
-<ul><li>Support for 9 models and relevant methods: <code>ARIMA</code>, <code>ETS</code>, <code>TSLM</code>, <code>MEAN</code>, <code>RW</code>, <code>NAIVE</code>, <code>SNAIVE</code>, <code>NNETAR</code>, <code>VAR</code>.</li></ul></div>
+<ul><li>Support for 9 models and relevant methods: <code>ARIMA</code>, <code>ETS</code>, <code>TSLM</code>, <code>MEAN</code>, <code>RW</code>, <code>NAIVE</code>, <code>SNAIVE</code>, <code>NNETAR</code>, <code>VAR</code>.</li>
+</ul></div>
 </div>
   </div>
 
@@ -205,7 +229,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

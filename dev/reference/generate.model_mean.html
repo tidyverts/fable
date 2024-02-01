@@ -20,7 +20,7 @@ contains the .innov column, those values will be treated as innovations."><meta 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.3.2.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.3.3.9000</span>
       </span>
     </div>
 
@@ -86,7 +86,7 @@ contains the <code>.innov</code> column, those values will be treated as innovat
 
 
 <dt>new_data</dt>
-<dd><p>A <code>tsibble</code> containing future information used to forecast.</p></dd>
+<dd><p>A tsibble containing the time points and exogenous regressors to produce forecasts for.</p></dd>
 
 
 <dt>bootstrap</dt>
@@ -94,7 +94,7 @@ contains the <code>.innov</code> column, those values will be treated as innovat
 
 
 <dt>...</dt>
-<dd><p>Additional arguments for forecast model methods.</p></dd>
+<dd><p>Other arguments passed to methods</p></dd>
 
 </dl></div>
     <div id="see-also">
@@ -110,12 +110,12 @@ contains the <code>.innov</code> column, those values will be treated as innovat
 <span class="r-in"><span>  <span class="fu"><a href="https://generics.r-lib.org/reference/generate.html" class="external-link">generate</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tsibble: 4 x 4 [30m] &lt;Australia/Melbourne&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Key:       .model, .rep [1]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .model Time                .rep   .sim</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> avg    2015-01-01 <span style="color: #949494;">00:00:00</span> 1     <span style="text-decoration: underline;">4</span>964.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> avg    2015-01-01 <span style="color: #949494;">00:30:00</span> 1     <span style="text-decoration: underline;">3</span>579.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> avg    2015-01-01 <span style="color: #949494;">01:00:00</span> 1     <span style="text-decoration: underline;">4</span>535.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> avg    2015-01-01 <span style="color: #949494;">01:30:00</span> 1     <span style="text-decoration: underline;">5</span>217.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .model .rep  Time                 .sim</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> avg    1     2015-01-01 <span style="color: #949494;">00:00:00</span> <span style="text-decoration: underline;">5</span>425.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> avg    1     2015-01-01 <span style="color: #949494;">00:30:00</span> <span style="text-decoration: underline;">4</span>485.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> avg    1     2015-01-01 <span style="color: #949494;">01:00:00</span> <span style="text-decoration: underline;">4</span>731.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> avg    1     2015-01-01 <span style="color: #949494;">01:30:00</span> <span style="text-decoration: underline;">2</span>698.</span>
 </code></pre></div>
     </div>
   </div>
@@ -130,7 +130,7 @@ contains the <code>.innov</code> column, those values will be treated as innovat
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

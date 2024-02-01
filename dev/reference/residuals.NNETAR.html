@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.3.2.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.3.3.9000</span>
       </span>
     </div>
 
@@ -76,11 +76,11 @@
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>object</dt>
-<dd><p>The time series model used to produce the forecasts</p></dd>
+<dd><p>A model for which forecasts are required.</p></dd>
 
 
 <dt>...</dt>
-<dd><p>Additional arguments for forecast model methods.</p></dd>
+<dd><p>Other arguments passed to methods</p></dd>
 
 </dl></div>
     <div id="value">
@@ -100,16 +100,16 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>    .model index  .resid</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> nn      <span style="text-decoration: underline;">1</span>937 <span style="color: #BB0000;">NA</span>     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> nn      <span style="text-decoration: underline;">1</span>938 -<span style="color: #BB0000;">0.440</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> nn      <span style="text-decoration: underline;">1</span>939  0.112 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> nn      <span style="text-decoration: underline;">1</span>940  0.420 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> nn      <span style="text-decoration: underline;">1</span>941  0.053<span style="text-decoration: underline;">0</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> nn      <span style="text-decoration: underline;">1</span>942 -<span style="color: #BB0000;">0.670</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> nn      <span style="text-decoration: underline;">1</span>943 -<span style="color: #BB0000;">0.314</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> nn      <span style="text-decoration: underline;">1</span>944  0.151 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> nn      <span style="text-decoration: underline;">1</span>945  0.676 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> nn      <span style="text-decoration: underline;">1</span>938 -<span style="color: #BB0000;">0.444</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> nn      <span style="text-decoration: underline;">1</span>939  0.110 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> nn      <span style="text-decoration: underline;">1</span>940  0.421 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> nn      <span style="text-decoration: underline;">1</span>941  0.055<span style="text-decoration: underline;">7</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> nn      <span style="text-decoration: underline;">1</span>942 -<span style="color: #BB0000;">0.666</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> nn      <span style="text-decoration: underline;">1</span>943 -<span style="color: #BB0000;">0.310</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> nn      <span style="text-decoration: underline;">1</span>944  0.155 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> nn      <span style="text-decoration: underline;">1</span>945  0.680 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> nn      <span style="text-decoration: underline;">1</span>946  1.26  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 14 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 14 more rows</span></span>
 </code></pre></div>
     </div>
   </div>
@@ -124,7 +124,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

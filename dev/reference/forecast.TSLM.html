@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.3.2.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.3.3.9000</span>
       </span>
     </div>
 
@@ -70,7 +70,7 @@
 
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S3 method for TSLM</span></span>
-<span><span class="fu"><a href="https://fabletools.tidyverts.org/reference/forecast.html" class="external-link">forecast</a></span><span class="op">(</span></span>
+<span><span class="fu"><a href="https://generics.r-lib.org/reference/forecast.html" class="external-link">forecast</a></span><span class="op">(</span></span>
 <span>  <span class="va">object</span>,</span>
 <span>  <span class="va">new_data</span>,</span>
 <span>  specials <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -84,15 +84,15 @@
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>object</dt>
-<dd><p>The time series model used to produce the forecasts</p></dd>
+<dd><p>A model for which forecasts are required.</p></dd>
 
 
 <dt>new_data</dt>
-<dd><p>A <code>tsibble</code> containing future information used to forecast.</p></dd>
+<dd><p>A tsibble containing the time points and exogenous regressors to produce forecasts for.</p></dd>
 
 
 <dt>specials</dt>
-<dd><p>(passed by <code><a href="https://fabletools.tidyverts.org/reference/forecast.html" class="external-link">fabletools::forecast.mdl_df()</a></code>).</p></dd>
+<dd><p>(passed by <code><a href="https://generics.r-lib.org/reference/forecast.html" class="external-link">fabletools::forecast.mdl_df()</a></code>).</p></dd>
 
 
 <dt>bootstrap</dt>
@@ -112,7 +112,7 @@ or reconciliation processes.</p></dd>
 
 
 <dt>...</dt>
-<dd><p>Additional arguments for forecast model methods.</p></dd>
+<dd><p>Other arguments passed to methods</p></dd>
 
 </dl></div>
     <div id="value">
@@ -126,7 +126,7 @@ or reconciliation processes.</p></dd>
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://tsibble.tidyverts.org/reference/as-tsibble.html" class="external-link">as_tsibble</a></span><span class="op">(</span><span class="va">USAccDeaths</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://fabletools.tidyverts.org/reference/model.html" class="external-link">model</a></span><span class="op">(</span>lm <span class="op">=</span> <span class="fu"><a href="TSLM.html">TSLM</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">value</span><span class="op">)</span> <span class="op">~</span> <span class="fu">trend</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu">season</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://fabletools.tidyverts.org/reference/forecast.html" class="external-link">forecast</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://generics.r-lib.org/reference/forecast.html" class="external-link">forecast</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A fable: 24 x 4 [1M]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Key:     .model [1]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    .model    index            value .mean</span>
@@ -141,7 +141,7 @@ or reconciliation processes.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> lm     1979 Aug t(N(9.1, 0.003)) <span style="text-decoration: underline;">9</span>237.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> lm     1979 Sep   t(N(9, 0.003)) <span style="text-decoration: underline;">8</span>237.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> lm     1979 Oct   t(N(9, 0.003)) <span style="text-decoration: underline;">8</span>516.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 14 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 14 more rows</span></span>
 </code></pre></div>
     </div>
   </div>
@@ -156,7 +156,7 @@ or reconciliation processes.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

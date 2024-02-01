@@ -20,7 +20,7 @@ contains the .innov column, those values will be treated as innovations."><meta 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.3.2.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.3.3.9000</span>
       </span>
     </div>
 
@@ -86,11 +86,11 @@ contains the <code>.innov</code> column, those values will be treated as innovat
 
 
 <dt>new_data</dt>
-<dd><p>A <code>tsibble</code> containing future information used to forecast.</p></dd>
+<dd><p>A tsibble containing the time points and exogenous regressors to produce forecasts for.</p></dd>
 
 
 <dt>specials</dt>
-<dd><p>(passed by <code><a href="https://fabletools.tidyverts.org/reference/forecast.html" class="external-link">fabletools::forecast.mdl_df()</a></code>).</p></dd>
+<dd><p>(passed by <code><a href="https://generics.r-lib.org/reference/forecast.html" class="external-link">fabletools::forecast.mdl_df()</a></code>).</p></dd>
 
 
 <dt>bootstrap</dt>
@@ -98,7 +98,7 @@ contains the <code>.innov</code> column, those values will be treated as innovat
 
 
 <dt>...</dt>
-<dd><p>Additional arguments for forecast model methods.</p></dd>
+<dd><p>Other arguments passed to methods</p></dd>
 
 </dl></div>
     <div id="see-also">
@@ -113,19 +113,19 @@ contains the <code>.innov</code> column, those values will be treated as innovat
 <span class="r-in"><span>  <span class="fu"><a href="https://generics.r-lib.org/reference/generate.html" class="external-link">generate</a></span><span class="op">(</span>times <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tsibble: 2,400 x 4 [1M]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Key:       .model, .rep [100]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    .model                               index .rep    .sim</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                <span style="color: #949494; font-style: italic;">&lt;mth&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> <span style="color: #949494;">"</span>ETS(log(value) ~ season(\"A\"))<span style="color: #949494;">"</span> 1979 Jan 1      <span style="text-decoration: underline;">8</span>267.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> <span style="color: #949494;">"</span>ETS(log(value) ~ season(\"A\"))<span style="color: #949494;">"</span> 1979 Feb 1      <span style="text-decoration: underline;">7</span>703.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> <span style="color: #949494;">"</span>ETS(log(value) ~ season(\"A\"))<span style="color: #949494;">"</span> 1979 Mar 1      <span style="text-decoration: underline;">8</span>353.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> <span style="color: #949494;">"</span>ETS(log(value) ~ season(\"A\"))<span style="color: #949494;">"</span> 1979 Apr 1      <span style="text-decoration: underline;">8</span>601.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> <span style="color: #949494;">"</span>ETS(log(value) ~ season(\"A\"))<span style="color: #949494;">"</span> 1979 May 1      <span style="text-decoration: underline;">9</span>222.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> <span style="color: #949494;">"</span>ETS(log(value) ~ season(\"A\"))<span style="color: #949494;">"</span> 1979 Jun 1     <span style="text-decoration: underline;">10</span>281.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> <span style="color: #949494;">"</span>ETS(log(value) ~ season(\"A\"))<span style="color: #949494;">"</span> 1979 Jul 1     <span style="text-decoration: underline;">11</span>027.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> <span style="color: #949494;">"</span>ETS(log(value) ~ season(\"A\"))<span style="color: #949494;">"</span> 1979 Aug 1     <span style="text-decoration: underline;">10</span>637.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> <span style="color: #949494;">"</span>ETS(log(value) ~ season(\"A\"))<span style="color: #949494;">"</span> 1979 Sep 1      <span style="text-decoration: underline;">9</span>653.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> <span style="color: #949494;">"</span>ETS(log(value) ~ season(\"A\"))<span style="color: #949494;">"</span> 1979 Oct 1      <span style="text-decoration: underline;">9</span>782.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 2,390 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    .model                            .rep     index   .sim</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                             <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;mth&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> <span style="color: #949494;">"</span>ETS(log(value) ~ season(\"A\"))<span style="color: #949494;">"</span> 1     1979 Jan  <span style="text-decoration: underline;">8</span>540.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> <span style="color: #949494;">"</span>ETS(log(value) ~ season(\"A\"))<span style="color: #949494;">"</span> 1     1979 Feb  <span style="text-decoration: underline;">7</span>699.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> <span style="color: #949494;">"</span>ETS(log(value) ~ season(\"A\"))<span style="color: #949494;">"</span> 1     1979 Mar  <span style="text-decoration: underline;">8</span>701.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> <span style="color: #949494;">"</span>ETS(log(value) ~ season(\"A\"))<span style="color: #949494;">"</span> 1     1979 Apr  <span style="text-decoration: underline;">8</span>844.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> <span style="color: #949494;">"</span>ETS(log(value) ~ season(\"A\"))<span style="color: #949494;">"</span> 1     1979 May <span style="text-decoration: underline;">10</span>054.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> <span style="color: #949494;">"</span>ETS(log(value) ~ season(\"A\"))<span style="color: #949494;">"</span> 1     1979 Jun <span style="text-decoration: underline;">10</span>151.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> <span style="color: #949494;">"</span>ETS(log(value) ~ season(\"A\"))<span style="color: #949494;">"</span> 1     1979 Jul <span style="text-decoration: underline;">10</span>225.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> <span style="color: #949494;">"</span>ETS(log(value) ~ season(\"A\"))<span style="color: #949494;">"</span> 1     1979 Aug <span style="text-decoration: underline;">10</span>220.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> <span style="color: #949494;">"</span>ETS(log(value) ~ season(\"A\"))<span style="color: #949494;">"</span> 1     1979 Sep  <span style="text-decoration: underline;">8</span>826.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> <span style="color: #949494;">"</span>ETS(log(value) ~ season(\"A\"))<span style="color: #949494;">"</span> 1     1979 Oct  <span style="text-decoration: underline;">8</span>670.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 2,390 more rows</span></span>
 </code></pre></div>
     </div>
   </div>
@@ -140,7 +140,7 @@ contains the <code>.innov</code> column, those values will be treated as innovat
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.3.2.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.3.3.9000</span>
       </span>
     </div>
 
@@ -70,13 +70,13 @@
 
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S3 method for NNETAR</span></span>
-<span><span class="fu"><a href="https://fabletools.tidyverts.org/reference/forecast.html" class="external-link">forecast</a></span><span class="op">(</span></span>
+<span><span class="fu"><a href="https://generics.r-lib.org/reference/forecast.html" class="external-link">forecast</a></span><span class="op">(</span></span>
 <span>  <span class="va">object</span>,</span>
 <span>  <span class="va">new_data</span>,</span>
 <span>  specials <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  simulate <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  bootstrap <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  times <span class="op">=</span> <span class="fl">1000</span>,</span>
+<span>  times <span class="op">=</span> <span class="fl">5000</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -84,31 +84,31 @@
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>object</dt>
-<dd><p>The time series model used to produce the forecasts</p></dd>
+<dd><p>A model for which forecasts are required.</p></dd>
 
 
 <dt>new_data</dt>
-<dd><p>A <code>tsibble</code> containing future information used to forecast.</p></dd>
+<dd><p>A tsibble containing the time points and exogenous regressors to produce forecasts for.</p></dd>
 
 
 <dt>specials</dt>
-<dd><p>(passed by <code><a href="https://fabletools.tidyverts.org/reference/forecast.html" class="external-link">fabletools::forecast.mdl_df()</a></code>).</p></dd>
+<dd><p>(passed by <code><a href="https://generics.r-lib.org/reference/forecast.html" class="external-link">fabletools::forecast.mdl_df()</a></code>).</p></dd>
 
 
 <dt>simulate</dt>
-<dd><p>If <code>TRUE</code>, prediction intervals are produced by simulation rather than using analytic formulae.</p></dd>
+<dd><p>If <code>TRUE</code>, forecast distributions are produced by sampling from a normal distribution. Without simulation, forecast uncertainty cannot be estimated for this model and instead a degenerate distribution with the forecast mean will be produced.</p></dd>
 
 
 <dt>bootstrap</dt>
-<dd><p>If <code>TRUE</code>, then forecast distributions are computed using simulation with resampled errors.</p></dd>
+<dd><p>If <code>TRUE</code>, forecast distributions are produced by sampling from the model's training residuals.</p></dd>
 
 
 <dt>times</dt>
-<dd><p>The number of sample paths to use in estimating the forecast distribution if simulated intervals are used.</p></dd>
+<dd><p>The number of sample paths to use in producing the forecast distribution. Setting <code>simulate = FALSE</code> or <code>times = 0</code> will produce degenerate forecast distributions of the forecast mean.</p></dd>
 
 
 <dt>...</dt>
-<dd><p>Additional arguments for forecast model methods.</p></dd>
+<dd><p>Other arguments passed to methods</p></dd>
 
 </dl></div>
     <div id="value">
@@ -122,13 +122,13 @@
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://tsibble.tidyverts.org/reference/as-tsibble.html" class="external-link">as_tsibble</a></span><span class="op">(</span><span class="va">airmiles</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://fabletools.tidyverts.org/reference/model.html" class="external-link">model</a></span><span class="op">(</span>nn <span class="op">=</span> <span class="fu"><a href="NNETAR.html">NNETAR</a></span><span class="op">(</span><span class="fu"><a href="https://fabletools.tidyverts.org/reference/box_cox.html" class="external-link">box_cox</a></span><span class="op">(</span><span class="va">value</span>, <span class="fl">0.15</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://fabletools.tidyverts.org/reference/forecast.html" class="external-link">forecast</a></span><span class="op">(</span>times <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://generics.r-lib.org/reference/forecast.html" class="external-link">forecast</a></span><span class="op">(</span>times <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A fable: 2 x 4 [1Y]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Key:     .model [1]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   .model index         value  .mean</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dist&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> nn      <span style="text-decoration: underline;">1</span>961 t(sample[10]) <span style="text-decoration: underline;">31</span>555.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> nn      <span style="text-decoration: underline;">1</span>962 t(sample[10]) <span style="text-decoration: underline;">32</span>102.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .model index      value  .mean</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dist&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> nn      <span style="text-decoration: underline;">1</span>961 sample[10] <span style="text-decoration: underline;">31</span>085.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> nn      <span style="text-decoration: underline;">1</span>962 sample[10] <span style="text-decoration: underline;">33</span>936.</span>
 </code></pre></div>
     </div>
   </div>
@@ -143,7 +143,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

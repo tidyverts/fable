@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.3.2.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.3.3.9000</span>
       </span>
     </div>
 
@@ -70,7 +70,7 @@
 
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S3 method for VAR</span></span>
-<span><span class="fu"><a href="https://fabletools.tidyverts.org/reference/forecast.html" class="external-link">forecast</a></span><span class="op">(</span></span>
+<span><span class="fu"><a href="https://generics.r-lib.org/reference/forecast.html" class="external-link">forecast</a></span><span class="op">(</span></span>
 <span>  <span class="va">object</span>,</span>
 <span>  new_data <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  specials <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -83,15 +83,15 @@
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>object</dt>
-<dd><p>The time series model used to produce the forecasts</p></dd>
+<dd><p>A model for which forecasts are required.</p></dd>
 
 
 <dt>new_data</dt>
-<dd><p>A <code>tsibble</code> containing future information used to forecast.</p></dd>
+<dd><p>A tsibble containing the time points and exogenous regressors to produce forecasts for.</p></dd>
 
 
 <dt>specials</dt>
-<dd><p>(passed by <code><a href="https://fabletools.tidyverts.org/reference/forecast.html" class="external-link">fabletools::forecast.mdl_df()</a></code>).</p></dd>
+<dd><p>(passed by <code><a href="https://generics.r-lib.org/reference/forecast.html" class="external-link">fabletools::forecast.mdl_df()</a></code>).</p></dd>
 
 
 <dt>bootstrap</dt>
@@ -103,7 +103,7 @@
 
 
 <dt>...</dt>
-<dd><p>Additional arguments for forecast model methods.</p></dd>
+<dd><p>Other arguments passed to methods</p></dd>
 
 </dl></div>
     <div id="value">
@@ -120,23 +120,23 @@
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">lung_deaths</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://fabletools.tidyverts.org/reference/model.html" class="external-link">model</a></span><span class="op">(</span><span class="fu"><a href="VAR.html">VAR</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">mdeaths</span>, <span class="va">fdeaths</span><span class="op">)</span> <span class="op">~</span> <span class="fu"><a href="AR.html">AR</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://fabletools.tidyverts.org/reference/forecast.html" class="external-link">forecast</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://generics.r-lib.org/reference/forecast.html" class="external-link">forecast</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A fable: 24 x 4 [1M]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Key:     .model [1]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    .model                                 index .distribution .mean[,"…¹ [,"fd…²</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                  <span style="color: #949494; font-style: italic;">&lt;mth&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dist&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1980 Jan        MVN[2]      <span style="text-decoration: underline;">1</span>486.    575.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1980 Feb        MVN[2]      <span style="text-decoration: underline;">1</span>445.    558.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1980 Mar        MVN[2]      <span style="text-decoration: underline;">1</span>369.    528.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1980 Apr        MVN[2]      <span style="text-decoration: underline;">1</span>340.    505.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1980 May        MVN[2]      <span style="text-decoration: underline;">1</span>327.    497.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1980 Jun        MVN[2]      <span style="text-decoration: underline;">1</span>349.    505.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1980 Jul        MVN[2]      <span style="text-decoration: underline;">1</span>395.    522.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1980 Aug        MVN[2]      <span style="text-decoration: underline;">1</span>442.    540.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1980 Sep        MVN[2]      <span style="text-decoration: underline;">1</span>477.    554.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1980 Oct        MVN[2]      <span style="text-decoration: underline;">1</span>495.    561.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 14 more rows, and abbreviated variable names ¹​.mean[,"mdeaths"],</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ²​[,"fdeaths"]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    .model                                 index .distribution .mean[,"mdeaths"]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                  <span style="color: #949494; font-style: italic;">&lt;mth&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dist&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1980 Jan        MVN[2]             <span style="text-decoration: underline;">1</span>486.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1980 Feb        MVN[2]             <span style="text-decoration: underline;">1</span>445.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1980 Mar        MVN[2]             <span style="text-decoration: underline;">1</span>369.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1980 Apr        MVN[2]             <span style="text-decoration: underline;">1</span>340.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1980 May        MVN[2]             <span style="text-decoration: underline;">1</span>327.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1980 Jun        MVN[2]             <span style="text-decoration: underline;">1</span>349.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1980 Jul        MVN[2]             <span style="text-decoration: underline;">1</span>395.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1980 Aug        MVN[2]             <span style="text-decoration: underline;">1</span>442.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1980 Sep        MVN[2]             <span style="text-decoration: underline;">1</span>477.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1980 Oct        MVN[2]             <span style="text-decoration: underline;">1</span>495.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 14 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 1 more variable: .mean[2] &lt;dbl&gt;</span></span>
 </code></pre></div>
     </div>
   </div>
@@ -151,7 +151,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>
