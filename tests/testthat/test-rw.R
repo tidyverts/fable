@@ -1,4 +1,6 @@
 context("test-rw.R")
+skip_if_not_installed("forecast")
+
 test_that("NAIVE", {
   fable_fit <- USAccDeaths_tbl %>% model(naive = NAIVE(value))
   forecast_fc <- forecast::naive(USAccDeaths, h = 12)

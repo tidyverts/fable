@@ -1,4 +1,5 @@
 context("test-ets.R")
+skip_if_not_installed("forecast")
 
 forecast_fit <- USAccDeaths %>% forecast::ets()
 test_that("Automatic ETS selection", {
