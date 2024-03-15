@@ -23,15 +23,11 @@
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]--><!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=UA-145057858-1"></script><script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'UA-145057858-1');
-</script>
+<![endif]--><script defer data-domain="fable.tidyverts.org" src="https://track.mitchelloharawild.com/js/plausible.js"></script>
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -44,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4</span>
       </span>
     </div>
 
@@ -57,7 +53,7 @@
   <a href="../news/index.html">Changelog</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Vignettes
      
     <span class="caret"></span>
@@ -74,11 +70,11 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://docs.google.com/forms/d/e/1FAIpQLSfc66U8e8e-x_7TeWpuBAtxqdJD4UXozdkLgmBI3mlRuKPkzA/viewform?usp=sf_link">Feedback</a>
+  <a href="https://docs.google.com/forms/d/e/1FAIpQLSfc66U8e8e-x_7TeWpuBAtxqdJD4UXozdkLgmBI3mlRuKPkzA/viewform?usp=sf_link" class="external-link">Feedback</a>
 </li>
 <li>
-  <a href="https://github.com/tidyverts/fable">
-    <span class="fas fa-github fa-lg"></span>
+  <a href="https://github.com/tidyverts/fable" class="external-link">
+    <span class="fa fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -92,13 +88,13 @@
 
       
 
-      </header><script src="fable_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Introduction to fable</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/tidyverts/fable/blob/master/vignettes/fable.Rmd"><code>vignettes/fable.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/tidyverts/fable/blob/HEAD/vignettes/fable.Rmd" class="external-link"><code>vignettes/fable.Rmd</code></a></small>
       <div class="hidden name"><code>fable.Rmd</code></div>
 
     </div>
@@ -106,187 +102,245 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://fable.tidyverts.org">fable</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tsibble.tidyverts.org">tsibble</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span></code></pre></div>
-<p>The fable package provides some commonly used univariate and multivariate time series forecasting models which can be used with tidy temporal data in the tsibble format. These models are used within a consistent and tidy modelling framework, allowing several models to be estimated, compared, combined, forecasted and otherwise worked with across many time series.</p>
-<p>Suppose we wanted to forecast the number of domestic travellers to Melbourne, Australia. In the <code><a href="https://tsibble.tidyverts.org/reference/tourism.html">tsibble::tourism</a></code> data set, this can be further broken down into 4 reasons of travel: “business”, “holiday”, “visiting friends and relatives” and “other reasons”. The first observation from each series are shown below.</p>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://fable.tidyverts.org">fable</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tsibble.tidyverts.org" class="external-link">tsibble</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></code></pre></div>
+<p>The fable package provides some commonly used univariate and
+multivariate time series forecasting models which can be used with tidy
+temporal data in the tsibble format. These models are used within a
+consistent and tidy modelling framework, allowing several models to be
+estimated, compared, combined, forecasted and otherwise worked with
+across many time series.</p>
+<p>Suppose we wanted to forecast the number of domestic travellers to
+Melbourne, Australia. In the <code><a href="https://tsibble.tidyverts.org/reference/tourism.html" class="external-link">tsibble::tourism</a></code> data set,
+this can be further broken down into 4 reasons of travel: “business”,
+“holiday”, “visiting friends and relatives” and “other reasons”. The
+first observation from each series are shown below.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">tourism_melb</span> <span class="op">&lt;-</span> <span class="va">tourism</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">Region</span> <span class="op">==</span> <span class="st">"Melbourne"</span><span class="op">)</span>
-<span class="va">tourism_melb</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">Purpose</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
-<span class="co">#&gt; # A tsibble: 4 x 5 [1Q]</span>
-<span class="co">#&gt; # Key:       Region, State, Purpose [4]</span>
-<span class="co">#&gt; # Groups:    Purpose [4]</span>
-<span class="co">#&gt;   Quarter Region    State    Purpose  Trips</span>
-<span class="co">#&gt;     &lt;qtr&gt; &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;    &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 1998 Q1 Melbourne Victoria Business 405. </span>
-<span class="co">#&gt; 2 1998 Q1 Melbourne Victoria Holiday  428. </span>
-<span class="co">#&gt; 3 1998 Q1 Melbourne Victoria Other     79.9</span>
-<span class="co">#&gt; 4 1998 Q1 Melbourne Victoria Visiting 666.</span></code></pre></div>
-<p>The variable that we’d like to estimate is the number of overnight trips (in thousands) represented by the <code>Trips</code> variable. A plot of the data reveals that some trends and weak seasonality are apparent.</p>
+<code class="sourceCode R"><span><span class="va">tourism_melb</span> <span class="op">&lt;-</span> <span class="va">tourism</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">Region</span> <span class="op">==</span> <span class="st">"Melbourne"</span><span class="op">)</span></span>
+<span><span class="va">tourism_melb</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">Purpose</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tsibble: 4 x 5 [1Q]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># Key:       Region, State, Purpose [4]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># Groups:    Purpose [4]</span></span></span>
+<span><span class="co">#&gt;   Quarter Region    State    Purpose  Trips</span></span>
+<span><span class="co">#&gt;     <span style="color: #949494; font-style: italic;">&lt;qtr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 1998 Q1 Melbourne Victoria Business 405. </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 1998 Q1 Melbourne Victoria Holiday  428. </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 1998 Q1 Melbourne Victoria Other     79.9</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 1998 Q1 Melbourne Victoria Visiting 666.</span></span></code></pre></div>
+<p>The variable that we’d like to estimate is the number of overnight
+trips (in thousands) represented by the <code>Trips</code> variable. A
+plot of the data reveals that some trends and weak seasonality are
+apparent.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">tourism_melb</span> <span class="op">%&gt;%</span>
-  <span class="fu">autoplot</span><span class="op">(</span><span class="va">Trips</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">tourism_melb</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">Trips</span><span class="op">)</span></span></code></pre></div>
 <p><img src="fable_files/figure-html/plot-1.png" width="672"></p>
-<p>Two widely used models available in this package are ETS and ARIMA. These models are specified using a compact formula representation (much like cross-sectional linear models using <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code>). The response variable (<code>Trips</code>) and any transformations are included on the left, while the model specification is on the right of the formula. When a model is not fully specified (or if the formula’s right side is missing completely), the unspecified components will be chosen automatically.</p>
-<p>Suppose we think that the ETS model must have an additive trend, and want the other elements to be chosen automatically. This model would be specified using <code><a href="../reference/ETS.html">ETS(Trips ~ trend("A"))</a></code>. Similarly, a completely automatic ARIMA model (much like <code>auto.arima()</code> from the <code>forecast</code> package) can be specified using <code><a href="../reference/ARIMA.html">ARIMA(Trips)</a></code>. The <code>model()</code> function is used to estimate these model specifications on a particular dataset, and will return a “mable” (model table).</p>
+<p>Two widely used models available in this package are ETS and ARIMA.
+These models are specified using a compact formula representation (much
+like cross-sectional linear models using <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code>). The
+response variable (<code>Trips</code>) and any transformations are
+included on the left, while the model specification is on the right of
+the formula. When a model is not fully specified (or if the formula’s
+right side is missing completely), the unspecified components will be
+chosen automatically.</p>
+<p>Suppose we think that the ETS model must have an additive trend, and
+want the other elements to be chosen automatically. This model would be
+specified using <code>ETS(Trips ~ trend("A"))</code>. Similarly, a
+completely automatic ARIMA model (much like <code>auto.arima()</code>
+from the <code>forecast</code> package) can be specified using
+<code>ARIMA(Trips)</code>. The <code><a href="https://fabletools.tidyverts.org/reference/model.html" class="external-link">model()</a></code> function is used to
+estimate these model specifications on a particular dataset, and will
+return a “mable” (model table).</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">fit</span> <span class="op">&lt;-</span> <span class="va">tourism_melb</span> <span class="op">%&gt;%</span>
-  <span class="fu">model</span><span class="op">(</span>
-    ets <span class="op">=</span> <span class="fu"><a href="../reference/ETS.html">ETS</a></span><span class="op">(</span><span class="va">Trips</span> <span class="op">~</span> <span class="fu">trend</span><span class="op">(</span><span class="st">"A"</span><span class="op">)</span><span class="op">)</span>,
-    arima <span class="op">=</span> <span class="fu"><a href="../reference/ARIMA.html">ARIMA</a></span><span class="op">(</span><span class="va">Trips</span><span class="op">)</span>
-  <span class="op">)</span>
-<span class="va">fit</span>
-<span class="co">#&gt; # A mable: 4 x 5</span>
-<span class="co">#&gt; # Key:     Region, State, Purpose [4]</span>
-<span class="co">#&gt;   Region    State    Purpose           ets                             arima</span>
-<span class="co">#&gt;   &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;         &lt;model&gt;                           &lt;model&gt;</span>
-<span class="co">#&gt; 1 Melbourne Victoria Business &lt;ETS(A,A,A)&gt; &lt;ARIMA(0,1,2)(1,0,1)[4] w/ drift&gt;</span>
-<span class="co">#&gt; 2 Melbourne Victoria Holiday  &lt;ETS(M,A,A)&gt;           &lt;ARIMA(0,1,1) w/ drift&gt;</span>
-<span class="co">#&gt; 3 Melbourne Victoria Other    &lt;ETS(A,A,N)&gt;           &lt;ARIMA(0,1,1) w/ drift&gt;</span>
-<span class="co">#&gt; 4 Melbourne Victoria Visiting &lt;ETS(M,A,A)&gt;          &lt;ARIMA(0,1,1)(1,0,2)[4]&gt;</span></code></pre></div>
-<p>A mable contains a row for each time series (uniquely identified by the key variables), and a column for each model specification. A model is contained within the cells of each model column. In the example above we can see that the all four ETS models have an additive trend, and the error and seasonality have been chosen automatically. Similarly, the ARIMA model varies between time series as it has been automatically selected.</p>
-<p>The <code><a href="https://rdrr.io/r/stats/coef.html">coef()</a></code> or <code>tidy()</code> function is used to extract the coefficients from the models. It’s possible to use <code><a href="https://dplyr.tidyverse.org/reference/select.html">select()</a></code> and other verbs to focus on the coefficients from a particular model.</p>
+<code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="va">tourism_melb</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://fabletools.tidyverts.org/reference/model.html" class="external-link">model</a></span><span class="op">(</span></span>
+<span>    ets <span class="op">=</span> <span class="fu"><a href="../reference/ETS.html">ETS</a></span><span class="op">(</span><span class="va">Trips</span> <span class="op">~</span> <span class="fu">trend</span><span class="op">(</span><span class="st">"A"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    arima <span class="op">=</span> <span class="fu"><a href="../reference/ARIMA.html">ARIMA</a></span><span class="op">(</span><span class="va">Trips</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="va">fit</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A mable: 4 x 5</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># Key:     Region, State, Purpose [4]</span></span></span>
+<span><span class="co">#&gt;   Region    State    Purpose           ets                             arima</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;model&gt;</span>                           <span style="color: #949494; font-style: italic;">&lt;model&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Melbourne Victoria Business &lt;ETS(A,A,A)&gt; &lt;ARIMA(0,1,2)(1,0,1)[4] w/ drift&gt;</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Melbourne Victoria Holiday  &lt;ETS(M,A,A)&gt;           &lt;ARIMA(0,1,1) w/ drift&gt;</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Melbourne Victoria Other    &lt;ETS(A,A,N)&gt;           &lt;ARIMA(0,1,1) w/ drift&gt;</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Melbourne Victoria Visiting &lt;ETS(M,A,A)&gt;          &lt;ARIMA(0,1,1)(1,0,2)[4]&gt;</span></span></code></pre></div>
+<p>A mable contains a row for each time series (uniquely identified by
+the key variables), and a column for each model specification. A model
+is contained within the cells of each model column. In the example above
+we can see that the all four ETS models have an additive trend, and the
+error and seasonality have been chosen automatically. Similarly, the
+ARIMA model varies between time series as it has been automatically
+selected.</p>
+<p>The <code><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef()</a></code> or <code><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy()</a></code> function is used to
+extract the coefficients from the models. It’s possible to use
+<code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select()</a></code> and other verbs to focus on the coefficients from
+a particular model.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">fit</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">Region</span>, <span class="va">State</span>, <span class="va">Purpose</span>, <span class="va">arima</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 13 x 9</span>
-<span class="co">#&gt;    Region   State   Purpose  .model term   estimate std.error statistic  p.value</span>
-<span class="co">#&gt;    &lt;chr&gt;    &lt;chr&gt;   &lt;chr&gt;    &lt;chr&gt;  &lt;chr&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 Melbour… Victor… Business arima  ma1      -0.555    0.130     -4.28  5.29e- 5</span>
-<span class="co">#&gt;  2 Melbour… Victor… Business arima  ma2      -0.233    0.129     -1.81  7.47e- 2</span>
-<span class="co">#&gt;  3 Melbour… Victor… Business arima  sar1      0.946    0.0634    14.9   1.07e-24</span>
-<span class="co">#&gt;  4 Melbour… Victor… Business arima  sma1     -0.772    0.145     -5.34  8.81e- 7</span>
-<span class="co">#&gt;  5 Melbour… Victor… Business arima  const…    0.192    0.213      0.903 3.69e- 1</span>
-<span class="co">#&gt;  6 Melbour… Victor… Holiday  arima  ma1      -0.931    0.0851   -10.9   1.77e-17</span>
-<span class="co">#&gt;  7 Melbour… Victor… Holiday  arima  const…    3.65     0.571      6.39  1.06e- 8</span>
-<span class="co">#&gt;  8 Melbour… Victor… Other    arima  ma1      -0.750    0.0708   -10.6   8.19e-17</span>
-<span class="co">#&gt;  9 Melbour… Victor… Other    arima  const…    1.24     0.640      1.93  5.70e- 2</span>
-<span class="co">#&gt; 10 Melbour… Victor… Visiting arima  ma1      -0.838    0.0652   -12.8   5.03e-21</span>
-<span class="co">#&gt; 11 Melbour… Victor… Visiting arima  sar1      0.659    0.193      3.41  1.03e- 3</span>
-<span class="co">#&gt; 12 Melbour… Victor… Visiting arima  sma1     -0.402    0.206     -1.95  5.47e- 2</span>
-<span class="co">#&gt; 13 Melbour… Victor… Visiting arima  sma2      0.322    0.143      2.26  2.68e- 2</span></code></pre></div>
-<p>The <code>glance()</code> function provides a one-row summary of each model, and commonly includes descriptions of the model’s fit such as the residual variance and information criteria. Be wary though, as information criteria (AIC, AICc, BIC) are only comparable between the same model class and only if those models share the same response (after transformations and differencing).</p>
+<code class="sourceCode R"><span><span class="va">fit</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">Region</span>, <span class="va">State</span>, <span class="va">Purpose</span>, <span class="va">arima</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 13 × 9</span></span></span>
+<span><span class="co">#&gt;    Region    State    Purpose .model term  estimate std.error statistic  p.value</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Melbourne Victoria Busine… arima  ma1     -<span style="color: #BB0000;">0.555</span>    0.130     -<span style="color: #BB0000;">4.28</span>  5.29<span style="color: #949494;">e</span><span style="color: #BB0000;">- 5</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> Melbourne Victoria Busine… arima  ma2     -<span style="color: #BB0000;">0.233</span>    0.129     -<span style="color: #BB0000;">1.81</span>  7.47<span style="color: #949494;">e</span><span style="color: #BB0000;">- 2</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> Melbourne Victoria Busine… arima  sar1     0.946    0.063<span style="text-decoration: underline;">4</span>    14.9   1.08<span style="color: #949494;">e</span><span style="color: #BB0000;">-24</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> Melbourne Victoria Busine… arima  sma1    -<span style="color: #BB0000;">0.772</span>    0.145     -<span style="color: #BB0000;">5.34</span>  8.81<span style="color: #949494;">e</span><span style="color: #BB0000;">- 7</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> Melbourne Victoria Busine… arima  cons…    0.192    0.213      0.903 3.69<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> Melbourne Victoria Holiday arima  ma1     -<span style="color: #BB0000;">0.931</span>    0.085<span style="text-decoration: underline;">1</span>   -<span style="color: #BB0000;">10.9</span>   1.77<span style="color: #949494;">e</span><span style="color: #BB0000;">-17</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> Melbourne Victoria Holiday arima  cons…    3.65     0.571      6.39  1.06<span style="color: #949494;">e</span><span style="color: #BB0000;">- 8</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> Melbourne Victoria Other   arima  ma1     -<span style="color: #BB0000;">0.750</span>    0.070<span style="text-decoration: underline;">8</span>   -<span style="color: #BB0000;">10.6</span>   8.19<span style="color: #949494;">e</span><span style="color: #BB0000;">-17</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> Melbourne Victoria Other   arima  cons…    1.24     0.640      1.93  5.70<span style="color: #949494;">e</span><span style="color: #BB0000;">- 2</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> Melbourne Victoria Visiti… arima  ma1     -<span style="color: #BB0000;">0.838</span>    0.065<span style="text-decoration: underline;">2</span>   -<span style="color: #BB0000;">12.8</span>   5.03<span style="color: #949494;">e</span><span style="color: #BB0000;">-21</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> Melbourne Victoria Visiti… arima  sar1     0.659    0.193      3.41  1.03<span style="color: #949494;">e</span><span style="color: #BB0000;">- 3</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> Melbourne Victoria Visiti… arima  sma1    -<span style="color: #BB0000;">0.402</span>    0.206     -<span style="color: #BB0000;">1.95</span>  5.47<span style="color: #949494;">e</span><span style="color: #BB0000;">- 2</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span> Melbourne Victoria Visiti… arima  sma2     0.322    0.143      2.26  2.68<span style="color: #949494;">e</span><span style="color: #BB0000;">- 2</span></span></span></code></pre></div>
+<p>The <code><a href="https://generics.r-lib.org/reference/glance.html" class="external-link">glance()</a></code> function provides a one-row summary of each
+model, and commonly includes descriptions of the model’s fit such as the
+residual variance and information criteria. Be wary though, as
+information criteria (AIC, AICc, BIC) are only comparable between the
+same model class and only if those models share the same response (after
+transformations and differencing).</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">fit</span> <span class="op">%&gt;%</span>
-  <span class="fu">glance</span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 8 x 14</span>
-<span class="co">#&gt;   Region   State   Purpose .model   sigma2 log_lik   AIC  AICc   BIC   MSE  AMSE</span>
-<span class="co">#&gt;   &lt;chr&gt;    &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 Melbour… Victor… Busine… ets     3.53e+3   -498. 1014. 1016. 1035. 3180. 3520.</span>
-<span class="co">#&gt; 2 Melbour… Victor… Busine… arima   3.67e+3   -435.  882.  883.  896.   NA    NA </span>
-<span class="co">#&gt; 3 Melbour… Victor… Holiday ets     1.10e-2   -487.  992.  994. 1013. 2548. 2574.</span>
-<span class="co">#&gt; 4 Melbour… Victor… Holiday arima   3.07e+3   -429.  864.  865.  872.   NA    NA </span>
-<span class="co">#&gt; 5 Melbour… Victor… Other   ets     4.97e+2   -422.  853.  854.  865.  472.  512.</span>
-<span class="co">#&gt; 6 Melbour… Victor… Other   arima   4.89e+2   -356.  718.  719.  725.   NA    NA </span>
-<span class="co">#&gt; 7 Melbour… Victor… Visiti… ets     1.09e-2   -503. 1024. 1026. 1045. 3714. 3860.</span>
-<span class="co">#&gt; 8 Melbour… Victor… Visiti… arima   4.24e+3   -442.  893.  894.  905.   NA    NA </span>
-<span class="co">#&gt; # … with 3 more variables: MAE &lt;dbl&gt;, ar_roots &lt;list&gt;, ma_roots &lt;list&gt;</span></code></pre></div>
-<p>If you’re working with a single model (or want to look at one model in particular), the <code>report()</code> function gives a familiar and nicely formatted model-specific display.</p>
+<code class="sourceCode R"><span><span class="va">fit</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://generics.r-lib.org/reference/glance.html" class="external-link">glance</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 8 × 14</span></span></span>
+<span><span class="co">#&gt;   Region    State   Purpose .model  sigma2 log_lik   AIC  AICc   BIC   MSE  AMSE</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Melbourne Victor… Busine… ets    3.53<span style="color: #949494;">e</span>+3   -<span style="color: #BB0000;">498.</span> <span style="text-decoration: underline;">1</span>014. <span style="text-decoration: underline;">1</span>016. <span style="text-decoration: underline;">1</span>035. <span style="text-decoration: underline;">3</span>180. <span style="text-decoration: underline;">3</span>520.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Melbourne Victor… Busine… arima  3.67<span style="color: #949494;">e</span>+3   -<span style="color: #BB0000;">435.</span>  882.  883.  896.   <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Melbourne Victor… Holiday ets    1.10<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span>   -<span style="color: #BB0000;">487.</span>  992.  994. <span style="text-decoration: underline;">1</span>013. <span style="text-decoration: underline;">2</span>548. <span style="text-decoration: underline;">2</span>574.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Melbourne Victor… Holiday arima  3.07<span style="color: #949494;">e</span>+3   -<span style="color: #BB0000;">429.</span>  864.  865.  872.   <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Melbourne Victor… Other   ets    4.97<span style="color: #949494;">e</span>+2   -<span style="color: #BB0000;">422.</span>  853.  854.  865.  472.  512.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> Melbourne Victor… Other   arima  4.89<span style="color: #949494;">e</span>+2   -<span style="color: #BB0000;">356.</span>  718.  719.  725.   <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span> Melbourne Victor… Visiti… ets    1.09<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span>   -<span style="color: #BB0000;">503.</span> <span style="text-decoration: underline;">1</span>024. <span style="text-decoration: underline;">1</span>026. <span style="text-decoration: underline;">1</span>045. <span style="text-decoration: underline;">3</span>714. <span style="text-decoration: underline;">3</span>860.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span> Melbourne Victor… Visiti… arima  4.24<span style="color: #949494;">e</span>+3   -<span style="color: #BB0000;">442.</span>  893.  894.  905.   <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 3 more variables: MAE &lt;dbl&gt;, ar_roots &lt;list&gt;, ma_roots &lt;list&gt;</span></span></span></code></pre></div>
+<p>If you’re working with a single model (or want to look at one model
+in particular), the <code><a href="https://fabletools.tidyverts.org/reference/report.html" class="external-link">report()</a></code> function gives a familiar and
+nicely formatted model-specific display.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">fit</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">Purpose</span> <span class="op">==</span> <span class="st">"Holiday"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">ets</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu">report</span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; Series: Trips </span>
-<span class="co">#&gt; Model: ETS(M,A,A) </span>
-<span class="co">#&gt;   Smoothing parameters:</span>
-<span class="co">#&gt;     alpha = 0.03084501 </span>
-<span class="co">#&gt;     beta  = 0.03084499 </span>
-<span class="co">#&gt;     gamma = 0.0001000967 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;   Initial states:</span>
-<span class="co">#&gt;      l[0]      b[0]     s[0]    s[-1]     s[-2]    s[-3]</span>
-<span class="co">#&gt;  424.0777 -2.535481 -26.7441 4.256618 -10.10668 32.59417</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;   sigma^2:  0.011</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;       AIC      AICc       BIC </span>
-<span class="co">#&gt;  991.7305  994.3020 1013.1688</span></code></pre></div>
-<p>The fitted values and residuals from a model can obtained using <code><a href="https://rdrr.io/r/stats/fitted.values.html">fitted()</a></code> and <code><a href="https://rdrr.io/r/stats/residuals.html">residuals()</a></code> respectively. Additionally, the <code>augment()</code> function may be more convenient, which provides the original data along with both fitted values and their residuals.</p>
+<code class="sourceCode R"><span><span class="va">fit</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">Purpose</span> <span class="op">==</span> <span class="st">"Holiday"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">ets</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://fabletools.tidyverts.org/reference/report.html" class="external-link">report</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Series: Trips </span></span>
+<span><span class="co">#&gt; Model: ETS(M,A,A) </span></span>
+<span><span class="co">#&gt;   Smoothing parameters:</span></span>
+<span><span class="co">#&gt;     alpha = 0.03084501 </span></span>
+<span><span class="co">#&gt;     beta  = 0.03084499 </span></span>
+<span><span class="co">#&gt;     gamma = 0.0001000967 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;   Initial states:</span></span>
+<span><span class="co">#&gt;      l[0]      b[0]     s[0]    s[-1]     s[-2]    s[-3]</span></span>
+<span><span class="co">#&gt;  424.0777 -2.535481 -26.7441 4.256618 -10.10668 32.59417</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;   sigma^2:  0.011</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;       AIC      AICc       BIC </span></span>
+<span><span class="co">#&gt;  991.7305  994.3020 1013.1688</span></span></code></pre></div>
+<p>The fitted values and residuals from a model can obtained using
+<code><a href="https://rdrr.io/r/stats/fitted.values.html" class="external-link">fitted()</a></code> and <code><a href="https://rdrr.io/r/stats/residuals.html" class="external-link">residuals()</a></code> respectively.
+Additionally, the <code><a href="https://generics.r-lib.org/reference/augment.html" class="external-link">augment()</a></code> function may be more
+convenient, which provides the original data along with both fitted
+values and their residuals.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">fit</span> <span class="op">%&gt;%</span>
-  <span class="fu">augment</span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; # A tsibble: 640 x 9 [1Q]</span>
-<span class="co">#&gt; # Key:       Region, State, Purpose, .model [8]</span>
-<span class="co">#&gt;    Region    State    Purpose  .model Quarter Trips .fitted  .resid  .innov</span>
-<span class="co">#&gt;    &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;    &lt;qtr&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 Melbourne Victoria Business ets    1998 Q1  405.    396.    9.54    9.54</span>
-<span class="co">#&gt;  2 Melbourne Victoria Business ets    1998 Q2  408.    483.  -75.1   -75.1 </span>
-<span class="co">#&gt;  3 Melbourne Victoria Business ets    1998 Q3  486.    487.   -1.13   -1.13</span>
-<span class="co">#&gt;  4 Melbourne Victoria Business ets    1998 Q4  429.    454.  -25.2   -25.2 </span>
-<span class="co">#&gt;  5 Melbourne Victoria Business ets    1999 Q1  361.    391.  -30.3   -30.3 </span>
-<span class="co">#&gt;  6 Melbourne Victoria Business ets    1999 Q2  486.    466.   19.9    19.9 </span>
-<span class="co">#&gt;  7 Melbourne Victoria Business ets    1999 Q3  359.    492. -133.   -133.  </span>
-<span class="co">#&gt;  8 Melbourne Victoria Business ets    1999 Q4  426.    424.    1.49    1.49</span>
-<span class="co">#&gt;  9 Melbourne Victoria Business ets    2000 Q1  495.    364.  130.    130.  </span>
-<span class="co">#&gt; 10 Melbourne Victoria Business ets    2000 Q2  499.    477.   22.0    22.0 </span>
-<span class="co">#&gt; # … with 630 more rows</span></code></pre></div>
-<p>To compare how well the models fit the data, we can consider some common accuracy measures. It seems that on the training set the ETS model out-performs ARIMA for the series where travellers are on holiday, business, and visiting friends and relatives. The <a href="https://otexts.com/fpp3/evaluation.html"><em>Evaluating modelling accuracy</em></a> chapter from the <a href="https://otexts.com/fpp3/"><em>Forecasting: Principles and Practices (3rd Ed.)</em></a> textbook provides more detail in how modelling and forecasting accuracy is evaluated.</p>
+<code class="sourceCode R"><span><span class="va">fit</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://generics.r-lib.org/reference/augment.html" class="external-link">augment</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tsibble: 640 x 9 [1Q]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># Key:       Region, State, Purpose, .model [8]</span></span></span>
+<span><span class="co">#&gt;    Region    State    Purpose  .model Quarter Trips .fitted  .resid  .innov</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;qtr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Melbourne Victoria Business ets    1998 Q1  405.    396.    9.54    9.54</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> Melbourne Victoria Business ets    1998 Q2  408.    483.  -<span style="color: #BB0000;">75.1</span>   -<span style="color: #BB0000;">75.1</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> Melbourne Victoria Business ets    1998 Q3  486.    487.   -<span style="color: #BB0000;">1.13</span>   -<span style="color: #BB0000;">1.13</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> Melbourne Victoria Business ets    1998 Q4  429.    454.  -<span style="color: #BB0000;">25.2</span>   -<span style="color: #BB0000;">25.2</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> Melbourne Victoria Business ets    1999 Q1  361.    391.  -<span style="color: #BB0000;">30.3</span>   -<span style="color: #BB0000;">30.3</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> Melbourne Victoria Business ets    1999 Q2  486.    466.   19.9    19.9 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> Melbourne Victoria Business ets    1999 Q3  359.    492. -<span style="color: #BB0000;">133.</span>   -<span style="color: #BB0000;">133.</span>  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> Melbourne Victoria Business ets    1999 Q4  426.    424.    1.49    1.49</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> Melbourne Victoria Business ets    2000 Q1  495.    364.  130.    130.  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> Melbourne Victoria Business ets    2000 Q2  499.    477.   22.0    22.0 </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 630 more rows</span></span></span></code></pre></div>
+<p>To compare how well the models fit the data, we can consider some
+common accuracy measures. It seems that on the training set the ETS
+model out-performs ARIMA for the series where travellers are on holiday,
+business, and visiting friends and relatives. The <a href="https://otexts.com/fpp3/accuracy.html" class="external-link"><em>Evaluating modelling
+accuracy</em></a> chapter from the <a href="https://otexts.com/fpp3/" class="external-link"><em>Forecasting: Principles and
+Practices (3rd Ed.)</em></a> textbook provides more detail in how
+modelling and forecasting accuracy is evaluated.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">fit</span> <span class="op">%&gt;%</span>
-  <span class="fu">accuracy</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">MASE</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 8 x 13</span>
-<span class="co">#&gt;   Region  State Purpose .model .type     ME  RMSE   MAE    MPE  MAPE  MASE RMSSE</span>
-<span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 Melbou… Vict… Holiday ets    Trai…  4.67   50.5  37.2  0.217  7.29 0.675 0.697</span>
-<span class="co">#&gt; 2 Melbou… Vict… Busine… ets    Trai…  3.31   56.4  42.9 -0.753  9.31 0.691 0.740</span>
-<span class="co">#&gt; 3 Melbou… Vict… Busine… arima  Trai…  2.54   58.2  46.0 -1.17  10.1  0.741 0.765</span>
-<span class="co">#&gt; 4 Melbou… Vict… Holiday arima  Trai… -4.64   54.3  41.4 -2.44   8.46 0.752 0.751</span>
-<span class="co">#&gt; 5 Melbou… Vict… Other   arima  Trai… -0.344  21.7  17.0 -6.16  19.5  0.763 0.772</span>
-<span class="co">#&gt; 6 Melbou… Vict… Other   ets    Trai… -0.142  21.7  17.0 -5.97  19.6  0.767 0.773</span>
-<span class="co">#&gt; 7 Melbou… Vict… Visiti… ets    Trai…  8.17   60.9  51.4  0.433  8.28 0.819 0.782</span>
-<span class="co">#&gt; 8 Melbou… Vict… Visiti… arima  Trai…  6.89   63.1  51.7  0.106  8.44 0.825 0.809</span>
-<span class="co">#&gt; # … with 1 more variable: ACF1 &lt;dbl&gt;</span></code></pre></div>
-<p>Forecasts from these models can be produced directly as our specified models do not require any additional data.</p>
+<code class="sourceCode R"><span><span class="va">fit</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://generics.r-lib.org/reference/accuracy.html" class="external-link">accuracy</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">MASE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 8 × 13</span></span></span>
+<span><span class="co">#&gt;   Region  State Purpose .model .type     ME  RMSE   MAE    MPE  MAPE  MASE RMSSE</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Melbou… Vict… Holiday ets    Trai…  4.67   50.5  37.2  0.217  7.29 0.675 0.697</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Melbou… Vict… Busine… ets    Trai…  3.31   56.4  42.9 -<span style="color: #BB0000;">0.753</span>  9.31 0.691 0.740</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Melbou… Vict… Busine… arima  Trai…  2.54   58.2  46.0 -<span style="color: #BB0000;">1.17</span>  10.1  0.741 0.765</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Melbou… Vict… Holiday arima  Trai… -<span style="color: #BB0000;">4.64</span>   54.3  41.4 -<span style="color: #BB0000;">2.44</span>   8.46 0.752 0.751</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Melbou… Vict… Other   arima  Trai… -<span style="color: #BB0000;">0.344</span>  21.7  17.0 -<span style="color: #BB0000;">6.16</span>  19.5  0.763 0.772</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> Melbou… Vict… Other   ets    Trai… -<span style="color: #BB0000;">0.142</span>  21.7  17.0 -<span style="color: #BB0000;">5.97</span>  19.6  0.767 0.773</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span> Melbou… Vict… Visiti… ets    Trai…  8.17   60.9  51.4  0.433  8.28 0.819 0.782</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span> Melbou… Vict… Visiti… arima  Trai…  6.89   63.1  51.7  0.106  8.44 0.825 0.809</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 1 more variable: ACF1 &lt;dbl&gt;</span></span></span></code></pre></div>
+<p>Forecasts from these models can be produced directly as our specified
+models do not require any additional data.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">fc</span> <span class="op">&lt;-</span> <span class="va">fit</span> <span class="op">%&gt;%</span>
-  <span class="fu">forecast</span><span class="op">(</span>h <span class="op">=</span> <span class="st">"5 years"</span><span class="op">)</span>
-<span class="va">fc</span>
-<span class="co">#&gt; # A fable: 160 x 7 [1Q]</span>
-<span class="co">#&gt; # Key:     Region, State, Purpose, .model [8]</span>
-<span class="co">#&gt;    Region    State    Purpose  .model Quarter        Trips .mean</span>
-<span class="co">#&gt;    &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;    &lt;qtr&gt;       &lt;dist&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 Melbourne Victoria Business ets    2018 Q1 N(619, 3533)  619.</span>
-<span class="co">#&gt;  2 Melbourne Victoria Business ets    2018 Q2 N(709, 3766)  709.</span>
-<span class="co">#&gt;  3 Melbourne Victoria Business ets    2018 Q3 N(738, 4042)  738.</span>
-<span class="co">#&gt;  4 Melbourne Victoria Business ets    2018 Q4 N(713, 4364)  713.</span>
-<span class="co">#&gt;  5 Melbourne Victoria Business ets    2019 Q1 N(664, 4735)  664.</span>
-<span class="co">#&gt;  6 Melbourne Victoria Business ets    2019 Q2 N(755, 5159)  755.</span>
-<span class="co">#&gt;  7 Melbourne Victoria Business ets    2019 Q3 N(784, 5640)  784.</span>
-<span class="co">#&gt;  8 Melbourne Victoria Business ets    2019 Q4 N(759, 6181)  759.</span>
-<span class="co">#&gt;  9 Melbourne Victoria Business ets    2020 Q1 N(710, 6786)  710.</span>
-<span class="co">#&gt; 10 Melbourne Victoria Business ets    2020 Q2 N(800, 7458)  800.</span>
-<span class="co">#&gt; # … with 150 more rows</span></code></pre></div>
-<p>The resulting forecasts are contained in a “fable” (forecast table), and both point forecasts and forecast distributions are available in the table for the next five years. Confidence intervals can be extracted from the distribution using the <code>hilo()</code> function.</p>
+<code class="sourceCode R"><span><span class="va">fc</span> <span class="op">&lt;-</span> <span class="va">fit</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://generics.r-lib.org/reference/forecast.html" class="external-link">forecast</a></span><span class="op">(</span>h <span class="op">=</span> <span class="st">"5 years"</span><span class="op">)</span></span>
+<span><span class="va">fc</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A fable: 160 x 7 [1Q]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># Key:     Region, State, Purpose, .model [8]</span></span></span>
+<span><span class="co">#&gt;    Region    State    Purpose  .model Quarter        Trips .mean</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;qtr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dist&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Melbourne Victoria Business ets    2018 Q1 N(619, 3533)  619.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> Melbourne Victoria Business ets    2018 Q2 N(709, 3766)  709.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> Melbourne Victoria Business ets    2018 Q3 N(738, 4042)  738.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> Melbourne Victoria Business ets    2018 Q4 N(713, 4364)  713.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> Melbourne Victoria Business ets    2019 Q1 N(664, 4735)  664.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> Melbourne Victoria Business ets    2019 Q2 N(755, 5159)  755.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> Melbourne Victoria Business ets    2019 Q3 N(784, 5640)  784.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> Melbourne Victoria Business ets    2019 Q4 N(759, 6181)  759.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> Melbourne Victoria Business ets    2020 Q1 N(710, 6786)  710.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> Melbourne Victoria Business ets    2020 Q2 N(800, 7458)  800.</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 150 more rows</span></span></span></code></pre></div>
+<p>The resulting forecasts are contained in a “fable” (forecast table),
+and both point forecasts and forecast distributions are available in the
+table for the next five years. Confidence intervals can be extracted
+from the distribution using the <code><a href="https://pkg.mitchelloharawild.com/distributional/reference/hilo.html" class="external-link">hilo()</a></code> function.</p>
 <!-- ```{r dist-hilo} -->
 <!-- fc %>% -->
 <!--   mutate(interval = hilo(.distribution, 80)) -->
 <!-- ``` -->
-<p>The <code>hilo()</code> function can also be used on fable objects, which allows you to extract multiple intervals at once.</p>
+<p>The <code><a href="https://pkg.mitchelloharawild.com/distributional/reference/hilo.html" class="external-link">hilo()</a></code> function can also be used on fable objects,
+which allows you to extract multiple intervals at once.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">fc</span> <span class="op">%&gt;%</span>
-  <span class="fu">hilo</span><span class="op">(</span>level <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">80</span>, <span class="fl">95</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; # A tsibble: 160 x 9 [1Q]</span>
-<span class="co">#&gt; # Key:       Region, State, Purpose, .model [8]</span>
-<span class="co">#&gt;    Region State Purpose .model Quarter        Trips .mean                  `80%`</span>
-<span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;    &lt;qtr&gt;       &lt;dist&gt; &lt;dbl&gt;                 &lt;hilo&gt;</span>
-<span class="co">#&gt;  1 Melbo… Vict… Busine… ets    2018 Q1 N(619, 3533)  619. [542.3864, 694.7363]80</span>
-<span class="co">#&gt;  2 Melbo… Vict… Busine… ets    2018 Q2 N(709, 3766)  709. [630.4443, 787.7426]80</span>
-<span class="co">#&gt;  3 Melbo… Vict… Busine… ets    2018 Q3 N(738, 4042)  738. [656.9891, 819.9425]80</span>
-<span class="co">#&gt;  4 Melbo… Vict… Busine… ets    2018 Q4 N(713, 4364)  713. [628.7879, 798.1010]80</span>
-<span class="co">#&gt;  5 Melbo… Vict… Busine… ets    2019 Q1 N(664, 4735)  664. [575.8480, 752.2196]80</span>
-<span class="co">#&gt;  6 Melbo… Vict… Busine… ets    2019 Q2 N(755, 5159)  755. [662.5141, 846.6176]80</span>
-<span class="co">#&gt;  7 Melbo… Vict… Busine… ets    2019 Q3 N(784, 5640)  784. [687.6922, 880.1843]80</span>
-<span class="co">#&gt;  8 Melbo… Vict… Busine… ets    2019 Q4 N(759, 6181)  759. [658.1603, 859.6735]80</span>
-<span class="co">#&gt;  9 Melbo… Vict… Busine… ets    2020 Q1 N(710, 6786)  710. [603.9336, 815.0789]80</span>
-<span class="co">#&gt; 10 Melbo… Vict… Busine… ets    2020 Q2 N(800, 7458)  800. [689.3620, 910.7146]80</span>
-<span class="co">#&gt; # … with 150 more rows, and 1 more variable: 95% &lt;hilo&gt;</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">fc</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://pkg.mitchelloharawild.com/distributional/reference/hilo.html" class="external-link">hilo</a></span><span class="op">(</span>level <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">80</span>, <span class="fl">95</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tsibble: 160 x 9 [1Q]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># Key:       Region, State, Purpose, .model [8]</span></span></span>
+<span><span class="co">#&gt;    Region State Purpose .model Quarter        Trips .mean                  `80%`</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;qtr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dist&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;hilo&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Melbo… Vict… Busine… ets    2018 Q1 N(619, 3533)  619. [542.3864, 694.7363]80</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> Melbo… Vict… Busine… ets    2018 Q2 N(709, 3766)  709. [630.4443, 787.7426]80</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> Melbo… Vict… Busine… ets    2018 Q3 N(738, 4042)  738. [656.9891, 819.9425]80</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> Melbo… Vict… Busine… ets    2018 Q4 N(713, 4364)  713. [628.7879, 798.1010]80</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> Melbo… Vict… Busine… ets    2019 Q1 N(664, 4735)  664. [575.8480, 752.2196]80</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> Melbo… Vict… Busine… ets    2019 Q2 N(755, 5159)  755. [662.5141, 846.6176]80</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> Melbo… Vict… Busine… ets    2019 Q3 N(784, 5640)  784. [687.6922, 880.1843]80</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> Melbo… Vict… Busine… ets    2019 Q4 N(759, 6181)  759. [658.1603, 859.6735]80</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> Melbo… Vict… Busine… ets    2020 Q1 N(710, 6786)  710. [603.9336, 815.0789]80</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> Melbo… Vict… Busine… ets    2020 Q2 N(800, 7458)  800. [689.3620, 910.7146]80</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 150 more rows</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 1 more variable: `95%` &lt;hilo&gt;</span></span></span></code></pre></div>
 <!--
 These intervals can also be unnested if you're looking to obtain the numerical values (`.lower`, `.upper`, and `level`).
 
@@ -298,13 +352,23 @@ fc %>%
   unpack_hilo(interval)
 ```
 -->
-<p>You can also see a plot of the forecasts using <code>autoplot()</code>. To see the historical data along with the forecasts you can provide it as the first argument to the function.</p>
+<p>You can also see a plot of the forecasts using
+<code><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot()</a></code>. To see the historical data along with the
+forecasts you can provide it as the first argument to the function.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">fc</span> <span class="op">%&gt;%</span>
-  <span class="fu">autoplot</span><span class="op">(</span><span class="va">tourism_melb</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">fc</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">tourism_melb</span><span class="op">)</span></span></code></pre></div>
 <p><img src="fable_files/figure-html/fc-plot-1.png" width="672"></p>
-<p>More model methods may be supported by particular models, including the ability to <code>refit()</code> the model to new data, <code>stream()</code> in new data to extend the fit, <code>generate()</code> simulated paths from a model, <code>interpolate()</code> missing values, extract <code>components()</code> from the fitted model, and display the model’s <code>equation()</code>.</p>
-<p>More information about modelling time series and using the fable package can be found in <a href="https://otexts.com/fpp3/"><em>Forecasting: Principles and Practices (3rd Ed.)</em></a> and in the <a href="https://fable.tidyverts.org/"><em>pkgdown site</em></a>.</p>
+<p>More model methods may be supported by particular models, including
+the ability to <code><a href="https://generics.r-lib.org/reference/refit.html" class="external-link">refit()</a></code> the model to new data,
+<code><a href="https://fabletools.tidyverts.org/reference/stream.html" class="external-link">stream()</a></code> in new data to extend the fit,
+<code><a href="https://generics.r-lib.org/reference/generate.html" class="external-link">generate()</a></code> simulated paths from a model,
+<code><a href="https://generics.r-lib.org/reference/interpolate.html" class="external-link">interpolate()</a></code> missing values, extract
+<code><a href="https://generics.r-lib.org/reference/components.html" class="external-link">components()</a></code> from the fitted model, and display the model’s
+<code><a href="https://generics.r-lib.org/reference/equation.html" class="external-link">equation()</a></code>.</p>
+<p>More information about modelling time series and using the fable
+package can be found in <a href="https://otexts.com/fpp3/" class="external-link"><em>Forecasting: Principles and
+Practices (3rd Ed.)</em></a> and in the <a href="https://fable.tidyverts.org/"><em>pkgdown site</em></a>.</p>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -316,11 +380,13 @@ fc %>%
 
 
       <footer><div class="copyright">
-  <p>Developed by <a href="https://mitchelloharawild.com">Mitchell O'Hara-Wild</a>, <a href="http://robjhyndman.com">Rob Hyndman</a>, <a href="https://earo.me">Earo Wang</a>.</p>
+  <p></p>
+<p>Developed by <a href="https://mitchelloharawild.com" class="external-link">Mitchell O’Hara-Wild</a>, <a href="http://robjhyndman.com" class="external-link">Rob Hyndman</a>, <a href="https://earo.me" class="external-link">Earo Wang</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
@@ -328,6 +394,8 @@ fc %>%
 
   
 
+
+  
 
   </body>
 </html>
