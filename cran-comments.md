@@ -1,6 +1,10 @@
 ## Submission
 
-This submission resolves issues in the CRAN check results.
+Attempted to fix issue regarding defining R_NO_REMAP before R headers from C++ 
+as advised by email from CRAN
+
+Note that it is not possible for us to test this, but I think we have done 
+what is required.
 
 ## Test environments
 * local ubuntu 20.04 install, R 4.1.2
