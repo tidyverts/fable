@@ -2,6 +2,8 @@
 
 # fable 0.3.4
 
+Small patch to resolve issues in C++ R headers.
+
 ## Improvements
 
 * Documentation improvements.
