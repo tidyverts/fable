@@ -1,6 +1,8 @@
 context("test-lm.R")
 
 test_that("LM", {
+  skip_if_not_installed("forecast")
+
   # NULL model selection
   fable_fit <- USAccDeaths_tbl %>% model(lm = TSLM(value))
   forecast_fit <- lm(USAccDeaths ~ 1)

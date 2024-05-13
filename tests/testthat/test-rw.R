@@ -1,5 +1,6 @@
 context("test-rw.R")
 test_that("NAIVE", {
+  skip_if_not_installed("forecast")
   fable_fit <- USAccDeaths_tbl %>% model(naive = NAIVE(value))
   forecast_fc <- forecast::naive(USAccDeaths, h = 12)
 
@@ -21,6 +22,7 @@ test_that("NAIVE", {
 })
 
 test_that("RW w/ drift", {
+  skip_if_not_installed("forecast")
   fable_fit <- USAccDeaths_tbl %>% model(rw = RW(value ~ drift()))
   forecast_fc <- forecast::rwf(USAccDeaths, drift = TRUE, h = 12)
 
@@ -70,6 +72,7 @@ test_that("RW w/ drift", {
 })
 
 test_that("SNAIVE", {
+  skip_if_not_installed("forecast")
   fable_fit <- USAccDeaths_tbl %>% model(snaive = SNAIVE(value))
   forecast_fc <- forecast::snaive(USAccDeaths, h = 12)
 
