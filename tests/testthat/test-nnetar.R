@@ -1,4 +1,5 @@
 context("test-nnetar")
+skip_if_not_installed("nnet")
 
 airmiles <- as_tsibble(airmiles)
 test_that("Automatic NNETAR selection", {
