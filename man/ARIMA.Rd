@@ -57,12 +57,13 @@ framework.
 }
 \section{Parameterisation}{
 
+The fable \code{ARIMA()} function uses an alternative parameterisation of
+constants to \code{\link[stats:arima]{stats::arima()}} and \code{\link[forecast:Arima]{forecast::Arima()}}. While the
+parameterisations are equivalent, the coefficients for the constant/mean
+will differ.
 
-The fable \code{ARIMA()} function uses an alternate parameterisation of constants
-to \code{\link[stats:arima]{stats::arima()}} and \code{\link[forecast:Arima]{forecast::Arima()}}. While the parameterisations
-are equivalent, the coefficients for the constant/mean will differ.
-
-In \code{fable}, the parameterisation used is:
+In \code{fable}, if there are no exogenous regressors, the parameterisation used
+is:
 
 \deqn{(1-\phi_1B - \cdots - \phi_p B^p)(1-B)^d y_t = c + (1 + \theta_1 B + \cdots + \theta_q B^q)\varepsilon_t}
 
@@ -71,6 +72,21 @@ In stats and forecast, an ARIMA model is parameterised as:
 \deqn{(1-\phi_1B - \cdots - \phi_p B^p)(y_t' - \mu) = (1 + \theta_1 B + \cdots + \theta_q B^q)\varepsilon_t}
 
 where \eqn{\mu} is the mean of \eqn{(1-B)^d y_t} and \eqn{c = \mu(1-\phi_1 - \cdots - \phi_p )}.
+
+If there are exogenous regressors, \code{fable} uses the same parameterisation as
+used in stats and forecast. That is, it fits a regression with ARIMA(p,d,q)
+errors:
+
+\deqn{y_t = c + \beta' x_t + z_t}
+
+where \eqn{\beta} is a vector of regression coefficients, \eqn{x_t} is
+a vector of exogenous regressors at time \eqn{t}, and \eqn{z_t} is an
+ARIMA(p,d,q) error process:
+
+\deqn{(1-\phi_1B - \cdots - \phi_p B^p)(1-B)^d z_t = (1 + \theta_1 B + \cdots + \theta_q B^q)\varepsilon_t}
+
+For details of the estimation algorithm, see the
+\code{\link[stats]{arima}} function in the stats package.
 }
 
 \section{Specials}{
