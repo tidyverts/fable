@@ -20,7 +20,7 @@ weights. These are then averaged when producing forecasts.}
 means and dividing by their respective standard deviations. Scaling is
 applied after transformations.}
 
-\item{...}{Other arguments passed to \verb{\link[nnet]\{nnet\}}.}
+\item{...}{Other arguments passed to \code{\link[nnet:nnet]{nnet::nnet()}}.}
 }
 \value{
 A model specification.
