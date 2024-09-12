@@ -429,3 +429,30 @@ generate.VAR <- function(x, new_data, specials, ...){
   new_data[colnames(coef)] <- split(.sim, col(.sim))
   new_data
 }
+
+#' @export
+IRF.VAR <- function(x, new_data, specials, impulse = NULL, ortho = FALSE, ...) {
+  new_data$.innov <- matrix(0, nrow = nrow(new_data), ncol = ncol(x$last_obs),
+                            dimnames = dimnames(x$last_obs))
+  # Zero out end of data
+  x$last_obs[seq_along(x$last_obs)] <- 0
+  
+  # Remove regressors
+  n_ar <- x$spec$p*ncol(x$coef)
+  if(nrow(x$coef) > n_ar) {
+    x$coef[seq(n_ar + 1, nrow(x$coef)),] <- 0
+  }
+  
+  # Add shocks
+  new_data$.innov[1, impulse] <- 1
+  
+  # Orthogonalised shocks
+  if(ortho) {
+    # Use Cholesky decomposition to orthogonalise the shocks / innovations
+    new_data$.innov <- new_data$.innov %*% chol(x$fit$sigma2[[1L]])
+  }
+  
+  irf <- generate(x, new_data, specials)
+  irf$.innov <- NULL
+  irf
+}

@@ -2,7 +2,7 @@
 
 ## New features
 
-* Added generate() method for VAR models
+* Added `generate()` and `IRF()` methods for VAR models.
 
 # fable 0.3.4
 
