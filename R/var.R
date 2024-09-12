@@ -381,3 +381,51 @@ report.VAR <- function(object, ...) {
     )
   )
 }
+
+#' @inherit generate.ETS
+#' 
+#' @export
+generate.VAR <- function(x, new_data, specials, ...){
+  if (!".innov" %in% names(new_data)) {
+    new_data[[".innov"]] <- generate(distributional::dist_multivariate_normal(list(matrix(0, ncol = K)), x$fit$sigma2), nrow(new_data))[[1L]]
+  }
+  
+  kr <- key_data(new_data)$.rows
+  h <- lengths(kr)
+  p <- x$spec$p
+  coef <- x$coef
+  K <- NCOL(coef)
+  
+  # Get xreg
+  xreg <- specials$xreg[[1]]$xreg
+  
+  # Generate paths
+  var_sim <- function(i) {
+    if (x$spec$constant) {
+      xreg <- cbind(constant = rep_len(1, length(i)), xreg)
+    }
+    
+    .innov <- new_data$.innov[i,]
+    
+    .sim <- matrix(NA, nrow = h, ncol = K)
+    y_lag <- matrix(0, nrow = p, ncol = K)
+    y_lag <- x$last_obs
+    for (i in seq_len(h)) {
+      if (is.null(xreg)) {
+        Z <- c(t(y_lag))
+      }
+      else {
+        Z <- c(t(y_lag), t(xreg[i, ]))
+      }
+      .sim[i, ] <- t(coef) %*% Z + .innov[i,]
+      y_lag <- rbind(.sim[i, , drop = FALSE], y_lag)[seq_len(p), , drop = FALSE]
+    }
+    
+    .sim
+  }
+  
+  .sim <- do.call(rbind, lapply(kr, var_sim))
+  
+  new_data[colnames(coef)] <- split(.sim, col(.sim))
+  new_data
+}

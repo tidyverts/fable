@@ -67,4 +67,4 @@ Encoding: UTF-8
 Language: en-GB
 Roxygen: list(markdown = TRUE, roclets=c('rd', 'collate',
     'namespace'))
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1

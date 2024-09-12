@@ -1,5 +1,9 @@
 # fable (development version)
 
+## New features
+
+* Added generate() method for VAR models
+
 # fable 0.3.4
 
 Small patch to resolve issues in C++ R headers.
