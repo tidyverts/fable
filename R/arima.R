@@ -915,6 +915,35 @@ generate.ARIMA <- function(x, new_data, specials, bootstrap = FALSE, ...){
   mutate(dplyr::ungroup(new_data), ".sim" := as.numeric(!!sym(".sim") + !!xm))
 }
 
+#' Calculate impulse responses from a fable model
+#'
+#' @inheritParams forecast.ETS
+#' @param x A fitted model.
+#'
+#' @seealso [`fabletools::IRF.mdl_df`]
+#'
+#' @export
+IRF.ARIMA <- function(x, new_data, specials, ...) {
+  # Zero out data
+  x$est$.regression_resid[seq_along(x$est$.regression_resid)] <- 0
+  x$model$residuals[seq_along(x$model$residuals)] <- 0
+  
+  # Remove regressors
+  x$model$coef[!grepl("^s?(ma|ar)\\d+$", names(x$model$coef))] <- 0
+  
+  # Add shock
+  if (".impulse" %in% names(new_data)) { 
+    names(new_data)[names(new_data) == ".impulse"] <- ".innov"
+  } else {
+    new_data$.innov <- c(1, rep.int(0, nrow(new_data)-1))
+  }
+  
+  irf <- generate(x, new_data, specials)
+  irf$.irf <- irf$.sim
+  irf$.innov <- irf$.sim <- NULL
+  irf
+}
+
 # Version of stats::arima.sim which conditions on past observations
 #' @importFrom stats diffinv
 conditional_arima_sim <- function(object, x, e){
