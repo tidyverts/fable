@@ -386,15 +386,14 @@ report.VAR <- function(object, ...) {
 #' 
 #' @export
 generate.VAR <- function(x, new_data, specials, ...){
+  coef <- x$coef
+  K <- NCOL(coef)
   if (!".innov" %in% names(new_data)) {
     new_data[[".innov"]] <- generate(distributional::dist_multivariate_normal(list(matrix(0, ncol = K)), x$fit$sigma2), nrow(new_data))[[1L]]
   }
-  
+  p <- x$spec$p
   kr <- key_data(new_data)$.rows
   h <- lengths(kr)
-  p <- x$spec$p
-  coef <- x$coef
-  K <- NCOL(coef)
   
   # Get xreg
   xreg <- specials$xreg[[1]]$xreg
@@ -410,7 +409,7 @@ generate.VAR <- function(x, new_data, specials, ...){
     .sim <- matrix(NA, nrow = h, ncol = K)
     y_lag <- matrix(0, nrow = p, ncol = K)
     y_lag <- x$last_obs
-    for (i in seq_len(h)) {
+    for (i in seq_along(i)) {
       if (is.null(xreg)) {
         Z <- c(t(y_lag))
       }
@@ -424,16 +423,27 @@ generate.VAR <- function(x, new_data, specials, ...){
     .sim
   }
   
-  .sim <- do.call(rbind, lapply(kr, var_sim))
+  new_data$.sim <- do.call(rbind, lapply(kr, var_sim))
   
-  new_data[colnames(coef)] <- split(.sim, col(.sim))
   new_data
 }
 
+#' Calculate impulse responses from a fable model
+#'
+#' Simulates future paths from a dataset using a fitted model. Innovations are
+#' sampled by the model's assumed error distribution. If `bootstrap` is `TRUE`,
+#' innovations will be sampled from the model's residuals. If `new_data`
+#' contains the `.innov` column, those values will be treated as innovations.
+#'
+#' @inheritParams forecast.ETS
+#' @param x A fitted model.
+#' @param impulse A character string specifying the name of the variable that is shocked (the impulse variable).
+#' @param orthogonal If TRUE, orthogonalised impulse responses will be computed.
+#'
+#' @seealso [`fabletools::IRF.mdl_df`]
+#'
 #' @export
-IRF.VAR <- function(x, new_data, specials, impulse = NULL, ortho = FALSE, ...) {
-  new_data$.innov <- matrix(0, nrow = nrow(new_data), ncol = ncol(x$last_obs),
-                            dimnames = dimnames(x$last_obs))
+IRF.VAR <- function(x, new_data, specials, impulse = NULL, orthogonal = FALSE, ...) {
   # Zero out end of data
   x$last_obs[seq_along(x$last_obs)] <- 0
   
@@ -444,15 +454,22 @@ IRF.VAR <- function(x, new_data, specials, impulse = NULL, ortho = FALSE, ...) {
   }
   
   # Add shocks
-  new_data$.innov[1, impulse] <- 1
+  if (".impulse" %in% names(new_data)) { 
+    names(new_data)[names(new_data) == ".impulse"] <- ".innov"
+  } else {
+    new_data$.innov <- matrix(0, nrow = nrow(new_data), ncol = ncol(x$last_obs),
+                              dimnames = dimnames(x$last_obs))
+    new_data$.innov[1, impulse] <- 1
+  }
   
   # Orthogonalised shocks
-  if(ortho) {
+  if(orthogonal) {
     # Use Cholesky decomposition to orthogonalise the shocks / innovations
     new_data$.innov <- new_data$.innov %*% chol(x$fit$sigma2[[1L]])
   }
   
   irf <- generate(x, new_data, specials)
-  irf$.innov <- NULL
+  irf[colnames(x$coef)] <- split(irf$.sim, col(irf$.sim))
+  irf$.innov <- irf$.sim <- NULL
   irf
 }
