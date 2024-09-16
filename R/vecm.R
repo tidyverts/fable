@@ -1,48 +1,94 @@
 #' @importFrom stats ts
-train_var <- function(.data, specials, ic, ...) {
+train_vecm <- function(.data, specials, ic, ...) {
   # Get args
   p <- specials$AR[[1]]$p
-
+  
   # Get response variables
   y <- invoke(cbind, unclass(.data)[measured_vars(.data)])
-
+  
   # Get xreg
   constant <- specials$xreg[[1]]$constant
   xreg <- specials$xreg[[1]]$xreg
-
+  
   # Choose best model
   reduce(transpose(expand.grid(p = p, constant = constant)),
-    function(best, args) {
-      new <- estimate_var(y, args$p, xreg, args$constant)
-      if ((new$fit[[ic]] %||% Inf) < (best$fit[[ic]] %||% Inf)) {
-        best <- new
-      }
-      best
-    },
-    .init = NULL
+         function(best, args) {
+           new <- estimate_vecm(y, args$p, xreg, args$constant, ...)
+           if ((new$fit[[ic]] %||% Inf) < (best$fit[[ic]] %||% Inf)) {
+             best <- new
+           }
+           best
+         },
+         .init = NULL
   )
 }
 
-estimate_var <- function(y, p, xreg, constant) {
+estimate_vecm <- function(y, p, sr_xreg, constant, r, ...) {
   if (constant) {
-    xreg <- cbind(constant = rep(1, NROW(y)), xreg)
+    sr_xreg <- cbind(constant = rep(1, NROW(y)), sr_xreg)
   }
-
-  y_lag <- stats::embed(y, dimension = p + 1)[, -(seq_len(NCOL(y))), drop = FALSE]
-  colnames(y_lag) <- pmap_chr(expand.grid(colnames(y), seq_len(p)),
-    sprintf,
-    fmt = "lag(%s,%i)"
-  )
+  
+  dy <- diff(y)
   if (p > 0) {
-    xreg <- xreg[-seq_len(p), , drop = FALSE]
-    y <- y[-seq_len(p), , drop = FALSE]
+    # y <- y[-seq_len(p), , drop = FALSE]
+    # dy <- dy[-seq_len(p), , drop = FALSE]
+    sr_xreg <- sr_xreg[-seq_len(p + 1), , drop = FALSE]
   }
-  dm <- cbind(y_lag, xreg)
-  j <- complete.cases(dm, y)
-  fit <- stats::lm.fit(as.matrix(dm)[j, , drop = FALSE], y[j, , drop = FALSE])
-
+  
+  y_embed <- stats::embed(y, dimension = p + 1)
+  dy_embed <- stats::embed(dy, dimension = p + 1)
+  dy_y <- dy_embed[, seq_len(NCOL(dy)), drop = FALSE]
+  y_y <- y_embed[-NROW(y_embed), seq_len(NCOL(y)), drop = FALSE]
+  dy_x_sr <- dy_embed[, -seq_len(NCOL(dy)), drop = FALSE]
+  
+  colnames(dy_x_sr) <- pmap_chr(
+    expand.grid(colnames(y), seq_len(p)), 
+    sprintf, fmt = "lag(%s,%i)"
+  )
+  dm_sr <- cbind(dy_x_sr, sr_xreg)
+  j <- complete.cases(dm_sr, dy_y, y_y)
+  
+  # Estimate covariance matrices with regression
+  dy_fit <- stats::lm.fit(dm_sr[j, , drop = FALSE], dy_y[j, , drop = FALSE])
+  y_fit <- stats::lm.fit(dm_sr[j, , drop = FALSE], y_y[j, , drop = FALSE])
+  u <- residuals(dy_fit)
+  v <- residuals(y_fit)
+  
+  S00 <- crossprod(u)
+  S11 <- crossprod(v)
+  S01 <- crossprod(u, v)
+  
+  # Solve the Eigenvalue problem
+  # S_1^{−1} S_0 β= λ β
+  eig_mat <- solve(S11) %*% t(S01) %*% solve(S00) %*% S01
+  eig_dcmp <- eigen(eig_mat)
+  eig_vec <- Re(eig_dcmp$vectors)
+  eig_val <- Re(eig_dcmp$values)
+  
+  # Normalise the eigenvector matrix using Phillips triangular representation
+  eig_vec_norm <- apply(eig_vec, 2, function(x) x/c(sqrt(t(x) %*% S11 %*% x)))
+  # Rescale by columns to make diagonal elements 1
+  eig_vec_norm <- t(t(eig_vec_norm)/diag(eig_vec_norm))
+  
+  # Compute the error correction term (beta' * Y_lagged)
+  beta <- eig_vec_norm[, seq_len(r), drop = FALSE]
+  C <- rbind(diag(r), matrix(0, nrow = nrow(eig_vec_norm) - r, ncol = r))
+  beta <- beta %*% solve(t(C) %*% beta)
+  beta[seq_len(r), seq_len(r)] <- diag(r)
+  dimnames(beta) <- list(colnames(y), paste0("r", seq_len(r)))
+  
+  ECT <- y_y %*% beta
+  colnames(ECT) <- paste0("ECT", seq_len(r))
+  
+  # Regress ECT and short run terms on Y
+  fit <- stats::lm.fit(cbind(ECT, dm_sr[j, , drop = FALSE]), dy_y[j, , drop = FALSE])
+  
+  # Estimate the Adjustment Coefficients (Alpha)
+  alpha <- solve(t(ECT) %*% ECT) %*% t(ECT) %*% dm_sr
+  
+  # Structure results
   resid <- matrix(NA_real_, nrow = nrow(y), ncol = ncol(y))
-  resid[j, ] <- fit$residuals
+  resid[c(rep.int(FALSE, p + 1), j), ] <- fit$residuals
   if (is_empty(fit$coefficients)) {
     coef <- matrix(nrow = 0, ncol = NCOL(y))
   }
@@ -50,38 +96,38 @@ estimate_var <- function(y, p, xreg, constant) {
     coef <- as.matrix(fit$coefficients)
   }
   colnames(coef) <- colnames(y)
-
-  nr <- NROW(stats::na.omit(y))
+  
+  nr <- sum(j)
   nc <- NCOL(y)
   sig <- crossprod(fit$residuals)
   sig_det <- det(sig / nr)
   loglik <- -(nr * nc / 2) * log(2 * pi) - (nr / 2) * log(sig_det) -
     (1 / 2) * sum(diag(resid %*% solve(sig / nr) %*% t(resid)), na.rm = TRUE)
-
-  npar <- (length(fit$coef) + nc^2)
+  npar <- length(fit$coef[-seq_len(r),]) + 2 * nc * r - r^2
   aic <- -2 * loglik + 2 * npar
   bic <- aic + npar * (log(nr) - 2)
   aicc <- aic + 2 * npar * (npar + 1) / (nr - npar - 1)
-
+  
   # Output model
   structure(
     list(
       coef = coef,
-      fits = rbind(matrix(nrow = p, ncol = NCOL(y)), y - resid),
+      fits = rbind(matrix(nrow = p, ncol = NCOL(y)), fit$fitted.values),
       resid = rbind(matrix(nrow = p, ncol = NCOL(y)), resid),
       fit = tibble(
-        sigma2 = list(sig / fit$df.residual), log_lik = loglik,
-        AIC = aic, AICc = aicc, BIC = bic
+        sigma2 = list(sig / fit$df.residual),
+        alpha = list(alpha), beta = list(beta),
+        log_lik = loglik, AIC = aic, AICc = aicc, BIC = bic
       ),
-      spec = tibble(p = p, constant = constant),
-      last_obs = y[NROW(y) - seq_len(p) + 1, , drop = FALSE],
+      spec = tibble(p = p, r = r, constant = constant),
+      last_obs = y[NROW(y) - seq_len(p + 1) + 1, , drop = FALSE],
       model = fit
     ),
-    class = "VAR"
+    class = "VECM"
   )
 }
 
-specials_var <- new_specials(
+specials_vecm <- new_specials(
   AR = function(p = 0:5) {
     if (any(p < 0)) {
       warn("The AR order must be non-negative. Only non-negative orders will be considered.")
@@ -101,7 +147,7 @@ specials_var <- new_specials(
     
     constants <- map_lgl(dots, inherits, "numeric")
     constant_given <- any(map_lgl(dots[constants], `%in%`, -1:1))
-
+    
     model_formula <- new_formula(
       lhs = NULL,
       rhs = reduce(dots, function(.x, .y) call2("+", .x, .y))
@@ -116,15 +162,14 @@ specials_var <- new_specials(
   .xreg_specials = names(common_xregs)
 )
 
-#' Estimate a VAR model
+#' Estimate a VECM model
 #'
-#' Searches through the vector of lag orders to find the best VAR model which
-#' has lowest AIC, AICc or BIC value. It is implemented using OLS per equation.
+#' Searches through the vector of lag orders to find the best VECM model which
+#' has lowest AIC, AICc or BIC value. The model is estimated using the Johansen
+#' procedure (maximum likelihood).
 #'
 #' Exogenous regressors and [`common_xregs`] can be specified in the model
 #' formula.
-#'
-#' @aliases report.VAR
 #'
 #' @param formula Model specification (see "Specials" section).
 #' @param ic The information criterion used in selecting the model.
@@ -159,16 +204,13 @@ specials_var <- new_specials(
 #'
 #' @return A model specification.
 #'
-#' @seealso
-#' [Forecasting: Principles and Practices, Vector autoregressions (section 11.2)](https://otexts.com/fpp2/VAR.html)
-#'
 #' @examples
 #'
 #' lung_deaths <- cbind(mdeaths, fdeaths) %>%
 #'   as_tsibble(pivot_longer = FALSE)
 #'
 #' fit <- lung_deaths %>%
-#'   model(VAR(vars(mdeaths, fdeaths) ~ AR(3)))
+#'   model(VECM(vars(mdeaths, fdeaths) ~ AR(3)))
 #'
 #' report(fit)
 #'
@@ -176,149 +218,76 @@ specials_var <- new_specials(
 #'   forecast() %>%
 #'   autoplot(lung_deaths)
 #' @export
-VAR <- function(formula, ic = c("aicc", "aic", "bic"), ...) {
+VECM <- function(formula, ic = c("aicc", "aic", "bic"), r = 1L, ...) {
   ic <- match.arg(ic)
   ic <- switch(ic, aicc = "AICc", aic = "AIC", bic = "BIC")
-  varma_model <- new_model_class("VAR",
-    train = train_var,
-    specials = specials_var,
-    origin = NULL,
-    check = all_tsbl_checks
+  vecm_model <- new_model_class("VECM",
+                                 train = train_vecm,
+                                 specials = specials_vecm,
+                                 origin = NULL,
+                                 check = all_tsbl_checks
   )
-  new_model_definition(varma_model, !!enquo(formula), ic = ic, ...)
+  new_model_definition(vecm_model, !!enquo(formula), ic = ic, r = r, ...)
 }
 
-#' @inherit forecast.ARIMA
-#' @examples
-#' lung_deaths <- cbind(mdeaths, fdeaths) %>%
-#'   as_tsibble(pivot_longer = FALSE)
-#'
-#' lung_deaths %>%
-#'   model(VAR(vars(mdeaths, fdeaths) ~ AR(3))) %>%
-#'   forecast()
 #' @export
-forecast.VAR <- function(object, new_data = NULL, specials = NULL,
+forecast.VECM <- function(object, new_data = NULL, specials = NULL,
                          bootstrap = FALSE, times = 5000, ...) {
-  if (bootstrap) {
-    abort("Bootstrapped forecasts for VARs are not yet implemented.")
-  }
-
-  h <- NROW(new_data)
-  p <- object$spec$p
+  # Convert to VAR
   coef <- object$coef
-  K <- NCOL(coef)
-  # Get xreg
-  xreg <- specials$xreg[[1]]$xreg
-  if (object$spec$constant) {
-    xreg <- cbind(constant = rep(1, h), xreg)
+  r <- object$spec$r
+  p <- object$spec$p
+  Pi <- object$fit$beta[[1]] %*% coef[seq_len(r),,drop = FALSE]
+  k <- NCOL(coef)
+  NROW(coef)
+  var_coef <- matrix(0, nrow = NROW(coef) - r + k, ncol = k, )
+  
+  # Adjust AR coefficients
+  coef_ar <- rbind(coef[seq(r + 1, r + p * k),,drop = FALSE], matrix(0, k, k))
+  for (l in seq_len(p)) {
+    var_coef[l*k + seq_len(k),] <- -(coef_ar[(l-1)*k + seq_len(k),] - coef_ar[l*k + seq_len(k),])
+    var_coef[seq_len(k),] <- var_coef[seq_len(k),] + var_coef[l*k + seq_len(k),]
   }
-
-  # Compute phi
-  As <- rep(list(matrix(0, nrow = K, ncol = K)), max(h, p))
-  for (i in seq_len(p)) {
-    As[[i]] <- coef[seq_len(K) + (i - 1) * K, ]
+  var_coef[seq_len(k),] <- Pi + diag(k) - var_coef[seq_len(k),]
+  
+  # Add regressors
+  if ((NROW(coef) - r) > p * k) {
+    var_coef[seq((p + 1) * k + 1, NROW(var_coef)),] <- coef[seq(p * k + r + 1, NROW(coef)),,drop = FALSE]
   }
-  phi <- rep(list(matrix(0, nrow = K, ncol = K)), h + 1)
-  phi[[1]] <- diag(K)
-  for (i in seq_len(h) + 1) {
-    tmp1 <- phi[[1]] %*% As[[i - 1]]
-    tmp2 <- matrix(0, nrow = K, ncol = K)
-    idx <- rev(seq_len(i - 2))
-    for (j in seq_len(i - 2)) {
-      tmp2 <- tmp2 + phi[[j + 1]] %*% As[[idx[j]]]
-    }
-    phi[[i]] <- tmp1 + tmp2
-  }
-  # Compute sigma
-  sigma.u <- object$fit$sigma2[[1]]
-  sigma <- rep(list(matrix(nrow = K, ncol = K)), h)
-  sigma[[1]] <- sigma.u
-
-  for (i in seq_len(h - 1) + 1) {
-    adjust <- matrix(0, nrow = K, ncol = K)
-    for (j in 2:i) {
-      adjust <- adjust + t(phi[[j]]) %*% sigma.u %*% phi[[j]]
-    }
-    sigma[[i]] <- adjust + sigma[[1]]
-  }
-
-  # Compute forecasts
-  fc <- matrix(NA, ncol = K, nrow = h)
-
-  y_lag <- object$last_obs
-  for (i in seq_len(h)) {
-    if (is.null(xreg)) {
-      Z <- c(t(y_lag))
-    }
-    else {
-      Z <- c(t(y_lag), t(xreg[i, ]))
-    }
-    fc[i, ] <- t(coef) %*% Z
-    y_lag <- rbind(fc[i, , drop = FALSE], y_lag)[seq_len(p), , drop = FALSE]
-  }
-
-  # Output forecasts
-  if (NCOL(fc) == 1) {
-    distributional::dist_normal(drop(fc), sqrt(unlist(sigma)))
-  }
-  else {
-    unname(distributional::dist_multivariate_normal(split(fc, row(fc)), sigma))
-  }
+  
+  # Update model with VAR terms
+  object$spec$p <- p + 1
+  object$coef <- var_coef
+  
+  forecast.VAR(object, new_data, specials, ...)
 }
 
-#' @inherit fitted.ARIMA
-#'
-#' @examples
-#' lung_deaths <- cbind(mdeaths, fdeaths) %>%
-#'   as_tsibble(pivot_longer = FALSE)
-#'
-#' lung_deaths %>%
-#'   model(VAR(vars(mdeaths, fdeaths) ~ AR(3))) %>%
-#'   fitted()
 #' @export
-fitted.VAR <- function(object, ...) {
+fitted.VECM <- function(object, ...) {
   object$fits
 }
 
-#' @inherit residuals.ARIMA
-#'
-#' @examples
-#' lung_deaths <- cbind(mdeaths, fdeaths) %>%
-#'   as_tsibble(pivot_longer = FALSE)
-#'
-#' lung_deaths %>%
-#'   model(VAR(vars(mdeaths, fdeaths) ~ AR(3))) %>%
-#'   residuals()
 #' @export
-residuals.VAR <- function(object, ...) {
+residuals.VECM <- function(object, ...) {
   object$resid
 }
 
 #' @export
-model_sum.VAR <- function(x) {
-  sprintf("VAR(%s)%s", x$spec$p, ifelse(x$spec$constant, " w/ mean", ""))
+model_sum.VECM <- function(x) {
+  sprintf("VECM(%s, r=%i)%s", x$spec$p, x$spec$r, ifelse(x$spec$constant, " w/ mean", ""))
 }
 
-#' @inherit tidy.ARIMA
-#'
-#' @examples
-#' lung_deaths <- cbind(mdeaths, fdeaths) %>%
-#'   as_tsibble(pivot_longer = FALSE)
-#'
-#' lung_deaths %>%
-#'   model(VAR(vars(mdeaths, fdeaths) ~ AR(3))) %>%
-#'   tidy()
 #' @export
-tidy.VAR <- function(x, ...) {
+tidy.VECM <- function(x, ...) {
   rdf <- x$model$df.residual
   res <- split(x$resid, col(x$resid))
   rss <- map_dbl(res, function(resid) sum(resid^2, na.rm = TRUE))
   resvar <- rss / rdf
   rank <- x$model$rank
-
+  
   R <- chol2inv(x$model$qr$qr[seq_len(rank), seq_len(rank), drop = FALSE])
   se <- map(resvar, function(resvar) sqrt(diag(R) * resvar))
-
+  
   coef <- dplyr::as_tibble(x$coef, rownames = "term")
   coef <- tidyr::gather(coef, ".response", "estimate", !!!syms(colnames(x$coef)))
   mutate(
@@ -330,47 +299,44 @@ tidy.VAR <- function(x, ...) {
 }
 
 
-#' Glance a VAR
+#' Glance a VECM
 #'
-#' Construct a single row summary of the VAR model.
+#' Construct a single row summary of the VECM model.
 #'
-#' Contains the variance of residuals (`sigma2`), the log-likelihood (`log_lik`),
-#' and information criterion (`AIC`, `AICc`, `BIC`).
+#' Contains the variance of residuals (`sigma2`), the log-likelihood
+#' (`log_lik`), the cointegrating vector (`beta`) and information criterion
+#' (`AIC`, `AICc`, `BIC`).
 #'
 #' @inheritParams generics::glance
 #'
 #' @return A one row tibble summarising the model's fit.
 #'
-#' @examples
-#' lung_deaths <- cbind(mdeaths, fdeaths) %>%
-#'   as_tsibble(pivot_longer = FALSE)
-#'
-#' lung_deaths %>%
-#'   model(VAR(vars(mdeaths, fdeaths) ~ AR(3))) %>%
-#'   glance()
 #' @export
-glance.VAR <- function(x, ...) {
+glance.VECM <- function(x, ...) {
   x$fit
 }
 
 #' @export
-report.VAR <- function(object, ...) {
+report.VECM <- function(object, ...) {
   coef <- tidy(object)
   coef <- map(
     split(coef, factor(coef$.response, levels = unique(coef$.response))),
     function(x) `colnames<-`(rbind(x$estimate, s.e. = x$std.error), x$term)
   )
-
+  
+  cat("\n Cointegrating vector:\n")
+  print.default(round(object$fit$beta[[1]], 4))
+  
   imap(coef, function(par, nm) {
     cat(sprintf("\nCoefficients for %s:\n", nm))
     print.default(round(par, digits = 4), print.gap = 2)
   })
-
+  
   cat("\nResidual covariance matrix:\n")
   print.default(round(object$fit$sigma2[[1]], 4))
-
+  
   cat(sprintf("\nlog likelihood = %s\n", format(round(object$fit$log_lik, 2L))))
-
+  
   cat(
     sprintf(
       "AIC = %s\tAICc = %s\tBIC = %s",
@@ -384,7 +350,7 @@ report.VAR <- function(object, ...) {
 #' @inherit generate.ETS
 #' 
 #' @export
-generate.VAR <- function(x, new_data, specials, ...){
+generate.VECM <- function(x, new_data, specials, ...){
   coef <- x$coef
   K <- NCOL(coef)
   if (!".innov" %in% names(new_data)) {
@@ -394,11 +360,16 @@ generate.VAR <- function(x, new_data, specials, ...){
   kr <- key_data(new_data)$.rows
   h <- lengths(kr)
   
+  # VECM params
+  r <- x$spec$r
+  alpha <-x$fit$alpha[[1]]
+  beta <- x$fit$beta[[1]]
+  
   # Get xreg
   xreg <- specials$xreg[[1]]$xreg
   
   # Generate paths
-  var_sim <- function(i) {
+  vecm_sim <- function(i) {
     if (x$spec$constant) {
       xreg <- cbind(constant = rep_len(1, length(i)), xreg)
     }
@@ -408,20 +379,26 @@ generate.VAR <- function(x, new_data, specials, ...){
     .sim <- matrix(NA, nrow = h, ncol = K)
     y_lag <- x$last_obs
     for (i in seq_along(i)) {
-      if (is.null(xreg)) {
-        Z <- c(t(y_lag))
+      # Difference (without diff() since matrix is in reverse order)
+      Z <- t(y_lag[-NROW(y_lag),] - y_lag[-1,])
+      if (!is.null(xreg)) {
+        Z <- c(Z, t(xreg[i, ]))
       }
-      else {
-        Z <- c(t(y_lag), t(xreg[i, ]))
-      }
-      .sim[i, ] <- t(coef) %*% Z + .innov[i,]
-      y_lag <- rbind(.sim[i, , drop = FALSE], y_lag)[seq_len(p), , drop = FALSE]
+      
+      # Error correction term
+      ect <- t(y_lag[1,]) %*% beta %*% coef[seq_len(r),]
+      
+      # Short-run dynamics
+      st <- t(Z)%*%coef[-seq_len(r),]
+      
+      .sim[i, ] <- y_lag[1,] + ect + st + .innov[i,]
+      y_lag <- rbind(.sim[i, , drop = FALSE], y_lag)[seq_len(p + 1), , drop = FALSE]
     }
     
     .sim
   }
   
-  new_data$.sim <- do.call(rbind, lapply(kr, var_sim))
+  new_data$.sim <- do.call(rbind, lapply(kr, vecm_sim))
   
   new_data
 }
@@ -441,14 +418,14 @@ generate.VAR <- function(x, new_data, specials, ...){
 #' @seealso [`fabletools::IRF.mdl_df`]
 #'
 #' @export
-IRF.VAR <- function(x, new_data, specials, impulse = NULL, orthogonal = FALSE, ...) {
+IRF.VECM <- function(x, new_data, specials, impulse = NULL, orthogonal = FALSE, ...) {
   # Zero out end of data
   x$last_obs[seq_along(x$last_obs)] <- 0
   
   # Remove regressors
-  n_ar <- x$spec$p*ncol(x$coef)
-  if(nrow(x$coef) > n_ar) {
-    x$coef[seq(n_ar + 1, nrow(x$coef)),] <- 0
+  n_vecm <- x$spec$r + x$spec$p * ncol(x$coef)
+  if(nrow(x$coef) > n_vecm) {
+    x$coef[seq(n_vecm + 1, nrow(x$coef)),] <- 0
   }
   
   # Add shocks

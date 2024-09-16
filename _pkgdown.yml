@@ -92,3 +92,8 @@ reference:
     Estimates a VAR(p) model with support for exogenous regressors.
   contents:
     - ends_with("VAR")
+- title: Vector error correction models
+  desc: >
+    Estimates a VECM(p, r) model with support for exogenous regressors.
+  contents:
+    - ends_with("VECM")
