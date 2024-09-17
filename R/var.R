@@ -132,7 +132,7 @@ specials_var <- new_specials(
 #'
 #' @section Specials:
 #'
-#' \subsection{pdq}{
+#' \subsection{AR}{
 #' The `AR` special is used to specify the lag order for the auto-regression.
 #' \preformatted{
 #' AR(p = 0:5)
@@ -437,8 +437,6 @@ generate.VAR <- function(x, new_data, specials, ...){
 #' @param x A fitted model.
 #' @param impulse A character string specifying the name of the variable that is shocked (the impulse variable).
 #' @param orthogonal If TRUE, orthogonalised impulse responses will be computed.
-#'
-#' @seealso [`fabletools::IRF.mdl_df`]
 #'
 #' @export
 IRF.VAR <- function(x, new_data, specials, impulse = NULL, orthogonal = FALSE, ...) {

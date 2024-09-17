@@ -4,7 +4,7 @@
 \alias{VECM}
 \title{Estimate a VECM model}
 \usage{
-VECM(formula, ic = c("aicc", "aic", "bic"), ...)
+VECM(formula, ic = c("aicc", "aic", "bic"), r = 1L, ...)
 }
 \arguments{
 \item{formula}{Model specification (see "Specials" section).}
@@ -18,7 +18,8 @@ A model specification.
 }
 \description{
 Searches through the vector of lag orders to find the best VECM model which
-has lowest AIC, AICc or BIC value. It is implemented using OLS per equation.
+has lowest AIC, AICc or BIC value. The model is estimated using the Johansen
+procedure (maximum likelihood).
 }
 \details{
 Exogenous regressors and \code{\link{common_xregs}} can be specified in the model
@@ -66,7 +67,4 @@ report(fit)
 fit \%>\%
   forecast() \%>\%
   autoplot(lung_deaths)
-}
-\seealso{
-\href{https://otexts.com/fpp2/VAR.html}{Forecasting: Principles and Practices, Vector autoregressions (section 11.2)}
 }

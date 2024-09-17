@@ -2,7 +2,7 @@
 % Please edit documentation in R/vecm.R
 \name{glance.VECM}
 \alias{glance.VECM}
-\title{Glance a VAR}
+\title{Glance a VECM}
 \usage{
 \method{glance}{VECM}(x, ...)
 }
@@ -15,17 +15,10 @@
 A one row tibble summarising the model's fit.
 }
 \description{
-Construct a single row summary of the VAR model.
+Construct a single row summary of the VECM model.
 }
 \details{
-Contains the variance of residuals (\code{sigma2}), the log-likelihood (\code{log_lik}),
-and information criterion (\code{AIC}, \code{AICc}, \code{BIC}).
-}
-\examples{
-lung_deaths <- cbind(mdeaths, fdeaths) \%>\%
-  as_tsibble(pivot_longer = FALSE)
-
-lung_deaths \%>\%
-  model(VAR(vars(mdeaths, fdeaths) ~ AR(3))) \%>\%
-  glance()
+Contains the variance of residuals (\code{sigma2}), the log-likelihood
+(\code{log_lik}), the cointegrating vector (\code{beta}) and information criterion
+(\code{AIC}, \code{AICc}, \code{BIC}).
 }
