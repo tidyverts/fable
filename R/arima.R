@@ -920,8 +920,6 @@ generate.ARIMA <- function(x, new_data, specials, bootstrap = FALSE, ...){
 #' @inheritParams forecast.ETS
 #' @param x A fitted model.
 #'
-#' @seealso [`fabletools::IRF.mdl_df`]
-#'
 #' @export
 IRF.ARIMA <- function(x, new_data, specials, ...) {
   # Zero out data

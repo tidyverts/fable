@@ -25,6 +25,3 @@ sampled by the model's assumed error distribution. If \code{bootstrap} is \code{
 innovations will be sampled from the model's residuals. If \code{new_data}
 contains the \code{.innov} column, those values will be treated as innovations.
 }
-\seealso{
-\code{\link[fabletools:IRF.mdl_df]{fabletools::IRF.mdl_df}}
-}

@@ -53,6 +53,7 @@ Suggests:
     feasts,
     forecast,
     knitr,
+    MTS,
     nnet,
     rmarkdown,
     spelling,
@@ -67,4 +68,4 @@ Encoding: UTF-8
 Language: en-GB
 Roxygen: list(markdown = TRUE, roclets=c('rd', 'collate',
     'namespace'))
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2

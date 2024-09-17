@@ -28,7 +28,7 @@ formula.
 \section{Specials}{
 
 
-\subsection{pdq}{
+\subsection{AR}{
 The \code{AR} special is used to specify the lag order for the auto-regression.
 \preformatted{
 AR(p = 0:5)

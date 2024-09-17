@@ -4,7 +4,7 @@
 \alias{IRF.ARIMA}
 \title{Calculate impulse responses from a fable model}
 \usage{
-\method{IRF}{ARIMA}(x, new_data, specials, impulse = NULL, orthogonal = FALSE, ...)
+\method{IRF}{ARIMA}(x, new_data, specials, ...)
 }
 \arguments{
 \item{x}{A fitted model.}
@@ -13,17 +13,10 @@
 
 \item{specials}{(passed by \code{\link[fabletools:forecast]{fabletools::forecast.mdl_df()}}).}
 
-\item{impulse}{A character string specifying the name of the variable that is shocked (the impulse variable).}
-
-\item{orthogonal}{If TRUE, orthogonalised impulse responses will be computed.}
-
 \item{...}{Other arguments passed to methods}
 }
 \description{
-Simulates future paths from a dataset using a fitted model. Innovations are
-sampled by the model's assumed error distribution. If \code{bootstrap} is \code{TRUE},
-innovations will be sampled from the model's residuals. If \code{new_data}
-contains the \code{.innov} column, those values will be treated as innovations.
+Calculate impulse responses from a fable model
 }
 \seealso{
 \code{\link[fabletools:IRF.mdl_df]{fabletools::IRF.mdl_df}}
