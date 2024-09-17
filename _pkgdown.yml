@@ -92,6 +92,11 @@ reference:
     Estimates a VAR(p) model with support for exogenous regressors.
   contents:
     - ends_with("VAR")
+- title: Vector autoregression integrated moving average
+  desc: >
+    Estimates a VARIMA(p,d,q) model
+  contents:
+    - ends_with("VARIMA")
 - title: Vector error correction models
   desc: >
     Estimates a VECM(p, r) model with support for exogenous regressors.
