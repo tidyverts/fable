@@ -1,4 +1,4 @@
-train_varima <- function(.data, specials, ic, ...) {
+train_varima <- function(.data, specials, identification, ...) {
   # Get response variables
   y <- invoke(cbind, unclass(.data)[measured_vars(.data)])
   
@@ -10,22 +10,54 @@ train_varima <- function(.data, specials, ic, ...) {
   d <- specials$pdq[[1]]$d
   q <- specials$pdq[[1]]$q
   
+  yd <- if(d > 0) diff(y, differences = d) else y
+  
   require_package("MTS")
   utils::capture.output(
-    fit <- MTS::VARMA(
-      if(d > 0) diff(y, differences = d) else y,
-      p = p, q = q,
-      include.mean = "(Intercept)" %in% colnames(specials$xreg[[1]])
-    )
+    fit <- if (identification == "kronecker_indices") {
+      MTS::Kronfit(
+        yd,
+        MTS::Kronid(yd, max(p, q))$index,
+        include.mean = "(Intercept)" %in% colnames(specials$xreg[[1]])
+      )
+    } else if (identification == "scalar_components") {
+      with(
+        MTS::SCMid2(yd, max(p), max(q)),
+        MTS::SCMfit(
+          yd,
+          SCMorder, Tmatrix,
+          include.mean = "(Intercept)" %in% colnames(specials$xreg[[1]])
+        )
+      )
+    } else {
+      if(length(p) != 1 || length(q) != 1) {
+        stop("Model selection is not yet supported, please specify `p` and `q` exactly.")
+      }
+      MTS::VARMA(
+        yd,
+        p = p, q = q,
+        include.mean = "(Intercept)" %in% colnames(specials$xreg[[1]])
+      )
+    }
   )
+  if(fit$cnst && is.null(fit$const)) fit$const <- fit$Ph0
+  
+  
+  # Update fit for consistency across methods
   dimnames(fit$Sigma) <- list(colnames(y), colnames(y))
+  fit$coef <- matrix(fit$coef, ncol = ncol(y))
+  fit$identification <- identification
+  
+  # Add original data for diffinv
+  # TODO: Better to just replace $data and diff() where needed in methods
   fit$y_start <- y[seq_len(d),,drop = FALSE]
   fit$y_end <- y[NROW(y) - d + seq_len(d),,drop = FALSE]
+  
   structure(fit, class="VARIMA")
 }
 
 specials_varima <- new_specials(
-  pdq = function(p, d, q) {
+  pdq = function(p = 0:5, d = 0, q = 0:5) {
     if (self$stage %in% c("estimate", "refit")) {
       p <- p[p <= floor(NROW(self$data) / 3)]
       q <- q[q <= floor(NROW(self$data) / 3)]
@@ -100,8 +132,8 @@ specials_varima <- new_specials(
 #'
 #' fit
 #' @export
-VARIMA <- function(formula, ...) {
-  # ic <- match.arg(ic)
+VARIMA <- function(formula, identification = c("kronecker_indices", "none"), ...) {
+  identification <- match.arg(identification)
   # ic <- switch(ic, aicc = "AICc", aic = "AIC", bic = "BIC")
   varima_model <- new_model_class("VARIMA",
                                  train = train_varima,
@@ -109,7 +141,11 @@ VARIMA <- function(formula, ...) {
                                  origin = NULL,
                                  check = all_tsbl_checks
   )
-  new_model_definition(varima_model, !!enquo(formula), ...)
+  new_model_definition(varima_model, !!enquo(formula), identification, ...)
+}
+
+varima_order <- function(x) {
+  NCOL(x)/NROW(x)
 }
 
 #' @rdname VARIMA
@@ -129,21 +165,30 @@ forecast.VARIMA <- function(object, new_data = NULL, specials = NULL,
 # Adapted from MTS::VARMApred to return distributional distributions
 mts_varma_pred <- function(model, h) {
   x = as.matrix(model$data)
+  nT = dim(x)[1]
+  k = dim(x)[2]
+  
   resi = as.matrix(model$residuals)
   sig = model$Sigma
   Phi = model$Phi
   Theta = model$Theta
-  Ph0 = model$Ph0
-  p = model$ARorder
-  q = model$MAorder
+  Ph0 = model$const
+  
+  if(model$identification == "kronecker_indices"){
+    Ph0i = solve(model$Ph0)
+    Phi = Ph0i %*% Phi
+    Theta = Ph0i %*% Theta
+    Ph0 = t(Ph0i %*% as.matrix(Ph0, k, 1))
+  }
+  
+  p = varima_order(Phi)
+  q = varima_order(Theta)
   if (p < 0) 
     p = 0
   if (q < 0) 
     q = 0
   if (h < 1) 
     h = 1
-  nT = dim(x)[1]
-  k = dim(x)[2]
   T1 = dim(resi)[1]
   if (nT > T1) {
     r1 = matrix(0, (nT - T1), k)
@@ -192,8 +237,7 @@ mts_varma_pred <- function(model, h) {
       for (ii in 1:p) {
         idx = (ii - 1) * k
         ph = Phi[, (idx + 1):(idx + k)]
-        fcst = fcst + matrix(px[(t - ii), ], 1, k) %*% 
-          t(ph)
+        fcst = fcst + matrix(px[(t - ii), ], 1, k) %*% t(ph)
       }
     }
     if (q > 0) {
@@ -245,9 +289,9 @@ fitted.VARIMA <- function(object, ...) {
   fit <- object$data - residuals(object)[seq_len(nrow(object$data)) + d,]
   
   if (d > 0) {
-    fit[seq_len(object$ARorder),] <- object$data[seq_len(object$ARorder),]
+    fit[seq_len(varima_order(object$Phi)),] <- object$data[seq_len(varima_order(object$Phi)),]
     fit <- diffinv(fit, differences = d, xi = object$y_start)
-    fit[seq_len(object$ARorder + d),] <- NA
+    fit[seq_len(varima_order(object$Phi) + d),] <- NA
   }
   fit
 }
@@ -269,7 +313,7 @@ residuals.VARIMA <- function(object, ...) {
 model_sum.VARIMA <- function(x) {
   sprintf(
     "VARIMA(%i,%i,%i)%s", 
-    x$ARorder, NROW(x$y_end), x$MAorder, ifelse(x$cnst, " w/ mean", ""))
+    varima_order(x$Phi), NROW(x$y_end), varima_order(x$Theta), ifelse(x$cnst, " w/ mean", ""))
 }
 
 #' @rdname VARIMA
@@ -279,24 +323,36 @@ model_sum.VARIMA <- function(x) {
 #' tidy(fit)
 #' @export
 tidy.VARIMA <- function(x, ...) {
-  colnames(x$coef) <- cn <- colnames(x$data)
-  k <- NCOL(x$coef)
-  rownames(x$coef) <- c(
+  coef_mat <- x$coef
+  k <- NCOL(coef_mat)
+  p <- varima_order(x$Phi)
+  q <- varima_order(x$Theta)
+  
+  if(x$identification == "kronecker_indices"){
+    Ph0i = solve(x$Ph0)
+    coef_mat <- coef_mat %*% t(Ph0i)
+  }
+  
+  colnames(coef_mat) <- cn <- colnames(x$data)
+  
+  rownames(coef_mat) <- c(
     if(x$cnst) "constant" else NULL,
-    paste0("lag(", rep(cn, x$ARorder), ",", rep(seq_len(x$ARorder), each = k), ")"),
-    paste0("lag(e_", rep(cn, x$MAorder), ",", rep(seq_len(x$MAorder), each = k), ")")
+    paste0("lag(", rep(cn, p), ",", rep(seq_len(p), each = k), ")"),
+    paste0("lag(e_", rep(cn, q), ",", rep(seq_len(q), each = k), ")")
   )
   
-  rdf <- (x$ARorder + x$MAorder) * k^2 + k*(k+1)/2
+  rdf <- (p + q) * k^2 + k*(k+1)/2
   
-  coef <- dplyr::as_tibble(x$coef, rownames = "term")
-  coef <- tidyr::gather(coef, ".response", "estimate", !!!syms(colnames(x$coef)))
-  mutate(
-    coef,
-    std.error = as.numeric(x$secoef),
-    statistic = !!sym("estimate") / !!sym("std.error"),
-    p.value = 2 * stats::pt(abs(!!sym("statistic")), rdf, lower.tail = FALSE)
-  )
+  coef <- dplyr::as_tibble(coef_mat, rownames = "term")
+  coef <- tidyr::gather(coef, ".response", "estimate", !!!syms(colnames(coef_mat)))
+  # coef <- coef[coef$estimate != 0,]
+  coef
+  # mutate(
+  #   coef,
+  #   std.error = as.numeric(x$secoef),
+  #   statistic = !!sym("estimate") / !!sym("std.error"),
+  #   p.value = 2 * stats::pt(abs(!!sym("statistic")), rdf, lower.tail = FALSE)
+  # )
 }
 
 
@@ -311,6 +367,7 @@ tidy.VARIMA <- function(x, ...) {
 glance.VARIMA <- function(x, ...) {
   tibble(
     sigma2 = list(x$Sigma),
+    kronecker_indices = list(x$Kindex),
     AIC = x$aic, BIC = x$bic
   )
 }
@@ -323,9 +380,12 @@ glance.VARIMA <- function(x, ...) {
 #' @export
 report.VARIMA <- function(object, ...) {
   coef <- tidy(object)
-  coef <- map(
-    split(coef, factor(coef$.response, levels = unique(coef$.response))),
-    function(x) `colnames<-`(rbind(x$estimate, s.e. = x$std.error), x$term)
+  coef <- split(coef, factor(coef$.response, levels = unique(coef$.response)))
+  coef <- map(coef,
+    function(x) `colnames<-`(
+      rbind(
+        "Est." = x$estimate#, s.e. = x$std.error
+      ), x$term)
   )
   
   imap(coef, function(par, nm) {
@@ -335,7 +395,6 @@ report.VARIMA <- function(object, ...) {
   
   cat("\nResidual covariance matrix:\n")
   print.default(round(object$Sigma, 4))
-  
   
   cat(
     sprintf(
@@ -376,11 +435,20 @@ generate.VARIMA <- function(x, new_data, specials, ...){
 # nocov start
 # Adapted from MTS::VARMAsim to simulate from model
 mts_varma_sim <- function(model, innov) {
-  cnst = if(model$cnst) model$Ph0 else 0
+  cnst = if(model$cnst) model$const else 0
   phi = model$Phi
-  nar = model$ARorder
+  nar = varima_order(phi)
   theta = model$Theta
-  nma = model$MAorder
+  nma = varima_order(theta)
+  
+  if(model$identification == "kronecker_indices"){
+    Ph0i = solve(model$Ph0)
+    phi = Ph0i %*% phi
+    theta = Ph0i %*% theta
+    
+    cnst = t(Ph0i %*% as.matrix(model$const, k, 1))
+  }
+  
   k = NCOL(model$data)
   lastobs <- model$data[NROW(model$data) - seq_len(nar) + 1,,drop=FALSE]
   lastres <- model$residuals[NROW(model$residuals) - seq_len(nma) + 1,,drop=FALSE]
