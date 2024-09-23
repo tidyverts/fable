@@ -63,7 +63,7 @@ contains the .innov column, those values will be treated as innovations."><meta 
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Generate new data from a fable model</h1>
-    <small class="dont-index">Source: <a href="https://github.com/tidyverts/fable/blob/master/R/lm.R" class="external-link"><code>R/lm.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/tidyverts/fable/blob/main/R/lm.R" class="external-link"><code>R/lm.R</code></a></small>
     <div class="hidden name"><code>generate.TSLM.Rd</code></div>
     </div>
 
@@ -113,20 +113,20 @@ contains the <code>.innov</code> column, those values will be treated as innovat
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://tsibble.tidyverts.org/reference/as-tsibble.html" class="external-link">as_tsibble</a></span><span class="op">(</span><span class="va">USAccDeaths</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://fabletools.tidyverts.org/reference/model.html" class="external-link">model</a></span><span class="op">(</span>lm <span class="op">=</span> <span class="fu"><a href="TSLM.html">TSLM</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">value</span><span class="op">)</span> <span class="op">~</span> <span class="fu">trend</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu">season</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://generics.r-lib.org/reference/generate.html" class="external-link">generate</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tsibble: 24 x 4 [1M]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Key:       .model, .rep [1]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    .model .rep     index   .sim</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;mth&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> lm     1     1979 Jan  <span style="text-decoration: underline;">7</span>607.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> lm     1     1979 Feb  <span style="text-decoration: underline;">6</span>645.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> lm     1     1979 Mar  <span style="text-decoration: underline;">7</span>800.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> lm     1     1979 Apr  <span style="text-decoration: underline;">7</span>849.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> lm     1     1979 May  <span style="text-decoration: underline;">8</span>109.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> lm     1     1979 Jun  <span style="text-decoration: underline;">9</span>329.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> lm     1     1979 Jul <span style="text-decoration: underline;">10</span>041.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> lm     1     1979 Aug  <span style="text-decoration: underline;">9</span>034.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> lm     1     1979 Sep  <span style="text-decoration: underline;">7</span>585.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> lm     1     1979 Oct  <span style="text-decoration: underline;">8</span>631.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tsibble: 24 x 3 [1M]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Key:       .model [1]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    .model    index   .sim</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;mth&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> lm     1979 Jan  <span style="text-decoration: underline;">7</span>729.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> lm     1979 Feb  <span style="text-decoration: underline;">6</span>956.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> lm     1979 Mar  <span style="text-decoration: underline;">7</span>456.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> lm     1979 Apr  <span style="text-decoration: underline;">8</span>152.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> lm     1979 May  <span style="text-decoration: underline;">8</span>751.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> lm     1979 Jun  <span style="text-decoration: underline;">9</span>076.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> lm     1979 Jul <span style="text-decoration: underline;">10</span>934.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> lm     1979 Aug  <span style="text-decoration: underline;">9</span>368.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> lm     1979 Sep  <span style="text-decoration: underline;">7</span>885.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> lm     1979 Oct  <span style="text-decoration: underline;">8</span>447.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 14 more rows</span></span>
 </code></pre></div>
     </div>
@@ -142,7 +142,7 @@ contains the <code>.innov</code> column, those values will be treated as innovat
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
       </footer></div>

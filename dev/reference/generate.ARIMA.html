@@ -63,7 +63,7 @@ contains the .innov column, those values will be treated as innovations."><meta 
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Generate new data from a fable model</h1>
-    <small class="dont-index">Source: <a href="https://github.com/tidyverts/fable/blob/master/R/arima.R" class="external-link"><code>R/arima.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/tidyverts/fable/blob/main/R/arima.R" class="external-link"><code>R/arima.R</code></a></small>
     <div class="hidden name"><code>generate.ARIMA.Rd</code></div>
     </div>
 
@@ -115,18 +115,18 @@ contains the <code>.innov</code> column, those values will be treated as innovat
 <span class="r-in"><span><span class="va">fable_fit</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://generics.r-lib.org/reference/generate.html" class="external-link">generate</a></span><span class="op">(</span>times <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tsibble: 240 x 4 [1M]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Key:       .model, .rep [10]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    .model .rep     index   .sim</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;mth&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> model  1     1979 Jan  <span style="text-decoration: underline;">8</span>239.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> model  1     1979 Feb  <span style="text-decoration: underline;">8</span>186.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> model  1     1979 Mar  <span style="text-decoration: underline;">8</span>329.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> model  1     1979 Apr  <span style="text-decoration: underline;">8</span>408.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> model  1     1979 May  <span style="text-decoration: underline;">8</span>900.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> model  1     1979 Jun  <span style="text-decoration: underline;">9</span>992.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> model  1     1979 Jul <span style="text-decoration: underline;">11</span>007.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> model  1     1979 Aug <span style="text-decoration: underline;">10</span>748.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> model  1     1979 Sep  <span style="text-decoration: underline;">9</span>502.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> model  1     1979 Oct <span style="text-decoration: underline;">10</span>566.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    .model    index .rep    .sim</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;mth&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> model  1979 Jan 1      <span style="text-decoration: underline;">8</span>333.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> model  1979 Feb 1      <span style="text-decoration: underline;">7</span>320.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> model  1979 Mar 1      <span style="text-decoration: underline;">7</span>979.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> model  1979 Apr 1      <span style="text-decoration: underline;">8</span>220.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> model  1979 May 1      <span style="text-decoration: underline;">9</span>581.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> model  1979 Jun 1      <span style="text-decoration: underline;">9</span>974.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> model  1979 Jul 1     <span style="text-decoration: underline;">11</span>099.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> model  1979 Aug 1      <span style="text-decoration: underline;">9</span>645.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> model  1979 Sep 1      <span style="text-decoration: underline;">9</span>251.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> model  1979 Oct 1      <span style="text-decoration: underline;">9</span>419.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 230 more rows</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
@@ -143,7 +143,7 @@ contains the <code>.innov</code> column, those values will be treated as innovat
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
       </footer></div>

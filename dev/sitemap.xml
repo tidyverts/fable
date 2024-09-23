@@ -10,12 +10,17 @@
 <url><loc>https://fable.tidyverts.org/reference/ARIMA.html</loc></url>
 <url><loc>https://fable.tidyverts.org/reference/CROSTON.html</loc></url>
 <url><loc>https://fable.tidyverts.org/reference/ETS.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/IRF.ARIMA.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/IRF.VAR.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/IRF.VECM.html</loc></url>
 <url><loc>https://fable.tidyverts.org/reference/MEAN.html</loc></url>
 <url><loc>https://fable.tidyverts.org/reference/NNETAR.html</loc></url>
 <url><loc>https://fable.tidyverts.org/reference/RW.html</loc></url>
 <url><loc>https://fable.tidyverts.org/reference/THETA.html</loc></url>
 <url><loc>https://fable.tidyverts.org/reference/TSLM.html</loc></url>
 <url><loc>https://fable.tidyverts.org/reference/VAR.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/VARIMA.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/VECM.html</loc></url>
 <url><loc>https://fable.tidyverts.org/reference/breusch_godfrey.html</loc></url>
 <url><loc>https://fable.tidyverts.org/reference/common_xregs.html</loc></url>
 <url><loc>https://fable.tidyverts.org/reference/components.ETS.html</loc></url>
@@ -46,6 +51,8 @@
 <url><loc>https://fable.tidyverts.org/reference/generate.NNETAR.html</loc></url>
 <url><loc>https://fable.tidyverts.org/reference/generate.RW.html</loc></url>
 <url><loc>https://fable.tidyverts.org/reference/generate.TSLM.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/generate.VAR.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/generate.VECM.html</loc></url>
 <url><loc>https://fable.tidyverts.org/reference/generate.model_mean.html</loc></url>
 <url><loc>https://fable.tidyverts.org/reference/glance.AR.html</loc></url>
 <url><loc>https://fable.tidyverts.org/reference/glance.ARIMA.html</loc></url>
@@ -54,6 +61,7 @@
 <url><loc>https://fable.tidyverts.org/reference/glance.RW.html</loc></url>
 <url><loc>https://fable.tidyverts.org/reference/glance.TSLM.html</loc></url>
 <url><loc>https://fable.tidyverts.org/reference/glance.VAR.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/glance.VECM.html</loc></url>
 <url><loc>https://fable.tidyverts.org/reference/glance.fable_theta.html</loc></url>
 <url><loc>https://fable.tidyverts.org/reference/glance.model_mean.html</loc></url>
 <url><loc>https://fable.tidyverts.org/reference/index.html</loc></url>

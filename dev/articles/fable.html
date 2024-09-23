@@ -93,7 +93,7 @@
       <h1 data-toc-skip>Introduction to fable</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/tidyverts/fable/blob/master/vignettes/fable.Rmd" class="external-link"><code>vignettes/fable.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/tidyverts/fable/blob/main/vignettes/fable.Rmd" class="external-link"><code>vignettes/fable.Rmd</code></a></small>
       <div class="hidden name"><code>fable.Rmd</code></div>
 
     </div>
@@ -298,19 +298,20 @@ models do not require any additional data.</p>
 <span><span class="va">fc</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A fable: 160 x 7 [1Q]</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># Key:     Region, State, Purpose, .model [8]</span></span></span>
-<span><span class="co">#&gt;    Region    State    Purpose  .model Quarter        Trips .mean</span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;qtr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dist&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Melbourne Victoria Business ets    2018 Q1 N(619, 3533)  619.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> Melbourne Victoria Business ets    2018 Q2 N(709, 3766)  709.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> Melbourne Victoria Business ets    2018 Q3 N(738, 4042)  738.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> Melbourne Victoria Business ets    2018 Q4 N(713, 4364)  713.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> Melbourne Victoria Business ets    2019 Q1 N(664, 4735)  664.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> Melbourne Victoria Business ets    2019 Q2 N(755, 5159)  755.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> Melbourne Victoria Business ets    2019 Q3 N(784, 5640)  784.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> Melbourne Victoria Business ets    2019 Q4 N(759, 6181)  759.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> Melbourne Victoria Business ets    2020 Q1 N(710, 6786)  710.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> Melbourne Victoria Business ets    2020 Q2 N(800, 7458)  800.</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 150 more rows</span></span></span></code></pre></div>
+<span><span class="co">#&gt;    Region    State    Purpose  .model Quarter</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;qtr&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Melbourne Victoria Business ets    2018 Q1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> Melbourne Victoria Business ets    2018 Q2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> Melbourne Victoria Business ets    2018 Q3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> Melbourne Victoria Business ets    2018 Q4</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> Melbourne Victoria Business ets    2019 Q1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> Melbourne Victoria Business ets    2019 Q2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> Melbourne Victoria Business ets    2019 Q3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> Melbourne Victoria Business ets    2019 Q4</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> Melbourne Victoria Business ets    2020 Q1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> Melbourne Victoria Business ets    2020 Q2</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 150 more rows</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 2 more variables: Trips &lt;dist&gt;, .mean &lt;dbl&gt;</span></span></span></code></pre></div>
 <p>The resulting forecasts are contained in a “fable” (forecast table),
 and both point forecasts and forecast distributions are available in the
 table for the next five years. Confidence intervals can be extracted
@@ -326,20 +327,20 @@ which allows you to extract multiple intervals at once.</p>
 <span>  <span class="fu"><a href="https://pkg.mitchelloharawild.com/distributional/reference/hilo.html" class="external-link">hilo</a></span><span class="op">(</span>level <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">80</span>, <span class="fl">95</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tsibble: 160 x 9 [1Q]</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># Key:       Region, State, Purpose, .model [8]</span></span></span>
-<span><span class="co">#&gt;    Region State Purpose .model Quarter        Trips .mean                  `80%`</span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;qtr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dist&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;hilo&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Melbo… Vict… Busine… ets    2018 Q1 N(619, 3533)  619. [542.3864, 694.7363]80</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> Melbo… Vict… Busine… ets    2018 Q2 N(709, 3766)  709. [630.4443, 787.7426]80</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> Melbo… Vict… Busine… ets    2018 Q3 N(738, 4042)  738. [656.9891, 819.9425]80</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> Melbo… Vict… Busine… ets    2018 Q4 N(713, 4364)  713. [628.7879, 798.1010]80</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> Melbo… Vict… Busine… ets    2019 Q1 N(664, 4735)  664. [575.8480, 752.2196]80</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> Melbo… Vict… Busine… ets    2019 Q2 N(755, 5159)  755. [662.5141, 846.6176]80</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> Melbo… Vict… Busine… ets    2019 Q3 N(784, 5640)  784. [687.6922, 880.1843]80</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> Melbo… Vict… Busine… ets    2019 Q4 N(759, 6181)  759. [658.1603, 859.6735]80</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> Melbo… Vict… Busine… ets    2020 Q1 N(710, 6786)  710. [603.9336, 815.0789]80</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> Melbo… Vict… Busine… ets    2020 Q2 N(800, 7458)  800. [689.3620, 910.7146]80</span></span>
+<span><span class="co">#&gt;    Region    State    Purpose  .model Quarter</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;qtr&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Melbourne Victoria Business ets    2018 Q1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> Melbourne Victoria Business ets    2018 Q2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> Melbourne Victoria Business ets    2018 Q3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> Melbourne Victoria Business ets    2018 Q4</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> Melbourne Victoria Business ets    2019 Q1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> Melbourne Victoria Business ets    2019 Q2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> Melbourne Victoria Business ets    2019 Q3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> Melbourne Victoria Business ets    2019 Q4</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> Melbourne Victoria Business ets    2020 Q1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> Melbourne Victoria Business ets    2020 Q2</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 150 more rows</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 1 more variable: `95%` &lt;hilo&gt;</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 4 more variables: Trips &lt;dist&gt;, .mean &lt;dbl&gt;, `80%` &lt;hilo&gt;, `95%` &lt;hilo&gt;</span></span></span></code></pre></div>
 <!--
 These intervals can also be unnested if you're looking to obtain the numerical values (`.lower`, `.upper`, and `level`).
 
@@ -385,7 +386,7 @@ Practices (3rd Ed.)</em></a> and in the <a href="https://fable.tidyverts.org/"><
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
       </footer>
