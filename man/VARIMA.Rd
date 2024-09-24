@@ -106,7 +106,7 @@ xreg(...)
 \dontshow{if (requireNamespace("tsibbledata", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 library(tsibbledata)
 
-aus_production |> 
+aus_production \%>\% 
   autoplot(vars(Beer, Tobacco, Bricks))
 
 fit <- aus_production[complete.cases(aus_production),] \%>\%

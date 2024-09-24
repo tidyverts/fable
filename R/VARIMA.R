@@ -122,7 +122,7 @@ specials_varima <- new_specials(
 #' @examplesIf requireNamespace("tsibbledata", quietly = TRUE)
 #' library(tsibbledata)
 #' 
-#' aus_production |> 
+#' aus_production %>% 
 #'   autoplot(vars(Beer, Tobacco, Bricks))
 #'
 #' fit <- aus_production[complete.cases(aus_production),] %>%
