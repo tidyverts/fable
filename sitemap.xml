@@ -1,276 +1,102 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://fable.tidyverts.org/404.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/articles/fable.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/articles/transformations.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/index.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/AR.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/ARIMA.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/CROSTON.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/ETS.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/MEAN.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/NNETAR.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/RW.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/THETA.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/TSLM.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/VAR.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/breusch_godfrey.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/common_xregs.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/components.ETS.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/fable-package.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/fitted.AR.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/fitted.ARIMA.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/fitted.ETS.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/fitted.NNETAR.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/fitted.RW.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/fitted.TSLM.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/fitted.VAR.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/fitted.croston.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/fitted.fable_theta.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/fitted.model_mean.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/forecast.AR.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/forecast.ARIMA.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/forecast.ETS.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/forecast.NNETAR.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/forecast.RW.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/forecast.TSLM.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/forecast.VAR.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/forecast.croston.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/forecast.fable_theta.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/forecast.model_mean.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/generate.AR.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/generate.ARIMA.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/generate.ETS.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/generate.NNETAR.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/generate.RW.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/generate.TSLM.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/generate.model_mean.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/glance.AR.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/glance.ARIMA.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/glance.ETS.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/glance.NNETAR.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/glance.RW.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/glance.TSLM.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/glance.VAR.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/glance.fable_theta.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/glance.model_mean.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/interpolate.ARIMA.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/interpolate.TSLM.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/interpolate.model_mean.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/reexports.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/refit.AR.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/refit.ARIMA.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/refit.ETS.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/refit.NNETAR.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/refit.RW.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/refit.TSLM.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/refit.model_mean.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/residuals.AR.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/residuals.ARIMA.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/residuals.ETS.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/residuals.NNETAR.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/residuals.RW.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/residuals.TSLM.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/residuals.VAR.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/residuals.croston.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/residuals.fable_theta.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/residuals.model_mean.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/tidy.AR.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/tidy.ARIMA.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/tidy.ETS.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/tidy.NNETAR.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/tidy.RW.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/tidy.TSLM.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/tidy.VAR.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/tidy.croston.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/tidy.fable_theta.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/tidy.model_mean.html</loc>
-  </url>
-  <url>
-    <loc>https://fable.tidyverts.org/reference/unitroot_options.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://fable.tidyverts.org/404.html</loc></url>
+<url><loc>https://fable.tidyverts.org/LICENSE.html</loc></url>
+<url><loc>https://fable.tidyverts.org/articles/fable.html</loc></url>
+<url><loc>https://fable.tidyverts.org/articles/index.html</loc></url>
+<url><loc>https://fable.tidyverts.org/articles/transformations.html</loc></url>
+<url><loc>https://fable.tidyverts.org/authors.html</loc></url>
+<url><loc>https://fable.tidyverts.org/index.html</loc></url>
+<url><loc>https://fable.tidyverts.org/news/index.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/AR.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/ARIMA.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/CROSTON.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/ETS.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/IRF.ARIMA.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/IRF.VAR.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/IRF.VECM.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/MEAN.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/NNETAR.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/RW.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/THETA.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/TSLM.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/VAR.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/VARIMA.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/VECM.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/breusch_godfrey.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/common_xregs.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/components.ETS.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/fable-package.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/fitted.AR.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/fitted.ARIMA.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/fitted.ETS.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/fitted.NNETAR.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/fitted.RW.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/fitted.TSLM.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/fitted.VAR.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/fitted.croston.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/fitted.fable_theta.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/fitted.model_mean.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/forecast.AR.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/forecast.ARIMA.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/forecast.ETS.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/forecast.NNETAR.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/forecast.RW.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/forecast.TSLM.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/forecast.VAR.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/forecast.croston.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/forecast.fable_theta.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/forecast.model_mean.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/generate.AR.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/generate.ARIMA.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/generate.ETS.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/generate.NNETAR.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/generate.RW.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/generate.TSLM.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/generate.VAR.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/generate.VECM.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/generate.model_mean.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/glance.AR.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/glance.ARIMA.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/glance.ETS.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/glance.NNETAR.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/glance.RW.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/glance.TSLM.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/glance.VAR.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/glance.VECM.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/glance.fable_theta.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/glance.model_mean.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/index.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/interpolate.ARIMA.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/interpolate.TSLM.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/interpolate.model_mean.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/reexports.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/refit.AR.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/refit.ARIMA.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/refit.ETS.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/refit.NNETAR.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/refit.RW.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/refit.TSLM.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/refit.model_mean.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/residuals.AR.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/residuals.ARIMA.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/residuals.ETS.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/residuals.NNETAR.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/residuals.RW.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/residuals.TSLM.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/residuals.VAR.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/residuals.croston.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/residuals.fable_theta.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/residuals.model_mean.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/tidy.AR.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/tidy.ARIMA.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/tidy.ETS.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/tidy.NNETAR.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/tidy.RW.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/tidy.TSLM.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/tidy.VAR.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/tidy.croston.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/tidy.fable_theta.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/tidy.model_mean.html</loc></url>
+<url><loc>https://fable.tidyverts.org/reference/unitroot_options.html</loc></url>
 </urlset>
+
