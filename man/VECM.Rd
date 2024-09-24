@@ -9,7 +9,7 @@ VECM(formula, ic = c("aicc", "aic", "bic"), r = 1L, ...)
 \arguments{
 \item{formula}{Model specification (see "Specials" section).}
 
-\item{ic}{The information criterion used in selecting the model.}
+\item{r}{The number of cointegrating relationships}
 
 \item{...}{Further arguments for arima}
 }

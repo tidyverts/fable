@@ -82,7 +82,7 @@ specials_varima <- new_specials(
 #' @aliases report.VARIMA
 #'
 #' @param formula Model specification (see "Specials" section).
-#' @param ic The information criterion used in selecting the model.
+#' @param identification The identification technique used to estimate the model.
 #' @param ... Further arguments for arima
 #'
 #' @section Specials:
@@ -500,7 +500,7 @@ mts_varma_sim <- function(model, innov) {
 #' @param orthogonal If TRUE, orthogonalised impulse responses will be computed.
 #'
 #' @examplesIf requireNamespace("tsibbledata", quietly = TRUE)
-#' IRF(fit, h = 10, impulse = "FTSE")
+#' IRF(fit, h = 10, impulse = "Beer")
 #' 
 #' @export
 IRF.VARIMA <- function(x, new_data, specials, impulse = NULL, orthogonal = FALSE, ...) {

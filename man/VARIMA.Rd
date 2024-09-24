@@ -40,6 +40,8 @@ VARIMA(formula, identification = c("kronecker_indices", "none"), ...)
 \arguments{
 \item{formula}{Model specification (see "Specials" section).}
 
+\item{identification}{The identification technique used to estimate the model.}
+
 \item{...}{Further arguments for arima}
 
 \item{object}{A model for which forecasts are required.}
@@ -57,8 +59,6 @@ VARIMA(formula, identification = c("kronecker_indices", "none"), ...)
 \item{impulse}{A character string specifying the name of the variable that is shocked (the impulse variable).}
 
 \item{orthogonal}{If TRUE, orthogonalised impulse responses will be computed.}
-
-\item{ic}{The information criterion used in selecting the model.}
 }
 \value{
 A model specification.
@@ -140,7 +140,7 @@ report(fit)
 generate(fit, h = 10)
 \dontshow{\}) # examplesIf}
 \dontshow{if (requireNamespace("tsibbledata", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-IRF(fit, h = 10, impulse = "FTSE")
+IRF(fit, h = 10, impulse = "Beer")
 \dontshow{\}) # examplesIf}
 }
 \seealso{

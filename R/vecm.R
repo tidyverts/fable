@@ -172,7 +172,7 @@ specials_vecm <- new_specials(
 #' formula.
 #'
 #' @param formula Model specification (see "Specials" section).
-#' @param ic The information criterion used in selecting the model.
+#' @param r The number of cointegrating relationships
 #' @param ... Further arguments for arima
 #'
 #' @section Specials:
