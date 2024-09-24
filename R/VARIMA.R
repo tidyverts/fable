@@ -119,15 +119,14 @@ specials_varima <- new_specials(
 #' @seealso
 #' [`MTS::VARMA()`], [`MTS:sVARMA()`].
 #'
-#' @examples
+#' @examplesIf requireNamespace("tsibbledata", quietly = TRUE)
+#' library(tsibbledata)
+#' 
+#' aus_production |> 
+#'   autoplot(vars(Beer, Tobacco, Bricks))
 #'
-#' eu_stocks <- as_tsibble(ts(EuStockMarkets, frequency = 1), pivot_longer = FALSE)
-#'
-#' eu_stocks |> 
-#'   autoplot(vars(DAX, SMI, CAC, FTSE))
-#'
-#' fit <- eu_stocks %>%
-#'   model(VARIMA(vars(DAX, SMI, CAC, FTSE) ~ pdq(1, 1, 1)))
+#' fit <- aus_production[complete.cases(aus_production),] %>%
+#'   model(VARIMA(vars(Beer, Bricks, Cement) ~ pdq(4,1,1), identification = "none"))
 #'
 #' fit
 #' @export
@@ -149,11 +148,11 @@ varima_order <- function(x) {
 
 #' @rdname VARIMA
 #' @inheritParams forecast.VAR
-#' @examples
+#' @examplesIf requireNamespace("tsibbledata", quietly = TRUE)
 #' 
 #' fit %>%
 #'   forecast(h = 50) %>%
-#'   autoplot(tail(eu_stocks, 100))
+#'   autoplot(tail(aus_production, 100))
 #' @export
 forecast.VARIMA <- function(object, new_data = NULL, specials = NULL,
                          bootstrap = FALSE, times = 5000, ...) {
@@ -279,7 +278,7 @@ mts_varma_pred <- function(model, h) {
 #' @rdname VARIMA
 #' @inheritParams fitted.VAR
 #'
-#' @examples
+#' @examplesIf requireNamespace("tsibbledata", quietly = TRUE)
 #'
 #' fitted(fit)
 #' @export
@@ -298,7 +297,7 @@ fitted.VARIMA <- function(object, ...) {
 #' @rdname VARIMA
 #' @inheritParams residuals.VAR
 #' 
-#' @examples
+#' @examplesIf requireNamespace("tsibbledata", quietly = TRUE)
 #' residuals(fit)
 #' @export
 residuals.VARIMA <- function(object, ...) {
@@ -318,7 +317,7 @@ model_sum.VARIMA <- function(x) {
 #' @rdname VARIMA
 #' @inheritParams tidy.VAR
 #'
-#' @examples
+#' @examplesIf requireNamespace("tsibbledata", quietly = TRUE)
 #' tidy(fit)
 #' @export
 tidy.VARIMA <- function(x, ...) {
@@ -371,7 +370,7 @@ tidy.VARIMA <- function(x, ...) {
 #'
 #' @return A one row tibble summarising the model's fit.
 #'
-#' @examples
+#' @examplesIf requireNamespace("tsibbledata", quietly = TRUE)
 #' glance(fit)
 #' @export
 glance.VARIMA <- function(x, ...) {
@@ -384,7 +383,7 @@ glance.VARIMA <- function(x, ...) {
 
 #' @rdname VARIMA
 #' 
-#' @examples
+#' @examplesIf requireNamespace("tsibbledata", quietly = TRUE)
 #' report(fit)
 #' 
 #' @export
@@ -417,7 +416,7 @@ report.VARIMA <- function(object, ...) {
 
 #' @rdname VARIMA
 #' 
-#' @examples
+#' @examplesIf requireNamespace("tsibbledata", quietly = TRUE)
 #' generate(fit, h = 10)
 #' 
 #' @export
@@ -500,7 +499,7 @@ mts_varma_sim <- function(model, innov) {
 #' @param impulse A character string specifying the name of the variable that is shocked (the impulse variable).
 #' @param orthogonal If TRUE, orthogonalised impulse responses will be computed.
 #'
-#' @examples
+#' @examplesIf requireNamespace("tsibbledata", quietly = TRUE)
 #' IRF(fit, h = 10, impulse = "FTSE")
 #' 
 #' @export

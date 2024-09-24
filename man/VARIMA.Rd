@@ -103,31 +103,45 @@ xreg(...)
 }
 
 \examples{
+\dontshow{if (requireNamespace("tsibbledata", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+library(tsibbledata)
 
-eu_stocks <- as_tsibble(ts(EuStockMarkets, frequency = 1), pivot_longer = FALSE)
+aus_production |> 
+  autoplot(vars(Beer, Tobacco, Bricks))
 
-eu_stocks |> 
-  autoplot(vars(DAX, SMI, CAC, FTSE))
-
-fit <- eu_stocks \%>\%
-  model(VARIMA(vars(DAX, SMI, CAC, FTSE) ~ pdq(1, 1, 1)))
+fit <- aus_production[complete.cases(aus_production),] \%>\%
+  model(VARIMA(vars(Beer, Bricks, Cement) ~ pdq(4,1,1), identification = "none"))
 
 fit
+\dontshow{\}) # examplesIf}
+\dontshow{if (requireNamespace("tsibbledata", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 
 fit \%>\%
   forecast(h = 50) \%>\%
-  autoplot(tail(eu_stocks, 100))
+  autoplot(tail(aus_production, 100))
+\dontshow{\}) # examplesIf}
+\dontshow{if (requireNamespace("tsibbledata", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 
 fitted(fit)
+\dontshow{\}) # examplesIf}
+\dontshow{if (requireNamespace("tsibbledata", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 residuals(fit)
+\dontshow{\}) # examplesIf}
+\dontshow{if (requireNamespace("tsibbledata", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 tidy(fit)
+\dontshow{\}) # examplesIf}
+\dontshow{if (requireNamespace("tsibbledata", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 glance(fit)
+\dontshow{\}) # examplesIf}
+\dontshow{if (requireNamespace("tsibbledata", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 report(fit)
-
+\dontshow{\}) # examplesIf}
+\dontshow{if (requireNamespace("tsibbledata", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 generate(fit, h = 10)
-
+\dontshow{\}) # examplesIf}
+\dontshow{if (requireNamespace("tsibbledata", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 IRF(fit, h = 10, impulse = "FTSE")
-
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \code{\link[MTS:VARMA]{MTS::VARMA()}}, \code{\link[=MTS:sVARMA]{MTS:sVARMA()}}.
