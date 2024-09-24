@@ -213,7 +213,7 @@ specials_nnetar <- new_specials(
 #' @param scale_inputs If TRUE, inputs are scaled by subtracting the column
 #' means and dividing by their respective standard deviations. Scaling is
 #' applied after transformations.
-#' @param ... Other arguments passed to `\link[nnet]{nnet}`.
+#' @param ... Other arguments passed to [nnet::nnet()].
 #'
 #' @section Specials:
 #'
