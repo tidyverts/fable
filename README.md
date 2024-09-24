@@ -8,9 +8,10 @@
 [![R-CMD-check](https://github.com/tidyverts/fable/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/tidyverts/fable/actions/workflows/R-CMD-check.yaml)
 [![Coverage
 status](https://codecov.io/gh/tidyverts/fable/branch/master/graph/badge.svg)](https://app.codecov.io/github/tidyverts/fable?branch=master)
-[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/fable)](https://cran.r-project.org/package=fable)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/fable)](https://CRAN.R-project.org/package=fable)
 [![Lifecycle:
-maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html)
+stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 <!-- badges: end -->
 
 The R package *fable* provides a collection of commonly used univariate
