@@ -12,7 +12,7 @@
 \alias{IRF.VARIMA}
 \title{Estimate a VARIMA model}
 \usage{
-VARIMA(formula, ...)
+VARIMA(formula, identification = c("kronecker_indices", "none"), ...)
 
 \method{forecast}{VARIMA}(
   object,

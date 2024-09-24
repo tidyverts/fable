@@ -18,6 +18,3 @@
 \description{
 Calculate impulse responses from a fable model
 }
-\seealso{
-\code{\link[fabletools:IRF.mdl_df]{fabletools::IRF.mdl_df}}
-}

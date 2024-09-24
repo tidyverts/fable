@@ -3,6 +3,12 @@
 ## New features
 
 * Added `generate()` and `IRF()` methods for VAR models.
+* Added `IRF()` method for ARIMA models.
+* Added `VECM()` and `VARIMA()` models.
+
+## Improvements
+
+* Documentation improvements.
 
 # fable 0.3.4
 
