@@ -123,10 +123,10 @@ specials_varima <- new_specials(
 #' library(tsibbledata)
 #' 
 #' aus_production %>% 
-#'   autoplot(vars(Beer, Tobacco, Bricks))
+#'   autoplot(vars(Beer, Cement))
 #'
-#' fit <- aus_production[complete.cases(aus_production),] %>%
-#'   model(VARIMA(vars(Beer, Bricks, Cement) ~ pdq(4,1,1), identification = "none"))
+#' fit <- aus_production %>%
+#'   model(VARIMA(vars(Beer, Cement) ~ pdq(4,1,1), identification = "none"))
 #'
 #' fit
 #' @export
