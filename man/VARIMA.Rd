@@ -144,5 +144,5 @@ IRF(fit, h = 10, impulse = "Beer")
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-\code{\link[MTS:VARMA]{MTS::VARMA()}}, \code{\link[=MTS:sVARMA]{MTS:sVARMA()}}.
+\code{\link[MTS:VARMA]{MTS::VARMA()}}, \code{\link[MTS:Kronfit]{MTS::Kronfit()}}.
 }

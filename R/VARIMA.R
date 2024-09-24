@@ -117,7 +117,7 @@ specials_varima <- new_specials(
 #' @return A model specification.
 #'
 #' @seealso
-#' [`MTS::VARMA()`], [`MTS:sVARMA()`].
+#' [`MTS::VARMA()`], [`MTS::Kronfit()`].
 #'
 #' @examplesIf requireNamespace("tsibbledata", quietly = TRUE)
 #' library(tsibbledata)
