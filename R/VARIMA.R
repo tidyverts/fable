@@ -45,7 +45,6 @@ train_varima <- function(.data, specials, identification, ...) {
   
   # Update fit for consistency across methods
   dimnames(fit$Sigma) <- list(colnames(y), colnames(y))
-  fit$coef <- matrix(fit$coef, ncol = ncol(y))
   fit$identification <- identification
   
   # Add original data for diffinv
@@ -68,7 +67,7 @@ specials_varima <- new_specials(
     stop("Seasonal VARIMA models are not yet supported.")
   },
   common_xregs,
-  xreg = special_xreg(default_intercept = FALSE),
+  xreg = special_xreg(default_intercept = TRUE),
   .required_specials = c("pdq", "xreg"),
   .xreg_specials = names(common_xregs)
 )
@@ -323,22 +322,33 @@ model_sum.VARIMA <- function(x) {
 #' tidy(fit)
 #' @export
 tidy.VARIMA <- function(x, ...) {
-  coef_mat <- x$coef
-  k <- NCOL(coef_mat)
   p <- varima_order(x$Phi)
   q <- varima_order(x$Theta)
+  k <- NCOL(x$data)
   
-  if(x$identification == "kronecker_indices"){
-    Ph0i = solve(x$Ph0)
-    coef_mat <- coef_mat %*% t(Ph0i)
+  col2row <- function(x, k = NROW(x)) {
+    i <- varima_order(x)
+    irow <- seq_len(k*k) 
+    icol <- k*(col(x)-1)%%i
+    ilag <- rep(seq_len(i)-1, each = k^2)*k
+    matrix(
+      x[as.numeric(t(irow + icol + ilag))],
+      nrow = k*i, ncol = k
+    )
   }
   
-  colnames(coef_mat) <- cn <- colnames(x$data)
+  coef_mat <- rbind(
+    if (x$cnst) matrix(x$const, nrow = 1L, ncol = k) else NULL,
+    if (p > 0) col2row(x$Phi) else NULL,
+    # TODO: Still a problem with the display of theta terms
+    if (q > 0) col2row(x$Theta) else NULL
+  )
   
+  colnames(coef_mat) <- cn <- colnames(x$data)
   rownames(coef_mat) <- c(
     if(x$cnst) "constant" else NULL,
-    paste0("lag(", rep(cn, p), ",", rep(seq_len(p), each = k), ")"),
-    paste0("lag(e_", rep(cn, q), ",", rep(seq_len(q), each = k), ")")
+    paste0("lag(", rep(cn, each = p), ",", rep.int(seq_len(p), k), ")"),
+    paste0("lag(e_", rep(cn, each = q), ",", rep.int(seq_len(q), k), ")")
   )
   
   rdf <- (p + q) * k^2 + k*(k+1)/2
@@ -500,8 +510,8 @@ IRF.VARIMA <- function(x, new_data, specials, impulse = NULL, orthogonal = FALSE
   x$residuals[seq_along(x$residuals)] <- 0
   x$y_end[seq_along(x$y_end)] <- 0
   
-  # Remove regressors
-  x$cnst <- FALSE
+  # Remove constant
+  x$const[seq_along(x$const)] <- 0
   
   # Add shocks
   if (".impulse" %in% names(new_data)) { 
