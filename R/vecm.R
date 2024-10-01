@@ -390,7 +390,7 @@ generate.VECM <- function(x, new_data, specials, ...){
       ect <- t(y_lag[1,]) %*% beta %*% coef[seq_len(r),]
       
       # Short-run dynamics
-      st <- t(Z)%*%coef[-seq_len(r),]
+      st <- c(Z) %*% coef[-seq_len(r),]
       
       .sim[i, ] <- y_lag[1,] + ect + st + .innov[i,]
       y_lag <- rbind(.sim[i, , drop = FALSE], y_lag)[seq_len(p + 1), , drop = FALSE]
