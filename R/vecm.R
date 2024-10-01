@@ -2,7 +2,7 @@
 train_vecm <- function(.data, specials, ic, ...) {
   # Get args
   p <- specials$AR[[1]]$p
-  
+
   # Get response variables
   y <- invoke(cbind, unclass(.data)[measured_vars(.data)])
   
@@ -29,11 +29,11 @@ estimate_vecm <- function(y, p, sr_xreg, constant, r, ...) {
   }
   
   dy <- diff(y)
-  if (p > 0) {
+  # if (p > 0) {
     # y <- y[-seq_len(p), , drop = FALSE]
     # dy <- dy[-seq_len(p), , drop = FALSE]
-    sr_xreg <- sr_xreg[-seq_len(p + 1), , drop = FALSE]
-  }
+  # }
+  sr_xreg <- sr_xreg[-seq_len(p + 1), , drop = FALSE]
   
   y_embed <- stats::embed(y, dimension = p + 1)
   dy_embed <- stats::embed(dy, dimension = p + 1)
