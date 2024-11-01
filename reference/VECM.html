@@ -136,44 +136,18 @@ formula.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="va">lung_deaths</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://fabletools.tidyverts.org/reference/model.html" class="external-link">model</a></span><span class="op">(</span><span class="fu">VECM</span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">mdeaths</span>, <span class="va">fdeaths</span><span class="op">)</span> <span class="op">~</span> <span class="fu"><a href="AR.html">AR</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>1 error encountered for VECM(vars(mdeaths, fdeaths) ~ AR(3))</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> [1] second argument must be a list</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://fabletools.tidyverts.org/reference/report.html" class="external-link">report</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Series: mdeaths, fdeaths </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Model: VECM(3, r=1) w/ mean </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Cointegrating vector:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>              r1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> mdeaths  1.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> fdeaths -4.5422</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients for mdeaths:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         ECT1  lag(mdeaths,1)  lag(fdeaths,1)  lag(mdeaths,2)  lag(fdeaths,2)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       0.7078         -0.8020          3.1195         -0.6249          2.0415</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> s.e.  0.1052          0.3357          0.8145          0.3753          0.9289</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       lag(mdeaths,3)  lag(fdeaths,3)  constant</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               0.0319          0.8634  730.1488</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> s.e.          0.3049          0.7350  112.5027</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients for fdeaths:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         ECT1  lag(mdeaths,1)  lag(fdeaths,1)  lag(mdeaths,2)  lag(fdeaths,2)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       0.3001         -0.0400          0.5936         -0.0437          0.3703</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> s.e.  0.0433          0.1381          0.3350          0.1544          0.3820</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       lag(mdeaths,3)  lag(fdeaths,3)  constant</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               0.1005          0.1699  310.9160</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> s.e.          0.1254          0.3023   46.2701</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Residual covariance matrix:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          [,1]      [,2]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 50065.33 19027.334</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 19027.33  8468.605</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> log likelihood = -794.48</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> AIC = 1622.97	AICc = 1635.21	BIC = 1660.7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Model: NULL model </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL model</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">fit</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://generics.r-lib.org/reference/forecast.html" class="external-link">forecast</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">lung_deaths</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="VECM-1.png" alt="" width="700" height="433"></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in FUN(X[[i]], ...):</span> attempt to set 'colnames' on an object with less than two dimensions</span>
 </code></pre></div>
     </div>
   </div>
