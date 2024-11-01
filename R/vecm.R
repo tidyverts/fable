@@ -8,7 +8,7 @@ train_vecm <- function(.data, specials, ic, ...) {
   
   # Get xreg
   constant <- specials$xreg[[1]]$constant
-  xreg <- specials$xreg[[1]]$xreg
+  xreg <- do.call(cbind, specials$xreg[[1]]$xreg) # Convert from df to matrix
   
   # Choose best model
   reduce(transpose(expand.grid(p = p, constant = constant)),
