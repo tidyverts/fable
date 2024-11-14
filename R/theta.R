@@ -218,6 +218,41 @@ tidy.fable_theta <- function(x, ...) {
   )
 }
 
+#' Refit a THETA model
+#'
+#' Applies a fitted THETA model to a new dataset.
+#'
+#' @inheritParams forecast.THETA
+#' @param reestimate If `TRUE`, the coefficients for the fitted model will be re-estimated to suit the new data.
+#'
+#' @examples
+#' lung_deaths_male <- as_tsibble(mdeaths)
+#' lung_deaths_female <- as_tsibble(fdeaths)
+#'
+#' fit <- lung_deaths_male %>%
+#'   model(THETA(value))
+#'
+#' report(fit)
+#'
+#' fit %>%
+#'   refit(lung_deaths_female) %>%
+#'   report()
+#' @return A refitted model.
+#'
+#' @importFrom stats formula residuals
+#' @export
+refit.THETA <- function(object, new_data, specials = NULL, reestimate = FALSE, ...) {
+  y <- unclass(new_data)[[measured_vars(new_data)]]
+  
+  fixed <- if (reestimate) {
+    c(specials$order[[1]]$fixed, specials$xreg[[1]]$fixed)
+  } else {
+    as.list(object$coef)
+  }
+  
+  estimate_ar(y, object$p, specials$xreg[[1]]$xreg, object$constant, fixed)
+}
+
 #' @export
 report.fable_theta <- function(object, ...) {
   cat("\n")
