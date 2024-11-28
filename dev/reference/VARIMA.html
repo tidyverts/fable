@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.4.0.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.4.1.9000</span>
       </span>
     </div>
 
@@ -69,7 +69,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">VARIMA</span><span class="op">(</span><span class="va">formula</span>, identification <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"kronecker_indices"</span>, <span class="st">"none"</span><span class="op">)</span>, <span class="va">...</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">VARIMA</span><span class="op">(</span><span class="va">formula</span>, identification <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for class 'VARIMA'</span></span>
 <span><span class="fu"><a href="https://generics.r-lib.org/reference/forecast.html" class="external-link">forecast</a></span><span class="op">(</span></span>
@@ -112,7 +112,7 @@
 
 
 <dt id="arg-identification">identification<a class="anchor" aria-label="anchor" href="#arg-identification"></a></dt>
-<dd><p>The identification technique used to estimate the model.</p></dd>
+<dd><p>The identification technique used to estimate the model. Possible options include NULL (automatic selection), "kronecker_indices" (Kronecker index identification), and "scalar_components" (scalar component identification). More details can be found in the "Identification" section below.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -172,6 +172,7 @@ formula.</p>
 <span><span class="fu">pdq</span><span class="op">(</span>p <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">5</span>, d <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">2</span>, q <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span></span></code></pre></div>
 
 <table class="table table"><tr><td><code>p</code></td><td>The order of the non-seasonal auto-regressive (AR) terms. If multiple values are provided, the one which minimises <code>ic</code> will be chosen.</td></tr><tr><td><code>d</code></td><td>The order of integration for non-seasonal differencing. If multiple values are provided, one of the values will be selected via repeated KPSS tests.</td></tr><tr><td><code>q</code></td><td>The order of the non-seasonal moving average (MA) terms. If multiple values are provided, the one which minimises <code>ic</code> will be chosen.</td></tr></table></div>
+
 <div class="section">
 <h3 id="xreg">xreg<a class="anchor" aria-label="anchor" href="#xreg"></a></h3>
 <p>Exogenous regressors can be included in an VARIMA model without explicitly using the <code>xreg()</code> special. Common exogenous regressor specials as specified in <code><a href="common_xregs.html">common_xregs</a></code> can also be used. These regressors are handled using <code><a href="https://rdrr.io/r/stats/model.frame.html" class="external-link">stats::model.frame()</a></code>, and so interactions and other functionality behaves similarly to <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">stats::lm()</a></code>.</p>
@@ -181,6 +182,53 @@ formula.</p>
 
 <table class="table table"><tr><td><code>...</code></td><td>Bare expressions for the exogenous regressors (such as <code>log(x)</code>)</td></tr></table></div>
 
+    </div>
+    <div id="identification">
+    <h2>Identification</h2>
+
+
+
+<div class="section">
+<h3 id="kronecker-indices-kronecker-indices-the-default-">Kronecker indices (<code>"kronecker_indices"</code>, the default)<a class="anchor" aria-label="anchor" href="#kronecker-indices-kronecker-indices-the-default-"></a></h3>
+<p>Determines the structural complexity and degrees of freedom in a VARIMA model
+by analysing the singularities in the polynomial matrices.</p>
+<p>Kronecker indices represent the structural properties of the VARIMA system,
+focusing on the relationship between system inputs and outputs. These indices
+define the minimal realisation of the model, helping to determine the order
+and complexity of each equation in the system. They are particularly suited
+for capturing dynamic dependencies in multivariate systems with cointegrated
+processes. This is particularly useful for understanding system-wide
+dependencies and cointegrating relationships, however it is computationally
+intensive for models with many variables.</p>
+</div>
+<div class="section">
+<h3 id="scalar-components-scalar-components-">Scalar components (<code>"scalar_components"</code>)<a class="anchor" aria-label="anchor" href="#scalar-components-scalar-components-"></a></h3>
+<p>Simplifies VARIMA models by identifying univariate "scalar components" that
+combine linear combinations of variables into simpler sub-models. This uses
+canonical correlation analysis (CCA) to find linear combinations of variables
+with minimal lag orders. These combinations are then modeled as simpler
+ARIMA processes reducing the complexity and dimensionality of the full
+VARIMA model. This is particularly useful for identifying models with many
+variables, however it assumes good separability of the components.</p>
+</div>
+<div class="section">
+<h3 id="no-identification-none-">No identification (<code>"none"</code>)<a class="anchor" aria-label="anchor" href="#no-identification-none-"></a></h3>
+<p>Directly estimates the model as specified by <code>p</code>, <code>d</code>, and <code>q</code>. This allows
+all coefficients up to lag <code>p</code> and <code>q</code> (for the AR and MA components) to be
+freely estimated. This can be problematic as the estimation of parameters
+without identification is not unique.</p>
+<p>Identification is necessary for VARIMA models to ensure that the model is
+parsimonious, unique, and interpretable. Without proper identification, the
+model can become overly complex, redundant, or ambiguous, making estimation
+and interpretation challenging.</p>
+</div>
+
+<p>For a more detailed comparison of identification methods, refer to
+Athanasopoulos et al (2012).</p>
+    </div>
+    <div id="references">
+    <h2>References</h2>
+    <p>Athanasopoulos, George, D. S. Poskitt, and Farshid Vahid. "Two Canonical VARMA Forms: Scalar Component Models Vis-à-Vis the Echelon Form." Econometric Reviews 31, no. 1 (January 2012): 60–83. https://doi.org/10.1080/07474938.2011.607088.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
