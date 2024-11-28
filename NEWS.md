@@ -1,5 +1,13 @@
 # fable (development version)
 
+## Improvements
+
+* Documentation improvements.
+
+## Bug fixes
+
+* Fixed `VARIMA()` not working with integer data.
+
 # fable 0.4.1
 
 ## Bug fixes
