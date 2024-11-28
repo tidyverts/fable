@@ -1,4 +1,4 @@
-train_varima <- function(.data, specials, identification, ...) {
+train_varima <- function(.data, specials, identification = NULL, ...) {
   # Get response variables
   y <- invoke(cbind, lapply(unclass(.data)[measured_vars(.data)], as.double))
   
@@ -11,6 +11,14 @@ train_varima <- function(.data, specials, identification, ...) {
   q <- specials$pdq[[1]]$q
   
   yd <- if(d > 0) diff(y, differences = d) else y
+  
+  if (is.null(identification)) {
+    identification <- if ((length(p) != 1) || (length(q) != 1)) {
+      "kronecker_indices"
+    } else {
+      "none"
+    }
+  }
   
   require_package("MTS")
   utils::capture.output(
@@ -130,8 +138,7 @@ specials_varima <- new_specials(
 #'
 #' fit
 #' @export
-VARIMA <- function(formula, identification = c("kronecker_indices", "none"), ...) {
-  identification <- match.arg(identification)
+VARIMA <- function(formula, identification = NULL, ...) {
   # ic <- switch(ic, aicc = "AICc", aic = "AIC", bic = "BIC")
   varima_model <- new_model_class("VARIMA",
                                  train = train_varima,
@@ -143,6 +150,7 @@ VARIMA <- function(formula, identification = c("kronecker_indices", "none"), ...
 }
 
 varima_order <- function(x) {
+  if(is.null(x)) return(0L)
   NCOL(x)/NROW(x)
 }
 
