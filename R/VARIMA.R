@@ -1,6 +1,6 @@
 train_varima <- function(.data, specials, identification, ...) {
   # Get response variables
-  y <- invoke(cbind, unclass(.data)[measured_vars(.data)])
+  y <- invoke(cbind, lapply(unclass(.data)[measured_vars(.data)], as.double))
   
   if(any(colnames(specials$xreg[[1]]) != "(Intercept)")) {
     stop("Exogenous regressors for VARIMA are not yet supported.")
