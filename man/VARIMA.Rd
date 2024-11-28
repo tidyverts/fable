@@ -40,7 +40,7 @@ VARIMA(formula, identification = NULL, ...)
 \arguments{
 \item{formula}{Model specification (see "Specials" section).}
 
-\item{identification}{The identification technique used to estimate the model.}
+\item{identification}{The identification technique used to estimate the model. Possible options include NULL (automatic selection), "kronecker_indices" (Kronecker index identification), and "scalar_components" (scalar component identification). More details can be found in the "Identification" section below.}
 
 \item{...}{Further arguments for arima}
 
@@ -87,6 +87,7 @@ pdq(p = 0:5, d = 0:2, q = 0:5)
 \code{q}      \tab The order of the non-seasonal moving average (MA) terms. If multiple values are provided, the one which minimises \code{ic} will be chosen. \cr
 }
 }
+
 \subsection{xreg}{
 Exogenous regressors can be included in an VARIMA model without explicitly using the \code{xreg()} special. Common exogenous regressor specials as specified in \code{\link{common_xregs}} can also be used. These regressors are handled using \code{\link[stats:model.frame]{stats::model.frame()}}, and so interactions and other functionality behaves similarly to \code{\link[stats:lm]{stats::lm()}}.
 
@@ -100,6 +101,47 @@ xreg(...)
 \code{...}      \tab Bare expressions for the exogenous regressors (such as \code{log(x)})
 }
 }
+}
+
+\section{Identification}{
+
+
+\subsection{Kronecker indices (\code{"kronecker_indices"}, the default)}{
+Determines the structural complexity and degrees of freedom in a VARIMA model
+by analysing the singularities in the polynomial matrices.
+
+Kronecker indices represent the structural properties of the VARIMA system,
+focusing on the relationship between system inputs and outputs. These indices
+define the minimal realisation of the model, helping to determine the order
+and complexity of each equation in the system. They are particularly suited
+for capturing dynamic dependencies in multivariate systems with cointegrated
+processes. This is particularly useful for understanding system-wide
+dependencies and cointegrating relationships, however it is computationally
+intensive for models with many variables.
+}
+\subsection{Scalar components (\code{"scalar_components"})}{
+Simplifies VARIMA models by identifying univariate "scalar components" that
+combine linear combinations of variables into simpler sub-models. This uses
+canonical correlation analysis (CCA) to find linear combinations of variables
+with minimal lag orders. These combinations are then modeled as simpler
+ARIMA processes reducing the complexity and dimensionality of the full
+VARIMA model. This is particularly useful for identifying models with many
+variables, however it assumes good separability of the components.
+}
+\subsection{No identification (\code{"none"})}{
+Directly estimates the model as specified by \code{p}, \code{d}, and \code{q}. This allows
+all coefficients up to lag \code{p} and \code{q} (for the AR and MA components) to be
+freely estimated. This can be problematic as the estimation of parameters
+without identification is not unique.
+
+Identification is necessary for VARIMA models to ensure that the model is
+parsimonious, unique, and interpretable. Without proper identification, the
+model can become overly complex, redundant, or ambiguous, making estimation
+and interpretation challenging.
+}
+
+For a more detailed comparison of identification methods, refer to
+Athanasopoulos et al (2012).
 }
 
 \examples{
@@ -142,6 +184,9 @@ generate(fit, h = 10)
 \dontshow{if (requireNamespace("tsibbledata", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 IRF(fit, h = 10, impulse = "Beer")
 \dontshow{\}) # examplesIf}
+}
+\references{
+Athanasopoulos, George, D. S. Poskitt, and Farshid Vahid. "Two Canonical VARMA Forms: Scalar Component Models Vis-à-Vis the Echelon Form." Econometric Reviews 31, no. 1 (January 2012): 60–83. https://doi.org/10.1080/07474938.2011.607088.
 }
 \seealso{
 \code{\link[MTS:VARMA]{MTS::VARMA()}}, \code{\link[MTS:Kronfit]{MTS::Kronfit()}}.
