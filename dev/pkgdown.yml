@@ -1,10 +1,10 @@
 pandoc: 3.1.11
-pkgdown: 2.1.1
+pkgdown: 2.1.2
 pkgdown_sha: ~
 articles:
   fable: fable.html
   transformations: transformations.html
-last_built: 2024-11-28T04:11Z
+last_built: 2025-05-20T03:51Z
 urls:
   reference: https://fable.tidyverts.org/reference
   article: https://fable.tidyverts.org/articles
