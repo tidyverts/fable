@@ -67,10 +67,13 @@ train_ets <- function(.data, specials, opt_crit,
     }
     new <- new$result
 
-    if ((new[[ic]] %||% Inf) < (best[[ic]] %||% Inf) && is.finite(new[[ic]]) || is.null(best)) {
+    
+    new_ic <- if(isTRUE(is.finite(new[[ic]]))) new[[ic]] else Inf
+    
+    if (new_ic < (best[[ic]] %||% Inf) || is.null(best)) {
       best <<- new
     }
-    new[[ic]] %||% Inf
+    new_ic
   }
   ic <- pmap_dbl(model_opts, compare_ets)
 

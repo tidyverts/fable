@@ -164,3 +164,14 @@ test_that("Multiplicative ETS models", {
   )
 })
 
+test_that("Automatic ETS selection bug (#425)", {
+  train <- tsibble(
+    YM = yearmonth("2022 Jan") + 0:35,
+    value = rep(c(rep(-78040, 11), -78061), 3),
+    index = YM
+  )
+  expect_identical(
+    model_sum(model(train, ets=ETS(value))$ets[[1]]),
+    "ETS(A,N,N)"
+  )
+})
