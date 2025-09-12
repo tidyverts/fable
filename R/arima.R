@@ -808,22 +808,6 @@ report.ARIMA <- function(object, ...) {
 #' @export
 forecast.ARIMA <- function(object, new_data = NULL, specials = NULL,
                            bootstrap = FALSE, times = 5000, ...) {
-  # Check position of new_data in model history
-  if(inherits_any(object$tsp$range, c("yearweek", "yearmonth", "yearquarter"))) {
-    fc_start <- object$tsp$range[2]+round(as.numeric(diff(object$tsp$range)+1)/nrow(object$est), 6)
-  } else {
-    # Try to use difftime
-    interval <- unclass(object$tsp$interval)
-    interval <- Filter(function(x) x!=0, interval)
-    time_unit <- switch(names(interval), day = "days", hour = "hours", minute = "mins", second = "secs")
-    if(!is.null(time_unit)) interval[[1]] <- as.difftime(interval[[1]], units = time_unit)
-    fc_start <- object$tsp$range[2] + interval[[1]]
-  }
-  
-  if (unclass(new_data)[[index_var(new_data)]][1] != fc_start) {
-    abort("Forecasts from an ARIMA model must start one step beyond the end of the trained data.")
-  }
-  
   if (bootstrap) {
     sim <- map(seq_len(times), function(x) generate(object, new_data, specials, bootstrap = TRUE)[[".sim"]]) %>%
       transpose() %>%
