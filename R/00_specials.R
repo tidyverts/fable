@@ -13,7 +13,7 @@ model_xreg <- function(...) {
 }
 
 no_xreg <- function(...) {
-  abort("Exogenous regressors are not supported for this model type.")
+  cli::cli_abort("Exogenous regressors are not supported for this model type.")
 }
 
 trend <- function(x, knots = NULL, origin = NULL) {
@@ -91,10 +91,10 @@ fourier.tbl_ts <- function(x, period, K, origin = NULL) {
 
 fourier.numeric <- function(x, period, K, origin = NULL) {
   if (length(period) != length(K)) {
-    abort("Number of periods does not match number of orders")
+    cli::cli_abort("Number of periods does not match number of orders")
   }
   if (any(2 * K > period)) {
-    abort("K must be not be greater than period/2")
+    cli::cli_abort("{.arg K} must be not be greater than period/2")
   }
 
   fourier_exprs <- map2(

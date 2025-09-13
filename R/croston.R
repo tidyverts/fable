@@ -99,10 +99,10 @@ CROSTON <- function(
 specials_croston <- new_specials(
   demand = function(initial = NULL, param = NULL, param_range = c(0, 1)) {
     if (!is.null(initial) && initial < 0) {
-      abort("The initial demand for Croston's method must be non-negative")
+      cli::cli_abort("The initial demand for Croston's method must be non-negative")
     }
     if (param_range[1] > param_range[2]) {
-      rlang::abort("Lower param limits must be less than upper limits")
+      cli::cli_abort("Lower param limits must be less than upper limits")
     }
 
     as.list(environment())
@@ -111,11 +111,11 @@ specials_croston <- new_specials(
     method <- match.arg(method)
 
     if (!is.null(initial) && initial < 1) {
-      abort("The initial interval for Croston's method must be greater than (or equal to) 1.")
+      cli::cli_abort("The initial interval for Croston's method must be greater than (or equal to) 1.")
     }
 
     if (param_range[1] > param_range[2]) {
-      rlang::abort("Lower param limits must be less than upper limits")
+      cli::cli_abort("Lower param limits must be less than upper limits")
     }
 
     as.list(environment())
@@ -125,7 +125,7 @@ specials_croston <- new_specials(
 
 train_croston <- function(.data, specials, opt_crit = "mse", type = "croston", ...) {
   if (length(measured_vars(.data)) > 1) {
-    abort("Only univariate responses are supported by Croston's method.")
+    cli::cli_abort("Only univariate responses are supported by Croston's method.")
   }
 
   # Get response
@@ -133,13 +133,13 @@ train_croston <- function(.data, specials, opt_crit = "mse", type = "croston", .
 
   # Check data
   if (any(y < 0)) {
-    abort("All observations must be non-negative for Croston's method.")
+    cli::cli_abort("All observations must be non-negative for Croston's method.")
   }
 
   non_zero <- which(y != 0)
 
   if (length(non_zero) < 2) {
-    abort("At least two non-zero values are required to use Croston's method.")
+    cli::cli_abort("At least two non-zero values are required to use Croston's method.")
   }
 
   # Get specials

@@ -272,7 +272,7 @@ forecast.TSLM <- function(object, new_data, specials = NULL, bootstrap = FALSE,
   xreg <- specials$xreg[[1]]
 
   if (rank < ncol(xreg)) {
-    warn("prediction from a rank-deficient fit may be misleading")
+    cli::cli_warn("prediction from a rank-deficient fit may be misleading")
   }
 
   # Intervals

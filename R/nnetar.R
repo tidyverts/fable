@@ -1,21 +1,21 @@
 #' @importFrom stats ar complete.cases
 train_nnetar <- function(.data, specials, n_nodes, n_networks, scale_inputs, wts = NULL,...) {
-  require_package("nnet")
+  check_installed("nnet")
 
   if (length(measured_vars(.data)) > 1) {
-    abort("Only univariate responses are supported by NNETAR.")
+    cli::cli_abort("Only univariate responses are supported by NNETAR.")
   }
 
   y <- x <- unclass(.data)[[measured_vars(.data)]]
 
   if (all(is.na(y))) {
-    abort("All observations are missing, a model cannot be estimated without data.")
+    cli::cli_abort("All observations are missing, a model cannot be estimated without data.")
   }
 
   n <- length(x)
 
   if (n < 3) {
-    stop("Not enough data to fit a model")
+    cli::cli_abort("Not enough data to fit a model")
   }
 
   # Get args
@@ -26,21 +26,21 @@ train_nnetar <- function(.data, specials, n_nodes, n_networks, scale_inputs, wts
   # Check for constant data in time series
   constant_data <- is.constant(x)
   if (constant_data) {
-    warn("Constant data, setting `AR(p=1, P=0)`, and `scale_inputs=FALSE`")
+    cli::cli_warn("Constant data, setting {.code AR(p=1, P=0)}, and {.code scale_inputs=FALSE}")
     scale_inputs <- FALSE
     p <- 1
     P <- 0
   }
   # Check for insufficient data for seasonal lags
   if (P > 0 && n < period * P + 2) {
-    warn("Series too short for seasonal lags")
+    cli::cli_warn("Series too short for seasonal lags")
     P <- 0
   }
   # Check for constant data in xreg
   if (!is.null(xreg)) {
     xreg <- as.matrix(xreg)
     if (any(apply(xreg, 2, is.constant))) {
-      warn("Constant xreg column, setting `scale_inputs=FALSE`")
+      cli::cli_warn("Constant xreg column, setting {.code scale_inputs=FALSE}")
       scale_inputs <- FALSE
     }
   }
@@ -87,7 +87,7 @@ train_nnetar <- function(.data, specials, n_nodes, n_networks, scale_inputs, wts
     p <- max(length(ar(y_sa, na.action=stats::na.pass)$ar), 1)
   }
   if (p >= n) {
-    warn("Reducing number of lagged inputs due to short series")
+    cli::cli_warn("Reducing number of lagged inputs due to short series")
     p <- n - 1
   }
   lags <- 1:p
@@ -115,7 +115,7 @@ train_nnetar <- function(.data, specials, n_nodes, n_networks, scale_inputs, wts
   x <- x[j]
   ## Stop if there's no data to fit
   if (NROW(x_lags) == 0) {
-    abort("No data to fit (possibly due to missing values)")
+    cli::cli_abort("No data to fit (possibly due to missing values)")
   }
 
   # Fit the nnet and consider the Wts argument for nnet::nnet() if provided: 
@@ -168,7 +168,7 @@ specials_nnetar <- new_specials(
     period <- get_frequencies(period, self$data, .auto = "smallest")
     if (period == 1) {
       if (!missing(P) && P > 0) {
-        warn("Non-seasonal data, ignoring seasonal lags")
+        cli::cli_warn("Non-seasonal data, ignoring seasonal lags")
       }
       P <- 0
     }
@@ -274,7 +274,7 @@ NNETAR <- function(formula, n_nodes = NULL, n_networks = 20, scale_inputs = TRUE
 #'   forecast(times = 10)
 #' @export
 forecast.NNETAR <- function(object, new_data, specials = NULL, simulate = TRUE, bootstrap = FALSE, times = 5000, ...) {
-  require_package("nnet")
+  check_installed("nnet")
 
   # Prepare xreg
   xreg <- specials$xreg[[1]]
@@ -293,7 +293,7 @@ forecast.NNETAR <- function(object, new_data, specials = NULL, simulate = TRUE, 
 
   # Compute forecast intervals
   if (!simulate) {
-    warn("Analytical forecast distributions are not available for NNETAR.")
+    cli::cli_warn("Analytical forecast distributions are not available for NNETAR.")
     times <- 0
   }
   sim <- map(seq_len(times), function(x) {
@@ -313,7 +313,7 @@ forecast.NNETAR <- function(object, new_data, specials = NULL, simulate = TRUE, 
     {
       fcdata <- c(future_lags[lags], xreg[i, ])
       if (any(is.na(fcdata))) {
-        abort("I can't use NNETAR to forecast with missing values near the end of the series.")
+        cli::cli_abort("I can't use NNETAR to forecast with missing values near the end of the series.")
       }
       fc[i] <- mean(map_dbl(object$model, predict, newdata = fcdata))
       future_lags <- c(fc[i], future_lags[-maxlag])
@@ -379,7 +379,7 @@ generate.NNETAR <- function(x, new_data, specials = NULL, bootstrap = FALSE, ...
     {
       fcdata <- c(future_lags[lags], xreg[i, ])
       if (any(is.na(fcdata))) {
-        abort("I can't use NNETAR to forecast with missing values near the end of the series.")
+        cli::cli_abort("I can't use NNETAR to forecast with missing values near the end of the series.")
       }
       path[i] <- mean(map_dbl(x$model, predict, newdata = fcdata)) + e[i]
       future_lags <- c(path[i], future_lags[-maxlag])

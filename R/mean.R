@@ -1,13 +1,13 @@
 #' @importFrom stats sd
 train_mean <- function(.data, specials, ...) {
   if (length(measured_vars(.data)) > 1) {
-    abort("Only univariate responses are supported by MEAN.")
+    cli::cli_abort("Only univariate responses are supported by MEAN.")
   }
 
   y <- unclass(.data)[[measured_vars(.data)]]
 
   if (all(is.na(y))) {
-    abort("All observations are missing, a model cannot be estimated without data.")
+    cli::cli_abort("All observations are missing, a model cannot be estimated without data.")
   }
 
   n <- length(y)
@@ -287,10 +287,10 @@ refit.model_mean <- function(object, new_data, specials = NULL, reestimate = FAL
   y <- unclass(new_data)[[measured_vars(new_data)]]
   
   if (all(is.na(y))) {
-    abort("All new observations are missing, model cannot be applied.")
+    cli::cli_abort("All new observations are missing, model cannot be applied.")
   }
 
-  if (!is_null(specials$window)) warn("A rolling mean model cannot be refitted, the most recent mean from the fitted model will be used as a fixed estimate of the mean.")
+  if (!is_null(specials$window)) cli::cli_warn("A rolling mean model cannot be refitted, the most recent mean from the fitted model will be used as a fixed estimate of the mean.")
   
   n <- length(y)
 
