@@ -130,7 +130,7 @@ estimate_vecm <- function(y, p, sr_xreg, constant, r, ...) {
 specials_vecm <- new_specials(
   AR = function(p = 0:5) {
     if (any(p < 0)) {
-      warn("The AR order must be non-negative. Only non-negative orders will be considered.")
+      cli::cli_warn("The AR order must be non-negative. Only non-negative orders will be considered.")
       p <- p[p >= 0]
     }
     list(p = p)

@@ -39,6 +39,7 @@ Depends:
     R (>= 3.4.0),
     fabletools (>= 0.3.0)
 Imports:
+    cli,
     Rcpp (>= 0.11.0),
     rlang (>= 0.4.6),
     stats,
