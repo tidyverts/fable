@@ -2,7 +2,7 @@
 
 ## Improvements
 
-* `ETS()` now allows missing values.
+* `ETS()` now supports missing values.
 * Documentation improvements.
 
 ## Bug fixes
