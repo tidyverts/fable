@@ -140,16 +140,11 @@ estimate_ets <- function(y, m, init.state, errortype, trendtype, seasontype,
     alpha = unname(alpha), beta = unname(beta),
     gamma = unname(gamma), phi = unname(phi), init.state
   )
-  if (errortype == "A") {
-    fits <- y - e$e
-  } else {
-    fits <- y / (1 + e$e)
-  }
 
   return(list(
     loglik = -0.5 * e$lik, aic = aic, bic = bic, aicc = aicc,
     mse = mse, amse = amse, mae = mae,
-    residuals = e$e, fitted = fits,
+    residuals = e$e, fitted = e$fits,
     states = states, par = fit.par
   ))
 }
@@ -429,7 +424,7 @@ pegelsresid.C <- function(y, m, init.state, errortype, trendtype, seasontype, da
   p <- length(init.state)
   x <- numeric(p * (n + 1))
   x[1:p] <- init.state
-  e <- numeric(n)
+  e <- fits <- numeric(n)
   lik <- 0
   if (!damped) {
     phi <- 1
@@ -457,18 +452,15 @@ pegelsresid.C <- function(y, m, init.state, errortype, trendtype, seasontype, da
     as.double(gamma),
     as.double(phi),
     as.double(e),
+    as.double(fits),
     as.double(lik),
     as.double(amse),
     as.integer(nmse),
+    NAOK = TRUE,
     PACKAGE = "fable"
   )
-  if (!is.na(Cout[[13]])) {
-    if (abs(Cout[[13]] + 99999) < 1e-7) {
-      Cout[[13]] <- NA
-    }
-  }
 
-  return(list(lik = Cout[[13]], amse = Cout[[14]], e = Cout[[12]], states = matrix(Cout[[3]], nrow = n + 1, ncol = p, byrow = TRUE)))
+  return(list(lik = Cout[[14]], amse = Cout[[15]], e = Cout[[12]], fits = Cout[[13]], states = matrix(Cout[[3]], nrow = n + 1, ncol = p, byrow = TRUE)))
 }
 
 admissible <- function(alpha, beta, gamma, phi, m) {

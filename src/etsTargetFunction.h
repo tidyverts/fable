@@ -5,12 +5,9 @@
 extern "C" {
 
 void etscalc(double *, int *, double *, int *, int *, int *, int *,
-		double *, double *, double *, double *, double *, double *, double *, int *);
+		double *, double *, double *, double *, double *, double *, double *, double *, int *);
 
-void cpolyroot(double *opr, double *opi, int *degree,
-			double *zeror, double *zeroi, Rboolean *fail);
 }
-
 class EtsTargetFunction {
 
 public:
@@ -53,6 +50,7 @@ private:
 	double alpha, beta, gamma, phi;
 
 	std::vector<double> e;
+	std::vector<double> fits;
 	std::vector<double> amse;
 
 	double lik, objval;

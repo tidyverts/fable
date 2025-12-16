@@ -17,10 +17,6 @@ train_ets <- function(.data, specials, opt_crit,
   y <- unclass(.data)[[measured_vars(.data)]]
   idx <- unclass(.data)[[index_var(.data)]]
 
-  if (any(is.na(y))) {
-    abort("ETS does not support missing values.")
-  }
-
   # Build possible models
   model_opts <- expand.grid(
     errortype = ets_spec$error$method,
@@ -33,7 +29,7 @@ train_ets <- function(.data, specials, opt_crit,
 
   # Remove bad models
   if (NROW(model_opts) > 1) {
-    if (min(y) <= 0) {
+    if (min(y, na.rm = TRUE) <= 0) {
       model_opts <- model_opts[model_opts$errortype != "M", ]
     }
     if (restrict) {
@@ -720,4 +716,26 @@ initial_ets_states <- function(object) {
   )
   colnames(states_init) <- unsplit(states_names, states_type)
   states_init
+}
+
+
+#' @inherit interpolate.model_mean
+#'
+#' @examples
+#' library(tsibbledata)
+#'
+#' olympic_running |>
+#'   model(mean = ETS(Time)) %>%
+#'   interpolate(olympic_running)
+#' @export
+interpolate.ETS <- function(object, new_data, specials, ...) {
+  # Get missing values
+  y <- unclass(new_data)[[measured_vars(new_data)]]
+  miss_val <- which(is.na(y))
+  # Forward fitted values
+  forward_fits <- object$est[[".fitted"]][miss_val]
+  # Ideally, we would also apply the model to the reversed time series
+  # and get the backward fitted values, then combine the two.
+  new_data[[measured_vars(new_data)]][miss_val] <- forward_fits
+  new_data
 }
