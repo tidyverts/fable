@@ -119,14 +119,6 @@ test_that("ETS with bad inputs", {
     "Only univariate responses are supported by ETS"
   )
 
-  UK_missing <- UKLungDeaths
-  UK_missing[["mdeaths"]][3:5] <- NA
-  expect_warning(
-    UK_missing %>%
-      model(ETS(mdeaths)),
-    "ETS does not support missing values"
-  )
-
   expect_warning(
     UKLungDeaths %>%
       model(ETS(mdeaths ~ trend("M") + season("A"))),
@@ -173,5 +165,25 @@ test_that("Automatic ETS selection bug (#425)", {
   expect_identical(
     model_sum(model(train, ets=ETS(value))$ets[[1]]),
     "ETS(A,N,N)"
+  )
+})
+
+test_that("ETS with missing values", {
+  UK_missing <- UKLungDeaths
+  UK_missing[["mdeaths"]][3:5] <- NA
+  expect_no_error(UK_missing |> model(ETS(mdeaths)))
+
+  USAccDeaths_miss <- USAccDeaths_tbl
+  USAccDeaths_miss$value[c(10, 14, 15)] <- NA
+  fable_fit <- USAccDeaths_miss |> model(ets = ETS(value))
+
+  USAccDeaths_miss <- fable_fit |>
+    interpolate(USAccDeaths_miss)
+  expect_false(
+    any(is.na(USAccDeaths_miss$value))
+  )
+  expect_equal(
+    USAccDeaths_tbl$value[-c(10, 14, 15)],
+    USAccDeaths_miss$value[-c(10, 14, 15)]
   )
 })
