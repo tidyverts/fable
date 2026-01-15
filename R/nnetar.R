@@ -334,6 +334,7 @@ forecast.NNETAR <- function(object, new_data, specials = NULL, simulate = TRUE, 
 #'   generate()
 #' @export
 generate.NNETAR <- function(x, new_data, specials = NULL, bootstrap = FALSE, ...) {
+  require_package("nnet")
   # Prepare xreg
   xreg <- specials$xreg[[1]]
 
