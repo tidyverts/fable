@@ -8,6 +8,7 @@
 ## Bug fixes
 
 * Fixed `VARIMA()` not working with integer data.
+* More robust calculations of `ARIMA()` AR and MA roots (#417).
 
 # fable 0.4.1
 

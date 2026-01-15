@@ -145,7 +145,7 @@ Athanasopoulos et al (2012).
 }
 
 \examples{
-\dontshow{if (requireNamespace("tsibbledata", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (requireNamespace("tsibbledata", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 library(tsibbledata)
 
 aus_production \%>\% 
@@ -156,32 +156,32 @@ fit <- aus_production \%>\%
 
 fit
 \dontshow{\}) # examplesIf}
-\dontshow{if (requireNamespace("tsibbledata", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (requireNamespace("tsibbledata", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 
 fit \%>\%
   forecast(h = 50) \%>\%
   autoplot(tail(aus_production, 100))
 \dontshow{\}) # examplesIf}
-\dontshow{if (requireNamespace("tsibbledata", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (requireNamespace("tsibbledata", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 
 fitted(fit)
 \dontshow{\}) # examplesIf}
-\dontshow{if (requireNamespace("tsibbledata", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (requireNamespace("tsibbledata", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 residuals(fit)
 \dontshow{\}) # examplesIf}
-\dontshow{if (requireNamespace("tsibbledata", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (requireNamespace("tsibbledata", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 tidy(fit)
 \dontshow{\}) # examplesIf}
-\dontshow{if (requireNamespace("tsibbledata", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (requireNamespace("tsibbledata", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 glance(fit)
 \dontshow{\}) # examplesIf}
-\dontshow{if (requireNamespace("tsibbledata", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (requireNamespace("tsibbledata", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 report(fit)
 \dontshow{\}) # examplesIf}
-\dontshow{if (requireNamespace("tsibbledata", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (requireNamespace("tsibbledata", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 generate(fit, h = 10)
 \dontshow{\}) # examplesIf}
-\dontshow{if (requireNamespace("tsibbledata", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (requireNamespace("tsibbledata", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 IRF(fit, h = 10, impulse = "Beer")
 \dontshow{\}) # examplesIf}
 }
