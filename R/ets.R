@@ -447,9 +447,8 @@ refit.ETS <- function(object, new_data, specials = NULL, reestimate = FALSE, rei
     }
   }
 
-  y <- transmute(new_data, !!parse_expr(measured_vars(object$est)[1]))
-  idx <- unclass(y)[[index_var(y)]]
-  y <- unclass(y)[[measured_vars(y)]]
+  idx <- unclass(new_data)[[index_var(new_data)]]
+  y <- new_data[[measured_vars(new_data)]]
 
   best <- if (reinitialise) {
     etsmodel(

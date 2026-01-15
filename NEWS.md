@@ -9,6 +9,7 @@
 
 * Fixed `VARIMA()` not working with integer data.
 * More robust calculations of `ARIMA()` AR and MA roots (#417).
+* Fixed `refit()` method for `ETS()` models applying transformations twice (#407).
 
 # fable 0.4.1
 
