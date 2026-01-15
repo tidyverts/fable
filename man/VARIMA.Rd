@@ -145,7 +145,7 @@ Athanasopoulos et al (2012).
 }
 
 \examples{
-\dontshow{if (!rlang::is_installed("MTS")) withAutoprint(\{ # examplesIf}
+\dontshow{if (!requireNamespace("MTS", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 # The MTS package is required for VARIMA models
 # Install it with: install.packages("MTS")
 \dontshow{\}) # examplesIf}
@@ -160,33 +160,18 @@ fit <- aus_production \%>\%
   model(VARIMA(vars(Beer, Cement) ~ pdq(4,1,1), identification = "none"))
 
 fit
-\dontshow{\}) # examplesIf}
-\dontshow{if (requireNamespace("tsibbledata", quietly = TRUE)) withAutoprint(\{ # examplesIf}
+
 
 fit \%>\%
   forecast(h = 50) \%>\%
   autoplot(tail(aus_production, 100))
-\dontshow{\}) # examplesIf}
-\dontshow{if (requireNamespace("tsibbledata", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 
 fitted(fit)
-\dontshow{\}) # examplesIf}
-\dontshow{if (requireNamespace("tsibbledata", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 residuals(fit)
-\dontshow{\}) # examplesIf}
-\dontshow{if (requireNamespace("tsibbledata", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 tidy(fit)
-\dontshow{\}) # examplesIf}
-\dontshow{if (requireNamespace("tsibbledata", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 glance(fit)
-\dontshow{\}) # examplesIf}
-\dontshow{if (requireNamespace("tsibbledata", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 report(fit)
-\dontshow{\}) # examplesIf}
-\dontshow{if (requireNamespace("tsibbledata", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 generate(fit, h = 10)
-\dontshow{\}) # examplesIf}
-\dontshow{if (requireNamespace("tsibbledata", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 IRF(fit, h = 10, impulse = "Beer")
 \dontshow{\}) # examplesIf}
 }
