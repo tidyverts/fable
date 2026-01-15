@@ -150,6 +150,14 @@ xreg(..., fixed = list())
 }
 
 \examples{
+\dontshow{if (!requireNamespace("feasts", quietly = TRUE)) withAutoprint(\{ # examplesIf}
+# The feasts package is required for automatic ARIMA model selection.
+# Install it with: install.packages("feasts")
+\dontshow{\}) # examplesIf}
+\dontshow{if (!requireNamespace("urca", quietly = TRUE)) withAutoprint(\{ # examplesIf}
+# The urca package is required for ARIMA models to automatically select `d`
+# Install it with: install.packages("urca")
+\dontshow{\}) # examplesIf}
 # Manual ARIMA specification
 USAccDeaths \%>\%
   as_tsibble() \%>\%

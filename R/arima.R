@@ -613,6 +613,14 @@ specials_arima <- new_specials(
 #'
 #' @return A model specification.
 #'
+#' @examplesIf !requireNamespace("feasts", quietly = TRUE)
+#' # The feasts package is required for automatic ARIMA model selection.
+#' # Install it with: install.packages("feasts")
+#' 
+#' @examplesIf !requireNamespace("urca", quietly = TRUE)
+#' # The urca package is required for ARIMA models to automatically select `d`
+#' # Install it with: install.packages("urca")
+#' 
 #' @examples
 #' # Manual ARIMA specification
 #' USAccDeaths %>%
@@ -623,6 +631,8 @@ specials_arima <- new_specials(
 #' # Automatic ARIMA specification
 #' library(tsibble)
 #' library(dplyr)
+#' library(feasts)
+#' library(urca)
 #' tsibbledata::global_economy %>%
 #'   filter(Country == "Australia") %>%
 #'   model(ARIMA(log(GDP) ~ Population))

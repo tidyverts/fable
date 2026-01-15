@@ -168,8 +168,13 @@ specials_varima <- new_specials(
 #' 
 #' @references Athanasopoulos, George, D. S. Poskitt, and Farshid Vahid. "Two Canonical VARMA Forms: Scalar Component Models Vis-à-Vis the Echelon Form." Econometric Reviews 31, no. 1 (January 2012): 60–83. https://doi.org/10.1080/07474938.2011.607088.
 #'
+#' @examplesIf !requireNamespace("MTS", quietly = TRUE)
+#' # The MTS package is required for VARIMA models
+#' # Install it with: install.packages("MTS")
+#' 
 #' @examplesIf requireNamespace("tsibbledata", quietly = TRUE)
 #' library(tsibbledata)
+#' library(MTS)
 #' 
 #' aus_production %>% 
 #'   autoplot(vars(Beer, Cement))

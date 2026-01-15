@@ -145,8 +145,13 @@ Athanasopoulos et al (2012).
 }
 
 \examples{
+\dontshow{if (!rlang::is_installed("MTS")) withAutoprint(\{ # examplesIf}
+# The MTS package is required for VARIMA models
+# Install it with: install.packages("MTS")
+\dontshow{\}) # examplesIf}
 \dontshow{if (requireNamespace("tsibbledata", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 library(tsibbledata)
+library(MTS)
 
 aus_production \%>\% 
   autoplot(vars(Beer, Cement))
