@@ -286,8 +286,11 @@ generate.RW <- function(x, new_data, bootstrap = FALSE, ...) {
     dx <- e + b
     lag_grp <- rep_len(seq_len(lag), length(dx))
     dx <- split(dx, lag_grp)
-    cumulative_e <- unsplit(lapply(dx, cumsum), lag_grp)
-    rep_len(future, length(dx)) + cumulative_e
+    
+    unsplit(
+      .mapply(function(x, i) cumsum(x) + i, list(dx, future), NULL),
+      lag_grp
+    )
   }
 
   transmute(group_by_key(new_data), ".sim" := sim_rw(!!sym(".innov")))
