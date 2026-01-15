@@ -167,6 +167,8 @@ USAccDeaths \%>\%
 # Automatic ARIMA specification
 library(tsibble)
 library(dplyr)
+library(feasts)
+library(urca)
 tsibbledata::global_economy \%>\%
   filter(Country == "Australia") \%>\%
   model(ARIMA(log(GDP) ~ Population))
