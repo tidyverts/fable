@@ -15,6 +15,7 @@ train_arima <- function(.data, specials,
   if(length(specials$pdq) > 1 || length(specials$PDQ) > 1){
     warn("Only one special for `pdq()` and `PDQ()` is allowed, defaulting to the first usage")
   }
+  
   pdq <- specials$pdq[[1]]
   PDQ <- specials$PDQ[[1]]
   period <- PDQ$period

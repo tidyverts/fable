@@ -52,6 +52,7 @@ Suggests:
     covr,
     feasts,
     forecast,
+    fracdiff,
     knitr,
     MTS,
     nnet,
@@ -68,4 +69,4 @@ Encoding: UTF-8
 Language: en-GB
 Roxygen: list(markdown = TRUE, roclets=c('rd', 'collate',
     'namespace'))
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
