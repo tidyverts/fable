@@ -98,21 +98,7 @@
 <span class="r-in"><span><span class="va">lung_deaths</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://fabletools.tidyverts.org/reference/model.html" class="external-link">model</a></span><span class="op">(</span><span class="fu"><a href="VAR.html">VAR</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">mdeaths</span>, <span class="va">fdeaths</span><span class="op">)</span> <span class="op">~</span> <span class="fu"><a href="AR.html">AR</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/stats/fitted.values.html" class="external-link">fitted</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tsibble: 72 x 4 [1M]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Key:       .model [1]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    .model                                 index mdeaths fdeaths</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                  <span style="color: #949494; font-style: italic;">&lt;mth&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1974 Jan     <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1974 Feb     <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1974 Mar     <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1974 Apr   <span style="text-decoration: underline;">1</span>688.    650.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1974 May   <span style="text-decoration: underline;">1</span>539.    588.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1974 Jun   <span style="text-decoration: underline;">1</span>224.    452.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1974 Jul   <span style="text-decoration: underline;">1</span>220.    420.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1974 Aug   <span style="text-decoration: underline;">1</span>422.    505.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1974 Sep   <span style="text-decoration: underline;">1</span>311.    471.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1974 Oct   <span style="text-decoration: underline;">1</span>342.    480.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 62 more rows</span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in dim(data) &lt;- dim:</span> invalid first argument, must be vector (list or atomic)</span>
 </code></pre></div>
     </div>
   </div>

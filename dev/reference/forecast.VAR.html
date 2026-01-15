@@ -121,22 +121,7 @@
 <span class="r-in"><span><span class="va">lung_deaths</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://fabletools.tidyverts.org/reference/model.html" class="external-link">model</a></span><span class="op">(</span><span class="fu"><a href="VAR.html">VAR</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">mdeaths</span>, <span class="va">fdeaths</span><span class="op">)</span> <span class="op">~</span> <span class="fu"><a href="AR.html">AR</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://generics.r-lib.org/reference/forecast.html" class="external-link">forecast</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A fable: 24 x 4 [1M]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Key:     .model [1]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    .model                                 index .distribution .mean[,"mdeaths"]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                  <span style="color: #949494; font-style: italic;">&lt;mth&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dist&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1980 Jan        MVN[2]             <span style="text-decoration: underline;">1</span>486.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1980 Feb        MVN[2]             <span style="text-decoration: underline;">1</span>445.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1980 Mar        MVN[2]             <span style="text-decoration: underline;">1</span>369.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1980 Apr        MVN[2]             <span style="text-decoration: underline;">1</span>340.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1980 May        MVN[2]             <span style="text-decoration: underline;">1</span>327.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1980 Jun        MVN[2]             <span style="text-decoration: underline;">1</span>349.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1980 Jul        MVN[2]             <span style="text-decoration: underline;">1</span>395.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1980 Aug        MVN[2]             <span style="text-decoration: underline;">1</span>442.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1980 Sep        MVN[2]             <span style="text-decoration: underline;">1</span>477.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> VAR(vars(mdeaths, fdeaths) ~ AR(3)) 1980 Oct        MVN[2]             <span style="text-decoration: underline;">1</span>495.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 14 more rows</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 1 more variable: .mean[2] &lt;dbl&gt;</span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in dim(data) &lt;- dim:</span> invalid first argument, must be vector (list or atomic)</span>
 </code></pre></div>
     </div>
   </div>
