@@ -345,9 +345,11 @@ This is generally discouraged, consider removing the constant or reducing the nu
   # Compute ARMA roots
   ar <- best$model$phi
   ma <- best$model$theta
-  arroot <- if (is_empty(ar) || !any(abs(ar) > 0)) cpl() else polyroot(c(1, -ar[seq_len(max(which(abs(ar) > 1e-8)))]))
-  maroot <- if (is_empty(ma) || !any(abs(ma) > 0)) cpl() else polyroot(c(1, ma[seq_len(max(which(abs(ma) > 1e-8)))]))
-
+  armax <- max(which(abs(ar) > 1e-8) %0% 0L)
+  mamax <- max(which(abs(ma) > 1e-8) %0% 0L)
+  arroot <- polyroot(c(1, -ar[seq_len(armax)]))
+  maroot <- polyroot(c(1, ma[seq_len(mamax)]))
+  
   fit_coef <- coef(best)
   
   fit_se <- set_names(numeric(length(fit_coef)), names(fit_coef))
