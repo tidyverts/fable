@@ -549,7 +549,8 @@ specials_arima <- new_specials(
 #' For details of the estimation algorithm, see the
 #' \code{\link[stats]{arima}} function in the stats package.
 #'
-
+#' @aliases pdq PDQ
+#' 
 #' @section Specials:
 #' 
 #' The _specials_ define the space over which `ARIMA` will search for the model that best fits the data. If the RHS of `formula` is left blank, the default search space is given by `pdq() + PDQ()`: that is, a model with candidate seasonal and nonseasonal terms, but no exogenous regressors. Note that a seasonal model requires at least 2 full seasons of data; if this is not available, `ARIMA` will revert to a nonseasonal model with a warning.

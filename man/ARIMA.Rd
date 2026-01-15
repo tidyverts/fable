@@ -3,6 +3,8 @@
 \name{ARIMA}
 \alias{ARIMA}
 \alias{report.ARIMA}
+\alias{pdq}
+\alias{PDQ}
 \title{Estimate an ARIMA model}
 \usage{
 ARIMA(

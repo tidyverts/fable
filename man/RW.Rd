@@ -3,6 +3,7 @@
 \name{RW}
 \alias{RW}
 \alias{report.RW}
+\alias{drift}
 \alias{NAIVE}
 \alias{SNAIVE}
 \title{Random walk models}

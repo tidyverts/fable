@@ -82,7 +82,10 @@ train_lagwalk <- function(.data, specials, ...) {
 #' @param formula Model specification (see "Specials" section).
 #' @param ... Not used.
 #'
+#' @aliases drift
+#' 
 #' @section Specials:
+#' 
 #'
 #' \subsection{lag}{
 #' The `lag` special is used to specify the lag order for the random walk process.
