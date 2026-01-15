@@ -72,7 +72,7 @@ AR <- function(formula, ic = c("aicc", "aic", "bic"), ...) {
 specials_ar <- new_specials(
   order = function(p = 0:15, fixed = list()) {
     if (any(p < 0)) {
-      warn("The AR order must be non-negative. Only non-negative orders will be considered.")
+      cli::cli_warn("The AR order must be non-negative. Only non-negative orders will be considered.")
       p <- p[p >= 0]
     }
     list(p = p, fixed = fixed)
@@ -158,7 +158,7 @@ estimate_ar <- function(x, p, xreg, constant, fixed) {
   XX <- t(X_est) %*% X_est
   rank <- qr(XX)$rank
   if (rank != nrow(XX)) {
-    warning(paste("model order: ", p, "singularities in the computation of the projection matrix", 
+    cli::cli_warn(paste("model order: ", p, "singularities in the computation of the projection matrix", 
                   "results are only valid up to model order", 
                   p - 1L), domain = NA)
     return(NULL)

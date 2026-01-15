@@ -193,11 +193,11 @@ imap <- function(.x, .f, ...) {
 capture_error <- function(code, otherwise = NULL, quiet = TRUE) {
   tryCatch(list(result = code, error = NULL), error = function(e) {
     if (!quiet) {
-      message("Error: ", e$message)
+      cli::cli_inform("Error: ", e$message)
     }
     list(result = otherwise, error = e)
   }, interrupt = function(e) {
-    stop("Terminated by user", call. = FALSE)
+    cli::cli_abort("Terminated by user", call. = FALSE)
   })
 }
 safely <- function(.f, otherwise = NULL, quiet = TRUE) {

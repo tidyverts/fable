@@ -8,12 +8,12 @@ train_arima <- function(.data, specials,
                         unitroot_spec = unitroot_options(), trace = FALSE,
                         fixed = NULL, method = NULL, ...) {
   if (length(measured_vars(.data)) > 1) {
-    abort("Only univariate responses are supported by ARIMA.")
+    cli::cli_abort("Only univariate responses are supported by ARIMA.")
   }
   
   # Get args
   if(length(specials$pdq) > 1 || length(specials$PDQ) > 1){
-    warn("Only one special for `pdq()` and `PDQ()` is allowed, defaulting to the first usage")
+    cli::cli_warn("Only one special for `pdq()` and `PDQ()` is allowed, defaulting to the first usage")
   }
   pdq <- specials$pdq[[1]]
   PDQ <- specials$PDQ[[1]]
@@ -24,7 +24,7 @@ train_arima <- function(.data, specials,
   y <- x <- ts(unclass(.data)[[measured_vars(.data)]], frequency = period)
 
   if (all(is.na(y))) {
-    abort("All observations are missing, a model cannot be estimated without data.")
+    cli::cli_abort("All observations are missing, a model cannot be estimated without data.")
   }
 
   # Get xreg
@@ -47,7 +47,7 @@ train_arima <- function(.data, specials,
       
       # Remove deficient regressors
       if(!is_empty(bad_regressors)){
-        warn(sprintf(
+        cli::cli_warn(sprintf(
           "Provided exogenous regressors are rank deficient, removing regressors: %s",
           paste("`", colnames(xreg)[bad_regressors], "`", sep = "", collapse = ", ")
         ))
@@ -72,8 +72,8 @@ train_arima <- function(.data, specials,
   if (NROW(model_opts) > 1) {
     model_opts <- filter(model_opts, !!enexpr(order_constraint))
     if (NROW(model_opts) == 0) {
-      if (mostly_specified) warn(mostly_specified_msg)
-      abort("There are no ARIMA models to choose from after imposing the `order_constraint`, please consider allowing more models.")
+      if (mostly_specified) cli::cli_warn(mostly_specified_msg)
+      cli::cli_abort("There are no ARIMA models to choose from after imposing the `order_constraint`, please consider allowing more models.")
     }
     wrap_arima <- possibly(quietly(stats::arima), NULL)
   }
@@ -132,12 +132,12 @@ train_arima <- function(.data, specials,
   }
 
   # Check number of differences selected
-  if (length(seas_D) != 1) abort("Could not find appropriate number of seasonal differences.")
-  if (length(seas_d) != 1) abort("Could not find appropriate number of non-seasonal differences.")
+  if (length(seas_D) != 1) cli::cli_abort("Could not find appropriate number of seasonal differences.")
+  if (length(seas_d) != 1) cli::cli_abort("Could not find appropriate number of non-seasonal differences.")
   if (seas_D >= 2) {
-    warn("Having more than one seasonal difference is not recommended. Please consider using only one seasonal difference.")
+    cli::cli_warn("Having more than one seasonal difference is not recommended. Please consider using only one seasonal difference.")
   } else if (seas_D + seas_d > 2) {
-    warn("Having 3 or more differencing operations is not recommended. Please consider reducing the total number of differences.")
+    cli::cli_warn("Having 3 or more differencing operations is not recommended. Please consider reducing the total number of differences.")
   }
 
   # Find best model
@@ -236,7 +236,7 @@ train_arima <- function(.data, specials,
       method <- "CSS-ML"
     }
   } else {
-    if(isTRUE(approximation)) warn("Estimating ARIMA models with approximation is not supported when `method` is specified.")
+    if(isTRUE(approximation)) cli::cli_warn("Estimating ARIMA models with approximation is not supported when `method` is specified.")
     approximation <- FALSE
   }
   
@@ -252,7 +252,7 @@ train_arima <- function(.data, specials,
   }
   
   if (any((model_opts$d + model_opts$D > 1) & model_opts$constant)) {
-    warn("Model specification induces a quadratic or higher order polynomial trend. 
+    cli::cli_warn("Model specification induces a quadratic or higher order polynomial trend. 
 This is generally discouraged, consider removing the constant or reducing the number of differences.")
   }
   constant <- unique(model_opts$constant)
@@ -337,8 +337,8 @@ This is generally discouraged, consider removing the constant or reducing the nu
   }
 
   if (is.null(best)) {
-    if (mostly_specified) warn(mostly_specified_msg)
-    abort("Could not find an appropriate ARIMA model.\nThis is likely because automatic selection does not select models with characteristic roots that may be numerically unstable.\nFor more details, refer to https://otexts.com/fpp3/arima-r.html#plotting-the-characteristic-roots")
+    if (mostly_specified) cli::cli_warn(mostly_specified_msg)
+    cli::cli_abort("Could not find an appropriate ARIMA model.\nThis is likely because automatic selection does not select models with characteristic roots that may be numerically unstable.\nFor more details, refer to https://otexts.com/fpp3/arima-r.html#plotting-the-characteristic-roots")
   }
 
   # Compute ARMA roots
@@ -422,7 +422,7 @@ specials_arima <- new_specials(
     p_init <- p[which.min(abs(p - p_init))]
     q_init <- q[which.min(abs(q - q_init))]
     if(!all(grepl("^(ma|ar)\\d+", names(fixed)))){
-      abort("The 'fixed' coefficients for pdq() must begin with ar or ma, followed by a lag number.")
+      cli::cli_abort("The 'fixed' coefficients for pdq() must begin with ar or ma, followed by a lag number.")
     }
     as.list(environment())
   },
@@ -431,7 +431,7 @@ specials_arima <- new_specials(
                  fixed = list()) {
     period <- get_frequencies(period, self$data, .auto = "smallest")
     if (period < 1) {
-      abort("The seasonal period must be greater than or equal to 1.")
+      cli::cli_abort("The seasonal period must be greater than or equal to 1.")
     } else if (period == 1) {
       # Not seasonal
       P <- 0
@@ -442,13 +442,13 @@ specials_arima <- new_specials(
       P <- P[P <= floor(NROW(self$data) / 3 / period)]
       Q <- Q[Q <= floor(NROW(self$data) / 3 / period)]
       if(length(P) == 0 || length(Q) == 0) {
-        abort("Not enough data to estimate a model with those options of P and Q. Consider allowing smaller values of P and Q to be selected.")
+        cli::cli_abort("Not enough data to estimate a model with those options of P and Q. Consider allowing smaller values of P and Q to be selected.")
       }
     }
     P_init <- P[which.min(abs(P - P_init))]
     Q_init <- Q[which.min(abs(Q - Q_init))]
     if(!all(grepl("^(sma|sar)\\d+", names(fixed)))){
-      abort("The 'fixed' coefficients for PDQ() must begin with sar or sma, followed by a lag number.")
+      cli::cli_abort("The 'fixed' coefficients for PDQ() must begin with sar or sma, followed by a lag number.")
     }
     as.list(environment())
   },
@@ -729,7 +729,7 @@ residuals.ARIMA <- function(object, type = c("innovation", "regression"), ...) {
     object$est[[".regression_resid"]]
   }
   else {
-    abort(sprintf('Residuals of `type = "%s"` are not supported by ARIMA models', type))
+    cli::cli_abort(sprintf('Residuals of `type = "%s"` are not supported by ARIMA models', type))
   }
 }
 
@@ -1050,7 +1050,7 @@ refit.ARIMA <- function(object, new_data, specials = NULL, reestimate = FALSE, .
 #     stream_start <- object$tsp$range[2] + as.difftime(interval[[1]], units = time_unit)
 #   }
 #   if (unclass(new_data)[[index_var(new_data)]][1] != stream_start) {
-#     abort("Streaming to an ARIMA model must start one step beyond the end of the trained data.")
+#     cli::cli_abort("Streaming to an ARIMA model must start one step beyond the end of the trained data.")
 #   }
 #   
 #   y <- unclass(new_data)[[measured_vars(new_data)]]

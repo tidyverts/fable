@@ -1,14 +1,14 @@
 #' @importFrom stats sd
 train_theta <- function(.data, specials, ...) {
   if (length(measured_vars(.data)) > 1) {
-    abort("Only univariate responses are supported by the Theta method")
+    cli::cli_abort("Only univariate responses are supported by the Theta method")
   }
   
   y <- unclass(.data)[[measured_vars(.data)]]
   n <- length(y)
   
   if (all(is.na(y))) {
-    abort("All observations are missing, a model cannot be estimated without data.")
+    cli::cli_abort("All observations are missing, a model cannot be estimated without data.")
   }
   
   # Check seasonality
@@ -28,7 +28,7 @@ train_theta <- function(.data, specials, ...) {
   if (m > 1L) {
     dcmp <- stats::decompose(y, type = specials$season[[1]]$method)
     if (any(abs(dcmp$seasonal) < 1e-4)) {
-      warning("Seasonal indexes equal to zero. Using non-seasonal Theta method")
+      cli::cli_warn("Seasonal indexes equal to zero. Using non-seasonal Theta method")
     } else {
       y_sa <- if(dcmp$type == "additive") dcmp$x - dcmp$seasonal else dcmp$x / dcmp$seasonal
     }
@@ -146,7 +146,7 @@ THETA <- function(formula, ...) {
 #' @export
 forecast.fable_theta <- function(object, new_data, specials = NULL, bootstrap = FALSE, times = 5000, ...) {
   if (bootstrap) {
-    abort("Bootstrapped forecasts are not yet supported for the Theta method.")
+    cli::cli_abort("Bootstrapped forecasts are not yet supported for the Theta method.")
   }
   h <- NROW(new_data)
   

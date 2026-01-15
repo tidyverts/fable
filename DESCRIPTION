@@ -47,7 +47,8 @@ Imports:
     tibble,
     tidyr,
     utils,
-    distributional
+    distributional,
+    cli
 Suggests:
     covr,
     feasts,

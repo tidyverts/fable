@@ -3,7 +3,7 @@ train_varima <- function(.data, specials, identification = NULL, ...) {
   y <- invoke(cbind, lapply(unclass(.data)[measured_vars(.data)], as.double))
   
   if(any(colnames(specials$xreg[[1]]) != "(Intercept)")) {
-    stop("Exogenous regressors for VARIMA are not yet supported.")
+    cli::cli_abort("Exogenous regressors for VARIMA are not yet supported.")
   }
   
   p <- specials$pdq[[1]]$p
@@ -39,7 +39,7 @@ train_varima <- function(.data, specials, identification = NULL, ...) {
       )
     } else {
       if(length(p) != 1 || length(q) != 1) {
-        stop("Model selection is not yet supported, please specify `p` and `q` exactly.")
+        cli::cli_abort("Model selection is not yet supported, please specify `p` and `q` exactly.")
       }
       MTS::VARMA(
         yd,
@@ -72,7 +72,7 @@ specials_varima <- new_specials(
     as.list(environment())
   },
   PDQ = function(P, D, Q, period = NULL) {
-    stop("Seasonal VARIMA models are not yet supported.")
+    cli::cli_abort("Seasonal VARIMA models are not yet supported.")
   },
   common_xregs,
   xreg = special_xreg(default_intercept = TRUE),

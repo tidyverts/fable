@@ -1,14 +1,14 @@
 train_ets <- function(.data, specials, opt_crit,
                       nmse, bounds, ic, restrict = TRUE, ...) {
   if (length(measured_vars(.data)) > 1) {
-    abort("Only univariate responses are supported by ETS.")
+    cli::cli_abort("Only univariate responses are supported by ETS.")
   }
 
   # Rebuild `ets` arguments
   ets_spec <- specials[c("error", "trend", "season")]
   map(ets_spec, function(.x) {
     if (length(.x) > 1) {
-      abort("Only one special of each type is allowed for ETS.")
+      cli::cli_abort("Only one special of each type is allowed for ETS.")
     }
   })
   ets_spec <- unlist(ets_spec, recursive = FALSE)
@@ -43,7 +43,7 @@ train_ets <- function(.data, specials, opt_crit,
   }
 
   if (NROW(model_opts) == 0) {
-    abort("No valid ETS models have been allowed. Consider allowing different (more stable) models, or enabling the restricted models with `restrict = FALSE`.")
+    cli::cli_abort("No valid ETS models have been allowed. Consider allowing different (more stable) models, or enabling the restricted models with `restrict = FALSE`.")
   }
 
   # Find best model
@@ -74,7 +74,7 @@ train_ets <- function(.data, specials, opt_crit,
   ic <- pmap_dbl(model_opts, compare_ets)
 
   if (is.null(best)) {
-    abort(last_error$message)
+    cli::cli_abort(last_error$message)
   }
 
   best_spec <- model_opts[which.min(ic), ]
@@ -110,7 +110,7 @@ train_ets <- function(.data, specials, opt_crit,
 specials_ets <- new_specials(
   error = function(method = c("A", "M")) {
     if (!all(is.element(method, c("A", "M")))) {
-      stop("Invalid error type")
+      cli::cli_abort("Invalid error type")
     }
     list(method = method)
   },
@@ -119,16 +119,16 @@ specials_ets <- new_specials(
                    beta = NULL, beta_range = c(1e-04, 0.9999),
                    phi = NULL, phi_range = c(0.8, 0.98)) {
     if (!all(is.element(method, c("N", "A", "Ad", "M", "Md")))) {
-      stop("Invalid trend type")
+      cli::cli_abort("Invalid trend type")
     }
     if (alpha_range[1] > alpha_range[2]) {
-      abort("Lower alpha limits must be less than upper limits")
+      cli::cli_abort("Lower alpha limits must be less than upper limits")
     }
     if (beta_range[1] > beta_range[2]) {
-      abort("Lower beta limits must be less than upper limits")
+      cli::cli_abort("Lower beta limits must be less than upper limits")
     }
     if (phi_range[1] > phi_range[2]) {
-      abort("Lower phi limits must be less than upper limits")
+      cli::cli_abort("Lower phi limits must be less than upper limits")
     }
     if(!is.null(alpha)) alpha_range <- rep(alpha, 2)
     if(!is.null(beta)) beta_range <- rep(beta, 2)
@@ -143,10 +143,10 @@ specials_ets <- new_specials(
   season = function(method = c("N", "A", "M"), period = NULL,
                     gamma = NULL, gamma_range = c(1e-04, 0.9999)) {
     if (!all(is.element(method, c("N", "A", "M")))) {
-      abort("Invalid season type")
+      cli::cli_abort("Invalid season type")
     }
     if (gamma_range[1] > gamma_range[2]) {
-      abort("Lower gamma limits must be less than upper limits")
+      cli::cli_abort("Lower gamma limits must be less than upper limits")
     }
     if(!is.null(gamma)) gamma_range <- rep(gamma, 2)
 
@@ -156,14 +156,14 @@ specials_ets <- new_specials(
     }
     if (m > 24) {
       if (!is.element("N", method)) {
-        abort("Seasonal periods (`period`) of length greather than 24 are not supported by ETS.")
+        cli::cli_abort("Seasonal periods (`period`) of length greather than 24 are not supported by ETS.")
       } else if (length(method) > 1) {
-        warn("Seasonal periods (`period`) of length greather than 24 are not supported by ETS. Seasonality will be ignored.")
+        cli::cli_warn("Seasonal periods (`period`) of length greather than 24 are not supported by ETS. Seasonality will be ignored.")
         method <- "N"
       }
     }
     if (is_empty(method)) {
-      abort("A seasonal ETS model cannot be used for this data.")
+      cli::cli_abort("A seasonal ETS model cannot be used for this data.")
     }
     list(method = method, gamma = gamma, gamma_range = gamma_range, period = m)
   },
@@ -358,14 +358,14 @@ forecast.ETS <- function(object, new_data, specials = NULL, simulate = FALSE, bo
 #' @export
 generate.ETS <- function(x, new_data, specials, bootstrap = FALSE, ...) {
   if (!is_regular(new_data)) {
-    abort("Simulation new_data must be regularly spaced")
+    cli::cli_abort("Simulation new_data must be regularly spaced")
   }
 
   start_idx <- min(new_data[[index_var(new_data)]])
   start_pos <- match(start_idx - default_time_units(interval(new_data)), x$states[[index_var(x$states)]])
 
   if (is.na(start_pos)) {
-    abort("The first observation index of simulation data must be within the model's training set.")
+    cli::cli_abort("The first observation index of simulation data must be within the model's training set.")
   }
 
   initstate <- as.numeric(x$states[start_pos, measured_vars(x$states)])
@@ -410,7 +410,7 @@ generate.ETS <- function(x, new_data, specials, bootstrap = FALSE, ...) {
     )[[11]])
   
   if (is.na(result[[".sim"]][1])) {
-    stop("Problem with multiplicative damped trend")
+    cli::cli_abort("Problem with multiplicative damped trend")
   }
 
   result
@@ -526,7 +526,7 @@ hfitted.ETS <- function(object, h, ...) {
   } else if (errortype == "M" && trendtype != "M" && seasontype == "M") {
     ets_fc_class3
   } else {
-    abort(sprintf("Multi-step fits for %s%s%s%s ETS models is not supported."),
+    cli::cli_abort(sprintf("Multi-step fits for %s%s%s%s ETS models is not supported."),
           errortype, trendtype, if(damped) "d" else "", seasontype)
   }
   

@@ -6,14 +6,14 @@ is.constant <- function(x) {
 
 assignSpecials <- function(x, env = caller_env()) {
   imap(x, function(.x, nm) {
-    if (length(.x) > 1) warn(sprintf("Only one special for `%s` is allowed, defaulting to the first usage", nm))
+    if (length(.x) > 1) cli::cli_warn(sprintf("Only one special for `%s` is allowed, defaulting to the first usage", nm))
     imap(.x[[1]], function(.x, .y) assign(.y, .x, envir = env))
   })
 }
 
 require_package <- function(pkg) {
   if (!requireNamespace(pkg, quietly = TRUE)) {
-    abort(
+    cli::cli_abort(
       sprintf('The `%s` package must be installed to use this functionality. It can be installed with install.packages("%s")', pkg, pkg)
     )
   }

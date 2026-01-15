@@ -84,7 +84,7 @@ estimate_var <- function(y, p, xreg, constant) {
 specials_var <- new_specials(
   AR = function(p = 0:5) {
     if (any(p < 0)) {
-      warn("The AR order must be non-negative. Only non-negative orders will be considered.")
+      cli::cli_warn("The AR order must be non-negative. Only non-negative orders will be considered.")
       p <- p[p >= 0]
     }
     list(p = p)
@@ -200,7 +200,7 @@ VAR <- function(formula, ic = c("aicc", "aic", "bic"), ...) {
 forecast.VAR <- function(object, new_data = NULL, specials = NULL,
                          bootstrap = FALSE, times = 5000, ...) {
   if (bootstrap) {
-    abort("Bootstrapped forecasts for VARs are not yet implemented.")
+    cli::cli_abort("Bootstrapped forecasts for VARs are not yet implemented.")
   }
 
   h <- NROW(new_data)

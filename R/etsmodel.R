@@ -46,7 +46,7 @@ etsmodel <- function(y, m, errortype, trendtype, seasontype, damped,
   }
 
   if (!check.param(alpha, beta, gamma, phi, lower, upper, bounds, m)) {
-    abort(sprintf(
+    cli::cli_abort(sprintf(
       "Parameters out of range for ETS(%s,%s%s,%s) model",
       errortype, trendtype, ifelse(damped, "d", ""), seasontype
     ))
@@ -61,7 +61,7 @@ etsmodel <- function(y, m, errortype, trendtype, seasontype, damped,
 
   np <- length(par)
   if (np >= length(y) - 1) { # Not enough data to continue
-    abort("Not enough data to estimate this ETS model.")
+    cli::cli_abort("Not enough data to estimate this ETS model.")
   }
 
   env <- etsTargetFunctionInit(
@@ -156,12 +156,12 @@ etsTargetFunctionInit <- function(par, y, nstate, errortype, trendtype, seasonty
   names(par.noopt) <- pnames2
   alpha <- c(par["alpha"], par.noopt["alpha"])["alpha"]
   if (is.na(alpha)) {
-    stop("alpha problem!")
+    cli::cli_abort("alpha problem!")
   }
   if (trendtype != "N") {
     beta <- c(par["beta"], par.noopt["beta"])["beta"]
     if (is.na(beta)) {
-      stop("beta Problem!")
+      cli::cli_abort("beta Problem!")
     }
   }
   else {
@@ -170,7 +170,7 @@ etsTargetFunctionInit <- function(par, y, nstate, errortype, trendtype, seasonty
   if (seasontype != "N") {
     gamma <- c(par["gamma"], par.noopt["gamma"])["gamma"]
     if (is.na(gamma)) {
-      stop("gamma Problem!")
+      cli::cli_abort("gamma Problem!")
     }
   }
   else {
@@ -180,7 +180,7 @@ etsTargetFunctionInit <- function(par, y, nstate, errortype, trendtype, seasonty
   if (damped) {
     phi <- c(par["phi"], par.noopt["phi"])["phi"]
     if (is.na(phi)) {
-      stop("phi Problem!")
+      cli::cli_abort("phi Problem!")
     }
   }
   else {
@@ -254,7 +254,7 @@ initparam <- function(alpha, beta, gamma, phi, trendtype, seasontype, damped, lo
     lower[1L:3L] <- 0
     upper[1L:3L] <- 1e-3
   } else if (any(lower > upper)) {
-    stop("Inconsistent parameter boundaries")
+    cli::cli_abort("Inconsistent parameter boundaries")
   }
 
   # Select alpha
@@ -339,7 +339,7 @@ initstate <- function(y, m, trendtype, seasontype) {
     # Do decomposition
     n <- length(y)
     if (n < 4) {
-      stop("You've got to be joking (not enough data).")
+      cli::cli_abort("You've got to be joking (not enough data).")
     } else if (n < 3 * m) # Fit simple Fourier model.
       {
         fouriery <- as.matrix(fourier(seq_along(y), m, 1))

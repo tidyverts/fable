@@ -1,13 +1,13 @@
 train_lagwalk <- function(.data, specials, ...) {
   if (length(measured_vars(.data)) > 1) {
-    abort("Only univariate responses are supported by lagwalks.")
+    cli::cli_abort("Only univariate responses are supported by lagwalks.")
   }
   
   y <- unclass(.data)[[measured_vars(.data)]]
   n <- length(y)
 
   if (all(is.na(y))) {
-    abort("All observations are missing, a model cannot be estimated without data.")
+    cli::cli_abort("All observations are missing, a model cannot be estimated without data.")
   }
 
   drift <- specials$drift[[1]][[1]] %||% FALSE
@@ -131,7 +131,7 @@ RW <- function(formula, ...) {
           lag <- 1
         }
         if (!rlang::is_integerish(lag)) {
-          warn("Non-integer lag orders for random walk models are not supported. Rounding to the nearest integer.")
+          cli::cli_warn("Non-integer lag orders for random walk models are not supported. Rounding to the nearest integer.")
           lag <- round(lag)
         }
         get_frequencies(lag, self$data, .auto = "smallest")
@@ -170,10 +170,10 @@ SNAIVE <- function(formula, ...) {
       lag = function(lag = NULL) {
         lag <- get_frequencies(lag, self$data, .auto = "smallest")
         if (lag == 1) {
-          abort("Non-seasonal model specification provided, use RW() or provide a different lag specification.")
+          cli::cli_abort("Non-seasonal model specification provided, use RW() or provide a different lag specification.")
         }
         if (!rlang::is_integerish(lag)) {
-          warn("Non-integer lag orders for random walk models are not supported. Rounding to the nearest integer.")
+          cli::cli_warn("Non-integer lag orders for random walk models are not supported. Rounding to the nearest integer.")
           lag <- round(lag)
         }
         lag
@@ -249,7 +249,7 @@ forecast.RW <- function(object, new_data, specials = NULL, simulate = FALSE, boo
 #' @export
 generate.RW <- function(x, new_data, bootstrap = FALSE, ...) {
   if (!is_regular(new_data)) {
-    abort("Simulation new_data must be regularly spaced")
+    cli::cli_abort("Simulation new_data must be regularly spaced")
   }
 
   lag <- x$lag
@@ -266,7 +266,7 @@ generate.RW <- function(x, new_data, bootstrap = FALSE, ...) {
   future <- fits[start_pos + seq_len(lag) - 1]
 
   if (any(is.na(future))) {
-    abort("The first lag window for simulation must be within the model's training set.")
+    cli::cli_abort("The first lag window for simulation must be within the model's training set.")
   }
 
   if (!(".innov" %in% names(new_data))) {
