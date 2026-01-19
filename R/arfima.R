@@ -222,20 +222,19 @@ specials_arfima <- new_specials(
   .xreg_specials = names(common_xregs)
 )
 
-#' Fractional differences
-#' 
-#' Computes the fractional difference of a numeric vector using the fast algorithm by Jensen and Nielsen (2014).
-#' 
-#' @param x Numeric vector to difference.
-#' @param d Fractional differencing parameter.
-#' 
-#' @return A numeric vector representing the fractional difference of `x`.
-#' 
-#' @references Jensen, Andreas Noack and Nielsen, Morten Ørregaard (2014) A Fast Fractional Difference Algorithm. Journal of Time Series Analysis 35(5), 428–436; [doi:10.1111/jtsa.12074](https://doi.org/10.1111/jtsa.12074).
-#' 
-#' @seealso [fracdiff::diffseries()] for the original function which additionally differences the data.
-#' 
-#' @export
+# ' Fractional differences
+# ' 
+# ' Computes the fractional difference of a numeric vector using the fast algorithm by Jensen and Nielsen (2014).
+# ' 
+# ' @param x Numeric vector to difference.
+# ' @param d Fractional differencing parameter.
+# ' 
+# ' @return A numeric vector representing the fractional difference of `x`.
+# ' 
+# ' @references Jensen, Andreas Noack and Nielsen, Morten Ørregaard (2014) A Fast Fractional Difference Algorithm. Journal of Time Series Analysis 35(5), 428–436; [doi:10.1111/jtsa.12074](https://doi.org/10.1111/jtsa.12074).
+# ' 
+# ' @seealso [fracdiff::diffseries()] for the original function which additionally differences the data.
+# ' 
 #' @importFrom stats fft nextn
 fracdiff <- function(x, d) {
   stopifnot((iT <- length(x)) >= 2)
@@ -249,23 +248,21 @@ fracdiff <- function(x, d) {
   Re(dx)
 }
 
-#' Fractional Integration: Inverse of Fractional Differencing
-#' 
-#' Computes the inverse function of the fractional differencing function [fracdiff()].
-#'
-#' @param x Numeric vector to integrate.
-#' @param d Fractional integration parameter.
-#' @param xi A numeric vector containing the initial values for the fractional integral.
-#' 
-#' @return A numeric vector representing the fractional integral of `x`.
-#' 
-#' @examples
-#' 
-#' s <- 1:10
-#' d <- fracdiff(s, 0.5)
-#' fracdiffinv(d, 0.5)
-#'  
-#' @export
+# ' Fractional Integration: Inverse of Fractional Differencing
+# ' 
+# ' Computes the inverse function of the fractional differencing function [fracdiff()].
+# '
+# ' @param x Numeric vector to integrate.
+# ' @param d Fractional integration parameter.
+# ' @param xi A numeric vector containing the initial values for the fractional integral.
+# ' 
+# ' @return A numeric vector representing the fractional integral of `x`.
+# ' 
+# ' @examples
+# ' 
+# ' s <- 1:10
+# ' d <- fracdiff(s, 0.5)
+# ' fracdiffinv(d, 0.5)
 fracdiffinv <- function (x, d, xi = NULL) {
   # Trim xi to relevant history based on FFT padding used in fracdiff
   # The FFT uses np2 = nextn(2*n - 1), so we only need approximately n values
