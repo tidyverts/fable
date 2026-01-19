@@ -270,6 +270,15 @@ This is generally discouraged, consider removing the constant or reducing the nu
       ma = c(0, seas_d, max(pdq$q) > 0, 0, seas_D, max(PDQ$Q) > 0, constant[1])
     )
     step_order <- unique(stats::na.omit(match(initial_opts, lapply(split(model_opts, seq_len(NROW(model_opts))), as.numeric))))
+    # If none of the initial models are valid, start from the closest model to the initial
+    if (length(step_order) == 0) {
+      step_order <- order(
+        (model_opts$p - pdq$p_init)^2 + (model_opts$q - pdq$q_init)^2 +
+          (model_opts$P - PDQ$P_init)^2 + (model_opts$Q - PDQ$Q_init)^2,
+        model_opts$P, model_opts$Q, model_opts$p, model_opts$q
+      )[1L]
+    }
+    
     initial <- TRUE
 
     if(trace) {
