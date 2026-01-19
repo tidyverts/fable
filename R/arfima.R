@@ -325,14 +325,21 @@ train_arfima <- function(
     y, nar = p, nma = q,
     drange = specials$pdq[[1L]]$d_range
   )
-  d <- fit$d
+
+  fd_par <- data.frame(
+    term = c("mu", "d"),
+    estimate = c(y_mu, fit$d),
+    std.error = c(NA_real_, fit$stderror[[1L]]),
+    statistic = c(NA_real_, dz <- fit$d/fit$stderror[[1L]]),
+    p.value = c(NA_real_, 2 * (1 - pnorm(abs(dz))))
+  )
 
   # Refine ARIMA coefficients with MLE
   yd <- fracdiff(y, fit$d)
   .data[[measured_vars(.data)]] <- yd
   fit <- train_arima(.data, specials, ...)
-  fit$spec$d <- d
-  fit$spec$mu <- y_mu
+
+  fit$par <- rbind(fd_par, fit$par)
 
   class(fit) <- c("fbl_ARFIMA", class(fit))
   fit
@@ -343,7 +350,7 @@ model_sum.fbl_ARFIMA <- function(x) {
   sprintf(
     "ARFIMA(%i,%.2f,%i)%s",
     x$spec$p,
-    x$spec$d,
+    x$par$estimate[x$par$term == "d"],
     x$spec$q,
     if (isTRUE(x$spec$constant)) " w/ mean" else ""
   )
@@ -351,14 +358,10 @@ model_sum.fbl_ARFIMA <- function(x) {
 
 #' @export
 fitted.fbl_ARFIMA <- function(object, ...) {
-
-  # @RH: The {forecast} package does strange things with the fitted residuals
-  #      (perhaps it doesn't fractionally integrate them?)
   fracdiffinv(
     NextMethod(),
-    d = object$spec$d,
-    # xi = ??? -- are there suitable non-zero initial values for this?
-  ) + object$spec$mu
+    d = object$par$estimate[object$par$term == "d"],
+  ) + object$par$estimate[object$par$term == "mu"]
 }
 
 #' @importFrom stats frequency
@@ -380,14 +383,16 @@ forecast.fbl_ARFIMA <- function(
   h <- length(fc)
   
   # Extract ARMA coefficients
+  mu <- object$par$estimate[object$par$term == "mu"]
   p <- object$spec$p
+  d <- object$par$estimate[object$par$term == "d"]
   q <- object$spec$q
   phi <- theta <- numeric(h)
   phi[seq_len(p)] <- object$model$coef[grep("^ar", names(object$model$coef))]
   theta[seq_len(q)] <- object$model$coef[grep("^ma", names(object$model$coef))]
   
   # Binomial coefficient for expansion of d
-  bin.c <- (-1)^(0:(n + h)) * choose(object$spec$d, (0:(n + h)))
+  bin.c <- (-1)^(0:(n + h)) * choose(d, (0:(n + h)))
   
   # Calculate psi weights
   new.phi <- psi <- numeric(h)
@@ -404,7 +409,7 @@ forecast.fbl_ARFIMA <- function(
 
   distributional::dist_normal(
     # Fractionally integrated mean
-    mu = fracdiffinv(mean(fc), d = object$spec$d, xi = y_train) + object$spec$mu,
+    mu = fracdiffinv(mean(fc), d = d, xi = y_train) + mu,
     # Approximate standard error via psi-weights
     sigma = sqrt(cumsum(psi^2) * object$fit$sigma2)
   )
@@ -434,9 +439,11 @@ generate.fbl_ARFIMA <- function(
   y_init <- y_init[seq_len((t_init - x$tsp$range[1])/t_chronon)]
 
   # Fractionally integrate simulated data
+  mu <- object$par$estimate[object$par$term == "mu"]
+  d <- object$par$estimate[object$par$term == "d"]
   transmute(
     group_by_key(.sim), 
-    ".sim" := fracdiffinv(x = .data$.sim, d = x$spec$d, xi = y_init) + x$spec$mu
+    ".sim" := fracdiffinv(x = .data$.sim, d = d, xi = y_init) + mu
   )
 }
 
@@ -461,16 +468,20 @@ refit.fbl_ARFIMA <- function(
   }
 
   # Fractionally difference the new data
+  mu <- object$par$estimate[object$par$term == "mu"]
+  d <- object$par$estimate[object$par$term == "d"]
   y <- unclass(new_data)[[measured_vars(new_data)]]
-  yd <- fracdiff(y - object$spec$mu, object$spec$d)
+  yd <- fracdiff(y - mu, d)
   new_data[[measured_vars(new_data)]] <- yd
 
   # Refit ARMA model
   fit <- NextMethod()
   
   # Class the results
-  fit$spec$d <- object$spec$d
-  fit$spec$mu <- object$spec$mu
+  fit$par <- rbind(
+    object$par[object$par$term %in% c("mu", "d"), , drop = FALSE],
+    fit$par
+  )
   class(fit) <- c("fbl_ARFIMA", class(fit))
   fit
 }
