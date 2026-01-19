@@ -15,6 +15,7 @@ train_arima <- function(.data, specials,
   if(length(specials$pdq) > 1 || length(specials$PDQ) > 1){
     cli::cli_warn("Only one special for `pdq()` and `PDQ()` is allowed, defaulting to the first usage")
   }
+  
   pdq <- specials$pdq[[1]]
   PDQ <- specials$PDQ[[1]]
   period <- PDQ$period
@@ -204,7 +205,6 @@ train_arima <- function(.data, specials,
             }
           }
         )
-
         if (isTRUE(min(minroot) < 1 + 1e-2)) { # Previously 1+1e-3
           new <- NULL
         } # Don't like this model
@@ -270,6 +270,15 @@ This is generally discouraged, consider removing the constant or reducing the nu
       ma = c(0, seas_d, max(pdq$q) > 0, 0, seas_D, max(PDQ$Q) > 0, constant[1])
     )
     step_order <- unique(stats::na.omit(match(initial_opts, lapply(split(model_opts, seq_len(NROW(model_opts))), as.numeric))))
+    # If none of the initial models are valid, start from the closest model to the initial
+    if (length(step_order) == 0) {
+      step_order <- order(
+        (model_opts$p - pdq$p_init)^2 + (model_opts$q - pdq$q_init)^2 +
+          (model_opts$P - PDQ$P_init)^2 + (model_opts$Q - PDQ$Q_init)^2,
+        model_opts$P, model_opts$Q, model_opts$p, model_opts$q
+      )[1L]
+    }
+    
     initial <- TRUE
 
     if(trace) {

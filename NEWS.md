@@ -1,5 +1,11 @@
 # fable (development version)
 
+## New features
+
+* Added `ARFIMA()` model.
+* Added `fracdiff()` and `fracdiffinv()` functions for fractional
+  differencing and integration.
+
 ## Improvements
 
 * `ETS()` now supports missing values.

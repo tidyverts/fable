@@ -53,6 +53,7 @@ Suggests:
     covr,
     feasts,
     forecast,
+    fracdiff,
     knitr,
     MTS,
     nnet,
