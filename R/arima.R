@@ -205,7 +205,6 @@ train_arima <- function(.data, specials,
             }
           }
         )
-
         if (isTRUE(min(minroot) < 1 + 1e-2)) { # Previously 1+1e-3
           new <- NULL
         } # Don't like this model

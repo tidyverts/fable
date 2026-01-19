@@ -7,7 +7,7 @@
 #' using [`fracdiff::fracdiff()`] and allows ARFIMA models to be used in the 
 #' fable framework.
 #'
-#' @aliases report.ARFIMA
+#' @aliases report.fbl_ARFIMA
 #'
 #' @param formula Model specification (see "Specials" section).
 #' @param ic The information criterion used in selecting the model.
@@ -325,12 +325,13 @@ train_arfima <- function(
   fit <- train_arima(.data, specials, ...)
   fit$spec$d <- d
   fit$spec$mu <- y_mu
-  class(fit) <- c("ARFIMA", class(fit))
+
+  class(fit) <- c("fbl_ARFIMA", class(fit))
   fit
 }
 
 #' @export
-model_sum.ARFIMA <- function(x) {
+model_sum.fbl_ARFIMA <- function(x) {
   sprintf(
     "ARFIMA(%i,%.2f,%i)%s",
     x$spec$p,
@@ -341,7 +342,7 @@ model_sum.ARFIMA <- function(x) {
 }
 
 #' @export
-fitted.ARFIMA <- function(object, ...) {
+fitted.fbl_ARFIMA <- function(object, ...) {
 
   # @RH: The {forecast} package does strange things with the fitted residuals
   #      (perhaps it doesn't fractionally integrate them?)
@@ -354,7 +355,7 @@ fitted.ARFIMA <- function(object, ...) {
 
 #' @importFrom stats frequency
 #' @export
-forecast.ARFIMA <- function(
+forecast.fbl_ARFIMA <- function(
   object,
   new_data = NULL,
   specials = NULL,
@@ -403,7 +404,7 @@ forecast.ARFIMA <- function(
 
 # A very simple generate method: simulate via forecast.fracdiff with simulate=TRUE or bootstrap.
 #' @export
-generate.ARFIMA <- function(
+generate.fbl_ARFIMA <- function(
   x,
   new_data,
   specials,
@@ -432,7 +433,7 @@ generate.ARFIMA <- function(
 }
 
 #' @export
-refit.ARFIMA <- function(
+refit.fbl_ARFIMA <- function(
   object,
   new_data,
   specials = NULL,
@@ -462,6 +463,6 @@ refit.ARFIMA <- function(
   # Class the results
   fit$spec$d <- object$spec$d
   fit$spec$mu <- object$spec$mu
-  class(fit) <- c("ARFIMA", class(fit))
+  class(fit) <- c("fbl_ARFIMA", class(fit))
   fit
 }

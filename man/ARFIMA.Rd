@@ -2,7 +2,7 @@
 % Please edit documentation in R/arfima.R
 \name{ARFIMA}
 \alias{ARFIMA}
-\alias{report.ARFIMA}
+\alias{report.fbl_ARFIMA}
 \title{Estimate an ARFIMA model}
 \usage{
 ARFIMA(
