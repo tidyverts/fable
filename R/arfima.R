@@ -308,8 +308,8 @@ train_arfima <- function(
   
   # Select ARFIMA hyperparameters p,q with auto.arima
   specials$pdq[[1L]]$d <- 0L
-  specials$PDQ <- list(list(period = 1L, P = 0L, D = 0L, Q = 0L)) # No seasonal part for ARFIMA
-  specials$xreg <- specials$xreg %||% list(list(constant = FALSE)) 
+  specials$PDQ <- list(specials_arima$PDQ(period = 1L, P = 0L, D = 0L, Q = 0L)) # No seasonal part for ARFIMA
+  specials$xreg <- specials$xreg %||% list(list(constant = FALSE))
   .data[[measured_vars(.data)]] <- yd
   fit <- train_arima(.data, specials, ...)
 
