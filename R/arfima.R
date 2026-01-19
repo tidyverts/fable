@@ -21,11 +21,16 @@
 #'
 #' An ARFIMA(p,d,q) model is defined as:
 #'
-#' \deqn{(1-\phi_1B - \cdots - \phi_p B^p)(1-B)^d y_t = (1 + \theta_1 B + \cdots + \theta_q B^q)\varepsilon_t}
+#' \deqn{(1-\phi_1B - \cdots - \phi_p B^p)(1-B)^d (y_t - \mu) = (1 + \theta_1 B + \cdots + \theta_q B^q)\varepsilon_t}
 #'
-#' where \eqn{d} can take fractional values (typically between -0.5 and 0.5), 
-#' allowing the model to capture long memory behavior. When \eqn{d} is an 
-#' integer, the model reduces to a standard ARIMA model.
+#' where \eqn{\mu} is the mean of the series, and \eqn{d} can take fractional 
+#' values (typically between -0.5 and 0.5), allowing the model to capture long 
+#' memory behavior. When \eqn{d} is an integer, the model reduces to a standard 
+#' ARIMA model.
+#' 
+#' **Note:** This uses a mean form parameterisation where the data is de-meaned 
+#' before fitting. This differs from [`ARIMA()`] which uses a constant form 
+#' parameterisation.
 #'
 #' The fractional differencing operator \eqn{(1-B)^d} is computed using the 
 #' fast algorithm of Jensen and Nielsen (2014), which is implemented in the 
