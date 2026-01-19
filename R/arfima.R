@@ -211,13 +211,16 @@ specials_arfima <- new_specials(
     xreg <- model.frame(model_formula, data = env, na.action = stats::na.pass)
     tm <- terms(xreg)
     constant <- as.logical(tm %@% "intercept")
+    if (constant) {
+      warn("ARFIMA uses mean form parameterisation, and so a constant term is not appropriate.\nThe constant will be removed from the model.")
+    }
     xreg <- model.matrix(tm, xreg)
     if (constant) {
       xreg <- xreg[, -1, drop = FALSE]
     }
 
     list(
-      constant = if (!constant || constant_forced) constant else c(TRUE, FALSE),
+      constant = FALSE,
       xreg = if (NCOL(xreg) == 0) NULL else xreg,
       fixed = fixed
     )
