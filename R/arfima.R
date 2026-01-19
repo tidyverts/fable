@@ -301,24 +301,21 @@ train_arfima <- function(
   # Fractionally difference the data
   yd <- fracdiff(y, d_init)
   
-  # Select ARFIMA hyperparameters c,p,q with auto.arima
+  # Select ARFIMA hyperparameters p,q with auto.arima
   specials$pdq[[1L]]$d <- 0L
   specials$PDQ <- list(list(period = 1L, P = 0L, D = 0L, Q = 0L)) # No seasonal part for ARFIMA
-  # Ensure xreg special exists - RH: maybe force no constant?
-  specials$xreg <- specials$xreg %||% list(list()) 
+  specials$xreg <- specials$xreg %||% list(list(constant = FALSE)) 
   .data[[measured_vars(.data)]] <- yd
   fit <- train_arima(.data, specials, ...)
 
-  # Refit ARFIMA with selected c,p,q
+  # Refit ARFIMA with selected p,q
   # TODO: handle xregs and constant before fracdiff::fracdiff?
-  # @RH: in {forecast} allowmean=TRUE for auto.arima search, but include.mean=FALSE is used later?
-  #      the data is de-meaned, but perhaps this is better handled elsewhere?
   p <- specials$pdq[[1L]]$p <- fit$spec$p
   q <- specials$pdq[[1L]]$q <- fit$spec$q
   c <- specials$xreg[[1L]]$constant <- fit$spec$constant
   fit <- fracdiff::fracdiff(
     y, nar = p, nma = q,
-    drange = specials$pdq[[1]]$d_range
+    drange = specials$pdq[[1L]]$d_range
   )
   d <- fit$d
 
