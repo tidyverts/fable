@@ -297,7 +297,7 @@ train_arfima <- function(
   
   # Initialise fractional differencing `d` with `ARFIMA(2, d, 0)` fit
   if (is.null(specials$pdq[[1]]$d)) {
-    d_init <- fracdiff::fracdiff(y, nar = 2, nma = 0)$d
+    d_init <- fracdiff::fracdiff(y, nar = 2, nma = 0, drange = specials$pdq[[1L]]$d_range)$d
   } else 
   {
     d_init <- specials$pdq[[1L]]$d
