@@ -60,7 +60,8 @@ Suggests:
     rmarkdown,
     spelling,
     testthat,
-    tsibbledata (>= 0.2.0)
+    tsibbledata (>= 0.2.0),
+    urca
 LinkingTo:
     Rcpp (>= 0.11.0)
 VignetteBuilder: 
