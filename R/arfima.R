@@ -331,7 +331,7 @@ train_arfima <- function(
     estimate = c(y_mu, fit$d),
     std.error = c(NA_real_, fit$stderror[[1L]]),
     statistic = c(NA_real_, dz <- fit$d/fit$stderror[[1L]]),
-    p.value = c(NA_real_, 2 * (1 - pnorm(abs(dz))))
+    p.value = c(NA_real_, 2 * (1 - stats::pnorm(abs(dz))))
   )
 
   # Refine ARIMA coefficients with MLE
@@ -439,8 +439,8 @@ generate.fbl_ARFIMA <- function(
   y_init <- y_init[seq_len((t_init - x$tsp$range[1])/t_chronon)]
 
   # Fractionally integrate simulated data
-  mu <- object$par$estimate[object$par$term == "mu"]
-  d <- object$par$estimate[object$par$term == "d"]
+  mu <- x$par$estimate[x$par$term == "mu"]
+  d <- x$par$estimate[x$par$term == "d"]
   transmute(
     group_by_key(.sim), 
     ".sim" := fracdiffinv(x = .data$.sim, d = d, xi = y_init) + mu

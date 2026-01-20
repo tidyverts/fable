@@ -723,7 +723,7 @@ initial_ets_states <- function(object) {
 #' @examples
 #' library(tsibbledata)
 #'
-#' olympic_running |>
+#' olympic_running %>%
 #'   model(mean = ETS(Time)) %>%
 #'   interpolate(olympic_running)
 #' @export

@@ -82,6 +82,11 @@ reference:
   contents:
     - THETA
     - ends_with("fable_theta")
+- title: ARFIMA
+  desc: >
+    AutoRegressive Fractionally Integrated Moving Average
+  contents:
+    - ends_with("ARFIMA")
 - title: Autoregression
   desc: >
     Autoregressive time series models
