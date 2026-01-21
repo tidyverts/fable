@@ -1,7 +1,5 @@
 is.constant <- function(x) {
-  x <- as.numeric(x)
-  y <- rep(x[1], length(x))
-  return(isTRUE(all.equal(x, y)))
+  isTRUE(all(x == x[1L]))
 }
 
 assignSpecials <- function(x, env = caller_env()) {

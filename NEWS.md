@@ -9,6 +9,7 @@
 ## Improvements
 
 * `ETS()` now supports missing values.
+* Improved `ARIMA()` with constant time series after differencing (#417).
 * Documentation improvements.
 
 ## Bug fixes

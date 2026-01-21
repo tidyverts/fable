@@ -97,8 +97,8 @@ train_arima <- function(.data, specials,
     if (!is.null(xreg)) {
       keep <- map_lgl(seas_D, function(.x) {
         if(.x*period >= nrow(xreg)) return(FALSE)
-        diff_xreg <- diff(xreg, lag = period, differences = .x)
-        !any(apply(diff_xreg, 2, is.constant))
+        dxreg <- diff(xreg, lag = period, differences = .x)
+        !any(apply(dxreg, 2, is.constant))
       })
       seas_D <- seas_D[keep]
     }
@@ -109,28 +109,32 @@ train_arima <- function(.data, specials,
     ))
     model_opts <- model_opts[model_opts$D == seas_D,]
   }
-  x <- diff(x, lag = period, differences = seas_D)
-  diff_xreg <- diff(xreg, lag = period, differences = seas_D)
+  dx <- diff(x, lag = period, differences = seas_D)
+  dxreg <- diff(xreg, lag = period, differences = seas_D)
+  
+  # Choose regular differencing
   if (length(seas_d <- unique(model_opts$d)) > 1) {
     require_package("feasts")
 
     # Valid xregs
     if (!is.null(xreg)) {
       keep <- map_lgl(seas_d, function(.x) {
-        if(.x >= nrow(diff_xreg)) return(FALSE)
-        diff_xreg <- diff(diff_xreg, differences = .x)
-        !any(apply(diff_xreg, 2, is.constant))
+        if(.x >= nrow(dxreg)) return(FALSE)
+        dxreg <- diff(dxreg, differences = .x)
+        !any(apply(dxreg, 2, is.constant))
       })
       seas_d <- seas_d[keep]
     }
 
-    seas_d <- unname(feasts::unitroot_ndiffs(stats::na.contiguous(x),
+    seas_d <- unname(feasts::unitroot_ndiffs(stats::na.contiguous(dx),
       alpha = unitroot_spec$ndiffs_alpha,
       unitroot_fn = unitroot_spec$ndiffs_pvalue,
       differences = seas_d
     ))
     model_opts <- model_opts[model_opts$d == seas_d,]
   }
+  dx <- diff(x, lag = period, differences = seas_d)
+  dxreg <- diff(xreg, differences = seas_d)
 
   # Check number of differences selected
   if (length(seas_D) != 1) cli::cli_abort("Could not find appropriate number of seasonal differences.")
@@ -257,7 +261,46 @@ This is generally discouraged, consider removing the constant or reducing the nu
   }
   constant <- unique(model_opts$constant)
 
-  if (stepwise) {
+  # If the differencing produces constant data, return simple models
+  if (is.constant(dx)) {
+    # Only consider models with no AR or MA terms
+    model_opts <- model_opts[model_opts$p == 0 & model_opts$q == 0 & model_opts$P == 0 & model_opts$Q == 0, ]
+
+    # Check if any models remain
+    if (NROW(model_opts) == 0) {
+      cli::cli_abort("No ARIMA models without AR or MA terms are available for constant differenced data.\n\nConsider including 0 orders for p, q, P and Q in the model specification.")
+    }
+
+    # Prevent later re-estimation
+    approximation <- FALSE
+
+    # Handle constant differenced data
+    if (is.null(xreg)) {
+      has_constant <- (seas_D > 0 && seas_d == 0) || seas_d < 2
+      fixed <- if (has_constant) mean(dx / if (seas_D > 0 && seas_d == 0) period else 1, na.rm = TRUE) else NULL
+      
+      if (seas_d >= 2 && seas_D == 0) {
+        cli::cli_abort("Data follows a simple polynomial and is unsuitable for ARIMA modelling.")
+      }
+      
+      est_ic <- compare_arima(
+        0, seas_d, 0,
+        0, seas_D, 0, 
+        constant = has_constant
+      )
+    } else {
+      # Perfect regression
+      has_constant <- FALSE
+      est_ic <- compare_arima(
+        0, seas_d, 0,
+        0, seas_D, 0, 
+        constant = FALSE
+      )
+    }
+
+    model_opts <- model_opts[model_opts$constant == has_constant, ]
+  }
+  else if (stepwise) {
     # Prepare model comparison vector
     est_ic <- rep(NA_integer_, NROW(model_opts))
     best_ic <- Inf
