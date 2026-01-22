@@ -372,17 +372,28 @@ This is generally discouraged, consider removing the constant or reducing the nu
       cat("\n--- Re-estimating best models without approximation ---\n\n")
     }
     
+    approx_best <- best
+    approx_spec <- which.min(est_ic)
+
     method <- "CSS-ML"
     best <- NULL
     sm_best <- Inf
     step_order <- order(est_ic)[seq_len(sum(!is.na(est_ic)))]
     est_ic <- rep_len(Inf, length(est_ic)) # Ignore all approximate models until re-estimated
-    for (mod_spec in step_order)
-    {
-      est_ic[mod_spec] <- do.call(compare_arima, model_opts[mod_spec, ])
-      if (isTRUE(is.finite(est_ic[mod_spec]))) {
+    for (i in step_order) {
+      est_ic[i] <- do.call(compare_arima, model_opts[i, ])
+      if (has_mle_fit <-isTRUE(is.finite(est_ic[i]))) {
+        mod_spec <- i
         break
       }
+    }
+
+    if(!has_mle_fit) {
+      if(trace) {
+        cat("\n--- Re-estimating best models without approximation failed, returning CSS fits ---\n\n")
+      }
+      best <- approx_best
+      mod_spec <- approx_spec
     }
   } else {
     mod_spec <- which.min(est_ic)
@@ -409,14 +420,14 @@ This is generally discouraged, consider removing the constant or reducing the nu
   if (is_empty(fit_se)) {
     fit_se <- NULL
   }
-  else if (model_opts[which.min(est_ic), "constant"] && is.null(xreg)) {
+  else if (model_opts[mod_spec, "constant"] && is.null(xreg)) {
     fit_coef["constant"] <- fit_coef["constant"] * (1 - sum(best$model$phi))
     fit_se["constant"] <- fit_se["constant"] * (1 - sum(best$model$phi))
   }
 
   # Compute regression residuals
   reg_resid <- as.numeric(y)
-  if (model_opts[which.min(est_ic), "constant"]) {
+  if (model_opts[mod_spec, "constant"]) {
     xreg <- cbind(xreg, constant = arima_constant(length(y), seas_d, seas_D, period))
   }
   if (!is.null(xreg)) {

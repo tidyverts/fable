@@ -18,6 +18,8 @@
 * More robust calculations of `ARIMA()` AR and MA roots (#417).
 * Fixed `refit()` method for `ETS()` models applying transformations twice (#407).
 * Fixed recycling warning in `generate()` method for `SNAIVE()` models (#436).
+* Fixed automatic `ARIMA()` with `approximation = TRUE` storing incorrect model 
+  specifications when secondary MLE model estimates are all rejected (#412).
 
 # fable 0.4.1
 
