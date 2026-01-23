@@ -275,7 +275,7 @@ specials_ets <- new_specials(
 #'
 #' Hyndman, R.J., Koehler, A.B., Ord, J.K., and Snyder, R.D. (2008)
 #' \emph{Forecasting with exponential smoothing: the state space approach},
-#' Springer-Verlag. \url{http://www.exponentialsmoothing.net}.
+#' Springer-Verlag. \url{https://robjhyndman.com/expsmooth/}.
 #'
 #' @export
 ETS <- function(formula, opt_crit = c("lik", "amse", "mse", "sigma", "mae"),

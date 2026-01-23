@@ -81,5 +81,5 @@ aus_retail %>%
 - Common questions about the fable package are often found on [Stack
   Overflow](https://stackoverflow.com/tags/fable+r). You can use this to
   ask for help if the question isn’t already answered. A [minimally
-  reproducible example](https://www.tidyverse.org/help/) that describes
+  reproducible example](https://tidyverse.org/help/) that describes
   your issue is the best way to ask for help!
