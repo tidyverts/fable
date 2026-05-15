@@ -72,7 +72,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">VARIMA</span><span class="op">(</span><span class="va">formula</span>, identification <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">VARIMA</span><span class="op">(</span><span class="va">formula</span>, ic <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"aic"</span>, <span class="st">"bic"</span><span class="op">)</span>, identification <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for class 'VARIMA'</span></span>
 <span><span class="fu"><a href="https://generics.r-lib.org/reference/forecast.html" class="external-link">forecast</a></span><span class="op">(</span></span>
@@ -114,8 +114,12 @@
 <dd><p>Model specification (see "Specials" section).</p></dd>
 
 
+<dt id="arg-ic">ic<a class="anchor" aria-label="anchor" href="#arg-ic"></a></dt>
+<dd><p>The information criterion used in selecting the model. Either <code>"aic"</code> or <code>"bic"</code>.</p></dd>
+
+
 <dt id="arg-identification">identification<a class="anchor" aria-label="anchor" href="#arg-identification"></a></dt>
-<dd><p>The identification technique used to estimate the model. Possible options include NULL (automatic selection), "kronecker_indices" (Kronecker index identification), and "scalar_components" (scalar component identification). More details can be found in the "Identification" section below.</p></dd>
+<dd><p>The identification technique used to estimate the model. Possible options include NULL (automatic selection), "kronecker_indices" (Kronecker index identification), "scalar_components" (scalar component identification), and "ic_search" (information criterion search over candidate orders). More details can be found in the "Identification" section below.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -131,7 +135,7 @@
 
 
 <dt id="arg-specials">specials<a class="anchor" aria-label="anchor" href="#arg-specials"></a></dt>
-<dd><p>(passed by <code><a href="https://generics.r-lib.org/reference/forecast.html" class="external-link">fabletools::forecast.mdl_df()</a></code>).</p></dd>
+<dd><p>(passed by <code><a href="https://fabletools.tidyverts.org/reference/forecast.html" class="external-link">fabletools::forecast.mdl_df()</a></code>).</p></dd>
 
 
 <dt id="arg-bootstrap">bootstrap<a class="anchor" aria-label="anchor" href="#arg-bootstrap"></a></dt>
@@ -215,6 +219,13 @@ VARIMA model. This is particularly useful for identifying models with many
 variables, however it assumes good separability of the components.</p>
 </div>
 <div class="section">
+<h3 id="information-criterion-search-ic-search-">Information criterion search (<code>"ic_search"</code>)<a class="anchor" aria-label="anchor" href="#information-criterion-search-ic-search-"></a></h3>
+<p>Fits a VARMA model for each combination of candidate <code>p</code> and <code>q</code> orders and
+selects the one that minimises the information criterion specified by <code>ic</code>
+(<code>"aic"</code> or <code>"bic"</code>). When at least one of <code>p</code> or <code>q</code> is provided as a
+vector of values and the other is fixed, this method is used by default.</p>
+</div>
+<div class="section">
 <h3 id="no-identification-none-">No identification (<code>"none"</code>)<a class="anchor" aria-label="anchor" href="#no-identification-none-"></a></h3>
 <p>Directly estimates the model as specified by <code>p</code>, <code>d</code>, and <code>q</code>. This allows
 all coefficients up to lag <code>p</code> and <code>q</code> (for the AR and MA components) to be
@@ -282,105 +293,105 @@ Athanasopoulos et al (2012).</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identificati… 1956 Q3   <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identificati… 1956 Q4   <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identificati… 1957 Q1   <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identificati… 1957 Q2  219.   585.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identificati… 1957 Q3  230.   635.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identificati… 1957 Q4  302.   648.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identificati… 1958 Q1  247.   560.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identificati… 1958 Q2  206.   628.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identificati… 1957 Q2  218.   588.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identificati… 1957 Q3  228.   636.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identificati… 1957 Q4  300.   648.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identificati… 1958 Q1  245.   561.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identificati… 1958 Q2  203.   627.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 208 more rows</span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/residuals.html" class="external-link">residuals</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tsibble: 218 x 4 [1Q]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Key:       .model [1]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    .model                                                   Quarter  Beer Cement</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                                      <span style="color: #949494; font-style: italic;">&lt;qtr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identificati… 1956 Q1 <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identificati… 1956 Q2 <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identificati… 1956 Q3 <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identificati… 1956 Q4 <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identificati… 1957 Q1 <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identificati… 1957 Q2  9.21  18.6 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identificati… 1957 Q3 -<span style="color: #BB0000;">2.78</span> -<span style="color: #BB0000;">50.6</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identificati… 1957 Q4 11.4  -<span style="color: #BB0000;">34.1</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identificati… 1958 Q1  7.39  59.8 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identificati… 1958 Q2  1.67  -<span style="color: #BB0000;">1.43</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    .model                                                 Quarter  Beer   Cement</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                                    <span style="color: #949494; font-style: italic;">&lt;qtr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identifica… 1956 Q1 <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identifica… 1956 Q2 <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identifica… 1956 Q3 <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identifica… 1956 Q4 <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identifica… 1957 Q1 <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span>     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identifica… 1957 Q2  9.99  16.4   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identifica… 1957 Q3 -<span style="color: #BB0000;">2.33</span> -<span style="color: #BB0000;">49.2</span>   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identifica… 1957 Q4 11.9  -<span style="color: #BB0000;">33.0</span>   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identifica… 1958 Q1  7.82  59.1   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identifica… 1958 Q2  2.58  -<span style="color: #BB0000;">0.074</span><span style="color: #BB0000; text-decoration: underline;">4</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 208 more rows</span></span>
 <span class="r-in"><span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 22 × 4</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    .model                                               term  .response estimate</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                                <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identifi… cons… Beer        1.52  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identifi… lag(… Beer       -<span style="color: #BB0000;">0.691</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identifi… cons… Beer        0.942 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identifi… lag(… Beer       -<span style="color: #BB0000;">0.683</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identifi… lag(… Beer       -<span style="color: #BB0000;">0.695</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identifi… lag(… Beer        0.068<span style="text-decoration: underline;">0</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identifi… lag(… Beer        0.011<span style="text-decoration: underline;">5</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identifi… lag(… Beer        0.069<span style="text-decoration: underline;">2</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identifi… lag(… Beer        0.012<span style="text-decoration: underline;">6</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identifi… lag(… Beer       -<span style="color: #BB0000;">0.695</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identifi… lag(… Beer       -<span style="color: #BB0000;">0.587</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identifi… lag(… Beer        0.011<span style="text-decoration: underline;">5</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identifi… lag(… Beer        0.022<span style="text-decoration: underline;">6</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identifi… lag(… Beer        0.229 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identifi… lag(… Beer       -<span style="color: #BB0000;">0.583</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identifi… lag(… Beer        0.012<span style="text-decoration: underline;">6</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identifi… lag(… Beer        0.026<span style="text-decoration: underline;">0</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identifi… lag(… Beer        0.228 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 12 more rows</span></span>
 <span class="r-in"><span><span class="fu"><a href="https://generics.r-lib.org/reference/glance.html" class="external-link">glance</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 5</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .model                                  sigma2   kronecker_indices   AIC   BIC</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                   <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1,… <span style="color: #949494;">&lt;dbl[…]&gt;</span> <span style="color: #949494;">&lt;NULL&gt;</span>             14.9  15.3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1,… <span style="color: #949494;">&lt;dbl[…]&gt;</span> <span style="color: #949494;">&lt;NULL&gt;</span>             14.9  15.2</span>
 <span class="r-in"><span><span class="fu"><a href="https://fabletools.tidyverts.org/reference/report.html" class="external-link">report</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Series: Beer, Cement </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Model: VARIMA(4,1,1) w/ mean </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients for Beer:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       constant  lag(Beer,1)  lag(Beer,2)  lag(Beer,3)  lag(Beer,4)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Est.    1.5244      -0.6909      -0.6952        0.068       0.0115</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Est.    0.9423       -0.683      -0.6952       0.0692       0.0126</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       lag(Cement,1)  lag(Cement,2)  lag(Cement,3)  lag(Cement,4)  lag(e_Beer,1)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Est.        -0.6952        -0.5871         0.0115         0.0226         0.2292</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Est.        -0.6952        -0.5829         0.0126          0.026         0.2284</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       lag(e_Cement,1)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Est.           0.0303</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients for Cement:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       constant  lag(Beer,1)  lag(Beer,2)  lag(Beer,3)  lag(Beer,4)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Est.   12.6086      -2.2234      -1.4072       -0.081       0.0167</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Est.    12.657      -3.0558      -2.1528      -0.0438       0.0736</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       lag(Cement,1)  lag(Cement,2)  lag(Cement,3)  lag(Cement,4)  lag(e_Beer,1)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Est.        -1.4072        -1.1781         0.0167         0.3648        -1.4522</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Est.        -2.1528        -2.0061         0.0736         0.3985        -2.2553</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       lag(e_Cement,1)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Est.           0.0908</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Est.           0.1631</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Residual covariance matrix:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            Beer    Cement</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Beer   318.8684  102.6671</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Cement 102.6671 7699.1712</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Beer   319.3980  109.8173</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Cement 109.8173 7629.8398</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> AIC = 14.91	BIC = 15.25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> AIC = 14.9	BIC = 15.25</span>
 <span class="r-in"><span><span class="fu"><a href="https://generics.r-lib.org/reference/generate.html" class="external-link">generate</a></span><span class="op">(</span><span class="va">fit</span>, h <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tsibble: 10 x 6 [1Q]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Key:       .model, .rep [1]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    .model                             .rep  Quarter .innov[,"Beer"]  Beer Cement</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;qtr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(… 1     2010 Q3        -<span style="color: #BB0000;">24.2</span>     389.  <span style="text-decoration: underline;">2</span>528.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(… 1     2010 Q4         -<span style="color: #BB0000;">0.020</span><span style="color: #BB0000; text-decoration: underline;">0</span>  503.  <span style="text-decoration: underline;">2</span>430.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(… 1     2011 Q1          8.00    432.  <span style="text-decoration: underline;">2</span>191.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(… 1     2011 Q2        -<span style="color: #BB0000;">15.3</span>     365.  <span style="text-decoration: underline;">2</span>443.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(… 1     2011 Q3        -<span style="color: #BB0000;">22.0</span>     377.  <span style="text-decoration: underline;">2</span>468.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(… 1     2011 Q4         25.2     530.  <span style="text-decoration: underline;">2</span>355.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(… 1     2012 Q1          4.70    436.  <span style="text-decoration: underline;">2</span>106.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(… 1     2012 Q2         -<span style="color: #BB0000;">9.36</span>    353.  <span style="text-decoration: underline;">2</span>469.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(… 1     2012 Q3          1.27    385.  <span style="text-decoration: underline;">2</span>387.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(… 1     2012 Q4         -<span style="color: #BB0000;">0.390</span>   533.  <span style="text-decoration: underline;">2</span>344.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(… 1     2010 Q3        -<span style="color: #BB0000;">24.1</span>     389.  <span style="text-decoration: underline;">2</span>535.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(… 1     2010 Q4         -<span style="color: #BB0000;">0.025</span><span style="color: #BB0000; text-decoration: underline;">5</span>  502.  <span style="text-decoration: underline;">2</span>440.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(… 1     2011 Q1          8.01    432.  <span style="text-decoration: underline;">2</span>198.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(… 1     2011 Q2        -<span style="color: #BB0000;">15.3</span>     365.  <span style="text-decoration: underline;">2</span>452.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(… 1     2011 Q3        -<span style="color: #BB0000;">22.1</span>     376.  <span style="text-decoration: underline;">2</span>481.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(… 1     2011 Q4         25.1     529.  <span style="text-decoration: underline;">2</span>365.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(… 1     2012 Q1          4.67    436.  <span style="text-decoration: underline;">2</span>113.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(… 1     2012 Q2         -<span style="color: #BB0000;">9.27</span>    352.  <span style="text-decoration: underline;">2</span>476.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(… 1     2012 Q3          1.17    383.  <span style="text-decoration: underline;">2</span>398.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(… 1     2012 Q4         -<span style="color: #BB0000;">0.405</span>   531.  <span style="text-decoration: underline;">2</span>353.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 1 more variable: .innov[2] &lt;dbl&gt;</span></span>
 <span class="r-in"><span><span class="fu"><a href="https://fabletools.tidyverts.org/reference/IRF.html" class="external-link">IRF</a></span><span class="op">(</span><span class="va">fit</span>, h <span class="op">=</span> <span class="fl">10</span>, impulse <span class="op">=</span> <span class="st">"Beer"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tsibble: 10 x 4 [1Q]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Key:       .model [1]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    .model                                               Quarter     Beer  Cement</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                                  <span style="color: #949494; font-style: italic;">&lt;qtr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identifi… 2010 Q3  1        0     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identifi… 2010 Q4  0.079<span style="text-decoration: underline;">9</span>  -<span style="color: #BB0000;">0.771</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identifi… 2011 Q1 -<span style="color: #BB0000;">0.008</span><span style="color: #BB0000; text-decoration: underline;">00</span>  0.069<span style="text-decoration: underline;">5</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identifi… 2011 Q2  0.083<span style="text-decoration: underline;">8</span>   0.224 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identifi… 2011 Q3  0.910    0.105 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identifi… 2011 Q4  0.109   -<span style="color: #BB0000;">1.09</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identifi… 2012 Q1 -<span style="color: #BB0000;">0.017</span><span style="color: #BB0000; text-decoration: underline;">6</span>   0.142 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identifi… 2012 Q2  0.130    0.315 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identifi… 2012 Q3  0.854    0.074<span style="text-decoration: underline;">4</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identifi… 2012 Q4  0.128   -<span style="color: #BB0000;">1.16</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    .model                                                Quarter    Beer  Cement</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                                   <span style="color: #949494; font-style: italic;">&lt;qtr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identific… 2010 Q3  1       0     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identific… 2010 Q4  0.088<span style="text-decoration: underline;">7</span> -<span style="color: #BB0000;">0.801</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identific… 2011 Q1 -<span style="color: #BB0000;">0.014</span><span style="color: #BB0000; text-decoration: underline;">1</span> -<span style="color: #BB0000;">0.017</span><span style="color: #BB0000; text-decoration: underline;">2</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identific… 2011 Q2  0.080<span style="text-decoration: underline;">7</span>  0.140 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identific… 2011 Q3  0.907   0.023<span style="text-decoration: underline;">8</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identific… 2011 Q4  0.115  -<span style="color: #BB0000;">1.15</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identific… 2012 Q1 -<span style="color: #BB0000;">0.027</span><span style="color: #BB0000; text-decoration: underline;">9</span>  0.033<span style="text-decoration: underline;">5</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identific… 2012 Q2  0.127   0.233 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identific… 2012 Q3  0.851  -<span style="color: #BB0000;">0.014</span><span style="color: #BB0000; text-decoration: underline;">0</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> <span style="color: #949494;">"</span>VARIMA(vars(Beer, Cement) ~ pdq(4, 1, 1), identific… 2012 Q4  0.132  -<span style="color: #BB0000;">1.23</span>  </span>
 </code></pre></div>
     </div>
   </div>
