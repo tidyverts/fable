@@ -11,7 +11,7 @@
 
 \item{new_data}{A tsibble containing the time points and exogenous regressors to produce forecasts for.}
 
-\item{specials}{(passed by \code{\link[fabletools:forecast]{fabletools::forecast.mdl_df()}}).}
+\item{specials}{(passed by \code{\link[fabletools:forecast.mdl_df]{fabletools::forecast.mdl_df()}}).}
 
 \item{reestimate}{If \code{TRUE}, the networks will be initialized with random
 starting weights to suit the new data. If \code{FALSE}, for every network the best

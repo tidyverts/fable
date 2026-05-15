@@ -117,7 +117,7 @@ specials_varima <- new_specials(
 #'
 #' @param formula Model specification (see "Specials" section).
 #' @param ic The information criterion used in selecting the model. Either `"aic"` or `"bic"`.
-#' @param identification The identification technique used to estimate the model. Possible options include NULL (automatic selection), "kronecker_indices" (Kronecker index identification), and "scalar_components" (scalar component identification). More details can be found in the "Identification" section below.
+#' @param identification The identification technique used to estimate the model. Possible options include NULL (automatic selection), "kronecker_indices" (Kronecker index identification), "scalar_components" (scalar component identification), and "ic_search" (information criterion search over candidate orders). More details can be found in the "Identification" section below.
 #' @param ... Further arguments for arima
 #' 
 #' @return A model specification.
@@ -174,6 +174,12 @@ specials_varima <- new_specials(
 #' ARIMA processes reducing the complexity and dimensionality of the full
 #' VARIMA model. This is particularly useful for identifying models with many
 #' variables, however it assumes good separability of the components.
+#' }
+#' \subsection{Information criterion search (`"ic_search"`)}{
+#' Fits a VARMA model for each combination of candidate `p` and `q` orders and
+#' selects the one that minimises the information criterion specified by `ic`
+#' (`"aic"` or `"bic"`). When at least one of `p` or `q` is provided as a
+#' vector of values and the other is fixed, this method is used by default.
 #' }
 #' \subsection{No identification (`"none"`)}{
 #' Directly estimates the model as specified by `p`, `d`, and `q`. This allows

@@ -12,7 +12,7 @@
 \alias{IRF.VARIMA}
 \title{Estimate a VARIMA model}
 \usage{
-VARIMA(formula, identification = NULL, ...)
+VARIMA(formula, ic = c("aic", "bic"), identification = NULL, ...)
 
 \method{forecast}{VARIMA}(
   object,
@@ -40,7 +40,9 @@ VARIMA(formula, identification = NULL, ...)
 \arguments{
 \item{formula}{Model specification (see "Specials" section).}
 
-\item{identification}{The identification technique used to estimate the model. Possible options include NULL (automatic selection), "kronecker_indices" (Kronecker index identification), and "scalar_components" (scalar component identification). More details can be found in the "Identification" section below.}
+\item{ic}{The information criterion used in selecting the model. Either \code{"aic"} or \code{"bic"}.}
+
+\item{identification}{The identification technique used to estimate the model. Possible options include NULL (automatic selection), "kronecker_indices" (Kronecker index identification), "scalar_components" (scalar component identification), and "ic_search" (information criterion search over candidate orders). More details can be found in the "Identification" section below.}
 
 \item{...}{Further arguments for arima}
 
@@ -48,7 +50,7 @@ VARIMA(formula, identification = NULL, ...)
 
 \item{new_data}{A tsibble containing the time points and exogenous regressors to produce forecasts for.}
 
-\item{specials}{(passed by \code{\link[fabletools:forecast]{fabletools::forecast.mdl_df()}}).}
+\item{specials}{(passed by \code{\link[fabletools:forecast.mdl_df]{fabletools::forecast.mdl_df()}}).}
 
 \item{bootstrap}{If \code{TRUE}, then forecast distributions are computed using simulation with resampled errors.}
 
@@ -127,6 +129,12 @@ with minimal lag orders. These combinations are then modeled as simpler
 ARIMA processes reducing the complexity and dimensionality of the full
 VARIMA model. This is particularly useful for identifying models with many
 variables, however it assumes good separability of the components.
+}
+\subsection{Information criterion search (\code{"ic_search"})}{
+Fits a VARMA model for each combination of candidate \code{p} and \code{q} orders and
+selects the one that minimises the information criterion specified by \code{ic}
+(\code{"aic"} or \code{"bic"}). When at least one of \code{p} or \code{q} is provided as a
+vector of values and the other is fixed, this method is used by default.
 }
 \subsection{No identification (\code{"none"})}{
 Directly estimates the model as specified by \code{p}, \code{d}, and \code{q}. This allows

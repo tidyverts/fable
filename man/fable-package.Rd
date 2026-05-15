@@ -24,6 +24,7 @@ Useful links:
 
 Authors:
 \itemize{
+  \item Mitchell O'Hara-Wild \email{mail@mitchelloharawild.com}
   \item Rob Hyndman
   \item Earo Wang
 }

@@ -19,7 +19,7 @@
 
 \item{new_data}{A tsibble containing the time points and exogenous regressors to produce forecasts for.}
 
-\item{specials}{(passed by \code{\link[fabletools:forecast]{fabletools::forecast.mdl_df()}}).}
+\item{specials}{(passed by \code{\link[fabletools:forecast.mdl_df]{fabletools::forecast.mdl_df()}}).}
 
 \item{simulate}{If \code{TRUE}, prediction intervals are produced by simulation rather than using analytic formulae.}
 

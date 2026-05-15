@@ -23,7 +23,7 @@ A vector of data to test is available as \code{.} or \code{.x}.}
 A list of parameters
 }
 \description{
-By default, a kpss test (via \code{\link[feasts:unitroot]{feasts::unitroot_kpss()}}) will be performed
+By default, a kpss test (via \code{\link[feasts:unitroot_kpss]{feasts::unitroot_kpss()}}) will be performed
 for testing the required first order differences, and a test of the seasonal
 strength (via \code{\link[feasts:feat_stl]{feasts::feat_stl()}} seasonal_strength) being above the 0.64
 threshold is used for determining seasonal required differences.
