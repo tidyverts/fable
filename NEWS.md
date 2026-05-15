@@ -1,5 +1,12 @@
 # fable (development version)
 
+## Improvements
+
+* `VARIMA()` now supports model selection by minimising the specified 
+  information criterion (`ic`) when `p` or `q` are not uniquely specified. This
+  identification method can be directly used with 
+  `identification = "ic_search"` (#446).
+
 # fable 0.5.0
 
 ## New features

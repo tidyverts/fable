@@ -1,4 +1,4 @@
-train_varima <- function(.data, specials, identification = NULL, ...) {
+train_varima <- function(.data, specials, identification = NULL, ic = "aic", ...) {
   # Get response variables
   y <- invoke(cbind, lapply(unclass(.data)[measured_vars(.data)], as.double))
   
@@ -13,8 +13,10 @@ train_varima <- function(.data, specials, identification = NULL, ...) {
   yd <- if(d > 0) diff(y, differences = d) else y
   
   if (is.null(identification)) {
-    identification <- if ((length(p) != 1) || (length(q) != 1)) {
+    identification <- if ((length(p) != 1) && (length(q) != 1)) {
       "kronecker_indices"
+    } else if (length(p) != 1 || length(q) != 1) {
+      "ic_search"
     } else {
       "none"
     }
@@ -37,6 +39,30 @@ train_varima <- function(.data, specials, identification = NULL, ...) {
           include.mean = "(Intercept)" %in% colnames(specials$xreg[[1]])
         )
       )
+    } else if (identification == "ic_search") {
+      # One of p or q is fixed; search over the free parameter using ic
+      include.mean <- "(Intercept)" %in% colnames(specials$xreg[[1]])
+      candidates <- expand.grid(p = p, q = q)
+      best_fit <- NULL
+      best_ic <- Inf
+      for (i in seq_len(nrow(candidates))) {
+        tryCatch({
+          cfit <- MTS::VARMA(
+            yd,
+            p = candidates$p[i], q = candidates$q[i],
+            include.mean = include.mean
+          )
+          crit <- cfit[[ic]]
+          if (crit < best_ic) {
+            best_ic <- crit
+            best_fit <- cfit
+          }
+        }, error = function(e) NULL)
+      }
+      if (is.null(best_fit)) {
+        cli::cli_abort("VARIMA model selection failed for all candidate orders.")
+      }
+      best_fit
     } else {
       if(length(p) != 1 || length(q) != 1) {
         cli::cli_abort("Model selection is not yet supported, please specify `p` and `q` exactly.")
@@ -90,6 +116,7 @@ specials_varima <- new_specials(
 #' @aliases report.VARIMA
 #'
 #' @param formula Model specification (see "Specials" section).
+#' @param ic The information criterion used in selecting the model. Either `"aic"` or `"bic"`.
 #' @param identification The identification technique used to estimate the model. Possible options include NULL (automatic selection), "kronecker_indices" (Kronecker index identification), and "scalar_components" (scalar component identification). More details can be found in the "Identification" section below.
 #' @param ... Further arguments for arima
 #' 
@@ -197,15 +224,15 @@ specials_varima <- new_specials(
 #' generate(fit, h = 10)
 #' IRF(fit, h = 10, impulse = "Beer")
 #' @export
-VARIMA <- function(formula, identification = NULL, ...) {
-  # ic <- switch(ic, aicc = "AICc", aic = "AIC", bic = "BIC")
+VARIMA <- function(formula, ic = c("aic", "bic"), identification = NULL, ...) {
+  ic <- match.arg(ic)
   varima_model <- new_model_class("VARIMA",
                                  train = train_varima,
                                  specials = specials_varima,
                                  origin = NULL,
                                  check = all_tsbl_checks
   )
-  new_model_definition(varima_model, !!enquo(formula), identification, ...)
+  new_model_definition(varima_model, !!enquo(formula), ic = ic, identification = identification, ...)
 }
 
 varima_order <- function(x) {
