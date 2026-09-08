@@ -397,7 +397,7 @@ initstate <- function(y, m, trendtype, seasontype) {
   }
   maxn <- max(maxn, which(navail >= min.needed)[1L])
 
-  y0 <- stats::head(y.sa, maxn)
+  y0 <- utils::head(y.sa, maxn)
   ok <- !is.na(y0)
   if (trendtype == "N") {
     l0 <- mean(y0[ok])
