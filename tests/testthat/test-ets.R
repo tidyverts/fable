@@ -171,7 +171,9 @@ test_that("Automatic ETS selection bug (#425)", {
 test_that("ETS with missing values", {
   UK_missing <- UKLungDeaths
   UK_missing[["mdeaths"]][3:5] <- NA
-  expect_no_error(UK_missing |> model(ETS(mdeaths)))
+  fit_missing <- expect_no_error(UK_missing |> model(ETS(mdeaths)))
+  # A seasonal model should still be selected despite the missing values
+  expect_true(fit_missing[[1]][[1]]$fit$spec$seasontype != "N")
 
   USAccDeaths_miss <- USAccDeaths_tbl
   USAccDeaths_miss$value[c(10, 14, 15)] <- NA

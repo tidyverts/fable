@@ -338,20 +338,31 @@ initstate <- function(y, m, trendtype, seasontype) {
   if (seasontype != "N") {
     # Do decomposition
     n <- length(y)
-    if (n < 4) {
+    n_avail <- sum(!is.na(y))
+    if (n_avail < 4) {
       cli::cli_abort("You've got to be joking (not enough data).")
-    } else if (n < 3 * m) # Fit simple Fourier model.
-      {
-        fouriery <- as.matrix(fourier(seq_along(y), m, 1))
-        trendy <- seq_along(y)
-        fit <- stats::lm(y ~ trendy + fouriery)
-        if (seasontype == "A") {
-          y.d <- list(seasonal = y - fit$coef[1] - fit$coef[2] * (1:n))
-        } else { # seasontype=="M". Biased method, but we only need a starting point
-          y.d <- list(seasonal = y / (fit$coef[1] + fit$coef[2] * (1:n)))
-        }
+    } else if (n < 3 * m || anyNA(y)) {
+      # Fit simple Fourier model. 
+      fouriery <- as.matrix(fourier(seq_along(y), m, 1))
+      trendy <- seq_along(y)
+      fit <- stats::lm(y ~ trendy + fouriery)
+      if (anyNA(fit$coefficients)) {
+        cli::cli_abort("Not enough non-missing observations to estimate initial states.")
       }
-    else { # n is large enough to do a decomposition
+      trend_line <- fit$coef[1] + fit$coef[2] * trendy
+      # Fitted seasonal component (defined everywhere, unlike y - trend_line
+      # which is NA wherever y is missing).
+      fitted_seasonal <- as.numeric(fouriery %*% fit$coef[-(1:2)])
+      if (seasontype == "A") {
+        seasonal <- y - trend_line
+        seasonal[is.na(y)] <- fitted_seasonal[is.na(y)]
+      } else { # seasontype=="M". Biased method, but we only need a starting point
+        seasonal <- y / trend_line
+        seasonal[is.na(y)] <- 1 + fitted_seasonal[is.na(y)] / trend_line[is.na(y)]
+      }
+      y.d <- list(seasonal = seasonal)
+    }
+    else { # n is large enough to do a decomposition, with no missing values
       y.d <- stats::decompose(stats::ts(y, frequency = m), type = switch(seasontype, A = "additive", M = "multiplicative"))
     }
 
@@ -376,13 +387,26 @@ initstate <- function(y, m, trendtype, seasontype) {
   }
 
   maxn <- min(max(10, 2 * m), length(y.sa))
+  # A leading run of missing values can leave too few usable observations
+  # in the initial window; widen it (up to the full series) until there
+  # are enough, rather than erroring out on an arbitrary cutoff.
+  min.needed <- if (trendtype == "N") 1L else 2L
+  navail <- cumsum(!is.na(y.sa))
+  if (navail[length(navail)] < min.needed) {
+    stop("Not enough non-missing observations to initialize the model.")
+  }
+  maxn <- max(maxn, which(navail >= min.needed)[1L])
+
+  y0 <- utils::head(y.sa, maxn)
+  ok <- !is.na(y0)
   if (trendtype == "N") {
-    l0 <- mean(y.sa[1:maxn])
+    l0 <- mean(y0[ok])
     b0 <- NULL
   }
-  else # Simple linear regression on seasonally adjusted data
+  else # Simple linear regression on seasonally adjusted data,
+    # ignoring any missing values
   {
-    fit <- stats::lsfit(1:maxn, y.sa[1:maxn])
+    fit <- stats::lsfit(seq_len(maxn)[ok], y0[ok])
     if (trendtype == "A") {
       l0 <- fit$coef[1]
       b0 <- fit$coef[2]
@@ -404,11 +428,11 @@ initstate <- function(y, m, trendtype, seasontype) {
       if (abs(b0) > 1e10) { # Avoid infinite slopes
         b0 <- sign(b0) * 1e10
       }
-      if (l0 < 1e-8 || b0 < 1e-8) # Simple linear approximation didn't work.
-        {
-          l0 <- max(y.sa[1], 1e-3)
-          b0 <- max(y.sa[2] / y.sa[1], 1e-3)
-        }
+      if (l0 < 1e-8 || b0 < 1e-8) { # Simple linear approximation didn't work.
+        y.ok <- y0[ok]
+        l0 <- max(y.ok[1], 1e-3)
+        b0 <- max(y.ok[2] / y.ok[1], 1e-3)
+      }
     }
   }
 
