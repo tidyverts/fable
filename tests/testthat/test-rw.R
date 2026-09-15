@@ -122,6 +122,67 @@ test_that("RW short", {
   )
 })
 
+test_that("stream.RW", {
+  library(tsibble)
+  lung_deaths_male <- as_tsibble(mdeaths)
+
+  train <- lung_deaths_male %>% filter(index < yearmonth("1979 Jan"))
+  new_obs <- lung_deaths_male %>% filter(index >= yearmonth("1979 Jan"))
+
+  # SNAIVE: streaming should exactly match a fixed-coefficient refit
+  fit_sn <- train %>% model(snaive = SNAIVE(value))
+  streamed_sn <- fit_sn %>% stream(new_obs)
+  refit_sn <- fit_sn %>% refit(lung_deaths_male, reestimate = FALSE)
+
+  expect_equal(
+    fitted(streamed_sn)[[".fitted"]],
+    fitted(refit_sn)[[".fitted"]]
+  )
+  expect_equal(
+    residuals(streamed_sn)[[".resid"]],
+    residuals(refit_sn)[[".resid"]]
+  )
+  expect_equal(glance(streamed_sn)$sigma2, glance(refit_sn)$sigma2)
+
+  # RW w/ drift: the drift coefficient should not be re-estimated by stream()
+  fit_rw <- train %>% model(rw = RW(value ~ drift()))
+  streamed_rw <- fit_rw %>% stream(new_obs)
+  refit_rw <- fit_rw %>% refit(lung_deaths_male, reestimate = FALSE)
+
+  expect_equal(tidy(streamed_rw)$estimate, tidy(fit_rw)$estimate)
+  expect_equal(
+    fitted(streamed_rw)[[".fitted"]],
+    fitted(refit_rw)[[".fitted"]]
+  )
+  expect_equal(
+    residuals(streamed_rw)[[".resid"]],
+    residuals(refit_rw)[[".resid"]]
+  )
+  expect_equal(glance(streamed_rw)$sigma2, glance(refit_rw)$sigma2)
+
+  # Chained stream() calls should give the same result as one large stream()
+  mid <- lung_deaths_male %>% filter(index < yearmonth("1978 Jul"))
+  part1 <- lung_deaths_male %>%
+    filter(index >= yearmonth("1978 Jul"), index < yearmonth("1979 Jan"))
+  part2 <- new_obs
+
+  chained_sn <- mid %>%
+    model(snaive = SNAIVE(value)) %>%
+    stream(part1) %>%
+    stream(part2)
+
+  expect_equal(
+    fitted(chained_sn)[[".fitted"]],
+    fitted(refit_sn)[[".fitted"]]
+  )
+
+  # Streaming must start immediately after the trained data
+  expect_error(
+    fit_sn %>% stream(lung_deaths_male %>% filter(index >= yearmonth("1979 Feb"))),
+    "must start one step beyond the end of"
+  )
+})
+
 test_that("lagwalk with bad inputs", {
   expect_warning(
     UKLungDeaths %>%

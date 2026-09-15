@@ -430,24 +430,83 @@ model_sum.RW <- function(x) {
 #'   report()
 #' @export
 refit.RW <- function(object, new_data, specials = NULL, reestimate = FALSE, ...) {
-  
+
   # Update specials 'lag'.
   specials$lag <- object$lag
 
-  # Case if reestimate = TRUE. 
+  # Case if reestimate = TRUE.
   if (reestimate) {
     return(train_lagwalk(new_data, specials, ...))
   }
-  
-  # Case if reestimate = FALSE. 
-  # Update fixed. 
+
+  # Case if reestimate = FALSE.
+  # Update fixed.
   if (!rlang::is_empty(object$b)) {
     specials$drift[[1]][[2]] <- object$b
   }
-  
+
   refit <- train_lagwalk(new_data, specials, ...)
-  
-  # b.se could be either a numeric value or an empty numeric (dbl()). 
+
+  # b.se could be either a numeric value or an empty numeric (dbl()).
   refit$b.se <- object$b.se
   return(refit)
+}
+
+#' Extend a fitted lag walk model with new data
+#'
+#' Applies a fitted lag walk model's existing coefficients to a new
+#' (immediately subsequent) portion of data, updating the model's fitted
+#' values, residuals and `sigma2` without re-estimating the drift
+#' coefficient. Unlike [`refit.RW()`], `stream()` does not need to reprocess
+#' the entire history, only the newly provided observations, making it well
+#' suited to incrementally updating a model as new observations arrive.
+#'
+#' @inheritParams refit.RW
+#'
+#' @details
+#' The `.fitted`, `.resid` and `sigma2` values returned by `stream()` are
+#' identical to those obtained by refitting the model (with the same fixed
+#' drift coefficient) to the complete series.
+#'
+#' @examples
+#' lung_deaths_male <- as_tsibble(mdeaths)
+#'
+#' fit <- lung_deaths_male %>%
+#'   filter(index < yearmonth("1979 Jan")) %>%
+#'   model(NAIVE(value ~ drift()))
+#'
+#' fit %>%
+#'   stream(lung_deaths_male %>% filter(index >= yearmonth("1979 Jan"))) %>%
+#'   report()
+#' @export
+stream.RW <- function(object, new_data, specials = NULL, ...) {
+  n <- length(object$.fitted)
+  stream_start <- object$time$start + n * default_time_units(object$time$interval)
+  if (unclass(new_data)[[index_var(new_data)]][1] != stream_start) {
+    cli::cli_abort("Streaming to a lag walk model must start one step beyond the end of the trained data.")
+  }
+
+  y <- unclass(new_data)[[measured_vars(new_data)]]
+  h <- length(y)
+  lag <- object$lag
+  b <- object$b
+  if (is_empty(b)) b <- 0
+
+  # Fill missing values by carrying lagged actuals forward across the boundary.
+  actual <- c(object$future, y)
+  na_pos <- which(is.na(actual))
+  na_pos <- na_pos[na_pos > lag]
+  for (i in na_pos) {
+    actual[i] <- actual[i - lag]
+  }
+
+  fitted <- utils::head(actual, h) + b
+  resid <- y - fitted
+
+  object$.fitted <- c(object$.fitted, fitted)
+  object$.resid <- c(object$.resid, resid)
+  object$sigma2 <- stats::sd(object$.resid, na.rm = TRUE)^2
+  object$future <- utils::tail(c(object$future, y), lag)
+
+  object
 }

@@ -2,9 +2,9 @@
 
 ## New features
 
-* `ARIMA()` models can now be extended with new data via `stream()`, updating
-  fitted values, residuals and fit statistics without re-estimating the
-  model's coefficients.
+* `ARIMA()`, `RW()`, `NAIVE()` and `SNAIVE()` models can now be extended with
+  new data via `stream()`, which updates the fitted model without
+  re-estimating its coefficients by only needing to process the new values.
 
 ## Improvements
 
