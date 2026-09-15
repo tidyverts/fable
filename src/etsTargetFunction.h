@@ -5,7 +5,7 @@
 extern "C" {
 
 void etscalc(double *, int *, double *, int *, int *, int *, int *,
-		double *, double *, double *, double *, double *, double *, double *, double *, int *);
+		double *, double *, double *, double *, double *, double *, double *, double *, int *, int *);
 
 }
 class EtsTargetFunction {

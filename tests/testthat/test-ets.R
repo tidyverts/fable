@@ -189,3 +189,82 @@ test_that("ETS with missing values", {
     USAccDeaths_miss$value[-c(10, 14, 15)]
   )
 })
+
+
+# stream() should exactly match refitting the model (with the same smoothing
+# parameters and initial states) to the complete series.
+expect_stream_matches_refit <- function(streamed, refitted) {
+  s <- streamed[[1]][[1]]$fit
+  r <- refitted[[1]][[1]]$fit
+  expect_equal(tidy(streamed)$estimate, tidy(refitted)$estimate)
+  expect_equal(fitted(streamed)[[".fitted"]], fitted(refitted)[[".fitted"]])
+  expect_equal(residuals(streamed)[[".resid"]], residuals(refitted)[[".resid"]])
+  expect_equal(s$states, r$states)
+  expect_equal(glance(streamed), glance(refitted))
+  expect_equal(s$amse, r$amse)
+}
+
+test_that("stream.ETS matches a full refit", {
+  tr <- USAccDeaths_tbl %>% head(-12)
+  nw <- USAccDeaths_tbl %>% tail(12)
+
+  for (spec in list(
+    value ~ error("A") + trend("N") + season("A"),
+    value ~ error("A") + trend("Ad") + season("A"),
+    value ~ error("M") + trend("A") + season("M"),
+    value ~ error("M") + trend("Ad") + season("M"),
+    value ~ error("A") + trend("A") + season("N"),
+    value ~ error("M") + trend("N") + season("N")
+  )) {
+    fit <- tr %>% model(ets = ETS(!!spec))
+    streamed <- fit %>% stream(nw)
+    refitted <- fit %>% refit(USAccDeaths_tbl, reinitialise = FALSE)
+
+    expect_stream_matches_refit(streamed, refitted)
+    expect_s3_class(streamed$ets[[1]]$fit$states, "tbl_ts")
+    expect_equal(NROW(augment(streamed)), NROW(USAccDeaths_tbl))
+  }
+})
+
+test_that("stream.ETS chained calls match a single stream()", {
+  fit <- USAccDeaths_tbl %>%
+    head(-12) %>%
+    model(ets = ETS(value ~ error("A") + trend("Ad") + season("A")))
+  refitted <- fit %>% refit(USAccDeaths_tbl, reinitialise = FALSE)
+
+  # Streaming one observation at a time exercises the multi-step (AMSE)
+  # lookback across every boundary.
+  streamed <- fit
+  for (i in seq_len(12)) {
+    streamed <- streamed %>% stream(USAccDeaths_tbl[NROW(USAccDeaths_tbl) - 12 + i, ])
+  }
+  expect_stream_matches_refit(streamed, refitted)
+
+  # Forecasts continue from the streamed states
+  expect_equal(
+    forecast(streamed, h = 6)$.mean,
+    forecast(refitted, h = 6)$.mean
+  )
+})
+
+test_that("stream.ETS handles missing values", {
+  dat <- USAccDeaths_tbl
+  dat$value[c(20, 65, 70)] <- NA
+  fit <- dat %>%
+    head(-12) %>%
+    model(ets = ETS(value ~ error("A") + trend("A") + season("A")))
+  streamed <- fit %>% stream(dat %>% tail(12) %>% head(6)) %>% stream(dat %>% tail(6))
+  refitted <- fit %>% refit(dat, reinitialise = FALSE)
+
+  expect_stream_matches_refit(streamed, refitted)
+})
+
+test_that("stream.ETS must start immediately after the trained data", {
+  fit <- USAccDeaths_tbl %>%
+    head(-12) %>%
+    model(ets = ETS(value ~ error("A") + trend("N") + season("A")))
+  expect_error(
+    fit %>% stream(USAccDeaths_tbl %>% tail(11)),
+    "must start one step beyond the end of"
+  )
+})

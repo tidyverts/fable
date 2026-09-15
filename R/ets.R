@@ -91,7 +91,7 @@ train_ets <- function(.data, specials, opt_crit,
       fit = tibble(
         sigma2 = sum(best$residuals^2, na.rm = TRUE) / (length(y) - length(best$par)),
         log_lik = best$loglik, AIC = best$aic, AICc = best$aicc, BIC = best$bic,
-        MSE = best$mse, AMSE = best$amse, MAE = best$mae
+        MSE = best$amse[1], AMSE = mean(best$amse), MAE = best$mae
       ),
       states = tsibble(
         !!!set_names(list(seq(idx[[1]] - default_time_units(interval(.data)),
@@ -101,7 +101,9 @@ train_ets <- function(.data, specials, opt_crit,
         !!!set_names(split(best$states, col(best$states)), colnames(best$states)),
         index = !!index(.data)
       ),
-      spec = as_tibble(best_spec)
+      spec = as_tibble(best_spec),
+      # Per-horizon MSE (1:nmse), kept so that stream() can extend AMSE exactly
+      amse = best$amse
     ),
     class = "ETS"
   )
@@ -483,7 +485,7 @@ refit.ETS <- function(object, new_data, specials = NULL, reestimate = FALSE, rei
       fit = tibble(
         sigma2 = sum(best$residuals^2, na.rm = TRUE) / (length(y) - length(best$par)),
         log_lik = best$loglik, AIC = best$aic, AICc = best$aicc, BIC = best$bic,
-        MSE = best$mse, AMSE = best$amse, MAE = best$mae
+        MSE = best$amse[1], AMSE = mean(best$amse), MAE = best$mae
       ),
       states = tsibble(
         !!!set_names(list(seq(idx[[1]] - default_time_units(interval(new_data)),
@@ -493,10 +495,127 @@ refit.ETS <- function(object, new_data, specials = NULL, reestimate = FALSE, rei
         !!!set_names(split(best$states, col(best$states)), colnames(best$states)),
         index = !!index(new_data)
       ),
-      spec = object$spec
+      spec = object$spec,
+      amse = best$amse
     ),
     class = "ETS"
   )
+}
+
+#' Extend a fitted ETS model with new data
+#'
+#' Applies a fitted ETS model's existing parameters to a new (immediately
+#' subsequent) portion of data, updating the model's states, fitted values,
+#' residuals and fit statistics without re-estimating the model's parameters
+#' or initial states. Unlike [`refit.ETS()`], `stream()` does not need to
+#' reprocess the entire history, only the newly provided observations, making
+#' it well suited to incrementally updating a model as new observations
+#' arrive.
+#'
+#' @inheritParams refit.ETS
+#'
+#' @details
+#' The states, `.fitted`, `.resid` and all fit statistics (`sigma2`,
+#' `log_lik`, `AIC`, `AICc`, `BIC`, `MSE`, `AMSE` and `MAE`) returned by
+#' `stream()` are identical to those obtained by refitting the model (with
+#' the same smoothing parameters and initial states, i.e.
+#' `refit(reinitialise = FALSE)`) to the complete series. The one exception
+#' is `AMSE` for models estimated with an earlier version of fable, which did
+#' not store the per-horizon errors needed to combine it exactly.
+#'
+#' @examples
+#' lung_deaths_male <- as_tsibble(mdeaths)
+#'
+#' fit <- lung_deaths_male %>%
+#'   filter(index < yearmonth("1979 Jan")) %>%
+#'   model(ETS(value ~ error("A") + trend("N") + season("A")))
+#'
+#' fit %>%
+#'   stream(lung_deaths_male %>% filter(index >= yearmonth("1979 Jan"))) %>%
+#'   report()
+#' @export
+stream.ETS <- function(object, new_data, specials = NULL, ...) {
+  idx_var <- index_var(object$est)
+  n_old <- NROW(object$est)
+
+  # Check position of new_data in model history
+  stream_start <- object$est[[idx_var]][n_old] + default_time_units(interval(object$est))
+  if (new_data[[index_var(new_data)]][1] != stream_start) {
+    cli::cli_abort("Streaming to an ETS model must start one step beyond the end of the trained data.")
+  }
+
+  response <- measured_vars(object$est)[[1]]
+  y_new <- unclass(new_data)[[measured_vars(new_data)]]
+  n_new <- length(y_new)
+  n <- n_old + n_new
+
+  # Per-horizon MSE from the existing fit. Models fitted before this was
+  # stored only have the mean over horizons, which is used as an approximation
+  # for each horizon.
+  amse_old <- object$amse %||% rep(object$fit$AMSE, 3)
+  nmse <- length(amse_old)
+
+  # Multi-step forecast errors for the `nmse - 1` observations preceding
+  # new_data cross into the new data, and so were not counted in the previous
+  # fit's AMSE. Re-run the filter over this lookback window (as burn-in, so
+  # that only forecast targets in new_data are scored) from its stored state.
+  nb <- min(nmse - 1L, n_old)
+  y <- c(object$est[[response]][n_old - nb + seq_len(nb)], y_new)
+  init_state <- as.numeric(object$states[n_old + 1L - nb, measured_vars(object$states)])
+
+  get_par <- function(par) {
+    object$par$estimate[object$par$term == par]
+  }
+  e <- pegelsresid.C(
+    y, object$spec$period, init_state,
+    object$spec$errortype, object$spec$trendtype, object$spec$seasontype, object$spec$damped,
+    alpha = get_par("alpha"), beta = get_par("beta"), gamma = get_par("gamma"), phi = get_par("phi"),
+    nmse = nmse, nb = nb
+  )
+
+  new_pos <- nb + seq_len(n_new)
+  fits <- e$fits[new_pos]
+  resid <- e$e[new_pos]
+  new_states <- e$states[new_pos + 1L, , drop = FALSE]
+  colnames(new_states) <- measured_vars(object$states)
+
+  # Combine the fit statistics as if computed over the complete series
+  # (matching estimate_ets() and etscalc.c). The sums underlying the previous
+  # fit's statistics are recovered from those statistics, so that only the
+  # new residuals need to be processed.
+  n_par <- NROW(object$par)
+  sse <- object$fit$sigma2 * (n_old - n_par) + sum(resid^2, na.rm = TRUE)
+  lik <- n * log(sse)
+  if (object$spec$errortype == "M") {
+    sum_log_fits <- (-2 * object$fit$log_lik - n_old * log(object$fit$sigma2 * (n_old - n_par))) / 2
+    lik <- lik + 2 * (sum_log_fits + sum(log(abs(fits))))
+  }
+  np <- n_par + 1
+  aic <- lik + 2 * np
+  bic <- lik + log(n) * np
+  aicc <- aic + 2 * np * (np + 1) / (n - np - 1)
+
+  # amse[j] is the mean squared j-step error over all forecast targets.
+  # Recover the sums from both windows and rescale by the total target count.
+  j <- seq_len(nmse) - 1L
+  amse <- (amse_old * pmax(n_old - j, 0) + e$amse * pmax(length(y) - pmax(nb, j), 0)) / pmax(n - j, 1)
+
+  object$fit <- tibble(
+    sigma2 = sse / (n - n_par),
+    log_lik = -0.5 * lik, AIC = aic, AICc = aicc, BIC = bic,
+    MSE = amse[1], AMSE = mean(amse),
+    MAE = (object$fit$MAE * n_old + sum(abs(resid))) / n
+  )
+  object$amse <- amse
+  object$est <- dplyr::bind_rows(
+    object$est,
+    mutate(new_data, .fitted = fits, .resid = resid)
+  )
+  object$states <- dplyr::bind_rows(
+    object$states,
+    as_tibble(new_states) %>% mutate(!!idx_var := new_data[[index_var(new_data)]])
+  )
+  object
 }
 
 #' @inherit fitted.ARIMA

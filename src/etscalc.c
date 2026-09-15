@@ -11,7 +11,7 @@
 
 // Functions called by R
 void etscalc(double *, int *, double *, int *, int *, int *, int *,
-  double *, double *, double *, double *, double *, double *, double *, double *, int*);
+  double *, double *, double *, double *, double *, double *, double *, double *, int*, int*);
 void etssimulate(double *, int *, int *, int *, int *,
   double *, double *, double *, double *, int *, double *, double *);
 void etsforecast(double *, int *, int *, int *, double *, int *, double *);
@@ -23,10 +23,16 @@ void update(double *, double *, double *, double *, double *, double *, int, int
 
 // ******************************************************************
 
+// The first `nb` observations are a burn-in window: their states, fitted
+// values and residuals are computed as usual, but they do not contribute to
+// `lik` or `amse` as forecast targets. This allows a model to be extended
+// (streamed) from a stored state, with `nb` lookback observations providing
+// the multi-step forecasts that cross into the new data, without recounting
+// errors that were already scored when the earlier data was fitted.
 void etscalc(double *y, int *n, double *x, int *m, int *error, int *trend, int *season,
-  double *alpha, double *beta, double *gamma, double *phi, double *e, 
-  double *fits, 
-  double *lik, double *amse, int *nmse)
+  double *alpha, double *beta, double *gamma, double *phi, double *e,
+  double *fits,
+  double *lik, double *amse, int *nmse, int *nb)
 {
   int i, j, nstates;
   double oldl, l, oldb, b, olds[24], s[24], f[30], lik2, tmp, denom[30];
@@ -38,6 +44,8 @@ void etscalc(double *y, int *n, double *x, int *m, int *error, int *trend, int *
 
   if(*nmse > 30)
     *nmse = 30;
+  if(*nb < 0)
+    *nb = 0;
 
   nstates = (*m)*(*season>NONE) + 1 + (*trend>NONE);
 
@@ -86,7 +94,7 @@ void etscalc(double *y, int *n, double *x, int *m, int *error, int *trend, int *
       e[i] = (y[i] - fits[i])/fits[i];
     for(j=0; j<(*nmse); j++)
     {
-      if(i+j<(*n))
+      if(i+j<(*n) && i+j>=(*nb))
       {
         denom[j] += 1.0;
         if(R_IsNA(y[i+j]))
@@ -109,11 +117,13 @@ void etscalc(double *y, int *n, double *x, int *m, int *error, int *trend, int *
        for(j=0; j<(*m); j++)
         x[(*trend>NONE)+nstates*(i+1)+j+1] = s[j];
     }
+    if(i < (*nb))
+      continue;
     if(!R_IsNA(e[i]))
       *lik = *lik + e[i]*e[i];
     lik2 += log(fabs(f[0]));
   }
-  *lik = (*n) * log(*lik);
+  *lik = (*n - *nb) * log(*lik);
   if(*error == MULT)
     *lik += 2*lik2;
 }

@@ -118,8 +118,6 @@ estimate_ets <- function(y, m, init.state, errortype, trendtype, seasontype,
   bic <- e$lik + log(ny) * np
   aicc <- aic + 2 * np * (np + 1) / (ny - np - 1)
 
-  mse <- e$amse[1]
-  amse <- mean(e$amse)
   mae <- mean(abs(e$e))
 
   states <- e$states
@@ -143,7 +141,7 @@ estimate_ets <- function(y, m, init.state, errortype, trendtype, seasontype,
 
   return(list(
     loglik = -0.5 * e$lik, aic = aic, bic = bic, aicc = aicc,
-    mse = mse, amse = amse, mae = mae,
+    amse = e$amse, mae = mae,
     residuals = e$e, fitted = e$fits,
     states = states, par = fit.par
   ))
@@ -443,7 +441,10 @@ initstate <- function(y, m, trendtype, seasontype) {
   return(c(l0, b0, init.seas))
 }
 
-pegelsresid.C <- function(y, m, init.state, errortype, trendtype, seasontype, damped, alpha, beta, gamma, phi, nmse) {
+# The first `nb` observations of `y` are a burn-in window, whose fitted
+# values, residuals and states are computed but which do not contribute to
+# `lik` or `amse` as forecast targets (see etscalc.c).
+pegelsresid.C <- function(y, m, init.state, errortype, trendtype, seasontype, damped, alpha, beta, gamma, phi, nmse, nb = 0L) {
   n <- length(y)
   p <- length(init.state)
   x <- numeric(p * (n + 1))
@@ -480,6 +481,7 @@ pegelsresid.C <- function(y, m, init.state, errortype, trendtype, seasontype, da
     as.double(lik),
     as.double(amse),
     as.integer(nmse),
+    as.integer(nb),
     NAOK = TRUE,
     PACKAGE = "fable"
   )
