@@ -59,7 +59,8 @@ train_theta <- function(.data, specials, ...) {
       drift = drift,
       sigma2 = sigma2,
       dcmp = specials$season[[1]]$method,
-      season = if(m > 1L) dcmp$seasonal[seq(n-m+1, n)] else NULL
+      season = if(m > 1L) dcmp$seasonal[seq(n-m+1, n)] else NULL,
+      time = list(start = unclass(.data)[[index_var(.data)]][[1]], interval = interval(.data))
     ),
     class = "fable_theta"
   )
@@ -168,6 +169,96 @@ forecast.fable_theta <- function(object, new_data, specials = NULL, bootstrap = 
   
   se <- sqrt(sigma2) * sqrt((0:(h - 1)) * alpha^2 + 1)
   distributional::dist_normal(fc, se)
+}
+
+#' Extend a fitted Theta model with new data
+#'
+#' Applies a fitted Theta model's existing parameters to a new (immediately
+#' subsequent) portion of data, updating the model's level, fitted values,
+#' residuals and `sigma2` without re-estimating the model's parameters.
+#' `stream()` does not need to reprocess the entire history, only the newly
+#' provided observations, making it well suited to incrementally updating a
+#' model as new observations arrive.
+#'
+#' @inheritParams forecast.fable_theta
+#'
+#' @details
+#' The new observations are seasonally adjusted using the model's existing
+#' seasonal indices, and then passed through the simple exponential smoothing
+#' recursion using the model's existing smoothing parameter (`alpha`) starting
+#' from the final level of the trained model. The resulting fitted values are
+#' reseasonalised, and the residuals and `sigma2` are updated accordingly.
+#' Missing observations leave the level unchanged and produce missing
+#' residuals.
+#'
+#' The smoothing parameter (`alpha`), drift and seasonal indices are held
+#' fixed, and are not updated to reflect the new data. Fitting the Theta model
+#' to the complete series would re-estimate these parameters, so the streamed
+#' model is exact for the fixed parameters but may differ from a model fitted
+#' to the complete series.
+#'
+#' @examples
+#' lung_deaths_male <- as_tsibble(mdeaths)
+#'
+#' fit <- lung_deaths_male %>%
+#'   filter(index < yearmonth("1979 Jan")) %>%
+#'   model(THETA(value))
+#'
+#' fit %>%
+#'   stream(lung_deaths_male %>% filter(index >= yearmonth("1979 Jan"))) %>%
+#'   report()
+#' @export
+stream.fable_theta <- function(object, new_data, specials = NULL, ...) {
+  n <- length(object$resid)
+  stream_start <- object$time$start + n * default_time_units(object$time$interval)
+  if (unclass(new_data)[[index_var(new_data)]][1] != stream_start) {
+    cli::cli_abort("Streaming to a Theta model must start one step beyond the end of the trained data.")
+  }
+
+  y <- unclass(new_data)[[measured_vars(new_data)]]
+  h <- length(y)
+  m <- object$period
+  alpha <- unname(object$alpha)
+  additive <- object$dcmp == "additive"
+
+  # Deseasonalise the new observations
+  if (m > 1L) {
+    seas <- rep(object$season, trunc(1 + h / m))[1:h]
+    y_sa <- if (additive) y - seas else y / seas
+  } else {
+    y_sa <- y
+  }
+
+  # Simple exponential smoothing from the final level
+  l <- unname(object$lT)
+  fitted_sa <- numeric(h)
+  for (i in seq_len(h)) {
+    fitted_sa[i] <- l
+    if (!is.na(y_sa[i])) {
+      l <- l + alpha * (y_sa[i] - l)
+    }
+  }
+  resid_sa <- y_sa - fitted_sa
+
+  # Reseasonalise
+  if (m > 1L) {
+    fitted <- if (additive) fitted_sa + seas else fitted_sa * seas
+    # Rotate the seasonal indices to the last m observations
+    object$season <- object$season[((h + seq_len(m) - 1) %% m) + 1]
+  } else {
+    fitted <- fitted_sa
+  }
+  resid <- y - fitted
+
+  # Update sigma2 from the seasonally adjusted residuals
+  sse <- object$sigma2 * (n - 2) + sum(resid_sa^2, na.rm = TRUE)
+  object$sigma2 <- sse / (n + h - 2)
+
+  object$fitted <- c(object$fitted, fitted)
+  object$resid <- c(object$resid, resid)
+  object$lT <- l
+
+  object
 }
 
 #' @inherit fitted.ARIMA

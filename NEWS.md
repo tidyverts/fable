@@ -2,9 +2,10 @@
 
 ## New features
 
-* `ARIMA()`, `ETS()`, `RW()`, `NAIVE()` and `SNAIVE()` models can now be
-  extended with new data via `stream()`, which updates the fitted model without
-  re-estimating its coefficients by only needing to process the new values.
+* `ARIMA()`, `ETS()`, `RW()`, `NAIVE()`, `SNAIVE()`, `AR()`, `MEAN()`, 
+  `TSLM()` and `THETA()` models can now be extended with new data via 
+  `stream()`, which updates the fitted model without re-estimating its 
+  coefficients by only needing to process the new values.
 
 ## Improvements
 
@@ -12,6 +13,17 @@
   information criterion (`ic`) when `p` or `q` are not uniquely specified. This
   identification method can be directly used with 
   `identification = "ic_search"` (#446).
+* `refit(<AR>, reestimate = FALSE)` now retains the standard errors of the
+  fixed coefficients.
+
+## Bug fixes
+
+* Fixed `refit(<TSLM>, reestimate = FALSE)` not updating the residual degrees
+  of freedom when the new data has a different length to the training data,
+  giving incorrect `sigma2`, standard errors and forecast intervals.
+* Fixed fixed regression coefficients in `AR()` (including those used by 
+  `refit(reestimate = FALSE)`) being incorrectly rescaled by the standard 
+  deviation of the response.
 
 # fable 0.5.0
 
