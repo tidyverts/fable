@@ -86,3 +86,69 @@ test_that("LM", {
     fitted(fable_fit)[[".fitted"]][10]
   )
 })
+
+test_that("stream.TSLM", {
+  library(tsibble)
+  lung_deaths_male <- as_tsibble(mdeaths)
+
+  train <- lung_deaths_male %>% filter(index < yearmonth("1979 Jan"))
+  new_obs <- lung_deaths_male %>% filter(index >= yearmonth("1979 Jan"))
+
+  # Streaming should exactly match a fixed-coefficient refit
+  expect_stream_matches_refit <- function(streamed, refitted, fit) {
+    # Coefficients are not re-estimated by stream()
+    expect_equal(tidy(streamed)$estimate, tidy(fit)$estimate)
+    expect_equal(tidy(streamed), tidy(refitted))
+    expect_equal(fitted(streamed), fitted(refitted))
+    expect_equal(residuals(streamed), residuals(refitted))
+    expect_equal(glance(streamed), glance(refitted))
+  }
+
+  # trend() + season()
+  fit_ts <- train %>% model(lm = TSLM(value ~ trend() + season()))
+  streamed_ts <- fit_ts %>% stream(new_obs)
+  refit_ts <- fit_ts %>% refit(lung_deaths_male, reestimate = FALSE)
+  expect_stream_matches_refit(streamed_ts, refit_ts, fit_ts)
+  expect_equal(NROW(fitted(streamed_ts)), NROW(lung_deaths_male))
+
+  # External xreg
+  train_x <- UKLungDeaths %>% filter(index < yearmonth("1979 Jan"))
+  new_obs_x <- UKLungDeaths %>% filter(index >= yearmonth("1979 Jan"))
+  fit_x <- train_x %>% model(lm = TSLM(mdeaths ~ trend() + fdeaths))
+  streamed_x <- fit_x %>% stream(new_obs_x)
+  refit_x <- fit_x %>% refit(UKLungDeaths, reestimate = FALSE)
+  expect_stream_matches_refit(streamed_x, refit_x, fit_x)
+
+  # Rank-deficient xreg
+  UKLungDeaths_rd <- UKLungDeaths
+  UKLungDeaths_rd$fdeaths2 <- UKLungDeaths_rd$fdeaths * 2
+  fit_rd <- UKLungDeaths_rd %>%
+    filter(index < yearmonth("1979 Jan")) %>%
+    model(lm = TSLM(mdeaths ~ fdeaths + fdeaths2))
+  streamed_rd <- fit_rd %>%
+    stream(UKLungDeaths_rd %>% filter(index >= yearmonth("1979 Jan")))
+  refit_rd <- fit_rd %>% refit(UKLungDeaths_rd, reestimate = FALSE)
+  expect_stream_matches_refit(streamed_rd, refit_rd, fit_rd)
+
+  # Chained single-observation stream() calls should match one large stream()
+  chained_ts <- fit_ts
+  for (i in seq_len(NROW(new_obs))) {
+    chained_ts <- chained_ts %>% stream(new_obs[i, ])
+  }
+  expect_stream_matches_refit(chained_ts, streamed_ts, fit_ts)
+
+  # Forecasts (including intervals) should match the refitted model
+  fc_streamed <- streamed_ts %>% forecast(h = 12)
+  fc_refit <- refit_ts %>% forecast(h = 12)
+  expect_equal(fc_streamed$value, fc_refit$value)
+  expect_equal(
+    forecast(streamed_ts, h = 12, approx_normal = FALSE)$value,
+    forecast(refit_ts, h = 12, approx_normal = FALSE)$value
+  )
+
+  # Streaming must start immediately after the trained data
+  expect_error(
+    fit_ts %>% stream(lung_deaths_male %>% filter(index >= yearmonth("1979 Feb"))),
+    "must start one step beyond the end of"
+  )
+})

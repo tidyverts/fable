@@ -74,6 +74,7 @@ train_tslm <- function(.data, specials, ...) {
   # Remove unused structure
   fit$effects <- NULL
   fit$sigma2 <- sum(resid^2, na.rm = TRUE)/fit$df.residual
+  fit$time <- list(start = unclass(.data)[[index_var(.data)]][[1]], interval = interval(.data))
 
   structure(fit, class = "TSLM")
 }
@@ -398,13 +399,77 @@ refit.TSLM <- function(object, new_data, specials = NULL, reestimate = FALSE, ..
 
   fit <- object
   coef <- object$coefficients
-  fit$qr <- qr(xreg)
+  keep <- complete.cases(xreg) & complete.cases(y)
+  fit$qr <- qr(xreg[keep, , drop = FALSE])
   piv <- fit$qr$pivot[seq_len(fit$rank)]
-  fit$fitted.values <- xreg[, piv, drop = FALSE] %*% coef[piv]
+  fit$fitted.values <- xreg[, piv, drop = FALSE] %*% coef[piv, , drop = FALSE]
   fit$residuals <- y - fit$fitted.values
+  fit$df.residual <- sum(keep) - fit$rank
   fit$sigma2 <- sum(fit$residuals^2, na.rm = TRUE)/fit$df.residual
+  fit$time <- list(start = unclass(new_data)[[index_var(new_data)]][[1]], interval = interval(new_data))
 
   structure(fit, class = "TSLM")
+}
+
+#' Extend a fitted TSLM model with new data
+#'
+#' Applies a fitted `TSLM` model's existing coefficients to a new (immediately
+#' subsequent) portion of data, updating the model's fitted values, residuals
+#' and fit statistics without re-estimating the coefficients. Unlike
+#' [`refit.TSLM()`], `stream()` does not need to reprocess the entire history,
+#' only the newly provided observations, making it well suited to incrementally
+#' updating a model as new observations arrive.
+#'
+#' @inheritParams refit.TSLM
+#'
+#' @details
+#' The fitted values, residuals, `sigma2`, coefficient standard errors and
+#' `glance()` statistics returned by `stream()` are identical to those obtained
+#' by refitting the model (with the same fixed coefficients) to the complete
+#' series using `refit(reestimate = FALSE)`. The QR decomposition of the design
+#' matrix is extended to include the new (complete) observations, so that the
+#' coefficient standard errors, forecast prediction intervals and influence
+#' measures (used by `glance()`) reflect the complete series rather than only
+#' the original training data.
+#'
+#' @examples
+#' lung_deaths_male <- as_tsibble(mdeaths)
+#'
+#' fit <- lung_deaths_male %>%
+#'   filter(index < yearmonth("1979 Jan")) %>%
+#'   model(TSLM(value ~ trend() + season()))
+#'
+#' fit %>%
+#'   stream(lung_deaths_male %>% filter(index >= yearmonth("1979 Jan"))) %>%
+#'   report()
+#' @export
+stream.TSLM <- function(object, new_data, specials = NULL, ...) {
+  n <- NROW(object$fitted.values)
+  stream_start <- object$time$start + n * default_time_units(object$time$interval)
+  if (unclass(new_data)[[index_var(new_data)]][1] != stream_start) {
+    cli::cli_abort("Streaming to a TSLM model must start one step beyond the end of the trained data.")
+  }
+
+  # Get inputs
+  y <- invoke(cbind, unclass(new_data)[measured_vars(new_data)])
+  xreg <- specials$xreg[[1]]
+
+  # Apply existing coefficients to the new observations
+  coef <- object$coefficients
+  piv <- object$qr$pivot[seq_len(object$rank)]
+  fitted <- xreg[, piv, drop = FALSE] %*% coef[piv, , drop = FALSE]
+  resid <- y - fitted
+
+  # Extend the design matrix QR decomposition with the new complete observations
+  keep <- complete.cases(xreg) & complete.cases(y)
+  object$qr <- qr(rbind(qr.X(object$qr), xreg[keep, , drop = FALSE]))
+
+  object$fitted.values <- rbind(object$fitted.values, fitted)
+  object$residuals <- rbind(object$residuals, resid)
+  object$df.residual <- object$df.residual + sum(keep)
+  object$sigma2 <- sum(object$residuals^2, na.rm = TRUE)/object$df.residual
+
+  object
 }
 
 #' @export
