@@ -117,7 +117,7 @@ train_ar <- function(.data, specials, ic, ...) {
   fixed <- c(specials$order[[1]]$fixed, specials$xreg[[1]]$fixed)
   
   # Choose best model
-  reduce(transpose(expand.grid(p = p, constant = constant)),
+  fit <- reduce(transpose(expand.grid(p = p, constant = constant)),
          function(best, args) {
            new <- estimate_ar(y, args$p, xreg, args$constant, fixed)
            if ((new[[ic]] %||% Inf) < (best[[ic]] %||% Inf)) {
@@ -127,6 +127,11 @@ train_ar <- function(.data, specials, ic, ...) {
          },
          .init = NULL
   )
+  if (is.null(fit)) return(NULL)
+
+  # Store the time range of the training data for stream()
+  fit$time <- list(start = unclass(.data)[[index_var(.data)]][[1]], interval = interval(.data))
+  fit
 }
 
 # Adapted and generalised from stats::ar.ols
@@ -144,7 +149,10 @@ estimate_ar <- function(x, p, xreg, constant, fixed) {
     
   par <- c(colnames(xreg), sprintf("ar%i", seq_len(p)))
   coef <- set_names(map_dbl(fixed[par], `%||%`, NA_real_), par)
-  
+
+  # Scale fixed regression coefficients to match the scaled response
+  coef[seq_len(ncol(xreg))] <- coef[seq_len(ncol(xreg))] / x_sd
+
   y <- stats::embed(x, p + 1L)
   X <- cbind(xreg[(p+1):nrow(xreg),,drop=FALSE], y[,-1,drop=FALSE])
   Y <- y[,1]
@@ -204,12 +212,14 @@ estimate_ar <- function(x, p, xreg, constant, fixed) {
       fits = c(rep.int(NA_real_, p), YH),
       resid = c(rep.int(NA_real_, p), E),
       reg_resid = x - xm,
+      x = x,
       last = x[(length(E)+1):length(x)],
       sigma2 = drop(varE),
       aic = aic,
       bic = bic,
       aicc = aicc,
-      p = p, 
+      npar = npar,
+      p = p,
       constant = constant
     ),
     class = "AR"
@@ -342,7 +352,94 @@ refit.AR <- function(object, new_data, specials = NULL, reestimate = FALSE, ...)
     as.list(object$coef)
   }
   
-  estimate_ar(y, object$p, specials$xreg[[1]]$xreg, object$constant, fixed)
+  fit <- estimate_ar(y, object$p, specials$xreg[[1]]$xreg, object$constant, fixed)
+  if (is.null(fit)) return(NULL)
+
+  # Keep the standard errors of coefficients which are not re-estimated
+  if (!reestimate) fit$coef.se <- object$coef.se
+  fit$time <- list(start = unclass(new_data)[[index_var(new_data)]][[1]], interval = interval(new_data))
+  fit
+}
+
+#' Extend a fitted AR model with new data
+#'
+#' Applies a fitted AR model's existing coefficients to a new (immediately
+#' subsequent) portion of data, updating the model's fitted values, residuals
+#' and fit statistics without re-estimating the model's coefficients. Unlike
+#' [`refit.AR()`], `stream()` does not need to reprocess the entire history,
+#' only the newly provided observations, making it well suited to
+#' incrementally updating a model as new observations arrive.
+#'
+#' @inheritParams refit.AR
+#'
+#' @details
+#' The fitted values, residuals and `sigma2` returned by `stream()` are
+#' identical to those obtained by refitting the model (with the same fixed
+#' coefficients) to the complete series. The `AIC`, `AICc` and `BIC` values
+#' are also recomputed over the complete series, but continue to penalise the
+#' number of coefficients estimated in the original fit (whereas
+#' `refit(reestimate = FALSE)` treats all coefficients as fixed, and so
+#' includes no such penalty).
+#'
+#' @examples
+#' luteinizing_hormones <- as_tsibble(lh)
+#'
+#' fit <- luteinizing_hormones %>%
+#'   filter(index <= 40) %>%
+#'   model(AR(value ~ order(3)))
+#'
+#' fit %>%
+#'   stream(luteinizing_hormones %>% filter(index > 40)) %>%
+#'   report()
+#' @export
+stream.AR <- function(object, new_data, specials = NULL, ...) {
+  # Check position of new_data in model history
+  n <- length(object$x)
+  stream_start <- object$time$start + n * default_time_units(object$time$interval)
+  if (unclass(new_data)[[index_var(new_data)]][1] != stream_start) {
+    cli::cli_abort("Streaming to an AR model must start one step beyond the end of the trained data.")
+  }
+
+  y <- unclass(new_data)[[measured_vars(new_data)]]
+  h <- length(y)
+  p <- object$p
+  coef <- object$coef
+
+  # Get xreg
+  xreg <- specials$xreg[[1]]$xreg
+  if (object$constant) {
+    xreg <- cbind(constant = rep(1, h), xreg)
+  }
+  nx <- length(coef) - p
+  if (!is.null(xreg)) {
+    xm <- drop(xreg %*% coef[seq_len(nx)])
+  } else {
+    xm <- rep(0, h)
+  }
+
+  # Compute fitted values from the lagged observations
+  ar <- coef[nx + seq_len(p)]
+  x <- c(object$last, y)
+  n_last <- length(object$last)
+  fits <- xm
+  for (i in seq_len(h)) fits[i] <- fits[i] + sum(ar * x[n_last + i - seq_len(p)])
+
+  # Append the new observations to the model
+  object$fits <- c(object$fits, fits)
+  object$resid <- c(object$resid, y - fits)
+  object$reg_resid <- c(object$reg_resid, y - xm)
+  object$x <- c(object$x, y)
+  object$last <- utils::tail(x, p)
+
+  # Recompute fit statistics over the complete series as in estimate_ar()
+  nobs <- length(object$x)
+  npar <- object$npar
+  object$sigma2 <- mean(object$resid^2, na.rm = TRUE)
+  object$aic <- nobs * log(object$sigma2 / stats::var(object$x, na.rm = TRUE)) + 2 * npar
+  object$bic <- object$aic + npar * (log(nobs) - 2)
+  object$aicc <- object$aic + 2 * npar * (npar + 1) / (nobs - npar - 1)
+
+  object
 }
 
 ar_se <- function(phi, h){
