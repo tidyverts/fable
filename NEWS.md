@@ -1,5 +1,11 @@
 # fable (development version)
 
+## New features
+
+* `ARIMA()` models can now be extended with new data via `stream()`, updating
+  fitted values, residuals and fit statistics without re-estimating the
+  model's coefficients.
+
 ## Improvements
 
 * `VARIMA()` now supports model selection by minimising the specified 

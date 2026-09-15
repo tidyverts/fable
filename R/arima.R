@@ -1100,91 +1100,130 @@ refit.ARIMA <- function(object, new_data, specials = NULL, reestimate = FALSE, .
   out
 }
 
-# #' @export
-# stream.ARIMA <- function(object, new_data, specials = NULL, ...){
-#   # Check position of new_data in model history
-#   if(inherits_any(object$tsp$range, c("yearweek", "yearmonth", "yearquarter"))) {
-#     stream_start <- object$tsp$range[2]+round((diff(object$tsp$range)+1)/nrow(object$est), 6)
-#   } else {
-#     # Try to use difftime
-#     interval <- unclass(object$tsp$interval)
-#     interval <- Filter(function(x) x!=0, interval)
-#     time_unit <- switch(names(interval), day = "days", hour = "hours", minute = "mins", second = "secs")
-#     stream_start <- object$tsp$range[2] + as.difftime(interval[[1]], units = time_unit)
-#   }
-#   if (unclass(new_data)[[index_var(new_data)]][1] != stream_start) {
-#     cli::cli_abort("Streaming to an ARIMA model must start one step beyond the end of the trained data.")
-#   }
-#   
-#   y <- unclass(new_data)[[measured_vars(new_data)]]
-#   coef <- object$model$coef
-#   
-#   xreg <- specials$xreg[[1]]$xreg
-#   # Drop unused rank deficient xreg
-#   xreg <- xreg[,colnames(xreg) %in% names(object$model$coef), drop = FALSE]
-#   
-#   if (object$spec$constant) {
-#     intercept <- arima_constant(
-#       NROW(object$est) + NROW(new_data),
-#       object$spec$d, object$spec$D,
-#       object$spec$period
-#     )[NROW(object$est) + seq_len(NROW(new_data))]
-#     
-#     xreg <- if (is.null(xreg)) {
-#       matrix(intercept, dimnames = list(NULL, "constant"))
-#     } else {
-#       xreg <- cbind(xreg, intercept = intercept)
-#     }
-#   }
-#   
-#   if (ncol(xreg)%||%0 > 0) {
-#     reg_resid <- y - xreg %*% coef[narma + (1L:ncxreg)]
-#   } else {
-#     reg_resid <- y
-#   }
-#   
-#   mod <- object$model$model
-#   
-#   old_n.used <- sum(!is.na(object$est$.regression_resid)) - length(mod$Delta)
-#   new_n.used <- sum(!is.na(reg_resid)) - length(mod$Delta)
-#   n.used <- old_n.used + new_n.used + length(mod$Delta)
-# 
-#   fit <- KalmanRun(reg_resid, mod, nit = -1, update = TRUE)
-#   fit$values[["Lik"]]
-#   resid <- c(object$est$.resid, fit$resid)
-#   
-#   nstar <- nrow(object$est) + length(y) - object$spec$d - object$spec$D * object$spec$period
-#   npar <- length(object$model$coef[object$model$mask]) + 1
-#   
-#   # 2 * n.used * res$value
-#   old_val <- (object$model$loglik/(-0.5) - old_n.used - old_n.used * log(2 * pi))/(2*old_n.used)
-#   new_val <- fit$values[["Lik"]]
-#   
-#   old_sumlog <- (old_val*2 - log(mean(object$est$.resid^2, na.rm=TRUE)))*sum(!is.na(object$est$.resid))
-#   new_sumlog <- (fit$values[["Lik"]]*2 - log(mean(fit$resid^2, na.rm = TRUE)))*sum(!is.na(fit$resid))
-#   n_known <- sum(!is.na(resid))
-#   
-#   lik <- 0.5*(log(sum(resid^2)/n.used) + (old_sumlog + new_sumlog)/n.used)
-#   
-#   # 0.5 * (log(s2) + res[2L]/res[3L])
-#   
-#   value <- 2 * n.used * lik + n.used + n.used * log(2 * pi)
-#   object$log_lik <- -0.5*lik
-#   object$AIC <- aic <- value + 2 * sum(object$model$mask) + 2
-#   object$BIC <- aic + npar * (log(nstar) - 2)
-#   object$AICc <- aic + 2 * npar * (npar + 1) / (nstar - npar - 1)
-#   # Adjust residual variance to be unbiased
-#   fit$sigma2 <- sum(resid^2, na.rm = TRUE) / (nstar - npar + 1)
-#   
-#   object$model$model <- attr(fit, "mod")
-#   object$est <- tibble(
-#     .fitted = c(object$est$.fitted, y - fit$resid),
-#     .resid = resid, 
-#     .regression_resid = c(object$est$.regression_resid, reg_resid)
-#   )
-#   object$tsp$range[2] <- max(new_data[[index_var(new_data)]])
-#   object
-# }
+#' Extend a fitted ARIMA model with new data
+#'
+#' Applies a fitted ARIMA model's existing coefficients to a new (immediately
+#' subsequent) portion of data, updating the model's fitted values, residuals
+#' and fit statistics without re-estimating the model's coefficients. Unlike
+#' [`refit.ARIMA()`], `stream()` does not need to reprocess the entire
+#' history, only the newly provided observations, making it well suited to
+#' incrementally updating a model as new observations arrive.
+#'
+#' @inheritParams forecast.ARIMA
+#'
+#' @details
+#' The `.fitted`, `.resid` and `sigma2` values returned by `stream()` are
+#' identical to those obtained by refitting the model (with the same fixed
+#' coefficients) to the complete series. The `log_lik`, `AIC`, `AICc` and
+#' `BIC` values are also exact whenever the model does not use differencing
+#' (`d = 0` and `D = 0`). When differencing is used, these four
+#' likelihood-based statistics are only approximate, as they are
+#' reconstructed from the model's previously cached log-likelihood rather
+#' than being recomputed from the complete history. This approximation error
+#' is typically modest, but can accumulate with repeated streaming. The same
+#' four statistics are also only approximate if the model's coefficients were
+#' estimated with `method = "CSS"` (either requested directly, or as an
+#' automatic fallback when re-estimating an approximated model with exact
+#' maximum likelihood fails), as the cached log-likelihood then reflects a
+#' conditional sum-of-squares fit rather than the exact likelihood.
+#'
+#' If the model's `xreg` uses `lag()`, `stream()` correctly resolves the
+#' regressor across the boundary between existing data and `new_data`, even
+#' across repeated (chained) `stream()` calls.
+#'
+#' @examples
+#' lung_deaths_male <- as_tsibble(mdeaths)
+#'
+#' fit <- lung_deaths_male %>%
+#'   filter(index < yearmonth("1979 Jan")) %>%
+#'   model(ARIMA(value ~ 1 + pdq(1, 0, 0) + PDQ(1, 1, 0)))
+#'
+#' fit %>%
+#'   stream(lung_deaths_male %>% filter(index >= yearmonth("1979 Jan"))) %>%
+#'   report()
+#' @export
+stream.ARIMA <- function(object, new_data, specials = NULL, ...){
+  # Check position of new_data in model history
+  stream_start <- object$tsp$range[2] + default_time_units(object$tsp$interval)
+  if (unclass(new_data)[[index_var(new_data)]][1] != stream_start) {
+    cli::cli_abort("Streaming to an ARIMA model must start one step beyond the end of the trained data.")
+  }
+  
+  y <- unclass(new_data)[[measured_vars(new_data)]]
+  coef <- object$model$coef
+  
+  xreg <- specials$xreg[[1]]$xreg
+  # Drop unused rank deficient xreg
+  xreg <- xreg[,colnames(xreg) %in% names(object$model$coef), drop = FALSE]
+  
+  if (object$spec$constant) {
+    intercept <- arima_constant(
+      NROW(object$est) + NROW(new_data),
+      object$spec$d, object$spec$D,
+      object$spec$period
+    )[NROW(object$est) + seq_len(NROW(new_data))]
+    
+    xreg <- if (is.null(xreg)) {
+      matrix(intercept, dimnames = list(NULL, "constant"))
+    } else {
+      xreg <- cbind(xreg, intercept = intercept)
+    }
+  }
+  
+  if (ncol(xreg)%||%0 > 0) {
+    narma <- sum(object$model$arma[1L:4L])
+    reg_resid <- y - xreg %*% coef[narma + seq_len(ncol(xreg))]
+  } else {
+    reg_resid <- y
+  }
+  
+  mod <- object$model$model
+  
+  old_n.used <- sum(!is.na(object$est$.regression_resid)) - length(mod$Delta)
+  new_n.used <- sum(!is.na(reg_resid)) - length(mod$Delta)
+  n.used <- old_n.used + new_n.used + length(mod$Delta)
+
+  fit <- KalmanRun(reg_resid, mod, nit = -1, update = TRUE)
+  resid <- c(object$est$.resid, fit$resid)
+
+  nstar <- nrow(object$est) + length(y) - object$spec$d - object$spec$D * object$spec$period
+  npar <- length(object$model$coef[object$model$mask]) + 1
+
+  # Recover the sum-of-squares and sum-of-log-F terms underlying the
+  # previously fitted (old) and newly streamed (new) Kalman log-likelihoods,
+  # so they can be combined into an exact log-likelihood for the full series
+  # - as if it had been fitted with `stats::arima()` in a single pass.
+  old_val <- (object$model$loglik/(-0.5) - old_n.used - old_n.used * log(2 * pi))/(2*old_n.used)
+  old_sumlog <- (old_val*2 - log(mean(object$est$.resid^2, na.rm=TRUE)))*old_n.used
+  new_sumlog <- (fit$values[["Lik"]]*2 - log(mean(fit$resid^2, na.rm = TRUE)))*new_n.used
+
+  lik <- 0.5*(log(sum(resid^2, na.rm = TRUE)/n.used) + (old_sumlog + new_sumlog)/n.used)
+  value <- 2 * n.used * lik + n.used + n.used * log(2 * pi)
+
+  aic <- value + 2 * sum(object$model$mask) + 2
+  # Adjust residual variance to be unbiased
+  object$fit$sigma2 <- sum(resid^2, na.rm = TRUE) / (nstar - npar + 1)
+  object$fit$log_lik <- -0.5 * value
+  object$fit$AIC <- aic
+  object$fit$BIC <- aic + npar * (log(nstar) - 2)
+  object$fit$AICc <- aic + 2 * npar * (npar + 1) / (nstar - npar - 1)
+
+  # Keep the underlying Arima object in sync, since predict.Arima() uses
+  # `sigma2` for forecast standard errors, and the next stream() call uses
+  # `loglik` as its "old" reference for combining likelihoods.
+  object$model$loglik <- object$fit$log_lik
+  object$model$sigma2 <- object$fit$sigma2
+  object$model$aic <- object$fit$AIC
+
+  object$model$model <- attr(fit, "mod")
+  object$est <- tibble(
+    .fitted = c(object$est$.fitted, y - fit$resid),
+    .resid = resid, 
+    .regression_resid = c(object$est$.regression_resid, reg_resid)
+  )
+  object$tsp$range[2] <- max(new_data[[index_var(new_data)]])
+  object
+}
 
 #' Interpolate missing values from a fable model
 #'
