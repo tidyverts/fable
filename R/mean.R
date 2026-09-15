@@ -34,7 +34,8 @@ train_mean <- function(.data, specials, ...) {
       mean = y_mean,
       sigma = sigma,
       nobs = sum(!is.na(y)),
-      window = window_size %||% NA
+      window = window_size %||% NA,
+      time = list(start = unclass(.data)[[index_var(.data)]][[1]], interval = interval(.data))
     ),
     class = "model_mean"
   )
@@ -302,5 +303,77 @@ refit.model_mean <- function(object, new_data, specials = NULL, reestimate = FAL
   object$resid <- res
   object$sigma <- sigma
   object$nobs <- sum(!is.na(y))
+  object$time <- list(start = unclass(new_data)[[index_var(new_data)]][[1]], interval = interval(new_data))
+  object
+}
+
+#' Extend a fitted mean model with new data
+#'
+#' Applies a fitted average method model to a new (immediately subsequent)
+#' portion of data, updating the model's fitted values, residuals and `sigma2`
+#' without re-estimating the mean. Unlike [`refit.model_mean()`], `stream()`
+#' does not need to reprocess the entire history, only the newly provided
+#' observations, making it well suited to incrementally updating a model as
+#' new observations arrive.
+#'
+#' @inheritParams refit.model_mean
+#'
+#' @details
+#' For a fixed mean model, the `.fitted`, `.resid` and `sigma2` values
+#' returned by `stream()` are identical to those obtained by refitting the
+#' model (with the same fixed mean) to the complete series.
+#'
+#' For a rolling window mean model (specified with the `window()` special),
+#' the rolling mean is continued across the new observations. The fitted values
+#' and residuals are identical to those obtained by estimating the model on the
+#' complete series, and the most recent rolling mean is retained for
+#' forecasting.
+#'
+#' @examples
+#' lung_deaths_male <- as_tsibble(mdeaths)
+#'
+#' fit <- lung_deaths_male %>%
+#'   filter(index < yearmonth("1979 Jan")) %>%
+#'   model(MEAN(value))
+#'
+#' fit %>%
+#'   stream(lung_deaths_male %>% filter(index >= yearmonth("1979 Jan"))) %>%
+#'   report()
+#' @export
+stream.model_mean <- function(object, new_data, specials = NULL, ...) {
+  n <- length(object$fitted)
+  stream_start <- object$time$start + n * default_time_units(object$time$interval)
+  if (unclass(new_data)[[index_var(new_data)]][1] != stream_start) {
+    cli::cli_abort("Streaming to a mean model must start one step beyond the end of the trained data.")
+  }
+
+  y <- unclass(new_data)[[measured_vars(new_data)]]
+  h <- length(y)
+  window_size <- object$window
+
+  if (is.na(window_size)) {
+    fits <- rep(object$mean, h)
+  } else {
+    # Recover the last window of training observations (first fitted value is NA)
+    y_past <- object$fitted + object$resid
+    if (n > 1) y_past[1] <- object$fitted[2]
+    y_past <- utils::tail(y_past, window_size)
+    k <- length(y_past)
+
+    # Continue the lagged rolling mean across the boundary
+    roll <- slide_dbl(c(y_past, y), mean,
+      na.rm = TRUE,
+      .size = window_size, .partial = TRUE
+    )
+    fits <- roll[k + seq_len(h) - 1]
+    object$mean <- roll[k + h]
+  }
+  res <- y - fits
+
+  object$fitted <- c(object$fitted, fits)
+  object$resid <- c(object$resid, res)
+  object$sigma <- sd(object$resid, na.rm = TRUE)
+  object$nobs <- object$nobs + sum(!is.na(y))
+
   object
 }
