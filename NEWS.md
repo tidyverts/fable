@@ -21,6 +21,9 @@
 
 ## Bug fixes
 
+* Fixed `RW()` failing with text lags such as `lag("year")`, and `RW()` and
+  `SNAIVE()` accepting lags that are not positive (or not seasonal) after
+  rounding to an integer.
 * Fixed `CROSTON()` forecasts using the second last smoothed demand rate
   when the series ends with a non-zero value (backport from the forecast
   package).

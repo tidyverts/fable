@@ -201,4 +201,20 @@ test_that("lagwalk with bad inputs", {
       model(SNAIVE(mdeaths ~ lag(1))),
     "Non-seasonal model specification provided"
   )
+  expect_warning(
+    UKLungDeaths %>%
+      model(SNAIVE(mdeaths ~ lag(1.4))),
+    "Non-seasonal model specification provided"
+  )
+
+  expect_warning(
+    UKLungDeaths %>%
+      model(RW(mdeaths ~ lag(0))),
+    "must be a positive integer"
+  )
+})
+
+test_that("RW accepts text lags", {
+  fit <- UKLungDeaths %>% model(RW(mdeaths ~ lag("year")))
+  expect_equal(fit[[1]][[1]]$fit$lag, 12)
 })
