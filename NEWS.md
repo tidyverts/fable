@@ -21,6 +21,9 @@
 
 ## Bug fixes
 
+* Fixed `CROSTON()` forecasts using the second last smoothed demand rate
+  when the series ends with a non-zero value (backport from the forecast
+  package).
 * Fixed `ETS()` optimisation with `opt_crit` other than `"lik"` treating a
   failed recursion (such as a negative multiplicative trend) as a perfect fit
   (backport from the forecast package).

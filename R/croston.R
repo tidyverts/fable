@@ -199,8 +199,9 @@ train_croston <- function(.data, specials, opt_crit = "mse", type = "croston", .
         term = c("demand_init", "demand_par", "interval_init", "interval_par"),
         estimate = c(demand$initial, demand$param, interval$initial, interval$param)
       ),
-      .fitted = fit,
-      .resid = y - fit
+      .fitted = fit$fitted,
+      .resid = y - fit$fitted,
+      ratio = fit$ratio
     ),
     class = "croston"
   )
@@ -214,7 +215,7 @@ optim_croston <- function(par, par_est,
   if (par_est[3]) demand$param <- par[par_which[3]]
   if (par_est[4]) interval$param <- par[par_which[4]]
 
-  frc.in <- estimate_croston(..., demand = demand, interval = interval)
+  frc.in <- estimate_croston(..., demand = demand, interval = interval)$fitted
   resid <- y - frc.in
 
   if (opt_crit == "mse") {
@@ -246,8 +247,11 @@ estimate_croston <- function(y_demand, y_interval, demand, interval, non_zero, n
   }
   ratio <- coeff * fit_demand / fit_interval
 
-  # In-sample demand rate
-  rep(c(NA_real_, ratio), diff(c(0, non_zero, n)))
+  list(
+    # In-sample demand rate
+    fitted = rep(c(NA_real_, ratio), diff(c(0, non_zero, n))),
+    ratio = ratio[k]
+  )
 }
 
 #' @inherit forecast.ARIMA
@@ -266,7 +270,7 @@ estimate_croston <- function(y_demand, y_interval, demand, interval, non_zero, n
 #' @export
 forecast.croston <- function(object, new_data, specials = NULL, ...) {
   h <- nrow(new_data)
-  fc <- rep(object$.fitted[length(object$.fitted)], h)
+  fc <- rep(object$ratio, h)
   distributional::dist_degenerate(fc)
 }
 
