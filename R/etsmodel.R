@@ -48,7 +48,7 @@ etsmodel <- function(y, m, errortype, trendtype, seasontype, damped,
   if (!check.param(alpha, beta, gamma, phi, lower, upper, bounds, m)) {
     cli::cli_abort(sprintf(
       "Parameters out of range for ETS(%s,%s%s,%s) model",
-      errortype, trendtype, ifelse(damped, "d", ""), seasontype
+      errortype, trendtype, if (damped) "d" else "", seasontype
     ))
   }
 
@@ -64,16 +64,15 @@ etsmodel <- function(y, m, errortype, trendtype, seasontype, damped,
     cli::cli_abort("Not enough data to estimate this ETS model.")
   }
 
-  env <- etsTargetFunctionInit(
+  env <- etsTargetFunctionInitWrapper(
     par = par, y = y, nstate = nstate, errortype = errortype, trendtype = trendtype,
     seasontype = seasontype, damped = damped, par.noopt = par.noopt, lowerb = lower, upperb = upper,
     opt.crit = opt.crit, nmse = as.integer(nmse), bounds = bounds, m = m, pnames = names(par), pnames2 = names(par.noopt)
   )
 
-  fred <- .Call(
-    "etsNelderMead", par, env, -Inf,
-    sqrt(.Machine$double.eps), 1.0, 0.5, 2.0, trace, maxit,
-    PACKAGE = "fable"
+  fred <- etsNelderMead(
+    par, env, -Inf,
+    sqrt(.Machine$double.eps), 1.0, 0.5, 2.0, trace, maxit
   )
 
   fit.par <- fred$par
@@ -127,7 +126,7 @@ estimate_ets <- function(y, m, init.state, errortype, trendtype, seasontype,
     states_cn <- c(states_cn, "b")
   }
   if (seasontype != "N") {
-    states_cn <- c(states_cn, paste("s", 1:m, sep = ""))
+    states_cn <- c(states_cn, paste0("s", seq_len(m)))
   }
   colnames(states) <- states_cn
 
@@ -139,16 +138,16 @@ estimate_ets <- function(y, m, init.state, errortype, trendtype, seasontype,
     gamma = unname(gamma), phi = unname(phi), init.state
   )
 
-  return(list(
+  list(
     loglik = -0.5 * e$lik, aic = aic, bic = bic, aicc = aicc,
     amse = e$amse, mae = mae,
     residuals = e$e, fitted = e$fits,
     states = states, par = fit.par
-  ))
+  )
 }
 
 
-etsTargetFunctionInit <- function(par, y, nstate, errortype, trendtype, seasontype, damped, par.noopt, lowerb, upperb,
+etsTargetFunctionInitWrapper <- function(par, y, nstate, errortype, trendtype, seasontype, damped, par.noopt, lowerb, upperb,
                                   opt.crit, nmse, bounds, m, pnames, pnames2) {
   names(par) <- pnames
   names(par.noopt) <- pnames2
@@ -232,19 +231,15 @@ etsTargetFunctionInit <- function(par, y, nstate, errortype, trendtype, seasonty
     gamma <- 0
   }
 
-  env <- new.env()
-
-  res <- .Call(
-    "etsTargetFunctionInit",
+  etsTargetFunctionInit(
     y = y, nstate = nstate, errortype = switch(errortype, "A" = 1, "M" = 2),
     trendtype = switch(trendtype, "N" = 0, "A" = 1, "M" = 2), seasontype = switch(seasontype, "N" = 0, "A" = 1, "M" = 2),
-    damped = damped, lowerb = lowerb, upperb = upperb,
-    opt.crit = opt.crit, nmse = as.integer(nmse), bounds = bounds, m = m,
-    optAlpha, optBeta, optGamma, optPhi,
-    givenAlpha, givenBeta, givenGamma, givenPhi,
-    alpha, beta, gamma, phi, env, PACKAGE = "fable"
+    lower = lowerb, upper = upperb,
+    opt_crit = opt.crit, nmse = as.integer(nmse), bounds = bounds, m = m,
+    optAlpha = optAlpha, optBeta = optBeta, optGamma = optGamma, optPhi = optPhi,
+    givenAlpha = givenAlpha, givenBeta = givenBeta, givenGamma = givenGamma, givenPhi = givenPhi,
+    alpha = alpha, beta = beta, gamma = gamma, phi = phi, rho = new.env(parent = emptyenv())
   )
-  res
 }
 
 initparam <- function(alpha, beta, gamma, phi, trendtype, seasontype, damped, lower, upper, m, bounds) {
@@ -298,7 +293,7 @@ initparam <- function(alpha, beta, gamma, phi, trendtype, seasontype, damped, lo
     par <- c(par, phi = phi)
   }
 
-  return(par)
+  par
 }
 
 check.param <- function(alpha, beta, gamma, phi, lower, upper, bounds, m) {
@@ -329,7 +324,7 @@ check.param <- function(alpha, beta, gamma, phi, lower, upper, bounds, m) {
       return(0)
     }
   }
-  return(1)
+  1
 }
 
 initstate <- function(y, m, trendtype, seasontype) {
@@ -347,10 +342,10 @@ initstate <- function(y, m, trendtype, seasontype) {
       if (anyNA(fit$coefficients)) {
         cli::cli_abort("Not enough non-missing observations to estimate initial states.")
       }
-      trend_line <- fit$coef[1] + fit$coef[2] * trendy
+      trend_line <- fit$coefficients[1] + fit$coefficients[2] * trendy
       # Fitted seasonal component (defined everywhere, unlike y - trend_line
       # which is NA wherever y is missing).
-      fitted_seasonal <- as.numeric(fouriery %*% fit$coef[-(1:2)])
+      fitted_seasonal <- as.numeric(fouriery %*% fit$coefficients[-(1:2)])
       if (seasontype == "A") {
         seasonal <- y - trend_line
         seasonal[is.na(y)] <- fitted_seasonal[is.na(y)]
@@ -365,7 +360,7 @@ initstate <- function(y, m, trendtype, seasontype) {
     }
 
     init.seas <- rev(y.d$seasonal[2:m]) # initial seasonal component
-    names(init.seas) <- paste("s", 0:(m - 2), sep = "")
+    names(init.seas) <- paste0("s", 0:(m - 2))
     # Seasonally adjusted data
     if (seasontype == "A") {
       y.sa <- y - as.numeric(y.d$seasonal)
@@ -406,8 +401,8 @@ initstate <- function(y, m, trendtype, seasontype) {
   {
     fit <- stats::lsfit(seq_len(maxn)[ok], y0[ok])
     if (trendtype == "A") {
-      l0 <- fit$coef[1]
-      b0 <- fit$coef[2]
+      l0 <- fit$coefficients[1]
+      b0 <- fit$coefficients[2]
       # If error type is "M", then we don't want l0+b0=0.
       # So perturb just in case.
       if (abs(l0 + b0) < 1e-8) {
@@ -417,11 +412,11 @@ initstate <- function(y, m, trendtype, seasontype) {
     }
     else # if(trendtype=="M")
     {
-      l0 <- fit$coef[1] + fit$coef[2] # First fitted value
+      l0 <- fit$coefficients[1] + fit$coefficients[2] # First fitted value
       if (abs(l0) < 1e-8) {
         l0 <- 1e-7
       }
-      b0 <- (fit$coef[1] + 2 * fit$coef[2]) / l0 # Ratio of first two fitted values
+      b0 <- (fit$coefficients[1] + 2 * fit$coefficients[2]) / l0 # Ratio of first two fitted values
       l0 <- l0 / b0 # First fitted value divided by b0
       if (abs(b0) > 1e10) { # Avoid infinite slopes
         b0 <- sign(b0) * 1e10
@@ -438,7 +433,7 @@ initstate <- function(y, m, trendtype, seasontype) {
   if (!is.null(b0)) {
     names(b0) <- "b"
   }
-  return(c(l0, b0, init.seas))
+  c(l0, b0, init.seas)
 }
 
 # The first `nb` observations of `y` are a burn-in window, whose fitted
@@ -448,9 +443,7 @@ pegelsresid.C <- function(y, m, init.state, errortype, trendtype, seasontype, da
   n <- length(y)
   p <- length(init.state)
   x <- numeric(p * (n + 1))
-  x[1:p] <- init.state
-  e <- fits <- numeric(n)
-  lik <- 0
+  x[seq_len(p)] <- init.state
   if (!damped) {
     phi <- 1
   }
@@ -461,12 +454,9 @@ pegelsresid.C <- function(y, m, init.state, errortype, trendtype, seasontype, da
     gamma <- 0
   }
 
-  amse <- numeric(nmse)
-
-  Cout <- .C(
-    "etscalc",
+  Cout <- .Call(
+    etscalc,
     as.double(y),
-    as.integer(n),
     as.double(x),
     as.integer(m),
     as.integer(switch(errortype, "A" = 1, "M" = 2)),
@@ -476,17 +466,14 @@ pegelsresid.C <- function(y, m, init.state, errortype, trendtype, seasontype, da
     as.double(beta),
     as.double(gamma),
     as.double(phi),
-    as.double(e),
-    as.double(fits),
-    as.double(lik),
-    as.double(amse),
     as.integer(nmse),
-    as.integer(nb),
-    NAOK = TRUE,
-    PACKAGE = "fable"
+    as.integer(nb)
   )
 
-  return(list(lik = Cout[[14]], amse = Cout[[15]], e = Cout[[12]], fits = Cout[[13]], states = matrix(Cout[[3]], nrow = n + 1, ncol = p, byrow = TRUE)))
+  list(
+    lik = Cout$lik, amse = Cout$amse, e = Cout$e, fits = Cout$fitted,
+    states = matrix(Cout$states, nrow = n + 1, ncol = p, byrow = TRUE)
+  )
 }
 
 admissible <- function(alpha, beta, gamma, phi, m) {
@@ -532,7 +519,7 @@ admissible <- function(alpha, beta, gamma, phi, m) {
       }
     }
   # Passed all tests
-  return(1)
+  1
 }
 
 ets_fc_class1 <- function(h, last.state, trendtype, seasontype, damped, m, sigma2, par) {
@@ -573,7 +560,7 @@ ets_fc_class1 <- function(h, last.state, trendtype, seasontype, damped, m, sigma
   Fj <- diag(p)
   cj <- numeric(h - 1)
   if (h > 1) {
-    for (i in 1:(h - 1))
+    for (i in seq_len(h - 1))
     {
       mu[i] <- .H %*% Fj %*% last.state
       cj[i] <- .H %*% Fj %*% .G
@@ -587,7 +574,7 @@ ets_fc_class1 <- function(h, last.state, trendtype, seasontype, damped, m, sigma
   }
   mu[h] <- .H %*% Fj %*% last.state
 
-  return(list(mu = mu, var = var, cj = cj))
+  list(mu = mu, var = var, cj = cj)
 }
 
 ets_fc_class2 <- function(h, last.state, trendtype, seasontype, damped, m, sigma2, par) {
@@ -600,7 +587,7 @@ ets_fc_class2 <- function(h, last.state, trendtype, seasontype, damped, m, sigma
     }
   }
   var <- (1 + sigma2) * theta - tmp$mu^2
-  return(list(mu = tmp$mu, var = var))
+  list(mu = tmp$mu, var = var)
 }
 
 ets_fc_class3 <- function(h, last.state, trendtype, seasontype, damped, m, sigma2, par) {
@@ -612,7 +599,7 @@ ets_fc_class3 <- function(h, last.state, trendtype, seasontype, damped, m, sigma
     G1 <- par["alpha"]
   }
   else {
-    F1 <- rbind(c(1, 1), c(0, ifelse(damped, par["phi"], 1)))
+    F1 <- rbind(c(1, 1), c(0, if (damped) par["phi"] else 1))
     G1 <- rbind(c(par["alpha"], par["alpha"]), c(par["beta"], par["beta"]))
   }
   F2 <- rbind(c(rep(0, m - 1), 1), cbind(diag(m - 1), rep(0, m - 1)))
@@ -626,7 +613,7 @@ ets_fc_class3 <- function(h, last.state, trendtype, seasontype, damped, m, sigma
   G21 <- G2 %x% G1
   K <- (G2 %x% F1) + (F2 %x% G1)
   mu <- var <- numeric(h)
-  for (i in 1:h)
+  for (i in seq_len(h))
   {
     mu[i] <- H1 %*% Mh %*% t(H2)
     var[i] <- (1 + sigma2) * H21 %*% Vh %*% t(H21) + sigma2 * mu[i]^2
@@ -635,5 +622,5 @@ ets_fc_class3 <- function(h, last.state, trendtype, seasontype, damped, m, sigma
       K %*% (Vh + vecMh %*% t(vecMh)) %*% t(K) + sigma2 * G21 %*% (3 * Vh + 2 * vecMh %*% t(vecMh)) %*% t(G21))
     Mh <- F1 %*% Mh %*% t(F2) + G1 %*% Mh %*% t(G2) * sigma2
   }
-  return(list(mu = mu, var = var))
+  list(mu = mu, var = var)
 }

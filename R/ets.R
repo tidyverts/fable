@@ -391,8 +391,8 @@ generate.ETS <- function(x, new_data, specials, bootstrap = FALSE, ...) {
   
   result <- transmute(
     group_by_key(new_data),
-    ".sim" := .C(
-      "etssimulate",
+    ".sim" := .Call(
+      etssimulate,
       as.double(initstate),
       as.integer(x$spec$period),
       as.integer(switch(x$spec$errortype, "A" = 1, "M" = 2)),
@@ -403,10 +403,8 @@ generate.ETS <- function(x, new_data, specials, bootstrap = FALSE, ...) {
       as.double(ifelse(x$spec$seasontype == "N", 0, get_par("gamma"))),
       as.double(ifelse(!x$spec$damped, 1, get_par("phi"))),
       as.integer(length(!!sym(".innov"))),
-      as.double(numeric(length(!!sym(".innov")))),
-      as.double(!!sym(".innov")),
-      PACKAGE = "fable"
-    )[[11]])
+      as.double(!!sym(".innov"))
+    ))
   
   if (is.na(result[[".sim"]][1])) {
     cli::cli_abort("Problem with multiplicative damped trend")

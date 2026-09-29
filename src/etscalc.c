@@ -1,25 +1,31 @@
 #include <math.h>
+#include <string.h>
 #include <R.h>
 #include <Rinternals.h>
 
 #define NONE 0
 #define ADD 1
 #define MULT 2
-#define DAMPED 1
 #define TOL 1.0e-10
 #define HUGEN 1.0e10
+#define MAX_PERIOD 24
+#define MAX_NMSE 30
 
 // Functions called by R
-void etscalc(double *, int *, double *, int *, int *, int *, int *,
-  double *, double *, double *, double *, double *, double *, double *, double *, int*, int*);
-void etssimulate(double *, int *, int *, int *, int *,
-  double *, double *, double *, double *, int *, double *, double *);
-void etsforecast(double *, int *, int *, int *, double *, int *, double *);
+SEXP etscalc(SEXP y, SEXP x, SEXP m, SEXP error, SEXP trend, SEXP season,
+  SEXP alpha, SEXP beta, SEXP gamma, SEXP phi, SEXP nmse, SEXP nb);
+SEXP etssimulate(SEXP x, SEXP m, SEXP error, SEXP trend, SEXP season,
+  SEXP alpha, SEXP beta, SEXP gamma, SEXP phi, SEXP h, SEXP e);
 
 // Internal functions
-void forecast(double, double, double *, int, int, int, double, double *, int);
-void update(double *, double *, double *, double *, double *, double *, int, int, int,
-  double, double, double, double, double);
+static void forecast(double l, double b, const double *s, int m, int trend,
+  int season, double phi, double *f, int h);
+static void update(double oldl, double *l, double oldb, double *b,
+  const double *olds, double *s, int m, int trend, int season,
+  double alpha, double beta, double gamma, double phi, double y);
+void etscalc_internal(const double *y, int n, const double *x_init, double *states, int m,
+  int error, int trend, int season, double alpha, double beta, double gamma, double phi,
+  double *e, double *fits, double *lik, double *amse, int nmse, int nb);
 
 // ******************************************************************
 
@@ -29,301 +35,302 @@ void update(double *, double *, double *, double *, double *, double *, int, int
 // (streamed) from a stored state, with `nb` lookback observations providing
 // the multi-step forecasts that cross into the new data, without recounting
 // errors that were already scored when the earlier data was fitted.
-void etscalc(double *y, int *n, double *x, int *m, int *error, int *trend, int *season,
-  double *alpha, double *beta, double *gamma, double *phi, double *e,
-  double *fits,
-  double *lik, double *amse, int *nmse, int *nb)
-{
-  int i, j, nstates;
-  double oldl, l, oldb, b, olds[24], s[24], f[30], lik2, tmp, denom[30];
+//
+// The state path is written to `states` (row i+1 for observation i), unless
+// `states` is NULL.
+void etscalc_internal(const double *y, int n, const double *x_init, double *states, int m,
+                      int error, int trend, int season, double alpha, double beta, double gamma,
+                      double phi, double *e, double *fits, double *lik, double *amse, int nmse,
+                      int nb) {
+  double oldl, l, oldb = 0.0, b = 0.0, olds[MAX_PERIOD], s[MAX_PERIOD],
+      f[MAX_NMSE], lik2, tmp, denom[MAX_NMSE];
 
-  if((*m > 24) & (*season > NONE))
+  if (m > MAX_PERIOD && season > NONE) {
+    *lik = NA_REAL;
     return;
-  else if(*m < 1)
-    *m = 1;
+  }
+  if (m < 1)
+    m = 1;
 
-  if(*nmse > 30)
-    *nmse = 30;
-  if(*nb < 0)
-    *nb = 0;
+  if (nmse > MAX_NMSE)
+    nmse = MAX_NMSE;
+  if (nb < 0)
+    nb = 0;
 
-  nstates = (*m)*(*season>NONE) + 1 + (*trend>NONE);
+  const int nstates = m * (season > NONE) + 1 + (trend > NONE);
 
   // Copy initial state components
-  l = x[0];
-  if(*trend > NONE)
-    b = x[1];
-  if(*season > NONE)
-  {
-    for(j=0; j<(*m); j++)
-      s[j] = x[(*trend>NONE)+j+1];
-  }
+  l = x_init[0];
+  if (trend > NONE)
+    b = x_init[1];
+  if (season > NONE)
+    memcpy(s, &x_init[(trend > NONE) + 1], m * sizeof(double));
 
   *lik = 0.0;
   lik2 = 0.0;
-  for(j=0; j<(*nmse); j++)
-  {
+  for (int j = 0; j < nmse; j++) {
     amse[j] = 0.0;
     denom[j] = 0.0;
   }
 
-  for (i=0; i<(*n); i++)
-  {
+  for (int i = 0; i < n; i++) {
     // COPY PREVIOUS STATE
     oldl = l;
-    if(*trend > NONE)
+    if (trend > NONE)
       oldb = b;
-    if(*season > NONE)
-    {
-      for(j=0; j<(*m); j++)
-        olds[j] = s[j];
-    }
+    if (season > NONE)
+      memcpy(olds, s, m * sizeof(double));
+
     // ONE STEP FORECAST
-    forecast(oldl, oldb, olds, *m, *trend, *season, *phi, f, *nmse);
+    forecast(oldl, oldb, olds, m, trend, season, phi, f, nmse);
     fits[i] = f[0];
-    if(R_IsNA(fits[i]))
-    {
+    if (R_IsNA(fits[i])) {
       *lik = NA_REAL;
       return;
     }
-    if(R_IsNA(y[i]))
+
+    if (R_IsNA(y[i]))
       e[i] = NA_REAL;
-    else if(*error == ADD)
+    else if (error == ADD)
       e[i] = y[i] - fits[i];
     else
-      e[i] = (y[i] - fits[i])/fits[i];
-    for(j=0; j<(*nmse); j++)
-    {
-      if(i+j<(*n) && i+j>=(*nb))
-      {
+      e[i] = (y[i] - fits[i]) / fits[i];
+
+    for (int j = 0; j < nmse; j++) {
+      if (i + j < n && i + j >= nb) {
         denom[j] += 1.0;
-        if(R_IsNA(y[i+j]))
+        if (R_IsNA(y[i + j]))
           tmp = 0.0;
         else
-          tmp = y[i+j]-f[j];
-        amse[j] = (amse[j] * (denom[j]-1.0) + (tmp*tmp)) / denom[j];
+          tmp = y[i + j] - f[j];
+        amse[j] = (amse[j] * (denom[j] - 1.0) + (tmp * tmp)) / denom[j];
       }
     }
 
     // UPDATE STATE
-    update(&oldl, &l, &oldb, &b, olds, s, *m, *trend, *season, *alpha, *beta, *gamma, *phi, y[i]);
+    update(oldl, &l, oldb, &b, olds, s, m, trend, season, alpha, beta, gamma, phi, y[i]);
 
     // STORE NEW STATE
-    x[nstates*(i+1)] = l;
-    if(*trend > NONE)
-      x[nstates*(i+1)+1] = b;
-    if(*season > NONE)
-    {
-       for(j=0; j<(*m); j++)
-        x[(*trend>NONE)+nstates*(i+1)+j+1] = s[j];
+    if (states != NULL) {
+      states[nstates * (i + 1)] = l;
+      if (trend > NONE)
+        states[nstates * (i + 1) + 1] = b;
+      if (season > NONE)
+        memcpy(&states[(trend > NONE) + nstates * (i + 1) + 1], s, m * sizeof(double));
     }
-    if(i < (*nb))
+    if (i < nb)
       continue;
-    if(!R_IsNA(e[i]))
-      *lik = *lik + e[i]*e[i];
-    lik2 += log(fabs(f[0]));
+    if (!R_IsNA(e[i]))
+      *lik += e[i] * e[i];
+    if (error == MULT)
+      lik2 += log(fabs(f[0]));
   }
-  *lik = (*n - *nb) * log(*lik);
-  if(*error == MULT)
-    *lik += 2*lik2;
+  *lik = (n - nb) * log(*lik);
+  if (error == MULT)
+    *lik += 2 * lik2;
+}
+
+SEXP etscalc(SEXP y, SEXP x, SEXP m, SEXP error, SEXP trend, SEXP season,
+             SEXP alpha, SEXP beta, SEXP gamma, SEXP phi, SEXP nmse, SEXP nb) {
+  const int n_val = LENGTH(y);
+  int nmse_val = Rf_asInteger(nmse);
+
+  if (nmse_val > MAX_NMSE)
+    nmse_val = MAX_NMSE;
+
+  SEXP x_out = PROTECT(Rf_duplicate(x));
+  SEXP e_out = PROTECT(Rf_allocVector(REALSXP, n_val));
+  SEXP fits_out = PROTECT(Rf_allocVector(REALSXP, n_val));
+  SEXP amse_out = PROTECT(Rf_allocVector(REALSXP, nmse_val));
+
+  double lik;
+
+  etscalc_internal(REAL_RO(y), n_val, REAL_RO(x), REAL(x_out), Rf_asInteger(m),
+                   Rf_asInteger(error), Rf_asInteger(trend), Rf_asInteger(season),
+                   Rf_asReal(alpha), Rf_asReal(beta), Rf_asReal(gamma), Rf_asReal(phi),
+                   REAL(e_out), REAL(fits_out), &lik, REAL(amse_out), nmse_val,
+                   Rf_asInteger(nb));
+
+  const char *names[] = {"e", "fitted", "lik", "amse", "states", ""};
+  SEXP result = PROTECT(Rf_mkNamed(VECSXP, names));
+  SET_VECTOR_ELT(result, 0, e_out);
+  SET_VECTOR_ELT(result, 1, fits_out);
+  SET_VECTOR_ELT(result, 2, Rf_ScalarReal(lik));
+  SET_VECTOR_ELT(result, 3, amse_out);
+  SET_VECTOR_ELT(result, 4, x_out);
+
+  UNPROTECT(5);
+  return result;
 }
 
 // *********************************************************************************
 
-void etssimulate(double *x, int *m, int *error, int *trend, int *season,
-  double *alpha, double *beta, double *gamma, double *phi, int *h, double *y, double *e)
+SEXP etssimulate(SEXP x, SEXP m, SEXP error, SEXP trend, SEXP season,
+                 SEXP alpha, SEXP beta, SEXP gamma, SEXP phi, SEXP h, SEXP e) {
+  int m_val = Rf_asInteger(m);
+  const int error_val = Rf_asInteger(error);
+  const int trend_val = Rf_asInteger(trend);
+  const int season_val = Rf_asInteger(season);
+  const double alpha_val = Rf_asReal(alpha);
+  const double beta_val = Rf_asReal(beta);
+  const double gamma_val = Rf_asReal(gamma);
+  const double phi_val = Rf_asReal(phi);
+  const int h_val = Rf_asInteger(h);
 
-{
-  int i, j, nstates;
-  double oldl, l, oldb, b, olds[24], s[24], f[10];
+  SEXP result = PROTECT(Rf_allocVector(REALSXP, h_val));
+  double *y = REAL(result);
 
-  if((*m > 24) & (*season > NONE))
-    return;
-	else if(*m < 1)
-		*m = 1;
-
-  nstates = (*m)*(*season>NONE) + 1 + (*trend>NONE);
-
-  // Copy initial state components
-  l = x[0];
-  if(*trend > NONE)
-    b = x[1];
-  if(*season > NONE)
-  {
-    for(j=0; j<(*m); j++)
-      s[j] = x[(*trend>NONE)+j+1];
+  if (m_val > MAX_PERIOD && season_val > NONE) {
+    for (int k = 0; k < h_val; k++)
+      y[k] = NA_REAL;
+    UNPROTECT(1);
+    return result;
   }
+  if (m_val < 1)
+    m_val = 1;
 
-  for (i=0; i<(*h); i++)
-  {
-    // COPY PREVIOUS STATE
+  const double *e_ptr = REAL_RO(e);
+  const double *x_ptr = REAL_RO(x);
+
+  double l = x_ptr[0];
+  double b = 0.0;
+  if (trend_val > NONE)
+    b = x_ptr[1];
+
+  double s[MAX_PERIOD];
+  if (season_val > NONE)
+    memcpy(s, &x_ptr[(trend_val > NONE) + 1], m_val * sizeof(double));
+
+  double oldl, oldb = 0.0, olds[MAX_PERIOD], f[1];
+
+  for (int i = 0; i < h_val; i++) {
     oldl = l;
-    if(*trend > NONE)
+    if (trend_val > NONE)
       oldb = b;
-    if(*season > NONE)
-    {
-      for(j=0; j<(*m); j++)
-        olds[j] = s[j];
-    }
+    if (season_val > NONE)
+      memcpy(olds, s, m_val * sizeof(double));
 
     // ONE STEP FORECAST
-    forecast(oldl, oldb, olds, *m, *trend, *season, *phi, f, 1);
-    if(R_IsNA(f[0]))
-    {
-      y[0] = NA_REAL;
-      return;
+    forecast(oldl, oldb, olds, m_val, trend_val, season_val, phi_val, f, 1);
+    if (R_IsNA(f[0])) {
+      for (int k = 0; k < h_val; k++)
+        y[k] = NA_REAL;
+      UNPROTECT(1);
+      return result;
     }
-    if(*error == ADD)
-      y[i] = f[0] + e[i];
+
+    if (error_val == ADD)
+      y[i] = f[0] + e_ptr[i];
     else
-      y[i] = f[0]*(1.0+e[i]);
+      y[i] = f[0] * (1.0 + e_ptr[i]);
 
     // UPDATE STATE
-    update(&oldl, &l, &oldb, &b, olds, s, *m, *trend, *season, *alpha, *beta, *gamma, *phi, y[i]);
-  }
-}
-
-// *********************************************************************************
-
-void etsforecast(double *x, int *m, int *trend, int *season, double *phi, int *h, double *f)
-
-{
-  int j;
-  double l, b, s[24];
-
-  if((*m > 24) & (*season > NONE))
-    return;
-  else if(*m < 1)
-    *m = 1;
-
-  // Copy initial state components
-  l = x[0];
-  	b = 0.0;
-  if(*trend > NONE)
-    b = x[1];
-  if(*season > NONE)
-  {
-    for(j=0; j<(*m); j++)
-      s[j] = x[(*trend>NONE)+j+1];
+    update(oldl, &l, oldb, &b, olds, s, m_val, trend_val, season_val,
+           alpha_val, beta_val, gamma_val, phi_val, y[i]);
   }
 
-  // Compute forecasts
-  forecast(l, b, s, *m, *trend, *season, *phi, f, *h);
+  UNPROTECT(1);
+  return result;
 }
 
 // *****************************************************************
 
-void forecast(double l, double b, double *s, int m, int trend, int season, double phi, double *f, int h)
-{
-  int i,j;
-  double phistar;
-
-  phistar = phi;
+static void forecast(double l, double b, const double *s, int m, int trend,
+                     int season, double phi, double *f, int h) {
+  double phistar = phi, phipow = phi;
+  int j = m - 1;
 
   // FORECASTS
-  for(i=0; i<h; i++)
-  {
-    if(trend == NONE)
+  for (int i = 0; i < h; i++) {
+    if (trend == NONE)
       f[i] = l;
-    else if(trend == ADD)
-      f[i] = l + phistar*b;
-    else if(b<0)
+    else if (trend == ADD)
+      f[i] = l + phistar * b;
+    else if (b < 0)
       f[i] = NA_REAL;
     else
-      f[i] = l * pow(b,phistar);
-    j = m-1-i;
-    while(j < 0)
-       j += m;
-    if(season == ADD)
-      f[i] = f[i] + s[j];
-    else if(season == MULT)
-      f[i] = f[i] * s[j];
-    if(i < (h-1))
-    {
-      if(fabs(phi-1.0) < TOL)
-        phistar = phistar + 1.0;
-      else
-        phistar = phistar + pow(phi, (double) (i+2));
+      f[i] = l * pow(b, phistar);
+    if (season == ADD)
+      f[i] += s[j];
+    else if (season == MULT)
+      f[i] *= s[j];
+    if (--j < 0)
+      j = m - 1;
+    if (i < (h - 1)) {
+      if (fabs(phi - 1.0) < TOL) {
+        phistar += 1.0;
+      } else {
+        phipow *= phi;
+        phistar += phipow;
+      }
     }
   }
 }
 
 // *****************************************************************
 
-void update(double *oldl, double *l, double *oldb, double *b, double *olds, double *s, int m, int trend, int season,
-  double alpha, double beta, double gamma, double phi, double y)
-{
-  int j;
+static void update(double oldl, double *l, double oldb, double *b,
+                   const double *olds, double *s, int m, int trend, int season,
+                   double alpha, double beta, double gamma, double phi,
+                   double y) {
   double q, p, r, t, phib;
 
   // NEW LEVEL
-  if(trend==NONE)
-  {
-    q = *oldl;         // l(t-1)
-    phib = 0;
+  if (trend == NONE) {
+    q = oldl; // l(t-1)
+    phib = 0.0;
+  } else if (trend == ADD) {
+    phib = phi * oldb;
+    q = oldl + phib; // l(t-1) + phi*b(t-1)
+  } else if (fabs(phi - 1.0) < TOL) {
+    phib = oldb;
+    q = oldl * oldb; // l(t-1)*b(t-1)
+  } else {
+    phib = pow(oldb, phi);
+    q = oldl * phib; // l(t-1)*b(t-1)^phi
   }
-  else if(trend==ADD)
-  {
-    phib = phi*(*oldb);
-    q = *oldl + phib;      // l(t-1) + phi*b(t-1)
-  }
-  else if(fabs(phi-1.0) < TOL)
-  {
-    phib = *oldb;
-    q = *oldl * (*oldb);     // l(t-1)*b(t-1)
-  }
-  else
-  {
-    phib = pow(*oldb,phi);
-    q = (*oldl) * phib;      // l(t-1)*b(t-1)^phi
-  }
-  if(R_IsNA(y))
+  if (R_IsNA(y))
     p = q;
-  else if(season==NONE)
+  else if (season == NONE)
     p = y;
-  else if(season==ADD)
-    p = y - olds[m-1];     // y[t] - s[t-m]
-  else
-  {
-    if(fabs(olds[m-1]) < TOL)
+  else if (season == ADD)
+    p = y - olds[m - 1]; // y[t] - s[t-m]
+  else {
+    if (fabs(olds[m - 1]) < TOL)
       p = HUGEN;
     else
-      p = y / olds[m-1];   // y[t]/s[t-m]
+      p = y / olds[m - 1]; // y[t]/s[t-m]
   }
-  *l = q + alpha*(p-q);
+  *l = q + alpha * (p - q);
 
   // NEW GROWTH
-  if(trend > NONE)
-  {
-    if(trend==ADD)
-       r = (*l) - (*oldl);     // l[t]-l[t-1]
-    else //if(trend==MULT)
-    {
-      if(fabs(*oldl) < TOL)
+  if (trend > NONE) {
+    if (trend == ADD)
+      r = (*l) - oldl; // l[t]-l[t-1]
+    else { // if(trend==MULT)
+      if (fabs(oldl) < TOL)
         r = HUGEN;
       else
-        r = (*l)/(*oldl);  // l[t]/l[t-1]
+        r = (*l) / oldl; // l[t]/l[t-1]
     }
-    *b = phib + (beta/alpha)*(r - phib);   // b[t] = phi*b[t-1] + beta*(r - phi*b[t-1])
-                         // b[t] = b[t-1]^phi + beta*(r - b[t-1]^phi)
+    // b[t] = phi*b[t-1] + beta*(r - phi*b[t-1])
+    // b[t] = b[t-1]^phi + beta*(r - b[t-1]^phi)
+    *b = phib + (beta / alpha) * (r - phib);
   }
 
   // NEW SEASON
-  if(season > NONE)
-  {
-    if(R_IsNA(y))
-      t = olds[m-1];
-    else if(season==ADD)
+  if (season > NONE) {
+    if (R_IsNA(y))
+      t = olds[m - 1];
+    else if (season == ADD)
       t = y - q;
-    else //if(season==MULT)
-    {
-      if(fabs(q) < TOL)
+    else { // if(season==MULT)
+      if (fabs(q) < TOL)
         t = HUGEN;
       else
         t = y / q;
     }
-    s[0] = olds[m-1] + gamma*(t - olds[m-1]); // s[t] = s[t-m] + gamma*(t - s[t-m])
-    for(j=1; j<m; j++)
-      s[j] = olds[j-1];           // s[t] = s[t]
+    s[0] = olds[m - 1] + gamma * (t - olds[m - 1]); // s[t] = s[t-m] + gamma*(t - s[t-m])
+    memcpy(&s[1], olds, (m - 1) * sizeof(double));
   }
 }

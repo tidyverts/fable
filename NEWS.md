@@ -15,9 +15,15 @@
   `identification = "ic_search"` (#446).
 * `refit(<AR>, reestimate = FALSE)` now retains the standard errors of the
   fixed coefficients.
+* Faster `ETS()` estimation, by checking the admissibility of seasonal model
+  parameters in compiled code and not storing the state path while optimising
+  (backport from the forecast package).
 
 ## Bug fixes
 
+* Fixed `ETS()` optimisation with `opt_crit` other than `"lik"` treating a
+  failed recursion (such as a negative multiplicative trend) as a perfect fit
+  (backport from the forecast package).
 * Fixed `refit(<TSLM>, reestimate = FALSE)` not updating the residual degrees
   of freedom when the new data has a different length to the training data,
   giving incorrect `sigma2`, standard errors and forecast intervals.
