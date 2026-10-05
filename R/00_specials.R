@@ -169,7 +169,7 @@ common_xregs <- list(
   trend = function(knots = NULL, origin = NULL) {
     if (is.null(origin)) {
       if (is.null(self$origin)) {
-        self$origin <- self$data[[index_var(self$data)]][[1]]
+        self$origin <- self$data[[index_var(self$data)]][1]
       }
       origin <- self$origin
     }
@@ -181,7 +181,7 @@ common_xregs <- list(
   fourier = function(period = NULL, K, origin = NULL) {
     if (is.null(origin)) {
       if (is.null(self$origin)) {
-        self$origin <- self$data[[index_var(self$data)]][[1]]
+        self$origin <- self$data[[index_var(self$data)]][1]
       }
       origin <- self$origin
     }
