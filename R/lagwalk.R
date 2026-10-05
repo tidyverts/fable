@@ -52,7 +52,7 @@ train_lagwalk <- function(.data, specials, ...) {
       sigma2 = sigma^2,
       .fitted = fitted,
       .resid = res,
-      time = list(start = unclass(.data)[[index_var(.data)]][[1]], interval = interval(.data)),
+      time = list(start = unclass(.data)[[index_var(.data)]][1], interval = interval(.data)),
       future = y[c(rep(NA, max(0, lag - n)), seq_len(min(n, lag)) + n - min(n, lag))]
     ),
     class = "RW"

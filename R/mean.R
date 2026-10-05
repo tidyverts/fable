@@ -35,7 +35,7 @@ train_mean <- function(.data, specials, ...) {
       sigma = sigma,
       nobs = sum(!is.na(y)),
       window = window_size %||% NA,
-      time = list(start = unclass(.data)[[index_var(.data)]][[1]], interval = interval(.data))
+      time = list(start = unclass(.data)[[index_var(.data)]][1], interval = interval(.data))
     ),
     class = "model_mean"
   )
@@ -303,7 +303,7 @@ refit.model_mean <- function(object, new_data, specials = NULL, reestimate = FAL
   object$resid <- res
   object$sigma <- sigma
   object$nobs <- sum(!is.na(y))
-  object$time <- list(start = unclass(new_data)[[index_var(new_data)]][[1]], interval = interval(new_data))
+  object$time <- list(start = unclass(new_data)[[index_var(new_data)]][1], interval = interval(new_data))
   object
 }
 

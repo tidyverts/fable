@@ -130,7 +130,7 @@ train_ar <- function(.data, specials, ic, ...) {
   if (is.null(fit)) return(NULL)
 
   # Store the time range of the training data for stream()
-  fit$time <- list(start = unclass(.data)[[index_var(.data)]][[1]], interval = interval(.data))
+  fit$time <- list(start = unclass(.data)[[index_var(.data)]][1], interval = interval(.data))
   fit
 }
 
@@ -357,7 +357,7 @@ refit.AR <- function(object, new_data, specials = NULL, reestimate = FALSE, ...)
 
   # Keep the standard errors of coefficients which are not re-estimated
   if (!reestimate) fit$coef.se <- object$coef.se
-  fit$time <- list(start = unclass(new_data)[[index_var(new_data)]][[1]], interval = interval(new_data))
+  fit$time <- list(start = unclass(new_data)[[index_var(new_data)]][1], interval = interval(new_data))
   fit
 }
 

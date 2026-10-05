@@ -74,7 +74,7 @@ train_tslm <- function(.data, specials, ...) {
   # Remove unused structure
   fit$effects <- NULL
   fit$sigma2 <- sum(resid^2, na.rm = TRUE)/fit$df.residual
-  fit$time <- list(start = unclass(.data)[[index_var(.data)]][[1]], interval = interval(.data))
+  fit$time <- list(start = unclass(.data)[[index_var(.data)]][1], interval = interval(.data))
 
   structure(fit, class = "TSLM")
 }
@@ -406,7 +406,7 @@ refit.TSLM <- function(object, new_data, specials = NULL, reestimate = FALSE, ..
   fit$residuals <- y - fit$fitted.values
   fit$df.residual <- sum(keep) - fit$rank
   fit$sigma2 <- sum(fit$residuals^2, na.rm = TRUE)/fit$df.residual
-  fit$time <- list(start = unclass(new_data)[[index_var(new_data)]][[1]], interval = interval(new_data))
+  fit$time <- list(start = unclass(new_data)[[index_var(new_data)]][1], interval = interval(new_data))
 
   structure(fit, class = "TSLM")
 }

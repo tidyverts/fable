@@ -60,7 +60,7 @@ train_theta <- function(.data, specials, ...) {
       sigma2 = sigma2,
       dcmp = specials$season[[1]]$method,
       season = if(m > 1L) dcmp$seasonal[seq(n-m+1, n)] else NULL,
-      time = list(start = unclass(.data)[[index_var(.data)]][[1]], interval = interval(.data))
+      time = list(start = unclass(.data)[[index_var(.data)]][1], interval = interval(.data))
     ),
     class = "fable_theta"
   )
