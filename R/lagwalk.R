@@ -265,7 +265,7 @@ generate.RW <- function(x, new_data, bootstrap = FALSE, ...) {
   fits <- c(x$.fitted, x$future)
 
   start_idx <- min(new_data[[index_var(new_data)]])
-  start_pos <- match(start_idx, seq(x$time$start, by = default_time_units(x$time$interval), length.out = length(fits)))
+  start_pos <- match(start_idx, seq(x$time$start, by = index_step(x$time$start, x$time$interval), length.out = length(fits)))
 
   future <- fits[start_pos + seq_len(lag) - 1]
 
@@ -485,7 +485,7 @@ refit.RW <- function(object, new_data, specials = NULL, reestimate = FALSE, ...)
 #' @export
 stream.RW <- function(object, new_data, specials = NULL, ...) {
   n <- length(object$.fitted)
-  stream_start <- object$time$start + n * default_time_units(object$time$interval)
+  stream_start <- object$time$start + n * index_step(object$time$start, object$time$interval)
   if (unclass(new_data)[[index_var(new_data)]][1] != stream_start) {
     cli::cli_abort("Streaming to a lag walk model must start one step beyond the end of the trained data.")
   }
