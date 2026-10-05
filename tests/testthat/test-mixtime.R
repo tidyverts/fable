@@ -40,3 +40,27 @@ test_that("stream() checks the start of mixtime new_data", {
   expect_error(stream(fit["arima"], bad), "one step beyond")
   expect_error(stream(fit["mean"], bad), "one step beyond")
 })
+
+test_that("stream() extends mixtime-indexed models like legacy indices", {
+  new_mt <- tsibble::tsibble(t = mixtime::yearmonth(612:614), y = 10, index = t)
+  new_legacy <- tsibble::tsibble(t = tsibble::yearmonth(612:614), y = 10, index = t)
+  fit <- model(mt, ets = ETS(y), rw = RW(y ~ drift()), snaive = SNAIVE(y),
+    arima = ARIMA(y), ar = AR(y ~ order(2)), mean = MEAN(y), theta = THETA(y),
+    tslm = TSLM(y ~ trend()))
+  fit_legacy <- model(legacy, ets = ETS(y), rw = RW(y ~ drift()), snaive = SNAIVE(y),
+    arima = ARIMA(y), ar = AR(y ~ order(2)), mean = MEAN(y), theta = THETA(y),
+    tslm = TSLM(y ~ trend()))
+  for (nm in names(fit)[-1]) {
+    expect_equal(
+      forecast(stream(fit[nm], new_mt), h = 3)$.mean,
+      forecast(stream(fit_legacy[nm], new_legacy), h = 3)$.mean,
+      label = nm
+    )
+  }
+})
+
+test_that("ETS components() with seasonality supports mixtime indices", {
+  fit <- model(mt, ets = ETS(y ~ season("A")))
+  fit_legacy <- model(legacy, ets = ETS(y ~ season("A")))
+  expect_equal(components(fit)$season, components(fit_legacy)$season)
+})
