@@ -94,8 +94,8 @@ train_ets <- function(.data, specials, opt_crit,
         MSE = best$amse[1], AMSE = mean(best$amse), MAE = best$mae
       ),
       states = tsibble(
-        !!!set_names(list(seq(idx[1] - default_time_units(interval(.data)),
-          by = default_time_units(interval(.data)),
+        !!!set_names(list(seq(idx[1] - index_step(idx, interval(.data)),
+          by = index_step(idx, interval(.data)),
           length.out = NROW(best$states)
         )), index_var(.data)),
         !!!set_names(split(best$states, col(best$states)), colnames(best$states)),
@@ -361,7 +361,7 @@ generate.ETS <- function(x, new_data, specials, bootstrap = FALSE, ...) {
   }
 
   start_idx <- min(new_data[[index_var(new_data)]])
-  start_pos <- match(start_idx - default_time_units(interval(new_data)), x$states[[index_var(x$states)]])
+  start_pos <- match(start_idx - index_step(start_idx, interval(new_data)), x$states[[index_var(x$states)]])
 
   if (is.na(start_pos)) {
     cli::cli_abort("The first observation index of simulation data must be within the model's training set.")
@@ -486,8 +486,8 @@ refit.ETS <- function(object, new_data, specials = NULL, reestimate = FALSE, rei
         MSE = best$amse[1], AMSE = mean(best$amse), MAE = best$mae
       ),
       states = tsibble(
-        !!!set_names(list(seq(idx[1] - default_time_units(interval(new_data)),
-          by = default_time_units(interval(new_data)),
+        !!!set_names(list(seq(idx[1] - index_step(idx, interval(new_data)),
+          by = index_step(idx, interval(new_data)),
           length.out = NROW(best$states)
         )), index_var(new_data)),
         !!!set_names(split(best$states, col(best$states)), colnames(best$states)),
@@ -537,7 +537,7 @@ stream.ETS <- function(object, new_data, specials = NULL, ...) {
   n_old <- NROW(object$est)
 
   # Check position of new_data in model history
-  stream_start <- object$est[[idx_var]][n_old] + default_time_units(interval(object$est))
+  stream_start <- object$est[[idx_var]][n_old] + index_step(object$est[[idx_var]], interval(object$est))
   if (new_data[[index_var(new_data)]][1] != stream_start) {
     cli::cli_abort("Streaming to an ETS model must start one step beyond the end of the trained data.")
   }
@@ -728,7 +728,7 @@ components.ETS <- function(object, ...) {
   colnames(out) <- c(index_var(object$states), "level", "slope", "season")[!is.na(cmp)]
   if (spec$seasontype != "N") {
     seasonal_init <- tsibble(
-      !!expr_text(idx) := object$states[[index_var(object$states)]][1] - rev(seq_len(m - 1)) * default_time_units(interval(object$states)),
+      !!expr_text(idx) := object$states[[index_var(object$states)]][1] - rev(seq_len(m - 1)) * index_step(object$states[[index_var(object$states)]], interval(object$states)),
       season = rev(as.numeric(object$states[1, paste0("s", seq_len(m - 1) + 1)])),
       index = !!idx
     )
