@@ -94,7 +94,7 @@ train_ets <- function(.data, specials, opt_crit,
         MSE = best$amse[1], AMSE = mean(best$amse), MAE = best$mae
       ),
       states = tsibble(
-        !!!set_names(list(seq(idx[[1]] - default_time_units(interval(.data)),
+        !!!set_names(list(seq(idx[1] - default_time_units(interval(.data)),
           by = default_time_units(interval(.data)),
           length.out = NROW(best$states)
         )), index_var(.data)),
@@ -486,7 +486,7 @@ refit.ETS <- function(object, new_data, specials = NULL, reestimate = FALSE, rei
         MSE = best$amse[1], AMSE = mean(best$amse), MAE = best$mae
       ),
       states = tsibble(
-        !!!set_names(list(seq(idx[[1]] - default_time_units(interval(new_data)),
+        !!!set_names(list(seq(idx[1] - default_time_units(interval(new_data)),
           by = default_time_units(interval(new_data)),
           length.out = NROW(best$states)
         )), index_var(new_data)),
@@ -728,7 +728,7 @@ components.ETS <- function(object, ...) {
   colnames(out) <- c(index_var(object$states), "level", "slope", "season")[!is.na(cmp)]
   if (spec$seasontype != "N") {
     seasonal_init <- tsibble(
-      !!expr_text(idx) := object$states[[index_var(object$states)]][[1]] - rev(seq_len(m - 1)) * default_time_units(interval(object$states)),
+      !!expr_text(idx) := object$states[[index_var(object$states)]][1] - rev(seq_len(m - 1)) * default_time_units(interval(object$states)),
       season = rev(as.numeric(object$states[1, paste0("s", seq_len(m - 1) + 1)])),
       index = !!idx
     )
