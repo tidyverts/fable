@@ -445,7 +445,7 @@ refit.TSLM <- function(object, new_data, specials = NULL, reestimate = FALSE, ..
 #' @export
 stream.TSLM <- function(object, new_data, specials = NULL, ...) {
   n <- NROW(object$fitted.values)
-  stream_start <- object$time$start + n * default_time_units(object$time$interval)
+  stream_start <- object$time$start + n * index_step(object$time$start, object$time$interval)
   if (unclass(new_data)[[index_var(new_data)]][1] != stream_start) {
     cli::cli_abort("Streaming to a TSLM model must start one step beyond the end of the trained data.")
   }

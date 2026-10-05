@@ -395,7 +395,7 @@ refit.AR <- function(object, new_data, specials = NULL, reestimate = FALSE, ...)
 stream.AR <- function(object, new_data, specials = NULL, ...) {
   # Check position of new_data in model history
   n <- length(object$x)
-  stream_start <- object$time$start + n * default_time_units(object$time$interval)
+  stream_start <- object$time$start + n * index_step(object$time$start, object$time$interval)
   if (unclass(new_data)[[index_var(new_data)]][1] != stream_start) {
     cli::cli_abort("Streaming to an AR model must start one step beyond the end of the trained data.")
   }

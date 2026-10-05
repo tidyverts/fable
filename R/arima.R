@@ -1144,7 +1144,7 @@ refit.ARIMA <- function(object, new_data, specials = NULL, reestimate = FALSE, .
 #' @export
 stream.ARIMA <- function(object, new_data, specials = NULL, ...){
   # Check position of new_data in model history
-  stream_start <- object$tsp$range[2] + default_time_units(object$tsp$interval)
+  stream_start <- object$tsp$range[2] + index_step(object$tsp$range, object$tsp$interval)
   if (unclass(new_data)[[index_var(new_data)]][1] != stream_start) {
     cli::cli_abort("Streaming to an ARIMA model must start one step beyond the end of the trained data.")
   }

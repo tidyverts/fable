@@ -210,7 +210,7 @@ forecast.fable_theta <- function(object, new_data, specials = NULL, bootstrap = 
 #' @export
 stream.fable_theta <- function(object, new_data, specials = NULL, ...) {
   n <- length(object$resid)
-  stream_start <- object$time$start + n * default_time_units(object$time$interval)
+  stream_start <- object$time$start + n * index_step(object$time$start, object$time$interval)
   if (unclass(new_data)[[index_var(new_data)]][1] != stream_start) {
     cli::cli_abort("Streaming to a Theta model must start one step beyond the end of the trained data.")
   }
