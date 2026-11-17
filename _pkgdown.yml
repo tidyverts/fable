@@ -1,6 +1,13 @@
 url: https://fable.tidyverts.org
 
 template:
+  opengraph:
+    image:
+      src: pkgdown/social-card.png
+      alt: "The fable hex sticker"
+    twitter:
+      creator: "@mitchoharawild"
+      card: summary
   params:
     bootswatch: cosmo
   includes:
