@@ -161,7 +161,7 @@ specials_arfima <- new_specials(
     q_init = 2,
     fixed = list()
   ) {
-    if (self$stage %in% c("estimate", "refit")) {
+    if (isTRUE(self$stage %in% c("estimate", "refit"))) {
       p <- p[p <= floor(NROW(self$data) / 3)]
       q <- q[q <= floor(NROW(self$data) / 3)]
     }
@@ -476,12 +476,60 @@ refit.fbl_ARFIMA <- function(
 
   # Refit ARMA model
   fit <- NextMethod()
-  
+
   # Class the results
-  fit$par <- rbind(
-    object$par[object$par$term %in% c("mu", "d"), , drop = FALSE],
-    fit$par
-  )
   class(fit) <- c("fbl_ARFIMA", class(fit))
   fit
+}
+
+#' Extend a fitted ARFIMA model with new data
+#'
+#' Applies a fitted ARFIMA model's existing coefficients to a new (immediately
+#' subsequent) portion of data, updating the model's fitted values, residuals
+#' and fit statistics without re-estimating the model's coefficients
+#' (including the mean `mu` and fractional differencing parameter `d`).
+#'
+#' @inheritParams forecast.ARIMA
+#'
+#' @details
+#' Fractional differencing has infinite memory, so the new observations are
+#' fractionally differenced using the complete history of the series. The
+#' ARMA part of the model is then extended with [`stream.ARIMA()`], which only
+#' processes the newly provided observations.
+#'
+#' The `.fitted`, `.resid`, `log_lik` and point forecasts returned by
+#' `stream()` are identical (up to numerical precision) to those obtained by
+#' refitting the model (with `reestimate = FALSE`) to the complete series. As
+#' with [`stream.ARIMA()`], `sigma2` (and so forecast interval widths) and the
+#' information criteria continue to count the model's estimated ARMA
+#' coefficients, as they did when the model was trained.
+#'
+#' @examplesIf requireNamespace("fracdiff", quietly = TRUE)
+#' library(tsibble)
+#' library(dplyr)
+#'
+#' sunspots <- as_tsibble(sunspot.year)
+#'
+#' fit <- sunspots %>%
+#'   filter(index < 1960) %>%
+#'   model(ARFIMA(value ~ pdq(1, NULL, 1)))
+#'
+#' fit %>%
+#'   stream(sunspots %>% filter(index >= 1960)) %>%
+#'   report()
+#' @export
+stream.fbl_ARFIMA <- function(object, new_data, specials = NULL, ...) {
+  mu <- object$par$estimate[object$par$term == "mu"]
+  d <- object$par$estimate[object$par$term == "d"]
+
+  # Recover the demeaned training data from the differenced ARMA data
+  y_old <- fracdiffinv(object$est$.fitted + object$est$.resid, d)
+
+  # Fractionally difference the new data using the complete history
+  y <- unclass(new_data)[[measured_vars(new_data)]]
+  yd <- fracdiff(c(y_old, y - mu), d)[length(y_old) + seq_along(y)]
+  new_data[[measured_vars(new_data)]] <- yd
+
+  # Stream the ARMA model
+  NextMethod()
 }
