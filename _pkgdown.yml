@@ -55,6 +55,12 @@ reference:
     Exponential smoothing state space models.
   contents:
     - ends_with("ETS")
+- title: TBATS
+  desc: >
+    Exponential smoothing state space models with Box-Cox transformation, ARMA
+    errors, and trigonometric trend and seasonal components.
+  contents:
+    - ends_with("TBATS")
 - title: TSLM
   desc: >
     Time series linear models.
