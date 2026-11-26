@@ -11,7 +11,7 @@
 
 \item{new_data}{A tsibble containing the time points and exogenous regressors to produce forecasts for.}
 
-\item{specials}{(passed by \code{\link[fabletools:forecast.mdl_df]{fabletools::forecast.mdl_df()}}).}
+\item{specials}{(passed by \code{fabletools::forecast()}).}
 
 \item{...}{Other arguments passed to methods}
 }
@@ -27,5 +27,5 @@ as_tsibble(USAccDeaths) \%>\%
   generate(times = 100)
 }
 \seealso{
-\code{\link[fabletools:generate.mdl_df]{fabletools::generate.mdl_df}}
+\code{fabletools::generate()}
 }

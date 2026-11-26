@@ -352,7 +352,8 @@ forecast.ETS <- function(object, new_data, specials = NULL, simulate = FALSE, bo
 #' as_tsibble(USAccDeaths) %>%
 #'   model(ETS(log(value) ~ season("A"))) %>%
 #'   generate(times = 100)
-#' @seealso [`fabletools::generate.mdl_df`]
+# TODO: link to fabletools::generate.mbl_df() once fabletools v1.0.0 is on CRAN
+#' @seealso `fabletools::generate()`
 #'
 #' @export
 generate.ETS <- function(x, new_data, specials, bootstrap = FALSE, ...) {

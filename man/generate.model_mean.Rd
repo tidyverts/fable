@@ -28,5 +28,5 @@ vic_elec \%>\%
   generate()
 }
 \seealso{
-\code{\link[fabletools:generate.mdl_df]{fabletools::generate.mdl_df}}
+\code{fabletools::generate()}
 }

@@ -11,7 +11,7 @@
 
 \item{new_data}{A tsibble containing the time points and exogenous regressors to produce forecasts for.}
 
-\item{specials}{(passed by \code{\link[fabletools:forecast.mdl_df]{fabletools::forecast.mdl_df()}}).}
+\item{specials}{(passed by \code{fabletools::forecast()}).}
 
 \item{bootstrap}{If \code{TRUE}, then forecast distributions are computed using simulation with resampled errors.}
 
@@ -29,5 +29,5 @@ as_tsibble(lh) \%>\%
   generate()
 }
 \seealso{
-\code{\link[fabletools:generate.mdl_df]{fabletools::generate.mdl_df}}
+\code{fabletools::generate()}
 }
