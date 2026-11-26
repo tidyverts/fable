@@ -1,6 +1,6 @@
 globalVariables(c("p", "q"))
 
-#' @importFrom stats coef
+#' @importFrom stats coef .lm.fit
 specials_tbats <- new_specials(
   trend = function(method = c("N", "A", "Ad")) {
     if (!all(is.element(method, c("N", "A", "Ad")))) {
@@ -346,7 +346,7 @@ generate.TBATS <- function(x, new_data, specials, bootstrap = FALSE, ...) {
     out
   }
 
-  transmute(group_by_key(new_data), ".sim" := sim_path(.innov))
+  transmute(group_by_key(new_data), ".sim" := sim_path(!!sym(".innov")))
 }
 
 #' Refit a TBATS model
