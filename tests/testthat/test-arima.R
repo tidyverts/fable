@@ -309,6 +309,8 @@ test_that("stream.ARIMA updates forecast standard errors via sigma2", {
 })
 
 test_that("stream.ARIMA resolves lag() regressors on a single stream() call", {
+  # Requires fabletools support for lag() when streaming
+  skip_if(packageVersion("fabletools") < "0.8.0.9000")
   tr <- UKLungDeaths %>% head(-24)
   fit <- tr %>% model(model = ARIMA(mdeaths ~ 1 + lag(fdeaths) + pdq(1, 0, 0) + PDQ(P = 0, Q = 0)))
 
