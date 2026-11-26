@@ -21,3 +21,5 @@ Makefile
 ^revdep$
 ^pkgdown$
 ^CRAN-SUBMISSION$
+^_dev$
+^\.claude$
