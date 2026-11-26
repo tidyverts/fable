@@ -91,6 +91,10 @@ specials_ar <- new_specials(
       lhs = NULL,
       rhs = reduce(dots, function(.x, .y) call2("+", .x, .y))
     )
+
+    # Mask user defined lag to retain history when forecasting
+    env <- env_bury(env, lag = lag)
+
     xreg <- model.frame(model_formula, data = env, na.action = stats::na.pass)
     list(
       constant = if (constant_given) as.logical(terms(xreg) %@% "intercept") else c(TRUE, FALSE),

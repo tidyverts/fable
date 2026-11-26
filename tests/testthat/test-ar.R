@@ -66,6 +66,54 @@ test_that("stream.AR with exogenous regressors", {
   expect_stream_matches_refit(fit_trend, lh_new, lh_tbl)
 })
 
+test_that("AR forecasts and simulations use the history of lag() regressors", {
+  uk_lagged <- UKLungDeaths %>% mutate(fdeaths_lag = dplyr::lag(fdeaths))
+  fit <- UKLungDeaths %>%
+    head(-12) %>%
+    model(ar = AR(mdeaths ~ lag(fdeaths) + order(2)))
+  fit_manual <- uk_lagged %>%
+    head(-12) %>%
+    model(ar = AR(mdeaths ~ fdeaths_lag + order(2)))
+  expect_equal(tidy(fit)$estimate, tidy(fit_manual)$estimate)
+
+  fc <- forecast(fit, new_data = tail(UKLungDeaths, 12))
+  fc_manual <- forecast(fit_manual, new_data = tail(uk_lagged, 12))
+  expect_false(anyNA(fc_mean(fc$mdeaths)))
+  expect_equal(fc_mean(fc$mdeaths), fc_mean(fc_manual$mdeaths))
+  expect_equal(
+    distributional::variance(fc$mdeaths),
+    distributional::variance(fc_manual$mdeaths)
+  )
+
+  set.seed(42)
+  sim <- generate(fit, new_data = tail(UKLungDeaths, 12), times = 1)
+  set.seed(42)
+  sim_manual <- generate(fit_manual, new_data = tail(uk_lagged, 12), times = 1)
+  expect_false(anyNA(sim$.sim))
+  expect_equal(sim$.sim, sim_manual$.sim)
+})
+
+test_that("stream.AR resolves lag() regressors from the trained data", {
+  # fabletools 0.8.0's lag() doesn't support stream()
+  skip_if(packageVersion("fabletools") < "0.8.0.9000")
+  fit <- UKLungDeaths %>%
+    head(-12) %>%
+    model(ar = AR(mdeaths ~ lag(fdeaths) + order(2)))
+  streamed <- fit %>% stream(tail(UKLungDeaths, 12))
+  refitted <- fit %>% refit(UKLungDeaths, reestimate = FALSE)
+
+  expect_equal(residuals(streamed)$.resid, residuals(refitted)$.resid)
+  expect_equal(fitted(streamed)$.fitted, fitted(refitted)$.fitted)
+  expect_equal(glance(streamed)$sigma2, glance(refitted)$sigma2)
+  future <- new_data(UKLungDeaths, 3) %>% mutate(fdeaths = c(900, 800, 700))
+  fc_streamed <- forecast(streamed, new_data = future)
+  expect_false(anyNA(fc_mean(fc_streamed$mdeaths)))
+  expect_equal(
+    fc_mean(fc_streamed$mdeaths),
+    fc_mean(forecast(refitted, new_data = future)$mdeaths)
+  )
+})
+
 test_that("Chained stream.AR calls match one large stream", {
   fit <- lh_tbl %>%
     filter(index <= 36) %>%
