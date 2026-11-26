@@ -33,6 +33,8 @@ number of coefficients estimated in the original fit (whereas
 includes no such penalty).
 }
 \examples{
+library(dplyr)
+library(tsibble)
 luteinizing_hormones <- as_tsibble(lh)
 
 fit <- luteinizing_hormones \%>\%

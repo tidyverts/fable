@@ -386,6 +386,8 @@ refit.AR <- function(object, new_data, specials = NULL, reestimate = FALSE, ...)
 #' includes no such penalty).
 #'
 #' @examples
+#' library(dplyr)
+#' library(tsibble)
 #' luteinizing_hormones <- as_tsibble(lh)
 #'
 #' fit <- luteinizing_hormones %>%

@@ -523,6 +523,8 @@ refit.ETS <- function(object, new_data, specials = NULL, reestimate = FALSE, rei
 #' not store the per-horizon errors needed to combine it exactly.
 #'
 #' @examples
+#' library(dplyr)
+#' library(tsibble)
 #' lung_deaths_male <- as_tsibble(mdeaths)
 #'
 #' fit <- lung_deaths_male %>%

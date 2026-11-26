@@ -34,6 +34,8 @@ measures (used by \code{glance()}) reflect the complete series rather than only
 the original training data.
 }
 \examples{
+library(dplyr)
+library(tsibble)
 lung_deaths_male <- as_tsibble(mdeaths)
 
 fit <- lung_deaths_male \%>\%

@@ -1133,6 +1133,8 @@ refit.ARIMA <- function(object, new_data, specials = NULL, reestimate = FALSE, .
 #' across repeated (chained) `stream()` calls.
 #'
 #' @examples
+#' library(dplyr)
+#' library(tsibble)
 #' lung_deaths_male <- as_tsibble(mdeaths)
 #'
 #' fit <- lung_deaths_male %>%

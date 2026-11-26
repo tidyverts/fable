@@ -330,6 +330,8 @@ refit.model_mean <- function(object, new_data, specials = NULL, reestimate = FAL
 #' forecasting.
 #'
 #' @examples
+#' library(dplyr)
+#' library(tsibble)
 #' lung_deaths_male <- as_tsibble(mdeaths)
 #'
 #' fit <- lung_deaths_male %>%

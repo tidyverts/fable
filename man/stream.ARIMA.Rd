@@ -44,6 +44,8 @@ regressor across the boundary between existing data and \code{new_data}, even
 across repeated (chained) \code{stream()} calls.
 }
 \examples{
+library(dplyr)
+library(tsibble)
 lung_deaths_male <- as_tsibble(mdeaths)
 
 fit <- lung_deaths_male \%>\%

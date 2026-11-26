@@ -35,6 +35,8 @@ complete series, and the most recent rolling mean is retained for
 forecasting.
 }
 \examples{
+library(dplyr)
+library(tsibble)
 lung_deaths_male <- as_tsibble(mdeaths)
 
 fit <- lung_deaths_male \%>\%

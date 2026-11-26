@@ -198,6 +198,8 @@ forecast.fable_theta <- function(object, new_data, specials = NULL, bootstrap = 
 #' to the complete series.
 #'
 #' @examples
+#' library(dplyr)
+#' library(tsibble)
 #' lung_deaths_male <- as_tsibble(mdeaths)
 #'
 #' fit <- lung_deaths_male %>%

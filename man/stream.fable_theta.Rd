@@ -39,6 +39,8 @@ model is exact for the fixed parameters but may differ from a model fitted
 to the complete series.
 }
 \examples{
+library(dplyr)
+library(tsibble)
 lung_deaths_male <- as_tsibble(mdeaths)
 
 fit <- lung_deaths_male \%>\%
