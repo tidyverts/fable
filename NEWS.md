@@ -11,9 +11,20 @@
   `TSLM()`, `THETA()` and `TBATS()` models can now be extended with new data
   via `stream()`, which updates the fitted model without re-estimating its 
   coefficients by only needing to process the new values.
+* `ARFIMA()` models can now be extended with `stream()`. Previously, the
+  ARIMA method was used on data that had not been fractionally differenced,
+  silently giving incorrect results.
 
 ## Improvements
 
+* Compatible with fabletools 1.0.0 (and still works with fabletools 0.8.0).
+  The minimum required versions of R (4.1.0), rlang (1.0.0) and fabletools
+  (0.8.0) have been raised.
+* `AR()` now uses the history of `lag()` regressors when forecasting,
+  simulating and streaming. Models using `lag()` that were estimated with
+  fabletools 0.8.0 or earlier must be re-estimated.
+* `stream()` for models with `lag()` regressors requires fabletools 1.0.0 or
+  later.
 * `VARIMA()` now supports model selection by minimising the specified 
   information criterion (`ic`) when `p` or `q` are not uniquely specified. This
   identification method can be directly used with 
@@ -41,6 +52,7 @@
 * Fixed fixed regression coefficients in `AR()` (including those used by 
   `refit(reestimate = FALSE)`) being incorrectly rescaled by the standard 
   deviation of the response.
+* Fixed `refit(<ARFIMA>)` duplicating the `mu` and `d` coefficients.
 
 # fable 0.5.0
 
