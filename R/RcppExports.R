@@ -9,3 +9,7 @@ etsNelderMead <- function(par, env, abstol, intol, alpha, beta, gamma, trace, ma
     .Call(`_fable_etsNelderMead`, par, env, abstol, intol, alpha, beta, gamma, trace, maxit)
 }
 
+tbats_filter <- function(y, F, g, w, x0) {
+    .Call(`_fable_tbats_filter`, y, F, g, w, x0)
+}
+

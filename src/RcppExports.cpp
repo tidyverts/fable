@@ -63,6 +63,21 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// tbats_filter
+Rcpp::List tbats_filter(const Rcpp::NumericVector& y, const Rcpp::NumericMatrix& F, const Rcpp::NumericVector& g, const Rcpp::NumericVector& w, const Rcpp::NumericVector& x0);
+RcppExport SEXP _fable_tbats_filter(SEXP ySEXP, SEXP FSEXP, SEXP gSEXP, SEXP wSEXP, SEXP x0SEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericMatrix& >::type F(FSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type g(gSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type w(wSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type x0(x0SEXP);
+    rcpp_result_gen = Rcpp::wrap(tbats_filter(y, F, g, w, x0));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 RcppExport SEXP etscalc(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 RcppExport SEXP etssimulate(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
@@ -70,6 +85,7 @@ RcppExport SEXP etssimulate(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP
 static const R_CallMethodDef CallEntries[] = {
     {"_fable_etsTargetFunctionInit", (DL_FUNC) &_fable_etsTargetFunctionInit, 24},
     {"_fable_etsNelderMead", (DL_FUNC) &_fable_etsNelderMead, 9},
+    {"_fable_tbats_filter", (DL_FUNC) &_fable_tbats_filter, 5},
     {"etscalc",     (DL_FUNC) &etscalc,     12},
     {"etssimulate", (DL_FUNC) &etssimulate, 11},
     {NULL, NULL, 0}

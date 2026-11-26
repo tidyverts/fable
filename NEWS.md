@@ -2,9 +2,14 @@
 
 ## New features
 
+* Added `TBATS()`, an exponential smoothing state space model with Box-Cox
+  transformation, ARMA errors, and trigonometric (Fourier) representations of
+  trend and seasonal components, following De Livera, Hyndman & Snyder
+  (2011). A single `TBATS()` model covers both the "BATS" and "TBATS"
+  variants described in the original methodology paper.
 * `ARIMA()`, `ETS()`, `RW()`, `NAIVE()`, `SNAIVE()`, `AR()`, `MEAN()`, 
-  `TSLM()` and `THETA()` models can now be extended with new data via 
-  `stream()`, which updates the fitted model without re-estimating its 
+  `TSLM()`, `THETA()` and `TBATS()` models can now be extended with new data
+  via `stream()`, which updates the fitted model without re-estimating its 
   coefficients by only needing to process the new values.
 
 ## Improvements
