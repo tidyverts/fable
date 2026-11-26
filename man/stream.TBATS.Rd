@@ -11,7 +11,7 @@
 
 \item{new_data}{A tsibble containing the time points and exogenous regressors to produce forecasts for.}
 
-\item{specials}{(passed by \code{\link[fabletools:forecast.mdl_df]{fabletools::forecast.mdl_df()}}).}
+\item{specials}{(passed by \code{fabletools::forecast()}).}
 
 \item{...}{Other arguments passed to methods}
 }
@@ -22,6 +22,9 @@ structure and coefficients are held fixed - only the fitted values, states
 and fit statistics are updated to account for the new observations.
 }
 \examples{
+library(dplyr)
+library(tsibble)
+
 lung_deaths_male <- as_tsibble(mdeaths)
 
 fit <- lung_deaths_male \%>\%

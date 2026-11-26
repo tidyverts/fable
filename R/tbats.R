@@ -448,6 +448,9 @@ refit.TBATS <- function(object, new_data, specials = NULL, reinitialise = TRUE, 
 #' @inheritParams stream.ARIMA
 #'
 #' @examples
+#' library(dplyr)
+#' library(tsibble)
+#'
 #' lung_deaths_male <- as_tsibble(mdeaths)
 #'
 #' fit <- lung_deaths_male %>%
