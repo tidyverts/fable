@@ -91,7 +91,7 @@ train_varima <- function(.data, specials, identification = NULL, ic = "aic", ...
 
 specials_varima <- new_specials(
   pdq = function(p = 0:5, d = 0, q = 0:5) {
-    if (self$stage %in% c("estimate", "refit")) {
+    if (isTRUE(self$stage %in% c("estimate", "refit"))) {
       p <- p[p <= floor(NROW(self$data) / 3)]
       q <- q[q <= floor(NROW(self$data) / 3)]
     }

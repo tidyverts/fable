@@ -478,7 +478,7 @@ specials_arima <- new_specials(
   pdq = function(p = 0:5, d = 0:2, q = 0:5,
                  p_init = 2, q_init = 2,
                  fixed = list()) {
-    if (self$stage %in% c("estimate", "refit")) {
+    if (isTRUE(self$stage %in% c("estimate", "refit"))) {
       p <- p[p <= floor(NROW(self$data) / 3)]
       q <- q[q <= floor(NROW(self$data) / 3)]
     }
@@ -501,7 +501,7 @@ specials_arima <- new_specials(
       D <- 0
       Q <- 0
     }
-    else if (self$stage %in% c("estimate", "refit")) {
+    else if (isTRUE(self$stage %in% c("estimate", "refit"))) {
       P <- P[P <= floor(NROW(self$data) / 3 / period)]
       Q <- Q[Q <= floor(NROW(self$data) / 3 / period)]
       if(length(P) == 0 || length(Q) == 0) {

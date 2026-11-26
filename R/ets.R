@@ -153,7 +153,7 @@ specials_ets <- new_specials(
     if(!is.null(gamma)) gamma_range <- rep(gamma, 2)
 
     m <- get_frequencies(period, self$data, .auto = "smallest")
-    if (m <= 1 || (NROW(self$data) <= m && self$stage %in% c("estimate", "refit"))) {
+    if (m <= 1 || (NROW(self$data) <= m && isTRUE(self$stage %in% c("estimate", "refit")))) {
       method <- intersect("N", method)
     }
     if (m > 24) {
