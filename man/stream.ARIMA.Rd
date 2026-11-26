@@ -41,7 +41,9 @@ conditional sum-of-squares fit rather than the exact likelihood.
 
 If the model's \code{xreg} uses \code{lag()}, \code{stream()} correctly resolves the
 regressor across the boundary between existing data and \code{new_data}, even
-across repeated (chained) \code{stream()} calls.
+across repeated (chained) \code{stream()} calls. This requires fabletools
+v1.0.0 or later, as earlier versions error when streaming models with
+\code{lag()} regressors.
 }
 \examples{
 library(dplyr)

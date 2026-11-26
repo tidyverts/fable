@@ -1130,7 +1130,9 @@ refit.ARIMA <- function(object, new_data, specials = NULL, reestimate = FALSE, .
 #'
 #' If the model's `xreg` uses `lag()`, `stream()` correctly resolves the
 #' regressor across the boundary between existing data and `new_data`, even
-#' across repeated (chained) `stream()` calls.
+#' across repeated (chained) `stream()` calls. This requires fabletools
+#' v1.0.0 or later, as earlier versions error when streaming models with
+#' `lag()` regressors.
 #'
 #' @examples
 #' library(dplyr)
